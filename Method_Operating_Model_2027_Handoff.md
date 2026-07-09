@@ -1,8 +1,8 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_6.xlsx` (16 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_7.xlsx` (17 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
-**Last updated:** July 9, 2026 (v4: LW Menu Pricing rebuilt at item level · v5: BOH cook labor kept at $296/wk · v6: retail programming lever added)
+**Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: **Vessel 2026 P&L tab** — exact monthly replica of the source P&L (Jan–Jun actual / Jul–Dec forecast), now the live 2026 Vessel base)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
 
 ---
@@ -50,8 +50,8 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 | | T12 | 2026 Forecast | 2026 Modified | 2027 Plan |
 |---|---|---|---|---|
 | Little Wing | −$157,155 | −$158,056 | −$110,001 | −$32,821 |
-| Vessel | −$12,309* | −$12,309 | +$5,859 | +$29,186 |
-| **Combined** | **−$169,464** | **−$170,365** | **−$104,141** | **−$3,634** |
+| Vessel | −$9,863* | −$9,863 | +$8,340 | +$18,773 |
+| **Combined** | **−$167,018** | **−$167,919** | **−$101,661** | **−$14,048** |
 
 \*Vessel T12 seeded with 2026 actual/forecast (no separate prior-year Vessel GL exists in the model) — overwrite if a true T12 becomes available.
 
@@ -86,7 +86,7 @@ All are editable inputs; the 2026 Bridge gives each an effective date for prorat
 - **Little Wing revenue:** Toast H1-2026 item detail ×2 by category (Food $106,838 / NA-Coffee $131,727 / Alcohol $13,996 / Retail $5,848 / Other $7,793). COGS %: Food 44.07 / NA 22.16 / Alc 33.28 / Retail 0 / Other 0 (GL actual; no COGS booked for retail/other).
 - **LW T12 (GL actual):** Revenue $258,287 · COGS $81,599 · Labor $164,857 · NOI −$157,155.
 - **LW 2026 Forecast** (uploaded `Little Wing V2.pdf`): Revenue $287,305 · COGS $99,691 · Labor $168,162 · NOI −$158,056.
-- **Vessel 2026 Forecast** (uploaded `Vessel forecast 2.pdf`): Revenue $344,171 · COGS $116,784 · Labor $75,138 · NOI −$12,309. **F&B base for admin fee = $230,063** (food + NA bev + liquor + beer + wine).
+- **Vessel 2026 Forecast** — now lives on the **`Vessel 2026 P&L` tab** (v7): exact monthly replica of the source P&L, Jan–Jun actual / Jul–Dec forecast, income mix → Net Cash Flow. FY: Revenue $351,970 · COGS $122,931 · Labor $77,954 · NOP before debt service −$9,867 · Occupancy $21,342 · Mgmt fee $48,000 (old flat) · Reserve/CapEx $4,937 · NCF −$14,805. **F&B base for admin fee = $231,522** (live SUM of the tab's F&B sales). Scenario Summary T12/Forecast columns, the 2026 Bridge Vessel rows, and Vessel GL Basis (mgmt labor $21,447/yr, controllables $80,848/yr, non-controllables $10,760/yr) all LINK to this tab — replacing the old hardcodes ($344,171 / −$12,309 / mgmt labor $14,188). This flowed into the 2027 plan: Vessel labor & non-controllables rose, 2027 Vessel NOI $29,186 → **$18,773**.
 - **Vessel 2027 Plan drivers:** $4,000 F&B minimum/event × 80% of run-rate volume (83 events) → Revenue $398,400; food cost 60%, bev cost 25%; 75/25 Method split **removed**.
 
 These 2026/T12 figures are entered as constants (blue) on the Scenario Summary and 2026 Bridge; the 2027 Plan columns link live to the Budget tabs.
