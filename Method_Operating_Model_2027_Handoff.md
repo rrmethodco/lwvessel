@@ -1,8 +1,8 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_7.xlsx` (17 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_8.xlsx` (17 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
-**Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: **Vessel 2026 P&L tab** — exact monthly replica of the source P&L (Jan–Jun actual / Jul–Dec forecast), now the live 2026 Vessel base)
+**Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match. **Shared row map: every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell. All scenario outputs unchanged by the reformat.)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
 
 ---
@@ -31,7 +31,7 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 
 | Tab | What it is |
 |---|---|
-| **Scenario Summary** | Headline 4-scenario comparison (T12 / 2026 Forecast / 2026 Modified / 2027 Plan) for Little Wing, Vessel, Combined. |
+| **Scenario Summary** | Headline 4-scenario comparison (T12 / 2026 Forecast / 2026 Modified / 2027 Plan) for Little Wing, Vessel, Combined. Lines relabeled to P&L taxonomy (Total Income … Net Operating Profit); row positions unchanged (2026 Bridge depends on them). |
 | **2026 Bridge** | Time-stamped change schedule. Each change has an editable **effective date** (default Aug 1, 2026) that prorates its in-year impact. Reconciles Forecast → 2026 Modified. |
 | **Consolidated P&L** | FY roll-up (Vessel / LW / Combined, $ and % of revenue) + consolidated NOI-by-month. |
 | **Combined 12-Mo P&L** | Every P&L line × 12 months + FY, summing Vessel + LW. |
