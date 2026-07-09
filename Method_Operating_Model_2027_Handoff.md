@@ -1,8 +1,8 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_4.xlsx` (16 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_5.xlsx` (16 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
-**Last updated:** July 9, 2026 (v4: LW Menu Pricing rebuilt at item level)
+**Last updated:** July 9, 2026 (v4: LW Menu Pricing rebuilt at item level · v5: BOH cook labor kept at $296/wk)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
 
 ---
@@ -49,9 +49,9 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 
 | | T12 | 2026 Forecast | 2026 Modified | 2027 Plan |
 |---|---|---|---|---|
-| Little Wing | −$157,155 | −$158,056 | −$104,436 | −$19,466 |
+| Little Wing | −$157,155 | −$158,056 | −$111,876 | −$37,321 |
 | Vessel | −$12,309* | −$12,309 | +$5,859 | +$29,186 |
-| **Combined** | **−$169,464** | **−$170,365** | **−$98,577** | **+$9,720** |
+| **Combined** | **−$169,464** | **−$170,365** | **−$106,017** | **−$8,134** |
 
 \*Vessel T12 seeded with 2026 actual/forecast (no separate prior-year Vessel GL exists in the model) — overwrite if a true T12 becomes available.
 
@@ -67,7 +67,7 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 All are editable inputs; the 2026 Bridge gives each an effective date for proration.
 
 **Little Wing:**
-1. **Labor restructure** — single 6am–4pm shift (10 hrs/day) + weekend 2nd barista **4 hrs/day** Sat & Sun (was 3h). Adjusted labor = **$94,099/yr** (vs GL T12 $164,857). Inputs: `LW Assumptions` C20 (10h), C21 (=2*4/7), C23 ($20/hr blended), C24 (16% burden).
+1. **Labor restructure** — single 6am–4pm FOH shift (10 hrs/day) + weekend 2nd barista **4 hrs/day** Sat & Sun (was 3h), **BOH cook KEPT at the current schedule ($296/wk base, ~13.3 hrs/wk — in-house food program retained, not prepackaged)**. Adjusted labor = **$111,954/yr** (vs GL T12 $164,857). Inputs: `LW Assumptions` C20 (10h), C21 (=2*4/7), C23 ($20/hr blended), C24 (16% burden), **C26 ($296/wk BOH)**.
 2. **Menu pricing (PMIX)** — primary revenue lever. **Per-item** price moves on `LW Menu Pricing` (col F, editable, rows 6–28: named items from Toast top sellers annualized ×12/5, plus "all other" remainder rows so groups tie to category totals). Defaults (+$0.50 coffee/NA, +$1.00 sandwiches, hold Grab&Go/Snacks/Alc) replicate the old group-level move exactly: gross uplift $19,572 × **capture % (C52, default 90%)** = **net $17,614** (C53) applied to the plan. Feeds `LW Assumptions` C43.
 3. **Retail improvement uplift** — `LW Assumptions` C46 = **50%** uplift on the ~$5,848 retail base = **+$2,924** (INPUT — tune this).
 4. **Management fee** 4% — `LW Assumptions` C40. **Rent** 6% — C41.
