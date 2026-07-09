@@ -1,8 +1,8 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_8.xlsx` (17 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_9.xlsx` (17 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
-**Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match. **Shared row map: every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell. All scenario outputs unchanged by the reformat.)
+**Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match; **shared row map — every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell · v9: LW staffed shift set to proposed **6:30am–4pm operating hours (9.5h)**)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
 
 ---
@@ -49,9 +49,9 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 
 | | T12 | 2026 Forecast | 2026 Modified | 2027 Plan |
 |---|---|---|---|---|
-| Little Wing | −$157,155 | −$158,056 | −$110,001 | −$32,821 |
+| Little Wing | −$157,155 | −$158,056 | −$108,241 | −$28,598 |
 | Vessel | −$9,863* | −$9,863 | +$8,340 | +$18,773 |
-| **Combined** | **−$167,018** | **−$167,919** | **−$101,661** | **−$14,048** |
+| **Combined** | **−$167,018** | **−$167,919** | **−$99,902** | **−$9,825** |
 
 \*Vessel T12 seeded with 2026 actual/forecast (no separate prior-year Vessel GL exists in the model) — overwrite if a true T12 becomes available.
 
@@ -67,7 +67,7 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 All are editable inputs; the 2026 Bridge gives each an effective date for proration.
 
 **Little Wing:**
-1. **Labor restructure** — single 6am–4pm FOH shift (10 hrs/day) + weekend 2nd barista **4 hrs/day** Sat & Sun (was 3h), **BOH cook KEPT at the current schedule ($296/wk base, ~13.3 hrs/wk — in-house food program retained, not prepackaged)**. Adjusted labor = **$111,954/yr** (vs GL T12 $164,857). Inputs: `LW Assumptions` C20 (10h), C21 (=2*4/7), C23 ($20/hr blended), C24 (16% burden), **C26 ($296/wk BOH)**.
+1. **Labor restructure** — single **6:30am–4pm** FOH shift (9.5 hrs/day) + weekend 2nd barista **4 hrs/day** Sat & Sun (was 3h), **BOH cook KEPT at the current schedule ($296/wk base, ~13.3 hrs/wk — in-house food program retained, not prepackaged)**. Adjusted labor = **$107,731/yr** (vs GL T12 $164,857). Inputs: `LW Assumptions` C20 (9.5h), C21 (=2*4/7), C23 ($20/hr blended), C24 (16% burden), **C26 ($296/wk BOH)**. Open question being analyzed: **post-4pm sales share** (self-serve assumption) — needs Toast hourly export; workbook only carries a 2pm split (69/31 Jan–May).
 2. **Menu pricing (PMIX)** — primary revenue lever. **Per-item** price moves on `LW Menu Pricing` (col F, editable, rows 6–28: named items from Toast top sellers annualized ×12/5, plus "all other" remainder rows so groups tie to category totals). Defaults (+$0.50 coffee/NA, +$1.00 sandwiches, hold Grab&Go/Snacks/Alc) replicate the old group-level move exactly: gross uplift $19,572 × **capture % (C52, default 90%)** = **net $17,614** (C53) applied to the plan. Feeds `LW Assumptions` C43.
 3. **Retail improvement uplift** — `LW Assumptions` C46 = **50%** uplift on the ~$5,848 retail base = **+$2,924** (INPUT — tune this).
 3b. **Retail programming expansion (new lever, v6)** — `LW Assumptions` C36 = **$12,000/yr incremental revenue (INPUT placeholder — tune to the programming plan)** with its own **COGS % (C37, default 50%)** since new merch carries real product cost (GL retail COGS was $0). Layered on top of lever 3; flows into `LW Budget` row 9/16 (scaled by the monthly revenue index), has its own effective-date row on the `2026 Bridge`, and lands in the 2026 Modified column. At the $12K default: ≈ **+$4.5K NOI** in the 2027 plan, +$2.1K prorated in 2026.
