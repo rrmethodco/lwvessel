@@ -1,6 +1,6 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_12.xlsx` (21 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_13.xlsx` (21 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
 **Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match; **shared row map — every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell · v9: LW staffed shift set to proposed **6:30am–4pm operating hours (9.5h)** · v10: **LW Daypart Analysis tab** from Toast Jan–Jun item detail — post-4pm = 21.0% of sales, only 16.4% of it barista-required (~$9.1K/yr annualized), risk-sensitivity block included; analysis only, plan outputs unchanged · v11: **scenario architecture rebased on accountant Act/For statements** — new `LW 2026 P&L` + updated `Vessel 2026 P&L` (June actuals) as the unmodified base; new **`LW 2026 Modified` / `Vessel 2026 Modified`** monthly tabs where Jan–Jun = actuals and levers apply dynamically from an editable **go-live date input (C4, default 2026-08-01)**; `LW Budget` 2027 rebuilt as the **annualized modified run-rate** (Dec-2026 forecast base × 12, all levers on); Vessel Budget stays event-driven; 2026 Bridge replaced by a lean reconciliation sourced from the tabs)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
@@ -21,7 +21,7 @@ The old Method/Owner **profit split** was removed entirely. Replaced with explic
 
 - **Management fee = 4% of gross revenue**, both outlets (replaces the old $48K/yr flat fee and the 75/25 Vessel profit split).
 - **Rent:** Vessel **$0** (no separate rent), Little Wing **6% of revenue**.
-- **Admin fee (Vessel only) = 5% of F&B revenue** (food + beverage sales; excludes service charge & other income). New charge to Method admin.
+- **Admin fee (Vessel only) = 5% of F&B revenue** (food + beverage sales) — **billed to event clients** on the invoice, so it is **Other Operating Income to Vessel** (v13), not an expense. The 4% mgmt fee applies to it as revenue.
 
 Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fees → Controllable → Non-controllable → **Management fee → Admin fee (Vessel) → Rent** → **NET OPERATING INCOME**.
 
@@ -50,8 +50,8 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 | | T12 | 2026 Act/For (unmodified) | 2026 Act/For MODIFIED | 2027 Plan |
 |---|---|---|---|---|
 | Little Wing | −$157,155 | −$164,007 | −$121,768 | −$60,314 |
-| Vessel | −$13,501* | −$13,501 | +$5,510 | +$22,107 |
-| **Combined** | **−$170,656** | **−$177,508** | **−$116,258** | **−$38,208** |
+| Vessel | −$13,501* | −$13,501 | +$12,348 | +$54,228 |
+| **Combined** | **−$170,656** | **−$177,508** | **−$109,420** | **−$6,087** |
 
 (v12 pricing: Latte/Cappuccino/Natalie's +$1.00, Espresso +$0.75 → gross uplift $24,019, net $21,617 @90% capture.)
 
@@ -79,7 +79,7 @@ All are editable inputs; the 2026 Bridge gives each an effective date for prorat
 
 **Vessel:**
 5. **Management fee** 4% of revenue — `Vessel Assumptions` C30. **Rent** 0% — C31.
-6. **Admin fee** 5% of F&B revenue — `Vessel Assumptions` C32 (new). = **$16,600** on 2027 plan F&B ($332K).
+6. **Admin fee** 5% of F&B revenue — `Vessel Assumptions` C32. **Billed to event clients → Other Operating Income** (v13): +$16,600 revenue on 2027 plan F&B ($332K), not an expense.
 
 **Effective dates:** all default **2026-08-01** on the `2026 Bridge` tab (col B, editable per change). Active months in 2026 = 13 − MONTH(date); e.g., Aug = 5 months = 5/12 proration.
 
