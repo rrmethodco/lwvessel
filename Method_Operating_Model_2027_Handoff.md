@@ -1,6 +1,6 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_18.xlsx` (23 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_19.xlsx` (23 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
 **Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match; **shared row map — every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell · v9: LW staffed shift set to proposed **6:30am–4pm operating hours (9.5h)** · v10: **LW Daypart Analysis tab** from Toast Jan–Jun item detail — post-4pm = 21.0% of sales, only 16.4% of it barista-required (~$9.1K/yr annualized), risk-sensitivity block included; analysis only, plan outputs unchanged · v11: **scenario architecture rebased on accountant Act/For statements** — new `LW 2026 P&L` + updated `Vessel 2026 P&L` (June actuals) as the unmodified base; new **`LW 2026 Modified` / `Vessel 2026 Modified`** monthly tabs where Jan–Jun = actuals and levers apply dynamically from an editable **go-live date input (C4, default 2026-08-01)**; `LW Budget` 2027 rebuilt as the **annualized modified run-rate** (Dec-2026 forecast base × 12, all levers on); Vessel Budget stays event-driven; 2026 Bridge replaced by a lean reconciliation sourced from the tabs)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
@@ -49,9 +49,9 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 
 | | T12 | 2026 Act/For (unmodified) | 2026 Act/For MODIFIED | 2027 Plan |
 |---|---|---|---|---|
-| Little Wing | −$157,155 | −$164,007 | −$114,328 | −$42,459 |
+| Little Wing | −$157,155 | −$164,007 | −$114,328 | −$38,683 |
 | Vessel | −$13,501* | −$13,501 | +$12,348 | +$54,228 |
-| **Combined** | **−$170,656** | **−$177,508** | **−$101,980** | **+$11,768** |
+| **Combined** | **−$170,656** | **−$177,508** | **−$101,980** | **+$15,545** |
 
 (v16 — synced to the Plan-of-Action deck: pricing = deck slide 9 list prices on TTM units → gross $10,179, net $9,161 @90%; retail programming raised to $42K/yr rev @50% COGS = ~+$24K GP; LW shift = 6:00a–4:00p (10h), doors 6:30a.)
 
