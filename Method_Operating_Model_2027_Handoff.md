@@ -1,6 +1,6 @@
 # Method Terrapin Operating Model 2027 — Handoff
 
-**File:** `Method_Operating_Model_2027_29.xlsx` (24 tabs, 0 formula errors, recalculated via LibreOffice)
+**File:** `Method_Operating_Model_2027_30.xlsx` (25 tabs, 0 formula errors, recalculated via LibreOffice)
 **Entities:** Vessel (events) + Little Wing Coffee & Goods (ROOST Baltimore, Baltimore Peninsula) — Method Terrapin Manager LLC
 **Last updated:** July 9, 2026 (v4: LW Menu Pricing item level · v5: BOH cook kept $296/wk · v6: retail programming lever · v7: Vessel 2026 P&L replica tab, now the live 2026 Vessel base · v8: **entire workbook converted to the standard restaurant P&L format** — Vessel Budget, LW Budget, Combined 12-Mo, Consolidated, and LW P&L rebuilt on a shared USAR line taxonomy (Income mix → COGS by category → Labor detail → Prime Costs → Controllable/Uncontrollable → NOP before debt service → Net Cash Flow, monthly $/% pairs, navy banding, negatives in parens); all driver tabs restyled to match; **shared row map — every monthly P&L tab uses identical row numbers** (Total Income r20, Total COGS r29, Total Labor r38, NOP r62, NCF r70; FY total in col AB), so Combined = Vessel + LW cell-for-cell · v9: LW staffed shift set to proposed **6:30am–4pm operating hours (9.5h)** · v10: **LW Daypart Analysis tab** from Toast Jan–Jun item detail — post-4pm = 21.0% of sales, only 16.4% of it barista-required (~$9.1K/yr annualized), risk-sensitivity block included; analysis only, plan outputs unchanged · v11: **scenario architecture rebased on accountant Act/For statements** — new `LW 2026 P&L` + updated `Vessel 2026 P&L` (June actuals) as the unmodified base; new **`LW 2026 Modified` / `Vessel 2026 Modified`** monthly tabs where Jan–Jun = actuals and levers apply dynamically from an editable **go-live date input (C4, default 2026-08-01)**; `LW Budget` 2027 rebuilt as the **annualized modified run-rate** (Dec-2026 forecast base × 12, all levers on); Vessel Budget stays event-driven; 2026 Bridge replaced by a lean reconciliation sourced from the tabs)
 **Purpose:** full context handoff so another project/session can pick up without re-deriving anything. Backup of the pre-restructure version is saved as `Method_Operating_Model_2027_BACKUP_pre-update.xlsx`.
@@ -39,6 +39,7 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 | **LW Assumptions / LW P&L / LW Budget** | Little Wing input drivers, current-vs-adjusted annual P&L, 12-mo budget. |
 | **LW Labor Model / LW Shift Detail / LW Weekly Compare** | Labor detail: current GL roles vs adjusted single-shift; employee-level roster; weekly loaded comparison. |
 | **LW GL Basis** | LW T12 GL actuals (source for the Current/T12 column). |
+| **LW Rev Recon H1** | Monthly Jan–Jun reconciliation of Toast PMIX net sales to reported P&L revenue (POS vs GL by category, discount bridge, findings for the accountant). |
 | **LW Menu Pricing** | Item-level PMIX pricing lever (primary LW revenue lever). Named items (Latte, Drip, BEC…) each carry their own editable `Rec +$` in col F; "All other" remainder rows keep each group tied to the Toast H1×2 category totals. |
 
 ---
@@ -52,6 +53,8 @@ Order of the P&L: Revenue → COGS → Gross Profit → Labor → Credit card fe
 | Little Wing | −$157,155 | −$164,007 | −$97,361 (8/1) | **+$1,034** |
 | Vessel | −$13,501* | −$13,501 | +$23,052 (fees 8/1 · billing 9/1) | **+$87,114** |
 | **Combined** | **−$170,656** | **−$177,508** | **−$74,309** | **+$88,148** |
+
+(v30: new **`LW Rev Recon H1`** tab (after LW 2026 P&L) — monthly Jan–Jun bridge from Toast PMIX net sales to the reported P&L revenue. POS net (ex-void, ex-item-discount) $133,092 vs reported income $134,678 → +$1,586 (+1.2%) H1 variance. Category-level POS-vs-GL blocks (Food/NA/Liquor/Beer/Wine/Retail) + official ProductMix export tie block (gross $139,215 − item discounts $6,718 = net $132,497; $595 timing/basis diff vs CSV). Findings for the accountant: ① January books +$2,262 (+14.5%) revenue not in Toast; ② Liquor GL $5,514 vs POS $2,575 (+$2,939, Jan/Mar/Apr); ③ POS retail rings $2,924 with no GL retail line; ④ P&L discounts $9,448 = $6,718 item-level + ~$2,730 check-level. Scenario outputs unchanged.)
 
 (v29: Vessel go-live split — 4% fee, rent waiver & expense targets live 8/1; client-billed 5% admin fee live 9/1 (contracted August events). Impact to year-end: LW +$66,646, Vessel +$36,553, combined +$103,199.)
 
