@@ -42,6 +42,7 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 .ctl-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px;}
 .pill{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--ink);border-radius:3px;padding:5px 12px;font-size:10.5px;font-weight:600;letter-spacing:.04em;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .12s;font-family:inherit;}
 .pill:hover{border-color:var(--accent);color:var(--accent-deep);}
+.pill:active,.badd:active,.bx:active{transform:translateY(1px);}
 .pill[aria-pressed="true"],.pill.on{border-color:var(--accent);color:var(--accent-deep);background:#f3f7fc;}
 .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--line-strong);}
 .pill[aria-pressed="true"] .dot,.pill.on .dot{background:var(--accent);}
@@ -49,7 +50,11 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 .pill.primary .dot{background:rgba(255,255,255,.5);}
 .pill.primary:hover{background:var(--accent);color:#fff;}
 .pill.danger:hover{border-color:var(--neg);color:var(--neg);}
-.drvin{width:66px;padding:3px 7px;border:1px solid var(--line-strong);border-radius:3px;font-family:inherit;font-size:10.5px;font-weight:600;color:var(--ink);text-align:right;background:#fff;transition:border-color .12s;}
+.drvin{width:66px;padding:5px 8px;border:1px solid var(--line-strong);border-radius:4px;font-family:inherit;font-size:11.5px;font-weight:600;color:var(--ink);text-align:right;background:#fff;transition:border-color .12s;}
+.step{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+.step button{appearance:none;border:1px solid var(--line-strong);background:#fff;border-radius:4px;width:24px;height:24px;line-height:1;font-size:14px;font-weight:700;color:var(--accent-deep);cursor:pointer;padding:0;}
+.step button:hover{border-color:var(--accent);}
+.step button:active{transform:translateY(1px);}
 .drvin:hover{border-color:var(--accent);}
 .drvin:focus{border-color:var(--accent);outline:none;background:#f3f7fc;color:var(--accent-deep);}
 .drvval{font-weight:700;color:var(--ink);}
@@ -70,6 +75,7 @@ table.alloc{width:100%;border-collapse:collapse;margin-top:12px;background:#fff;
 table.alloc th,table.alloc td{padding:5px 10px;text-align:right;white-space:nowrap;font-size:11px;border-bottom:1px solid var(--line);}
 table.alloc th{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line-strong);}
 table.alloc td.li,table.alloc th.li{text-align:left;white-space:normal;}
+table.alloc tr:nth-child(even):not(.section):not(.total) td{background:#fafcff;}
 tr.section td{padding:12px 6px 4px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);font-weight:800;border-bottom:1px solid var(--line-strong);text-align:left;background:var(--paper);}
 tr.total td{border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);font-weight:700;background:#dbe3f1;}
 .caret{display:inline-block;width:12px;color:var(--accent);}
@@ -87,6 +93,22 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 .sectabs button.on{color:var(--accent-deep);border-bottom-color:var(--accent);}
 .secpane{display:none;}
 .secpane.on{display:block;}
+/* sticky totals + pulses */
+#vsbeo-strip{position:sticky;top:0;z-index:40;background:var(--paper);padding:6px 0 4px;margin:8px 0 4px;box-shadow:0 8px 10px -10px rgba(18,35,63,.28);}
+@keyframes vflash{0%{background:#dff0e5;}100%{background:transparent;}}
+.bstat .v.flash{animation:vflash 1.1s ease-out;border-radius:4px;}
+.delta{font-weight:800;}
+/* waterfall */
+.wf{margin:12px 0 0;max-width:880px;}
+.wfrow{display:flex;align-items:center;gap:8px;margin:3px 0;}
+.wfl{width:118px;flex:none;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:right;}
+.wftrack{flex:1;min-width:0;}
+.wfbar{height:10px;border-radius:3px;min-width:2px;}
+.wfv{flex:none;width:90px;font-size:9.5px;color:var(--muted);}
+/* toast */
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--navy);color:#fff;border-radius:8px;padding:10px 16px;font-size:11.5px;display:none;align-items:center;gap:14px;z-index:120;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:90vw;}
+#toast button{appearance:none;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:4px;padding:4px 10px;font-size:9.5px;font-weight:800;letter-spacing:.08em;cursor:pointer;font-family:inherit;}
+#toast button:hover{border-color:#fff;}
 /* activity */
 .actrow{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 13px;margin:8px 0;line-height:1.55;}
 .actrow .aw{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;}
@@ -139,6 +161,9 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   .navfoot .who{margin-bottom:0;flex-basis:100%;}
   .main{margin-left:0;padding:14px 14px 50px;}
   .drvin.txt{width:170px;}
+}
+@media (max-width:640px){
+  .opt{display:none!important;}
 }
 /* ---------- print ---------- */
 @media print{
@@ -196,16 +221,12 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     </div>
   </div>
   <div class="controls">
-    <button class="pill primary" id="vsbeo-edit"><span class="dot"></span>✎ EDIT EVENT</button>
-    <button class="pill primary" id="vsbeo-save" style="display:none;"><span class="dot"></span>SAVE</button>
-    <button class="pill" id="vsbeo-cancel" style="display:none;"><span class="dot"></span>CANCEL</button>
     <button class="pill" id="vsbeo-dup"><span class="dot"></span>⧉ DUPLICATE</button>
     <button class="pill" id="vsbeo-print"><span class="dot"></span>⎙ PRINT CLIENT BEO</button>
     <button class="pill" id="vsbeo-reset"><span class="dot"></span>↻ RESET</button>
     <button class="pill danger" id="vsbeo-del"><span class="dot"></span>✕ DELETE</button>
     <span class="ctl-label" id="vsbeo-status" style="margin-left:8px;"></span>
   </div>
-  <div class="sec-hint" id="vsbeo-changes" style="display:none;margin:2px 0;"></div>
   <div class="bstrip" id="vsbeo-strip"></div>
   <div class="controls sectabs" id="sectabs">
     <button data-sec="setup">Setup</button>
@@ -232,6 +253,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   </div>
   <div class="secpane" id="pane-pnl">
     <h2>Theoretical <em>event P&amp;L</em> — to Net Income / EBITDA</h2>
+    <div class="wf" id="pnl-viz"></div>
     <div class="scroll"><table class="alloc" id="vsbeo-pnl" style="max-width:880px;"></table></div>
   </div>
 </section>
@@ -265,6 +287,8 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 
 </main>
 </div>
+
+<div id="toast"><span id="toast-msg"></span><button id="toast-undo" style="display:none;">UNDO</button></div>
 
 <div id="pick">
   <div class="pickcard">
@@ -384,7 +408,9 @@ function sanEv(o){
 }
 let BEOS=[];
 let BEOD=null;
-let BEOEDIT=false, BEOSNAP=null;
+const BEOEDIT=true;              /* cells are always live — no edit mode */
+let BEOSNAP=null, SNAP_ID=null;  /* last-saved payload of the open event */
+let DIRTY=false, saveTimer=null, UNDO=null;
 let RT_PENDING=false;
 const BEOSEC={food:true,bev:true};
 const bf2=n=>(n<-0.005?'−':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -396,6 +422,17 @@ function pill(id,fn){const b=document.getElementById(id);if(!b)return;b.addEvent
 function strip(id,cells){const el=document.getElementById(id);if(!el)return;el.innerHTML=cells.map(c=>`<div class="bstat"><div class="k">${c[0]}</div><div class="v">${c[1]}</div><div class="s">${c[2]}</div></div>`).join('');}
 function beoStatusMsg(m){const el=document.getElementById('vsbeo-status');if(el)el.textContent=m;}
 function evStatus(m){const el=document.getElementById('ev-status');if(el)el.textContent=m;}
+let toastTimer=null;
+function showToast(msg,undoFn){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  const u=document.getElementById('toast-undo');
+  u.style.display=undoFn?'':'none';
+  u.onclick=undoFn||null;
+  t.style.display='flex';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.style.display='none';},4500);
+}
 function agoFmt(ts){
   if(!ts)return '';
   const d=new Date(ts), mins=Math.round((Date.now()-d.getTime())/60000);
@@ -431,6 +468,7 @@ function renderRoute(){
   else if(ROUTE.view==='event'){
     BEOD=BEOS.find(e=>e._id===ROUTE.id)||null;
     if(!BEOD){goto('events');return;}
+    if(SNAP_ID!==BEOD._id){BEOSNAP=payloadOf(BEOD);SNAP_ID=BEOD._id;DIRTY=false;}
     buildBEO();
   }
   else if(ROUTE.view==='catalog')buildCatalog();
@@ -438,14 +476,8 @@ function renderRoute(){
 }
 window.addEventListener('hashchange',()=>{
   if(NAV_GUARD){NAV_GUARD=false;return;}
-  const next=parseHash();
-  if(BEOEDIT&&!(next.view==='event'&&next.id===ROUTE.id)){
-    beoStatusMsg('Save or Cancel your edits before leaving this event.');
-    NAV_GUARD=true;
-    location.hash=hashFor(ROUTE);
-    return;
-  }
-  ROUTE=next;
+  flushSave();          /* commit any pending edits before leaving the page */
+  ROUTE=parseHash();
   renderRoute();
 });
 document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.nav)));
@@ -493,22 +525,65 @@ async function removeEvent(ev){
   if(error){beoStatusMsg('Delete failed — '+error.message);return false;}
   return true;
 }
+/* ---------------- autosave ---------------- */
+function scheduleSave(){
+  if(!BEOD)return;
+  DIRTY=true;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(flushSave,1200);
+}
+async function flushSave(){
+  clearTimeout(saveTimer);
+  if(!DIRTY||!BEOD)return;
+  const cur=payloadOf(BEOD);
+  const ch=BEOSNAP?beoDiff(BEOSNAP,cur):[];
+  if(!ch.length){DIRTY=false;return;}
+  const before=BEOSNAP, evId=BEOD._id;
+  const ok=await saveEvent(BEOD,ch);
+  if(ok){
+    BEOSNAP=cur;SNAP_ID=evId;DIRTY=false;
+    UNDO={id:evId,payload:before};
+    showToast('Saved ✓ · '+ch.length+' change'+(ch.length>1?'s':''),doUndo);
+    if(RT_PENDING&&!editingNow()){RT_PENDING=false;reloadSoon();}
+  }
+}
+function doUndo(){
+  if(!UNDO)return;
+  const ev=BEOS.find(e=>e._id===UNDO.id);
+  if(!ev)return;
+  const keep={_id:ev._id,_updated:ev._updated,_by:ev._by,_pos:ev._pos};
+  const i=BEOS.findIndex(e=>e._id===UNDO.id);
+  BEOS[i]=Object.assign(sanEv(UNDO.payload),keep);
+  if(BEOD&&BEOD._id===UNDO.id){BEOD=BEOS[i];buildBEO();}
+  UNDO=null;
+  scheduleSave();
+  showToast('Restored the previous version.');
+}
+function editingNow(){
+  const a=document.activeElement;
+  return DIRTY||(a&&a.classList&&a.classList.contains('drvin'));
+}
 let rlTimer=null;
 function reloadSoon(){
   clearTimeout(rlTimer);
   rlTimer=setTimeout(async()=>{
-    if(BEOEDIT){RT_PENDING=true;return;}
-    await loadEvents();renderRoute();
+    if(editingNow()){RT_PENDING=true;return;}
+    await loadEvents();
+    if(ROUTE.view==='event'){SNAP_ID=null;}
+    renderRoute();
   },500);
 }
 function subscribeRT(){
   sb.channel('beo_events_rt')
     .on('postgres_changes',{event:'*',schema:'public',table:'beo_events'},()=>{
-      if(BEOEDIT){RT_PENDING=true;beoStatusMsg('Events changed elsewhere — the list refreshes after you Save or Cancel.');return;}
+      if(editingNow()){RT_PENDING=true;return;}
       reloadSoon();
     })
     .subscribe();
 }
+document.addEventListener('focusout',()=>{
+  setTimeout(()=>{if(RT_PENDING&&!editingNow()){RT_PENDING=false;reloadSoon();}},150);
+});
 
 /* ---------------- menu catalog & benchmarks ---------------- */
 let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40;
@@ -692,44 +767,51 @@ function buildBEO(){
   if(!t||!BEOD)return;
   const B=BEOD, C=beoCalc();
   document.getElementById('ev-title').textContent=B.name||B.tab||'Event';
+  const _emg=C.rev?C.ebitda/C.rev*100:0;
   document.getElementById('ev-meta').innerHTML=[
     B.date?beoEsc(B.date):'date TBD',
     B.evType?beoEsc(B.evType):null,
     '<b>'+B.guests+'</b> guests',
+    `<span class="typechip" style="color:${_emg>=25?'var(--pos)':(_emg>=15?'#b98029':'var(--neg)')};">MARGIN ${fpc(_emg)}</span>`,
     B._by?('last saved by <b>'+beoEsc(B._by)+'</b> · '+agoFmt(B._updated)):null
   ].filter(Boolean).join(' &nbsp;·&nbsp; ');
   setSec(SECSEL);
-  const IN=(bi,v,w,txt)=>BEOEDIT?`<input class="drvin${txt?' txt':''}" data-bi="${bi}" value="${attEsc(String(v))}"${w?` style="width:${w}px;"`:''}>`:`<span class="drvval"${txt?' style="font-weight:600;"':''}>${v===''||v==null?'—':beoEsc(String(v))}</span>`;
+  const IN=(bi,v,w,txt)=>`<input class="drvin${txt?' txt':''}" data-bi="${bi}" value="${attEsc(String(v))}"${txt?'':' inputmode="decimal"'}${w?` style="width:${w}px;"`:''}>`;
+  const STEP=(bi,v,w)=>`<span class="step"><button data-stp="${bi}:-1" tabindex="-1">−</button>${IN(bi,v,w)}<button data-stp="${bi}:1" tabindex="-1">＋</button></span>`;
   const MU='<span style="color:var(--muted);font-size:8.5px;">';
+  const tm=100-TARGET;
+  const mgCol=p=>p>=tm-0.01?'var(--pos)':(p>=tm-10?'#b98029':'var(--neg)');
+  const emg=C.rev?C.ebitda/C.rev*100:0;
+  const emgCol=emg>=25?'var(--pos)':(emg>=15?'#b98029':'var(--neg)');
   /* ---- setup ---- */
   t.innerHTML=`<tr><th class="li" style="min-width:200px;">Event</th><th style="min-width:170px;">Value</th><th class="li" style="min-width:200px;">Contract term</th><th style="min-width:110px;">Value</th><th class="li" style="min-width:210px;">Cash bar &amp; house assumptions</th><th style="min-width:110px;">Value</th></tr>
 <tr><td class="li">Event name</td><td>${IN('g:name',B.name,0,1)}</td><td class="li">F&amp;B minimum ($)</td><td>${IN('g:fbMin',B.fbMin)}</td><td class="li">Cash-bar drinks per guest</td><td>${IN('g:cashDrinks',B.cashDrinks)}</td></tr>
 <tr><td class="li">Short label</td><td>${IN('g:tab',B.tab,0,1)}</td><td class="li">Room / space rental ($)</td><td>${IN('g:rental',B.rental)}</td><td class="li">Average drink price ($)</td><td>${IN('g:cashPrice',B.cashPrice)}</td></tr>
 <tr><td class="li">Date &amp; time</td><td>${IN('g:date',B.date,0,1)}</td><td class="li">Deposit received ($)</td><td>${IN('g:deposit',B.deposit)}</td><td class="li">Cash-bar pour cost (% of sales)</td><td>${IN('g:cashCogs',B.cashCogs)}</td></tr>
-<tr><td class="li">Guest count</td><td>${IN('g:guests',B.guests)}</td><td class="li">Sales tax (%)</td><td>${IN('g:salesTax',B.salesTax)}</td><td class="li">Payroll burden (% of wages)</td><td>${IN('g:burden',B.burden)}</td></tr>
+<tr><td class="li">Guest count</td><td>${STEP('g:guests',B.guests,56)}</td><td class="li">Sales tax (%)</td><td>${IN('g:salesTax',B.salesTax)}</td><td class="li">Payroll burden (% of wages)</td><td>${IN('g:burden',B.burden)}</td></tr>
 <tr><td class="li">Service charge (%)</td><td>${IN('g:svc',B.svc)}</td><td class="li">Liquor tax (%)</td><td>${IN('g:liqTax',B.liqTax)}</td><td class="li">Management fee (% of revenue)</td><td>${IN('g:mgmtPct',B.mgmtPct)}</td></tr>
 <tr><td class="li">Special event fee (%)</td><td>${IN('g:sef',B.sef)}</td><td class="li">Discount (% of F&amp;B)</td><td>${IN('g:disc',B.disc||0)}</td><td class="li">Discount label</td><td>${IN('g:discLbl',B.discLbl||'',0,1)}</td></tr>
-<tr><td class="li">Event type</td><td>${BEOEDIT?`<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...Object.keys(BENCH.byType||{})].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`:`<span class="drvval">${B.evType?beoEsc(B.evType):'—'}</span>`}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26</span></td><td>${BEOEDIT?'<button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button>':''}</td></tr>`;
+<tr><td class="li">Event type</td><td>${`<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...Object.keys(BENCH.byType||{})].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26</span></td><td><button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button></td></tr>`;
   /* ---- items ---- */
-  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th>Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th>Line cost</th><th>COGS %<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">CALCULATED</span></th><th>Margin $</th><th>Margin %</th><th></th></tr>`;
+  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
-    const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost;
-    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${IN(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td>${IN(`it:${grp}:${idx}:u`,i.u||0,58)}</td><td style="color:var(--muted);">${bf2(cost)}</td><td style="color:var(--muted);">${tot?fpc(cost/tot*100):'·'}</td><td>${bf2(mg)}</td><td style="color:var(--muted);">${tot?fpc(mg/tot*100):'·'}</td><td>${BEOEDIT?`<button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button>`:''}</td></tr>`;
+    const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost, mgp=tot?mg/tot*100:0;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt">${IN(`it:${grp}:${idx}:u`,i.u||0,58)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'·'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'·'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
   ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — VESSEL &amp; LITTLE WING${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
   if(BEOSEC.food){
     B.food.forEach((i,idx)=>{ih+=itRow('food',i,idx);});
-    if(BEOEDIT)ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
+    ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
   }
-  ih+=`<tr class="total"><td class="li">Food total</td><td></td><td></td><td>${bf2(C.food)}</td><td></td><td>${bf2(C.cogsF)}</td><td>${C.food?fpc(C.cogsF/C.food*100):'·'}</td><td>${bf2(C.food-C.cogsF)}</td><td>${C.food?fpc((C.food-C.cogsF)/C.food*100):'·'}</td><td></td></tr>`;
+  ih+=`<tr class="total"><td class="li">Food total</td><td></td><td></td><td>${bf2(C.food)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsF)}</td><td class="opt">${C.food?fpc(C.cogsF/C.food*100):'·'}</td><td class="opt">${bf2(C.food-C.cogsF)}</td><td style="color:${C.food?mgCol((C.food-C.cogsF)/C.food*100):'inherit'};">${C.food?fpc((C.food-C.cogsF)/C.food*100):'·'}</td><td></td></tr>`;
   ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — FEES &amp; PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines — click to expand</span>`}</td></tr>`;
   if(BEOSEC.bev){
     B.bev.forEach((i,idx)=>{ih+=itRow('bev',i,idx);});
-    if(BEOEDIT)ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
+    ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
   }
-  ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td></td><td>${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td></td><td></td><td></td><td></td></tr>`;
-  ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — house estimate ${MU}${B.guests} guests × ${B.cashDrinks} drinks × $${B.cashPrice} · guests pay individually</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td></td><td style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td style="color:var(--muted);">${fpc(B.cashCogs)}</td><td>${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
+  ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — house estimate ${MU}${B.guests} guests × ${B.cashDrinks} drinks × $${B.cashPrice} · guests pay individually</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
   /* ---- client bill ---- */
   let bh=`<tr><th class="li" style="min-width:280px;">BEO summary — client view · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
@@ -752,9 +834,9 @@ function buildBEO(){
   /* ---- cost engine ---- */
   let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">RULE — 2 SERVERS + 1 BARTENDER · $35/HR · SHIFT = EVENT + 1 HR</span></th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
   B.labor.forEach((l,idx)=>{
-    ch+=`<tr><td class="li">${IN(`lab:${idx}:r`,l.r,0,1)}</td><td>${IN(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td>${BEOEDIT?`<button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button>`:''}</td></tr>`;
+    ch+=`<tr><td class="li">${IN(`lab:${idx}:r`,l.r,0,1)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
   });
-  if(BEOEDIT)ch+=`<tr><td class="li" colspan="6"><button class="badd" data-bx="add:lab">＋ ADD ROLE</button></td></tr>`;
+  ch+=`<tr><td class="li" colspan="6"><button class="badd" data-bx="add:lab">＋ ADD ROLE</button></td></tr>`;
   ch+=`<tr class="total"><td class="li">Subtotal — event wages</td><td></td><td></td><td></td><td>${bf2(C.wages)}</td><td></td></tr>`;
   ch+=`<tr><td class="li">Payroll taxes &amp; benefits ${MU}${B.burden}% of wages</span></td><td></td><td></td><td></td><td>${bf2(C.wages*B.burden/100)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
@@ -792,14 +874,36 @@ function buildBEO(){
   ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
   ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
   document.getElementById('vsbeo-pnl').innerHTML=ph;
-  /* ---- strip ---- */
+  /* ---- waterfall ---- */
+  const viz=document.getElementById('pnl-viz');
+  if(viz){
+    const mx=Math.max(C.rev,1);
+    const wfrow=(l,v,col)=>`<div class="wfrow"><span class="wfl">${l}</span><span class="wftrack"><span class="wfbar" style="width:${Math.max(0,Math.min(100,v/mx*100))}%;background:${col};display:block;"></span></span><span class="wfv">${bf2(v)}</span></div>`;
+    viz.innerHTML=wfrow('Revenue',C.rev,'var(--accent-deep)')
+      +wfrow('COGS',C.cogs,'#b3541e')
+      +wfrow('Labor',C.labor,'#b98029')
+      +wfrow('Direct opex',C.opex,'#93a0b5')
+      +wfrow('Mgmt fee',C.fee,'#68758c')
+      +wfrow('EBITDA',C.ebitda,C.ebitda>=0?'var(--pos)':'var(--neg)');
+  }
+  /* ---- strip with change pulses ---- */
+  const dGrand=(PREVC.id===B._id)?C.grand-PREVC.grand:0;
+  const dEb=(PREVC.id===B._id)?C.ebitda-PREVC.ebitda:0;
+  const dfmt=d=>`<span class="delta" style="color:${d>=0?'var(--pos)':'var(--neg)'};">${d>=0?'+':'−'}${bf2(Math.abs(d))}</span>`;
   strip('vsbeo-strip',[
-    ['Client grand total',bf2(C.grand),'incl. tax · due '+bf2(C.due)+' after deposit'],
+    ['Client grand total',bf2(C.grand),(Math.abs(dGrand)>0.005?dfmt(dGrand)+' · ':'')+'incl. tax · due '+bf2(C.due)],
     ['House event revenue',bf2(C.rev),'ex-tax · incl. cash bar '+bf2(C.cash)],
     ['Prime cost',C.rev?fpc((C.cogs+C.labor)/C.rev*100):'—','COGS '+(C.rev?fpc(C.cogs/C.rev*100):'—')+' + labor '+(C.rev?fpc(C.labor/C.rev*100):'—')],
-    ['Theoretical EBITDA',bf2(C.ebitda),C.rev?fpc(C.ebitda/C.rev*100)+' margin':'—'],
+    ['Theoretical EBITDA',bf2(C.ebitda),(Math.abs(dEb)>0.005?dfmt(dEb)+' · ':'')+(C.rev?fpc(C.ebitda/C.rev*100)+' margin':'—')],
     ['EBITDA / guest',B.guests?bf2(C.ebitda/B.guests):'—','revenue / guest '+(B.guests?bf2(C.rev/B.guests):'—')]]);
+  if(PREVC.id===B._id&&(Math.abs(dGrand)>0.005||Math.abs(dEb)>0.005)){
+    const vs=document.querySelectorAll('#vsbeo-strip .bstat .v');
+    if(Math.abs(dGrand)>0.005&&vs[0])vs[0].classList.add('flash');
+    if(Math.abs(dEb)>0.005&&vs[3])vs[3].classList.add('flash');
+  }
+  PREVC={id:B._id,grand:C.grand,ebitda:C.ebitda};
 }
+let PREVC={id:null,grand:0,ebitda:0};
 
 /* ---------------- activity view ---------------- */
 async function buildActivity(){
@@ -842,12 +946,48 @@ document.addEventListener('change',e=>{
   else if(p[0]==='it')BEOD[p[1]][+p[2]][p[3]]=v;
   else if(p[0]==='lab')BEOD.labor[+p[1]][p[2]]=v;
   buildBEO();
+  scheduleSave();
+});
+/* tap a cell → select its contents; numeric keyboards on mobile */
+document.addEventListener('focusin',e=>{
+  if(e.target.classList&&e.target.classList.contains('drvin')&&e.target.select)e.target.select();
+});
+/* Enter → commit and jump to the next cell */
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  const t=e.target;
+  if(!t.classList||!t.classList.contains('drvin')||!t.dataset.bi)return;
+  e.preventDefault();
+  const bi=t.dataset.bi;
+  t.blur();
+  requestAnimationFrame(()=>{
+    const list=[...document.querySelectorAll('input[data-bi]')];
+    const i=list.findIndex(x=>x.dataset.bi===bi);
+    if(i>=0&&list[i+1])list[i+1].focus();
+  });
 });
 document.addEventListener('click',e=>{
   const pv=e.target.closest('[data-pv]');
   if(pv){
     if(pv.dataset.pvx==='pick-prov'){PICKPROV=pv.dataset.pv;provChips('pick-prov',PICKPROV,false);renderPick(document.getElementById('pick-q').value);}
     else{CATPROV=pv.dataset.pv;buildCatalog();}
+    return;
+  }
+  const st=e.target.closest('[data-stp]');
+  if(st&&BEOD){
+    const parts=st.dataset.stp.split(':');
+    const d=+parts.pop();
+    const p=parts;
+    let cur;
+    if(p[0]==='g')cur=+BEOD[p[1]]||0;
+    else if(p[0]==='it')cur=+BEOD[p[1]][+p[2]][p[3]]||0;
+    else cur=+BEOD.labor[+p[1]][p[2]]||0;
+    const nv=Math.max(0,cur+d);
+    if(p[0]==='g')BEOD[p[1]]=nv;
+    else if(p[0]==='it')BEOD[p[1]][+p[2]][p[3]]=nv;
+    else BEOD.labor[+p[1]][p[2]]=nv;
+    buildBEO();
+    scheduleSave();
     return;
   }
   const op=e.target.closest('[data-open]');
@@ -865,8 +1005,9 @@ document.addEventListener('click',e=>{
     if(!b.v){beoStatusMsg('No benchmark available.');return;}
     if(!BEOD.cashPrice||BEOD.cashPrice<=0)BEOD.cashPrice=12;
     BEOD.cashDrinks=Math.round(b.v/BEOD.cashPrice*100)/100;
-    beoStatusMsg('Cash bar set to the '+b.label+' benchmark — $'+b.v.toFixed(2)+'/guest ('+BEOD.cashDrinks+' drinks × $'+BEOD.cashPrice+').');
+    showToast('Cash bar set to the '+b.label+' benchmark — $'+b.v.toFixed(2)+'/guest.');
     buildBEO();
+    scheduleSave();
     return;
   }
   if(p[0]==='add'){
@@ -876,6 +1017,7 @@ document.addEventListener('click',e=>{
     (p[1]==='lab'?BEOD.labor:BEOD[p[1]]).splice(+p[2],1);
   }
   buildBEO();
+  scheduleSave();
 });
 function beoDiff(a,b){
   const out=[];
@@ -906,51 +1048,6 @@ function beoDiff(a,b){
   }
   return out;
 }
-function setBEOEdit(on){
-  BEOEDIT=on;
-  const e=document.getElementById('vsbeo-edit'),s=document.getElementById('vsbeo-save'),c=document.getElementById('vsbeo-cancel');
-  if(e)e.style.display=on?'none':'';
-  if(s)s.style.display=on?'':'none';
-  if(c)c.style.display=on?'':'none';
-  ['vsbeo-dup','vsbeo-print','vsbeo-reset','vsbeo-del'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display=on?'none':'';});
-  buildBEO();
-  if(!on&&RT_PENDING){RT_PENDING=false;reloadSoon();}
-}
-function beoGuardEdit(){if(BEOEDIT){beoStatusMsg('Save or Cancel your edits first.');return true;}return false;}
-pill('vsbeo-edit',()=>{
-  if(!BEOD)return;
-  BEOSNAP=JSON.parse(JSON.stringify(payloadOf(BEOD)));
-  const dv=document.getElementById('vsbeo-changes');
-  if(dv)dv.style.display='none';
-  setBEOEdit(true);
-  beoStatusMsg('Editing — every white cell is live. Save shares changes with the team; Cancel reverts.');
-});
-pill('vsbeo-save',async()=>{
-  if(!BEOD)return;
-  const ch=BEOSNAP?beoDiff(BEOSNAP,payloadOf(BEOD)):[];
-  beoStatusMsg('Saving…');
-  const ok=await saveEvent(BEOD,ch);
-  setBEOEdit(false);
-  if(!ok)return;
-  const dv=document.getElementById('vsbeo-changes');
-  if(dv){
-    dv.style.display='';
-    dv.innerHTML=ch.length
-      ?'<b>Saved — '+ch.length+' change'+(ch.length>1?'s':'')+':</b>&nbsp; '+ch.map(beoEsc).join(' &nbsp;·&nbsp; ')
-      :'<b>Saved</b> — no changes from the previous state.';
-  }
-  beoStatusMsg('Saved to the shared workspace.');
-});
-pill('vsbeo-cancel',()=>{
-  if(BEOSNAP&&BEOD){
-    const keep={_id:BEOD._id,_updated:BEOD._updated,_by:BEOD._by,_pos:BEOD._pos};
-    const i=BEOS.findIndex(e=>e._id===BEOD._id);
-    BEOS[i]=Object.assign(sanEv(BEOSNAP),keep);
-    BEOD=BEOS[i];
-  }
-  setBEOEdit(false);
-  beoStatusMsg('Reverted — no changes kept.');
-});
 pill('vsbeo-new',async()=>{
   evStatus('Creating…');
   const e=await insertEvent(blankEvent());
@@ -959,37 +1056,33 @@ pill('vsbeo-new',async()=>{
   evStatus('');
   SECSEL='setup';
   goto('event',e._id);
-  setTimeout(()=>{
-    BEOSNAP=JSON.parse(JSON.stringify(payloadOf(e)));
-    setBEOEdit(true);
-    beoStatusMsg('New event — name it, set the terms and build the menu, then Save.');
-  },50);
+  showToast('New event created — tap any value to edit; changes save automatically.');
 });
 pill('vsbeo-dup',async()=>{
-  if(beoGuardEdit()||!BEOD)return;
+  if(!BEOD)return;
+  await flushSave();
   const pl=payloadOf(BEOD);
   pl.tab=(pl.tab||'Event')+' (copy)';
   pl.name=(pl.name||'Event')+' (copy)';
   pl.contract=null;
-  beoStatusMsg('Duplicating…');
   const e=await insertEvent(pl);
   if(!e)return;
   BEOS.push(e);
   goto('event',e._id);
-  setTimeout(()=>beoStatusMsg('Duplicated — this is the copy; the original is untouched.'),50);
+  showToast('Duplicated — this is the copy; the original is untouched.');
 });
 pill('vsbeo-del',async()=>{
-  if(beoGuardEdit()||!BEOD)return;
+  if(!BEOD)return;
   if(!window.confirm('Delete "'+(BEOD.tab||BEOD.name)+'" for the whole team, permanently? Export a backup first if you may want it back.'))return;
-  beoStatusMsg('Deleting…');
+  DIRTY=false;clearTimeout(saveTimer);
   if(!await removeEvent(BEOD))return;
   BEOS=BEOS.filter(e=>e._id!==BEOD._id);
   BEOD=null;
   goto('events');
-  evStatus('Event deleted.');
+  showToast('Event deleted.');
 });
 pill('vsbeo-reset',async()=>{
-  if(beoGuardEdit()||!BEOD)return;
+  if(!BEOD)return;
   const isContract=BEOD.contract!=null;
   const msg=isContract
     ?'Reset "'+(BEOD.tab||BEOD.name)+'" to the executed contract BEO as written? The team\'s saved edits to this event will be lost.'
@@ -1008,11 +1101,9 @@ pill('vsbeo-reset',async()=>{
   BEOS[i]=Object.assign(sanEv(pl),keep);
   BEOS[i].contract=pl.contract;
   BEOD=BEOS[i];
-  beoStatusMsg('Saving…');
+  DIRTY=false;clearTimeout(saveTimer);
   const ok=await saveEvent(BEOD,['Reset to '+(isContract?'the contract BEO as written':'the blank house defaults')]);
-  const dv=document.getElementById('vsbeo-changes');
-  if(dv)dv.style.display='none';
-  if(ok)beoStatusMsg(isContract?'Reset to the contract BEO as written.':'Reset to the blank house defaults.');
+  if(ok){BEOSNAP=payloadOf(BEOD);SNAP_ID=BEOD._id;showToast(isContract?'Reset to the contract BEO as written.':'Reset to the blank house defaults.');}
   buildBEO();
 });
 function beoExport(){
@@ -1077,6 +1168,7 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0):0;
   BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0});
   buildBEO();
+  scheduleSave();
   document.getElementById('pick-msg').textContent='Added '+it.name+(price?' at $'+price:' — set the price on the line')+'.';
 });
 document.getElementById('cat-target').addEventListener('change',e=>{
