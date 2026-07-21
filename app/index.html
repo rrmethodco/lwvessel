@@ -153,20 +153,6 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 </head>
 <body>
 
-<div id="auth">
-  <div class="authcard">
-    <div class="ab">Vessel — <em>BEO Calculator</em></div>
-    <div class="ak">Method Co · Little Wing &amp; Vessel · Baltimore</div>
-    <label for="au-email">Email</label>
-    <input id="au-email" type="email" autocomplete="username" placeholder="you@methodco.com">
-    <label for="au-pass">Password</label>
-    <input id="au-pass" type="password" autocomplete="current-password">
-    <button class="go" id="au-signin">Sign in</button>
-    <div class="amsg" id="au-msg"></div>
-    <div class="ahint">Accounts are managed by the administrator. For access or a password reset, contact the admin — there is no self-signup.</div>
-  </div>
-</div>
-
 <div id="appwrap">
 <aside class="sidenav">
   <div class="navbrand">Vessel <span>Method Co · BEO Pricing</span></div>
@@ -177,8 +163,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   </nav>
   <div class="navfoot">
     <span class="who" id="who"></span>
-    <button id="chpass">Change password</button>
-    <button id="signout">Sign out</button>
+    <button id="chname">Change name</button>
   </div>
 </aside>
 <main class="main">
@@ -1102,57 +1087,29 @@ document.getElementById('cat-target').addEventListener('change',e=>{
   buildCatalog();
 });
 
-/* ---------------- auth ---------------- */
-const authEl=document.getElementById('auth'), appEl=document.getElementById('appwrap');
-function authMsg(m){document.getElementById('au-msg').textContent=m||'';}
-async function doSignIn(){
-  const email=document.getElementById('au-email').value.trim();
-  const pass=document.getElementById('au-pass').value;
-  if(!email||!pass){authMsg('Enter your email and password.');return;}
-  const b=document.getElementById('au-signin');
-  b.disabled=true;authMsg('');
-  const {error}=await sb.auth.signInWithPassword({email,password:pass});
-  b.disabled=false;
-  if(error){authMsg(error.message==='Invalid login credentials'?'Invalid email or password.':(error.message&&error.message!=='{}'?error.message:'Sign-in failed — check your connection and try again.'));return;}
+/* ---------------- boot (login disabled for now) ---------------- */
+function setName(n){
+  try{window.localStorage.setItem('vesselBEO.name',n);}catch(e){}
+  ME=n;
+  document.getElementById('who').textContent=n;
 }
-document.getElementById('au-signin').addEventListener('click',doSignIn);
-document.getElementById('au-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doSignIn();});
-document.getElementById('au-email').addEventListener('keydown',e=>{if(e.key==='Enter')doSignIn();});
-document.getElementById('signout').addEventListener('click',async()=>{await sb.auth.signOut();});
-document.getElementById('chpass').addEventListener('click',async()=>{
-  const p=window.prompt('New password (minimum 8 characters):');
-  if(!p)return;
-  if(p.length<8){window.alert('Password not changed — minimum 8 characters.');return;}
-  const {error}=await sb.auth.updateUser({password:p});
-  window.alert(error?'Password change failed — '+error.message:'Password changed.');
+document.getElementById('chname').addEventListener('click',()=>{
+  const n=window.prompt('Your name (shown in the change log):',ME||'');
+  if(n&&n.trim())setName(n.trim());
 });
-let BOOTED=false;
-async function enterApp(session){
-  ME=(session.user&&session.user.email)||'';
-  document.getElementById('who').textContent=ME;
-  authEl.style.display='none';
-  appEl.style.display='block';
-  if(BOOTED)return;
-  BOOTED=true;
-  evStatus('Loading…');
-  const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
-  if(ok){
-    evStatus('');
-    ROUTE=parseHash();
-    renderRoute();
-    subscribeRT();
-  }
+let NM='';
+try{NM=window.localStorage.getItem('vesselBEO.name')||'';}catch(e){}
+if(!NM)NM=((window.prompt('Your name (shown in the change log):')||'').trim())||'team';
+setName(NM);
+document.getElementById('appwrap').style.display='block';
+evStatus('Loading…');
+const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
+if(ok){
+  evStatus('');
+  ROUTE=parseHash();
+  renderRoute();
+  subscribeRT();
 }
-function showLogin(){
-  authEl.style.display='flex';
-  appEl.style.display='none';
-}
-sb.auth.onAuthStateChange((event,session)=>{
-  if(session)enterApp(session);
-  else{BOOTED=false;showLogin();}
-});
-const {data:{session}}=await sb.auth.getSession();
-if(session)enterApp(session);else showLogin();
 </script>
 </body>
 </html>
