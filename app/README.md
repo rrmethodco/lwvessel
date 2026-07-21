@@ -1,6 +1,7 @@
 # Vessel BEO Calculator — shared workspace app
 
-**Live app:** https://wcqqcfpiiovqposcvrel.supabase.co/functions/v1/beo
+**Live app:** https://lwvessel.vercel.app (Vercel project `lwvessel`, team
+"rr-5383's projects"; the old Supabase function URL 302-redirects here)
 
 Single-page app (`index.html`) backed by Supabase project **vessel-beo**
 (`wcqqcfpiiovqposcvrel`, us-east-1, org "rr-5383's projects", $10/mo via Vercel
@@ -31,13 +32,11 @@ Gallin-Munson Post-Wedding Breakfast) exactly as in the ROOST Baltimore model.
 
 ## Hosting / redeploy
 
-The page is served by the Supabase Edge Function **`beo`** (JWT verification
-off — the login screen must load publicly; data is protected by RLS, not by
-the page). The function reads the HTML from the `app_assets` table
-(`key='index.html'`, RLS with no policies — service-role only) and caches it
-for 60s, because the Edge runtime does not reliably bundle static files. To
-ship a new version of the app: edit `index.html` here, then update the
-`app_assets` row with the same content (SQL `update`); no function redeploy
-needed. Optionally the app can be moved to Vercel by importing this repo
-(root directory `app`, framework "Other") — the Supabase connection URL/key
-are embedded in the page and work from any origin.
+The page is static and hosted on Vercel (project `lwvessel`). Supabase's
+gateway forces `text/plain` + a sandbox CSP on Edge Function responses, so
+HTML cannot be served from the `supabase.co` domain — the `beo` Edge Function
+now just 302-redirects to the Vercel URL. To ship a new version of the app:
+edit `index.html` here and push a production deployment to the `lwvessel`
+Vercel project (file-based deploy; no git wiring required). The `app_assets`
+table still holds a copy of the page from the interim hosting approach and
+can be dropped or kept as a backup.
