@@ -188,7 +188,6 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="pagehead">
     <div>
       <h1>Events</h1>
-      <div class="ph-sub">Every event prices the client bill to BEO conventions and runs the same numbers through the cost engine to a theoretical P&amp;L. Select an event to open it, or start a new inquiry.</div>
     </div>
     <div class="controls" style="margin:0;">
       <button class="pill primary" id="vsbeo-new"><span class="dot"></span>＋ NEW EVENT</button>
@@ -200,7 +199,6 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="bstrip" id="ev-kpis"></div>
   <div class="scroll"><table class="alloc evlist" id="ev-list"></table></div>
   <div class="emptybox" id="ev-empty" style="display:none;">No events yet.<br><b>＋ New Event</b> starts a fresh inquiry from the house defaults.</div>
-  <div class="foot">Vessel BEO Calculator · Method Co — shared workspace. Events and the menu catalog live in the team database; every save records who changed what, and signed-in teammates see changes live. Export writes a portable <b>beo-scenarios.json</b> backup; Import appends the events in a backup file to the workspace.</div>
 </section>
 
 <!-- ================= EVENT DETAIL ================= -->
@@ -234,27 +232,22 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="secpane" id="pane-setup">
     <h2>Event <em>setup</em> — contract terms &amp; rates</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-setup" style="max-width:980px;"></table></div>
-    <p class="sec-hint">Rates follow the Tripleseat conventions: service charge on F&amp;B only (retained by the house — not a gratuity), special event fee on F&amp;B + rental, sales tax on food + special event fee (zero for exempt clients), liquor tax on beverage, discounts off F&amp;B after fees. Pick an event type and <b>Apply to Cash Bar</b> uses the house's historical per-guest beverage spend for that type.</p>
   </div>
   <div class="secpane" id="pane-menu">
     <h2>Menu &amp; beverage <em>selections</em> — line-item pricing guide</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-items" style="max-width:1020px;"></table></div>
-    <p class="sec-hint">In edit mode, <b>＋ From Catalog</b> adds lines from the vendor list with the guest price or the recommended price; unit costs carry over so margins stay honest. Any shortfall to the F&amp;B minimum bills automatically as an unmet-minimum charge.</p>
   </div>
   <div class="secpane" id="pane-bill">
     <h2 id="bill-h2">BEO Summary — <em>Client View</em></h2>
     <div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:720px;"></table></div>
-    <p class="sec-hint">This is the client-facing bill exactly as contracted — <b>Print Client BEO</b> prints only this section.</p>
   </div>
   <div class="secpane" id="pane-costs">
     <h2>Event <em>cost engine</em> — labor &amp; direct expenses</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-cost" style="max-width:900px;"></table></div>
-    <p class="sec-hint">House staffing rule: 2 servers + 1 bartender at $35/hr for a 4-hour event on a 5-hour shift, scaled to the event's length, bar and headcount; payroll burden applies on top. Direct opex runs at the Vessel driver percentages (23.4% of event revenue), constant across all events.</p>
   </div>
   <div class="secpane" id="pane-pnl">
     <h2>Theoretical <em>event P&amp;L</em> — to Net Income / EBITDA</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-pnl" style="max-width:880px;"></table></div>
-    <p class="sec-hint">The P&amp;L counts everything the house keeps (F&amp;B, cash-bar estimate, service charge, special event fee, rental) and excludes pass-through taxes; costs run per-line vendor unit costs, burdened labor, driver opex and the 4% management fee — no rent is charged to events. EBITDA here is event-level and theoretical: rent (waived from Aug '26), allocated overhead and the replacement reserve sit outside the per-event view.</p>
   </div>
 </section>
 
@@ -262,8 +255,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 <section id="view-catalog" class="view">
   <div class="pagehead">
     <div>
-      <h1>Menu <em>catalog</em> <span class="recd">Little Havana vendor list · markup guide</span></h1>
-      <div class="ph-sub">The outside caterer's private-party menu as the vendor cost basis — these are the prices <b>Vessel pays</b>; the house resells with a markup.</div>
+      <h1>Menu <em>catalog</em></h1>
     </div>
     <div class="controls" style="margin:0;">
       <span class="ctl-label">Target food cost</span>
@@ -271,8 +263,8 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
       <span class="ctl-label">% of guest price</span>
     </div>
   </div>
+  <div class="controls" id="cat-prov" style="margin:8px 0 0;"></div>
   <span class="ctl-label" id="cat-status"></span>
-  <p class="sec-hint"><b>Guest price</b> is the current client-facing price where an executed contract or the events deck confirms it (blank = not yet priced — fill it in as you set the menu). <b>Recommended</b> prices each line to the target food-cost percentage (industry banquet operations price to 25–35% food cost; ~40% is the attainable benchmark for an outsourced-catering resale model; recommendations round up to the next $5). <span class="chip-low">BELOW REC</span> lines are priced under the recommendation — margin left on the table. Vendor cost and guest price cells are live and save for the whole team; market-price items carry $0 until you set the day's cost.</p>
   <div class="scroll"><table class="alloc" id="vsbeo-cat" style="max-width:1060px;"></table></div>
 </section>
 
@@ -281,7 +273,6 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="pagehead">
     <div>
       <h1>Activity</h1>
-      <div class="ph-sub">Every save writes a change log entry — who changed what, on which event, and when.</div>
     </div>
   </div>
   <div id="act-list"></div>
@@ -293,6 +284,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 <div id="pick">
   <div class="pickcard">
     <div class="pickhead"><span class="pt">Add from <em>catalog</em></span><span class="ctl-label" id="pick-grp"></span><span class="ctl-label" id="pick-msg" style="color:var(--pos);"></span><button id="pick-close">DONE</button></div>
+    <div class="controls" id="pick-prov" style="margin:0 0 8px;"></div>
     <input id="pick-q" placeholder="Search the catalog — name or category…">
     <div id="pick-list"></div>
   </div>
@@ -535,6 +527,15 @@ function subscribeRT(){
 
 /* ---------------- menu catalog & benchmarks ---------------- */
 let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40;
+const PROVIDERS=['Little Havana','Little Wing','Vessel','Other'];
+let PICKPROV='Little Havana', CATPROV='All';
+const provOf=it=>it.provider||'Little Havana';
+function provChips(elId,sel,withAll){
+  const el=document.getElementById(elId);
+  if(!el)return;
+  const opts=withAll?['All',...PROVIDERS]:PROVIDERS;
+  el.innerHTML='<span class="ctl-label">Provider</span>'+opts.map(p=>`<button class="pill" data-pv="${attEsc(p)}" data-pvx="${elId}"${p===sel?' aria-pressed="true"':''}><span class="dot"></span>${beoEsc(p.toUpperCase())}</button>`).join('');
+}
 const CATSEC={};
 const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
 function recPrice(cost){if(!cost||!TARGET)return null;return Math.ceil(cost/(TARGET/100)/5)*5;}
@@ -557,10 +558,16 @@ async function loadCatalog(){
 }
 function buildCatalog(){
   const t=document.getElementById('vsbeo-cat');if(!t)return;
+  provChips('cat-prov',CATPROV,true);
+  const POOL=CATPROV==='All'?CATALOG:CATALOG.filter(i=>provOf(i)===CATPROV);
   let h=`<tr><th class="li" style="min-width:250px;">Item</th><th style="min-width:80px;">Vendor cost</th><th style="min-width:95px;">Guest price — current</th><th>COGS % now</th><th>Markup ×</th><th style="min-width:100px;">Recommended @ ${TARGET.toFixed(0)}% COGS</th><th style="min-width:120px;">Status</th></tr>`;
-  const cats=[...new Set(CATALOG.map(i=>i.category))];
+  if(!POOL.length){
+    t.innerHTML=h+`<tr><td class="li" colspan="7" style="color:var(--muted);padding:16px 10px;">No catalog items yet for ${beoEsc(CATPROV)}.</td></tr>`;
+    return;
+  }
+  const cats=[...new Set(POOL.map(i=>i.category))];
   cats.forEach(c=>{
-    const items=CATALOG.filter(i=>i.category===c);
+    const items=POOL.filter(i=>i.category===c);
     const open=!!CATSEC[c];
     h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} items — click to expand</span>`}</td></tr>`;
     if(!open)return;
@@ -589,6 +596,7 @@ function openPicker(grp){
   document.getElementById('pick-grp').textContent=grp==='food'?'→ ADDING FOOD LINES':'→ ADDING BEVERAGE LINES';
   document.getElementById('pick-msg').textContent='';
   document.getElementById('pick').style.display='flex';
+  provChips('pick-prov',PICKPROV,false);
   const q=document.getElementById('pick-q');
   q.value='';renderPick('');q.focus();
 }
@@ -596,7 +604,12 @@ function closePicker(){document.getElementById('pick').style.display='none';}
 function renderPick(q){
   q=(q||'').toLowerCase();
   let h='',last='';
-  CATALOG.forEach(it=>{
+  const POOL=CATALOG.filter(i=>provOf(i)===PICKPROV);
+  if(!POOL.length){
+    document.getElementById('pick-list').innerHTML='<div class="pkcat">No catalog items yet for '+beoEsc(PICKPROV)+' — add lines manually for now.</div>';
+    return;
+  }
+  POOL.forEach(it=>{
     if(q&&!((it.name+' '+it.category).toLowerCase().includes(q)))return;
     if(it.category!==last){h+=`<div class="pkcat">${beoEsc(it.category)}</div>`;last=it.category;}
     const rec=recPrice(+it.vendor_cost||0);
@@ -761,7 +774,6 @@ function buildBEO(){
   ch+=`<tr><td class="li">Payroll taxes &amp; benefits ${MU}${B.burden}% of wages</span></td><td></td><td></td><td></td><td>${bf2(C.wages*B.burden/100)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
   ch+=`<tr class="section"><td class="li" colspan="6">DIRECT OPERATING &amp; OTHER EXPENSES — VESSEL DRIVER % × EVENT REVENUE</td></tr>`;
-  ch+=`<tr><td class="li" colspan="6" style="color:var(--muted);font-size:8px;letter-spacing:.04em;">Hard-coded house percentages — constant across all events; applied to this event's revenue.</td></tr>`;
   BEO_OPEX.forEach(o=>{
     ch+=`<tr><td class="li">${o.n}</td><td colspan="2" style="color:var(--muted);">${fpc(o.v)}</td><td></td><td>${bf2(C.rev*o.v/100)}</td><td></td></tr>`;
   });
@@ -847,6 +859,12 @@ document.addEventListener('change',e=>{
   buildBEO();
 });
 document.addEventListener('click',e=>{
+  const pv=e.target.closest('[data-pv]');
+  if(pv){
+    if(pv.dataset.pvx==='pick-prov'){PICKPROV=pv.dataset.pv;provChips('pick-prov',PICKPROV,false);renderPick(document.getElementById('pick-q').value);}
+    else{CATPROV=pv.dataset.pv;buildCatalog();}
+    return;
+  }
   const op=e.target.closest('[data-open]');
   if(op){goto('event',op.dataset.open);return;}
   const cs=e.target.closest('[data-cs]');
