@@ -31,10 +31,13 @@ Gallin-Munson Post-Wedding Breakfast) exactly as in the ROOST Baltimore model.
 
 ## Hosting / redeploy
 
-The page is served by the Supabase Edge Function **`beo`** (`index.ts` +
-`page.html`, JWT verification off — the login screen must load publicly; data
-is protected by RLS, not by the page). To redeploy after editing `index.html`,
-push the same content as the function's `page.html`. Optionally the app can be
-moved to Vercel by importing this repo (root directory `app`, framework
-"Other") — the Supabase connection string/key are embedded in the page and
-work from any origin.
+The page is served by the Supabase Edge Function **`beo`** (JWT verification
+off — the login screen must load publicly; data is protected by RLS, not by
+the page). The function reads the HTML from the `app_assets` table
+(`key='index.html'`, RLS with no policies — service-role only) and caches it
+for 60s, because the Edge runtime does not reliably bundle static files. To
+ship a new version of the app: edit `index.html` here, then update the
+`app_assets` row with the same content (SQL `update`); no function redeploy
+needed. Optionally the app can be moved to Vercel by importing this repo
+(root directory `app`, framework "Other") — the Supabase connection URL/key
+are embedded in the page and work from any origin.
