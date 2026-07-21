@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vessel — BEO Calculator · Method Co</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚓</text></svg>">
+<style>
+:root{--ink:#1d2b45;--muted:#68758c;--line:#e3e8f0;--line-strong:#c9d2e0;--accent:#3c5a86;--accent-deep:#2c4468;--navy:#12233f;--paper:#f7f8fb;--tint:#eef2f8;--pos:#1c7c4d;--neg:#b03a2e;}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:12px;}
+.wrap{max-width:1120px;margin:0 auto 60px;padding:0 22px;}
+.topbar{background:var(--navy);color:#fff;padding:14px 22px 13px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.topbar .brand{font-family:Georgia,serif;font-size:17px;}
+.topbar .brand span{display:block;font-family:-apple-system,sans-serif;font-size:8.5px;letter-spacing:.16em;color:#8fa2c2;margin-top:4px;text-transform:uppercase;}
+.userbox{display:flex;align-items:center;gap:10px;margin-top:3px;}
+.userbox .who{font-size:9.5px;letter-spacing:.08em;color:#8fa2c2;text-transform:uppercase;font-weight:700;}
+.userbox button{appearance:none;border:1px solid rgba(255,255,255,.28);background:transparent;color:#cdd8ea;border-radius:3px;padding:4px 10px;font-size:9px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:inherit;text-transform:uppercase;}
+.userbox button:hover{color:#fff;border-color:#fff;}
+h1{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:20px 0 4px;}
+h1 em,h2 em{font-style:italic;color:inherit;}
+h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:26px 0 4px;}
+.subhead-hero{color:var(--muted);max-width:1000px;line-height:1.55;margin:0 0 6px;}
+.sec-hint{color:var(--muted);line-height:1.5;margin:0 0 8px;max-width:1000px;}
+.recd{display:inline-block;background:#e7f4ec;color:#1c7c4d;border:1px solid #bfe0cc;border-radius:4px;padding:2px 8px;font-size:8.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;vertical-align:2px;margin-left:8px;}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;}
+.ctl-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px;}
+.pill{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--ink);border-radius:3px;padding:5px 12px;font-size:10.5px;font-weight:600;letter-spacing:.04em;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .12s;font-family:inherit;}
+.pill:hover{border-color:var(--accent);color:var(--accent-deep);}
+.pill[aria-pressed="true"],.pill.on{border-color:var(--accent);color:var(--accent-deep);background:#f3f7fc;}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--line-strong);}
+.pill[aria-pressed="true"] .dot,.pill.on .dot{background:var(--accent);}
+.drvin{width:66px;padding:3px 7px;border:1px solid var(--line-strong);border-radius:3px;font-family:inherit;font-size:10.5px;font-weight:600;color:var(--ink);text-align:right;background:#fff;transition:border-color .12s;}
+.drvin:hover{border-color:var(--accent);}
+.drvin:focus{border-color:var(--accent);outline:none;background:#f3f7fc;color:var(--accent-deep);}
+.drvval{font-weight:700;color:var(--ink);}
+.drvin.txt{text-align:left;width:250px;font-weight:600;}
+.bx{border:none;background:none;color:#93a0b5;cursor:pointer;font-size:11px;padding:0 5px;line-height:1;}
+.bx:hover{color:#b3541e;}
+.badd{border:1px dashed var(--line-strong);background:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:8.5px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:3px;margin:4px 0;}
+.badd:hover{color:var(--accent);border-color:var(--accent);}
+.bstrip{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.bstat{background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:10px 14px;min-width:150px;flex:1;}
+.bstat .k{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+.bstat .v{font-size:16px;font-weight:700;margin-top:3px;}
+.bstat .s{font-size:9.5px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.scroll{overflow-x:auto;margin-top:0;-webkit-overflow-scrolling:touch;}
+table.alloc{width:100%;border-collapse:collapse;margin-top:14px;background:#fff;}
+table.alloc th,table.alloc td{padding:5px 10px;text-align:right;white-space:nowrap;font-size:11px;border-bottom:1px solid var(--line);}
+table.alloc th{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line-strong);}
+table.alloc td.li,table.alloc th.li{text-align:left;white-space:normal;}
+tr.section td{padding:12px 6px 4px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);font-weight:800;border-bottom:1px solid var(--line-strong);text-align:left;background:var(--paper);}
+tr.total td{border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);font-weight:700;background:#dbe3f1;}
+.caret{display:inline-block;width:12px;color:var(--accent);}
+.foot{color:var(--muted);font-size:9.5px;line-height:1.5;margin-top:30px;border-top:1px solid var(--line-strong);padding-top:10px;}
+/* ---------- auth ---------- */
+#auth{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:100;}
+.authcard{background:var(--paper);border-radius:12px;padding:34px 36px 28px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.authcard .ab{font-family:Georgia,serif;font-size:21px;margin-bottom:2px;}
+.authcard .ab em{font-style:italic;}
+.authcard .ak{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:22px;}
+.authcard label{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 4px;}
+.authcard input{width:100%;padding:8px 10px;border:1px solid var(--line-strong);border-radius:4px;font-family:inherit;font-size:12.5px;color:var(--ink);background:#fff;}
+.authcard input:focus{border-color:var(--accent);outline:none;background:#f3f7fc;}
+.authcard .go{width:100%;margin-top:18px;appearance:none;border:none;background:var(--accent-deep);color:#fff;border-radius:4px;padding:10px;font-family:inherit;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;}
+.authcard .go:hover{background:var(--accent);}
+.authcard .go:disabled{opacity:.55;cursor:default;}
+.authcard .amsg{margin-top:12px;font-size:10.5px;line-height:1.5;color:var(--neg);min-height:14px;}
+.authcard .ahint{margin-top:16px;font-size:9.5px;line-height:1.5;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;}
+#appwrap{display:none;}
+/* ---------- catalog picker ---------- */
+#pick{display:none;position:fixed;inset:0;background:rgba(18,35,63,.45);z-index:90;align-items:flex-start;justify-content:center;padding:6vh 16px;}
+.pickcard{background:var(--paper);border-radius:12px;width:760px;max-width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:18px 20px;}
+.pickhead{display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:10px;flex-wrap:wrap;}
+.pickhead .pt{font-family:Georgia,serif;font-size:16px;}
+.pickhead button{appearance:none;border:1px solid var(--line-strong);background:#fff;border-radius:3px;padding:5px 12px;font-size:9.5px;font-weight:800;letter-spacing:.08em;cursor:pointer;font-family:inherit;margin-left:auto;}
+.pickhead button:hover{border-color:var(--accent);color:var(--accent-deep);}
+#pick-q{width:100%;padding:7px 10px;border:1px solid var(--line-strong);border-radius:4px;font-family:inherit;font-size:11.5px;margin-bottom:8px;}
+#pick-q:focus{border-color:var(--accent);outline:none;background:#f3f7fc;}
+#pick-list{overflow-y:auto;border:1px solid var(--line);border-radius:6px;background:#fff;}
+.pkcat{padding:8px 12px 4px;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);font-weight:800;border-bottom:1px solid var(--line);background:var(--paper);}
+.pkrow{display:flex;align-items:center;gap:10px;padding:6px 12px;border-bottom:1px solid var(--line);font-size:11px;}
+.pkrow:hover{background:#f3f7fc;}
+.pkrow .nm{flex:1;min-width:0;}
+.pkrow .nm .nt{display:block;color:var(--muted);font-size:8.5px;}
+.pkrow .pv{width:78px;text-align:right;color:var(--muted);white-space:nowrap;}
+.pkrow .pv b{color:var(--ink);}
+.pkrow button{appearance:none;border:1px solid var(--line-strong);background:#fff;border-radius:3px;padding:3px 8px;font-size:8.5px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.pkrow button:hover{border-color:var(--accent);color:var(--accent-deep);}
+.chip-low{display:inline-block;background:#fbeee7;color:#b3541e;border:1px solid #ecd0bd;border-radius:3px;padding:1px 6px;font-size:8px;font-weight:800;letter-spacing:.06em;}
+.chip-ok{display:inline-block;background:#e7f4ec;color:#1c7c4d;border:1px solid #bfe0cc;border-radius:3px;padding:1px 6px;font-size:8px;font-weight:800;letter-spacing:.06em;}
+@media print{
+  .topbar,.controls,.sec-hint,.foot,#vsbeo-changes,#auth{display:none!important;}
+  body{background:#fff;}
+  .wrap{margin:0;max-width:none;}
+  body.print-client h2,body.print-client .bstrip,body.print-client .scroll{display:none!important;}
+  body.print-client h1,body.print-client .subhead-hero{display:block!important;}
+  body.print-client #bill-h2{display:block!important;}
+  body.print-client #bill-wrap{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<div id="auth">
+  <div class="authcard">
+    <div class="ab">Vessel — <em>BEO Calculator</em></div>
+    <div class="ak">Method Co · Little Wing &amp; Vessel · Baltimore</div>
+    <label for="au-email">Email</label>
+    <input id="au-email" type="email" autocomplete="username" placeholder="you@methodco.com">
+    <label for="au-pass">Password</label>
+    <input id="au-pass" type="password" autocomplete="current-password">
+    <button class="go" id="au-signin">Sign in</button>
+    <div class="amsg" id="au-msg"></div>
+    <div class="ahint">Accounts are managed by the administrator. For access or a password reset, contact the admin — there is no self-signup.</div>
+  </div>
+</div>
+
+<div id="appwrap">
+<div class="topbar">
+  <div class="brand">Vessel <span>Method Co · Little Wing &amp; Vessel · Baltimore — Banquet Event Order Pricing</span></div>
+  <div class="userbox"><span class="who" id="who"></span><button id="chpass">Change password</button><button id="signout">Sign out</button></div>
+</div>
+<div class="wrap">
+
+<h1>Vessel — <em>BEO calculator</em> <span class="recd">Shared workspace · client bill &rarr; theoretical event P&amp;L to EBITDA</span></h1>
+<p class="subhead-hero">Price a private event the way the house actually keeps money: build the client bill exactly to BEO conventions (service charge on F&amp;B only, special event fee on F&amp;B + rental, sales tax on food + special event fee, liquor tax on beverage, discounts off F&amp;B after fees, unmet-minimum charges to the F&amp;B floor), then run the same event through the cost engine — per-line vendor unit costs, the staffing schedule with payroll burden, the Vessel driver opex percentages and the management fee — to a theoretical per-event P&amp;L and EBITDA. Events save to the shared Method Co workspace: everyone signed in sees the same list, and saves are visible to the whole team.</p>
+
+<div class="controls">
+  <button class="pill" id="vsbeo-edit"><span class="dot"></span>&#9998; EDIT EVENT</button>
+  <button class="pill" id="vsbeo-save" style="display:none;" aria-pressed="true"><span class="dot"></span>SAVE</button>
+  <button class="pill" id="vsbeo-cancel" style="display:none;"><span class="dot"></span>CANCEL</button>
+  <button class="pill" id="vsbeo-new"><span class="dot"></span>&#65291; NEW EVENT</button>
+  <button class="pill" id="vsbeo-dup"><span class="dot"></span>&#10697; DUPLICATE</button>
+  <button class="pill" id="vsbeo-del"><span class="dot"></span>&#10005; DELETE EVENT</button>
+  <button class="pill" id="vsbeo-reset"><span class="dot"></span>&#8635; RESET EVENT</button>
+  <button class="pill" id="vsbeo-export"><span class="dot"></span>&#8595; EXPORT</button>
+  <button class="pill" id="vsbeo-import"><span class="dot"></span>&#8593; IMPORT</button>
+  <button class="pill" id="vsbeo-print"><span class="dot"></span>&#9113; PRINT CLIENT BEO</button>
+  <span class="ctl-label" id="vsbeo-status" style="margin-left:10px;"></span>
+</div>
+<div class="sec-hint" id="vsbeo-changes" style="display:none;margin:6px 0 2px;"></div>
+<div class="controls" id="vsbeo-tabs" style="margin-top:2px;"></div>
+<div class="bstrip" id="vsbeo-strip"></div>
+
+<h2>Event <em>setup</em> — contract terms &amp; rates</h2>
+<div class="scroll"><table class="alloc" id="vsbeo-setup" style="max-width:980px;"></table></div>
+
+<h2>Menu &amp; beverage <em>selections</em> — line-item pricing guide</h2>
+<div class="scroll"><table class="alloc" id="vsbeo-items" style="max-width:1020px;"></table></div>
+
+<h2 id="bill-h2">BEO Summary — <em>Client View</em></h2>
+<div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:720px;"></table></div>
+
+<h2>Event <em>cost engine</em> — labor &amp; direct expenses</h2>
+<div class="scroll"><table class="alloc" id="vsbeo-cost" style="max-width:900px;"></table></div>
+
+<h2>Theoretical <em>event P&amp;L</em> — to Net Income / EBITDA</h2>
+<div class="scroll"><table class="alloc" id="vsbeo-pnl" style="max-width:880px;"></table></div>
+
+<h2>Menu <em>catalog</em> — vendor cost &rarr; recommended pricing <span class="recd">Little Havana vendor list · markup guide</span></h2>
+<div class="controls">
+  <span class="ctl-label">Target food cost</span>
+  <input class="drvin" id="cat-target" style="width:52px;">
+  <span class="ctl-label">% of guest price</span>
+  <span class="ctl-label" id="cat-status" style="margin-left:10px;"></span>
+</div>
+<p class="sec-hint">The outside caterer's (Little Havana) private-party menu, loaded as the vendor cost basis — these are the prices <b>Vessel pays</b>, and the house resells with a markup. <b>Guest price</b> is the current client-facing price where an executed contract or the events deck confirms it (blank means not yet priced — fill it in as you set the menu). <b>Recommended</b> prices each line to the target food-cost percentage above (industry banquet operations price to 25–35% food cost; ~40% is the attainable benchmark for an outsourced-catering resale model — recommendations round up to the next $5). Lines flagged <span class="chip-low">BELOW REC</span> are currently priced under the recommendation — margin left on the table. Vendor cost and guest price cells are live: edit them here and the catalog updates for the whole team; market-price items carry $0 until you set the day's cost. Inside an event, use <b>＋ From Catalog</b> in edit mode to add any line at the guest price or the recommended price.</p>
+<div class="scroll"><table class="alloc" id="vsbeo-cat" style="max-width:1040px;"></table></div>
+
+<p class="sec-hint">Three executed contracts are seeded — Baby Shower (Aug 8, 50 guests, $1,500 F&amp;B minimum), the University of Maryland Inclusive Excellence retreat (Aug 19, 7 guests, $800 rental, tax-exempt), and the Gallin-Munson post-wedding breakfast (Aug 23, 65 guests, 15% military discount) — use the tabs to switch events, <b>New Event</b> to price a fresh inquiry from the house defaults, or <b>Duplicate</b> to start from the event on screen. Per the Tripleseat bills, the service charge runs on F&amp;B only (never rental or other fees), the special event fee runs on F&amp;B + rental, sales tax runs on food + special event fee (zeroed for exempt clients), and discounts come off F&amp;B after fees. Every white cell is live in edit mode: change guests, menu quantities, prices, per-line COGS, staffing or rates and the client bill and theoretical P&amp;L re-derive instantly; Save writes the event to the shared workspace with a change log entry, and if a teammate saved the same event while you were editing you'll be asked before anything is overwritten. The theoretical P&amp;L counts everything the house keeps (F&amp;B, cash-bar estimate, service charge, special event fee, rental) and excludes pass-through taxes; costs run per-line vendor unit costs, the staffing schedule with payroll burden (house rule: 2 servers + 1 bartender at $35/hr for a 4-hour event on a 5-hour shift, scaled to the event), the Vessel driver opex percentages (23.4% of event revenue) and the 4% management fee; no rent is charged to events. EBITDA here is event-level and theoretical — rent (waived from Aug &rsquo;26), allocated overhead and the replacement reserve sit outside the per-event view.</p>
+
+<div class="foot">Vessel BEO Calculator · Method Co — shared workspace build. Events and the menu catalog live in the team database (Supabase · vessel-beo); every save records who changed what, and other signed-in teammates see changes live. Export writes a portable <b>beo-scenarios.json</b> backup; Import appends the events in a backup file to the workspace. Print Client BEO prints only the client-facing summary.</div>
+</div>
+
+<div id="pick">
+  <div class="pickcard">
+    <div class="pickhead"><span class="pt">Add from <em>catalog</em></span><span class="ctl-label" id="pick-grp"></span><span class="ctl-label" id="pick-msg" style="color:var(--pos);"></span><button id="pick-close">DONE</button></div>
+    <input id="pick-q" placeholder="Search the catalog — name or category…">
+    <div id="pick-list"></div>
+  </div>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SB_URL='https://wcqqcfpiiovqposcvrel.supabase.co';
+const SB_KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
+const sb=createClient(SB_URL,SB_KEY);
+let ME='';
+
+/* ================= VESSEL — BEO CALCULATOR · SHARED ================= */
+const BEO_DEFS=[{
+  tab:'Baby Shower',
+  name:'Baby Shower — Vessel Buyout',
+  date:'Saturday, August 8 2026 · 1:00–4:00 pm',
+  guests:50, fbMin:1500, rental:0, deposit:750,
+  svc:20, sef:5, salesTax:6, liqTax:9,
+  food:[
+    {n:'Cheese & Charcuterie Display (serves up to 60)',q:1,p:195,u:78},
+    {n:'Handcut Fruit Display (serves up to 60)',q:1,p:195,u:78},
+    {n:'Carne Asada Skewers (50 pc · passed)',q:1,p:125,u:50},
+    {n:'Grilled Shrimp Skewers (50 pc · passed)',q:1,p:160,u:64},
+    {n:'Turkey & Swiss Sandwiches',q:20,p:16,u:6.4},
+    {n:'Lasagna — Ground Beef (serves 30–35)',q:1,p:300,u:120},
+    {n:'Seafood Paella (Small)',q:1,p:230,u:92},
+    {n:'House Salad Bowl — Large',q:1,p:75,u:30},
+    {n:'Caesar Salad Bowl — Large',q:1,p:75,u:30},
+    {n:'Macaroni & Cheese (Large)',q:1,p:165,u:66},
+    {n:'Grilled Wings (50 pc per order)',q:2,p:175,u:70}],
+  bev:[
+    {n:'Bartender Fee (cash bar · 3 signature drinks)',q:1,p:250,u:0}],
+  cashDrinks:1.5, cashPrice:12, cashCogs:25,
+  labor:[
+    {r:'Server',n:2,h:4,rate:35},
+    {r:'Bartender',n:1,h:4,rate:35}],
+  burden:16.5,
+  mgmtPct:4, disc:0, discLbl:''
+},{
+  tab:'UMD Retreat',
+  name:'University of Maryland — Inclusive Excellence Retreat (tax-exempt)',
+  date:'Wednesday, August 19 2026 · 8:30 am–4:00 pm',
+  guests:7, fbMin:0, rental:800, deposit:0,
+  svc:20, sef:5, salesTax:0, liqTax:0,
+  food:[
+    {n:'Custom Breakfast Buffet (LH) — eggs, fruit, yogurt, turkey bacon',q:7,p:27,u:10.8},
+    {n:'Custom Lunch Menu (LH) — sandwiches, wraps & chips',q:7,p:25,u:10}],
+  bev:[
+    {n:'Full Day Beverage Station (8:30a–4:00p)',q:7,p:50,u:12.5}],
+  cashDrinks:0, cashPrice:12, cashCogs:25,
+  labor:[
+    {r:'Server',n:1,h:8.5,rate:35}],
+  burden:16.5,
+  mgmtPct:4, disc:0, discLbl:''
+},{
+  tab:'Post-Wedding Breakfast',
+  name:'Gallin-Munson Post-Wedding Breakfast — Vessel Buyout',
+  date:'Sunday, August 23 2026 · 9:00–11:30 am',
+  guests:65, fbMin:0, rental:0, deposit:0,
+  svc:20, sef:5, salesTax:6, liqTax:9,
+  food:[
+    {n:'Scrambled Eggs (feeds 25 per order)',q:2,p:130,u:52},
+    {n:'French Toast (feeds 25 per order · 100% maple syrup)',q:2,p:100,u:40},
+    {n:'Bacon (feeds 25 per order)',q:2,p:250,u:100},
+    {n:'Sausage Links (feeds 25 per order)',q:2,p:170,u:68},
+    {n:'Regular Potato Tots (feeds 25 per order)',q:2,p:90,u:36},
+    {n:'Fruit Salad Bowl',q:2,p:120,u:48},
+    {n:'AM Beverage Station — coffee, teas, OJ, grapefruit',q:65,p:12,u:3},
+    {n:'Bagels & Cream Cheeses (serves 25)',q:1,p:130,u:52},
+    {n:'Chocolate Croissants',q:65,p:4,u:1.6},
+    {n:'Spanish Croissants',q:65,p:5,u:2},
+    {n:'Greek Yogurt & Granola (granola on the side)',q:65,p:5,u:2}],
+  bev:[],
+  cashDrinks:0, cashPrice:12, cashCogs:25,
+  labor:[
+    {r:'Server',n:2,h:3.5,rate:35}],
+  burden:16.5,
+  mgmtPct:4, disc:15, discLbl:'Military discount'
+}];
+const BEO_OPEX=[
+  {n:'Rentals & Event Equipment',v:1.8},
+  {n:'Linen, Cleaning & Consumables',v:2.8},
+  {n:'Credit Card Fees',v:2.6},
+  {n:'Marketing & Advertising',v:3.0},
+  {n:'General & Administrative',v:9.0},
+  {n:'Repairs & Maintenance',v:0.7},
+  {n:'Utilities',v:1.6},
+  {n:'G&A — Uncontrollable (processing, ins., licenses)',v:1.9}];
+function blankEvent(){
+  return {tab:'New Event',name:'New Event — Vessel',date:'',evType:'',
+    guests:50,fbMin:1500,rental:0,deposit:0,
+    svc:20,sef:5,salesTax:6,liqTax:9,
+    food:[],bev:[],
+    cashDrinks:0,cashPrice:12,cashCogs:25,
+    labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',contract:null};
+}
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc'];
+const EV_STR=['tab','name','date','discLbl','evType'];
+function sanEv(o){
+  const b=blankEvent();
+  if(!o||typeof o!=='object')return b;
+  EV_NUM.forEach(k=>{const v=parseFloat(o[k]);if(!isNaN(v))b[k]=v;});
+  EV_STR.forEach(k=>{if(o[k]!=null)b[k]=String(o[k]);});
+  ['food','bev'].forEach(g=>{
+    if(Array.isArray(o[g]))b[g]=o[g].map(i=>({n:String((i&&i.n)!=null?i.n:'Item'),q:+(i&&i.q)||0,p:+(i&&i.p)||0,u:+(i&&i.u)||0}));
+  });
+  if(Array.isArray(o.labor))b.labor=o.labor.map(l=>({r:String((l&&l.r)!=null?l.r:'Server'),n:+(l&&l.n)||0,h:+(l&&l.h)||0,rate:+(l&&l.rate)||0}));
+  b.contract=(Number.isInteger(o.contract)&&o.contract>=0&&o.contract<BEO_DEFS.length)?o.contract:null;
+  return b;
+}
+let BEOS=[];
+let BEOSEL=0;
+let BEOD=null;
+let BEOEDIT=false, BEOSNAP=null;
+let RT_PENDING=false;
+const BEOSEC={food:true,bev:true};
+const bf2=n=>(n<-0.005?'−':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fpc=n=>(n<0?'−':'')+Math.abs(n).toFixed(1)+'%';
+function beoEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function attEsc(s){return beoEsc(s).replace(/"/g,'&quot;');}
+function pill(id,fn){const b=document.getElementById(id);if(!b)return;b.addEventListener('click',()=>{fn(b);});}
+function strip(id,cells){const el=document.getElementById(id);if(!el)return;el.innerHTML=cells.map(c=>`<div class="bstat"><div class="k">${c[0]}</div><div class="v">${c[1]}</div><div class="s">${c[2]}</div></div>`).join('');}
+function beoStatusMsg(m){const el=document.getElementById('vsbeo-status');if(el)el.textContent=m;}
+function selRemember(){try{if(BEOD&&BEOD._id)window.localStorage.setItem('vesselBEO.sel',BEOD._id);}catch(e){}}
+
+/* ---------------- cloud data layer ---------------- */
+function payloadOf(ev){return sanEv(ev);}
+async function loadEvents(){
+  const {data,error}=await sb.from('beo_events').select('id,payload,position,updated_at,updated_by_email').order('position').order('created_at');
+  if(error){beoStatusMsg('Load failed — '+error.message);return false;}
+  BEOS=(data||[]).map(r=>{const e=sanEv(r.payload);e._id=r.id;e._updated=r.updated_at;e._by=r.updated_by_email;e._pos=r.position;return e;});
+  let want=null;
+  try{want=window.localStorage.getItem('vesselBEO.sel');}catch(e){}
+  BEOSEL=Math.max(0,BEOS.findIndex(e=>e._id===want));
+  if(BEOSEL>=BEOS.length)BEOSEL=0;
+  BEOD=BEOS[BEOSEL]||null;
+  return true;
+}
+async function saveEvent(ev,changes){
+  const upd={payload:payloadOf(ev),updated_by_email:ME};
+  let q=sb.from('beo_events').update(upd).eq('id',ev._id);
+  if(ev._updated)q=q.eq('updated_at',ev._updated);
+  const {data,error}=await q.select('updated_at');
+  if(error){beoStatusMsg('Save failed — '+error.message);return false;}
+  if(!data||!data.length){
+    const theirs=await sb.from('beo_events').select('updated_by_email').eq('id',ev._id).maybeSingle();
+    const by=(theirs.data&&theirs.data.updated_by_email)||'someone else';
+    if(window.confirm('This event was saved by '+by+' while you were editing.\n\nOK — overwrite with YOUR version\nCancel — discard your edits and load theirs')){
+      const r2=await sb.from('beo_events').update(upd).eq('id',ev._id).select('updated_at');
+      if(r2.error||!r2.data||!r2.data.length){beoStatusMsg('Save failed'+(r2.error?' — '+r2.error.message:' — event may have been deleted.'));return false;}
+      ev._updated=r2.data[0].updated_at;
+    }else{
+      await loadEvents();buildBEO();beoStatusMsg('Loaded the latest saved version — your edits were discarded.');
+      return false;
+    }
+  }else ev._updated=data[0].updated_at;
+  if(changes&&changes.length)await sb.from('beo_event_changes').insert({event_id:ev._id,changed_by_email:ME,summary:changes});
+  return true;
+}
+async function insertEvent(pl){
+  const pos=BEOS.length?Math.max(...BEOS.map(e=>e._pos||0))+1:1;
+  const {data,error}=await sb.from('beo_events').insert({payload:pl,position:pos,updated_by_email:ME,created_by_email:ME}).select('id,position,updated_at').single();
+  if(error){beoStatusMsg('Create failed — '+error.message);return null;}
+  const e=sanEv(pl);e._id=data.id;e._pos=data.position;e._updated=data.updated_at;e._by=ME;
+  return e;
+}
+async function removeEvent(ev){
+  const {error}=await sb.from('beo_events').delete().eq('id',ev._id);
+  if(error){beoStatusMsg('Delete failed — '+error.message);return false;}
+  return true;
+}
+/* ---------------- menu catalog & benchmarks ---------------- */
+let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40;
+const CATSEC={};
+const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
+function recPrice(cost){if(!cost||!TARGET)return null;return Math.ceil(cost/(TARGET/100)/5)*5;}
+function benchFor(B){
+  if(B&&B.evType&&BENCH.byType&&BENCH.byType[B.evType]!=null)return{v:+BENCH.byType[B.evType],label:B.evType,n:(BENCH.counts||{})[B.evType]};
+  return{v:+(BENCH.overall||0),label:'all events',n:null};
+}
+function catStatus(m){const el=document.getElementById('cat-status');if(el)el.textContent=m;}
+async function loadCatalog(){
+  const [mi,st]=await Promise.all([
+    sb.from('menu_items').select('*').eq('active',true).order('sort'),
+    sb.from('app_settings').select('key,value')
+  ]);
+  if(!mi.error)CATALOG=mi.data||[];
+  if(!st.error)(st.data||[]).forEach(r=>{
+    if(r.key==='target_cogs_pct'&&r.value&&r.value.pct)TARGET=+r.value.pct;
+    if(r.key==='cashbar_benchmarks'&&r.value)BENCH=r.value;
+  });
+  const ti=document.getElementById('cat-target');if(ti)ti.value=TARGET;
+}
+function buildCatalog(){
+  const t=document.getElementById('vsbeo-cat');if(!t)return;
+  let h=`<tr><th class="li" style="min-width:250px;">Item</th><th style="min-width:80px;">Vendor cost</th><th style="min-width:95px;">Guest price — current</th><th>COGS % now</th><th>Markup ×</th><th style="min-width:100px;">Recommended @ ${TARGET.toFixed(0)}% COGS</th><th style="min-width:120px;">Status</th></tr>`;
+  const cats=[...new Set(CATALOG.map(i=>i.category))];
+  cats.forEach(c=>{
+    const items=CATALOG.filter(i=>i.category===c);
+    const open=!!CATSEC[c];
+    h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} items — click to expand</span>`}</td></tr>`;
+    if(!open)return;
+    items.forEach(it=>{
+      const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost);
+      const cogs=(cur&&cost)?cost/cur*100:null, mk=(cur&&cost)?cur/cost:null;
+      let chip='·';
+      if(!cost)chip=`<span style="color:var(--muted);font-weight:700;">MP — SET PER EVENT</span>`;
+      else if(cur==null)chip=`<span class="chip-low" style="background:#f1f3f8;color:#68758c;border-color:#d5dbe6;">NOT PRICED</span>`;
+      else if(rec!=null&&cur<rec)chip=`<span class="chip-low">BELOW REC −${bf2(rec-cur).slice(1)}</span>`;
+      else chip=`<span class="chip-ok">OK</span>`;
+      h+=`<tr><td class="li">${beoEsc(it.name)}${it.note?` ${MUC}${beoEsc(it.note)}</span>`:''}</td>
+<td><input class="drvin" data-ci="${it.id}:vendor_cost" value="${cost}" style="width:58px;"></td>
+<td><input class="drvin" data-ci="${it.id}:client_price" value="${cur==null?'':cur}" style="width:64px;" placeholder="—"></td>
+<td style="color:var(--muted);">${cogs?fpc(cogs):'·'}</td>
+<td style="color:var(--muted);">${mk?mk.toFixed(2)+'×':'·'}</td>
+<td style="font-weight:700;">${rec!=null?bf2(rec):'—'}</td>
+<td>${chip}</td></tr>`;
+    });
+  });
+  t.innerHTML=h;
+}
+let PICKGRP='food';
+function openPicker(grp){
+  PICKGRP=grp;
+  document.getElementById('pick-grp').textContent=grp==='food'?'→ ADDING FOOD LINES':'→ ADDING BEVERAGE LINES';
+  document.getElementById('pick-msg').textContent='';
+  document.getElementById('pick').style.display='flex';
+  const q=document.getElementById('pick-q');
+  q.value='';renderPick('');q.focus();
+}
+function closePicker(){document.getElementById('pick').style.display='none';}
+function renderPick(q){
+  q=(q||'').toLowerCase();
+  let h='',last='';
+  CATALOG.forEach(it=>{
+    if(q&&!((it.name+' '+it.category).toLowerCase().includes(q)))return;
+    if(it.category!==last){h+=`<div class="pkcat">${beoEsc(it.category)}</div>`;last=it.category;}
+    const rec=recPrice(+it.vendor_cost||0);
+    const cur=it.client_price==null?null:+it.client_price;
+    h+=`<div class="pkrow"><span class="nm">${beoEsc(it.name)}${it.note?`<span class="nt">${beoEsc(it.note)}</span>`:''}</span>
+<span class="pv">cost <b>${+it.vendor_cost?'$'+(+it.vendor_cost).toLocaleString():'MP'}</b></span>
+${cur!=null?`<button data-pk="${it.id}:cur">@ CURRENT $${cur.toLocaleString()}</button>`:''}
+${rec!=null?`<button data-pk="${it.id}:rec">@ REC $${rec.toLocaleString()}</button>`:''}
+${cur==null&&rec==null?`<button data-pk="${it.id}:mp">ADD — PRICE IT</button>`:''}
+</div>`;
+  });
+  document.getElementById('pick-list').innerHTML=h||'<div class="pkcat">No matches.</div>';
+}
+let rlTimer=null;
+function reloadSoon(){
+  clearTimeout(rlTimer);
+  rlTimer=setTimeout(async()=>{
+    if(BEOEDIT){RT_PENDING=true;return;}
+    await loadEvents();buildBEO();
+  },500);
+}
+function subscribeRT(){
+  sb.channel('beo_events_rt')
+    .on('postgres_changes',{event:'*',schema:'public',table:'beo_events'},()=>{
+      if(BEOEDIT){RT_PENDING=true;beoStatusMsg('Events changed elsewhere — the list refreshes after you Save or Cancel.');return;}
+      reloadSoon();
+    })
+    .subscribe();
+}
+
+/* ---------------- calc engine ---------------- */
+function beoCalc(){
+  const B=BEOD;
+  const food=B.food.reduce((a,i)=>a+i.q*i.p,0);
+  const bev=B.bev.reduce((a,i)=>a+i.q*i.p,0);
+  const fb=food+bev;
+  const unmet=Math.max(0,B.fbMin-fb);
+  const fbB=fb+unmet;
+  const feeBase=fbB+B.rental;
+  const svc=fbB*B.svc/100;   /* service charge: F&B only — never rental or other fees */
+  const sef=feeBase*B.sef/100;
+  const sTax=(food+unmet+sef)*B.salesTax/100;
+  const lTax=bev*B.liqTax/100;
+  const disc=fbB*(B.disc||0)/100;
+  const grand=fbB+B.rental+svc+sef+sTax+lTax-disc;
+  const due=grand-B.deposit;
+  const cash=B.guests*B.cashDrinks*B.cashPrice;
+  const bevPkg=B.bev.reduce((a,i)=>a+((i.u||0)>0?i.q*i.p:0),0);
+  const bevFee=bev-bevPkg;
+  const bevRev=bevPkg+cash;
+  const rev=fbB+cash+B.rental+svc+sef-disc;
+  const cogsF=B.food.reduce((a,i)=>a+i.q*(i.u||0),0);
+  const cogsBv=B.bev.reduce((a,i)=>a+i.q*(i.u||0),0)+cash*B.cashCogs/100;
+  const cogs=cogsF+cogsBv;
+  const gp=rev-cogs;
+  const wages=B.labor.reduce((a,l)=>a+l.n*l.h*l.rate,0);
+  const labor=wages*(1+B.burden/100);
+  const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
+  const fee=rev*B.mgmtPct/100;
+  const ebitda=gp-labor-opex-fee;
+  return {food,bev,bevPkg,bevFee,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogs,gp,wages,labor,opex,fee,ebitda};
+}
+function buildBEO(){
+  const t=document.getElementById('vsbeo-setup');
+  if(!t||!BEOD)return;
+  const B=BEOD, C=beoCalc();
+  document.getElementById('vsbeo-tabs').innerHTML=BEOS.map((ev,i)=>`<button class="pill" data-bt="${i}"${i===BEOSEL?' aria-pressed="true"':''}><span class="dot"></span>${beoEsc((ev.tab||('EVENT '+(i+1))).toUpperCase())}</button>`).join('');
+  const IN=(bi,v,w,txt)=>BEOEDIT?`<input class="drvin${txt?' txt':''}" data-bi="${bi}" value="${attEsc(String(v))}"${w?` style="width:${w}px;"`:''}>`:`<span class="drvval"${txt?' style="font-weight:600;"':''}>${v===''||v==null?'—':beoEsc(String(v))}</span>`;
+  const MU='<span style="color:var(--muted);font-size:8.5px;">';
+  /* ---- setup ---- */
+  t.innerHTML=`<tr><th class="li" style="min-width:200px;">Event</th><th style="min-width:170px;">Value</th><th class="li" style="min-width:200px;">Contract term</th><th style="min-width:110px;">Value</th><th class="li" style="min-width:210px;">Cash bar &amp; house assumptions</th><th style="min-width:110px;">Value</th></tr>
+<tr><td class="li">Event name</td><td>${IN('g:name',B.name,0,1)}</td><td class="li">F&amp;B minimum ($)</td><td>${IN('g:fbMin',B.fbMin)}</td><td class="li">Cash-bar drinks per guest</td><td>${IN('g:cashDrinks',B.cashDrinks)}</td></tr>
+<tr><td class="li">Tab label</td><td>${IN('g:tab',B.tab,0,1)}</td><td class="li">Room / space rental ($)</td><td>${IN('g:rental',B.rental)}</td><td class="li">Average drink price ($)</td><td>${IN('g:cashPrice',B.cashPrice)}</td></tr>
+<tr><td class="li">Date &amp; time</td><td>${IN('g:date',B.date,0,1)}</td><td class="li">Deposit received ($)</td><td>${IN('g:deposit',B.deposit)}</td><td class="li">Cash-bar pour cost (% of sales)</td><td>${IN('g:cashCogs',B.cashCogs)}</td></tr>
+<tr><td class="li">Guest count</td><td>${IN('g:guests',B.guests)}</td><td class="li">Sales tax (%)</td><td>${IN('g:salesTax',B.salesTax)}</td><td class="li">Payroll burden (% of wages)</td><td>${IN('g:burden',B.burden)}</td></tr>
+<tr><td class="li">Service charge (%)</td><td>${IN('g:svc',B.svc)}</td><td class="li">Liquor tax (%)</td><td>${IN('g:liqTax',B.liqTax)}</td><td class="li">Management fee (% of revenue)</td><td>${IN('g:mgmtPct',B.mgmtPct)}</td></tr>
+<tr><td class="li">Special event fee (%)</td><td>${IN('g:sef',B.sef)}</td><td class="li">Discount (% of F&amp;B)</td><td>${IN('g:disc',B.disc||0)}</td><td class="li">Discount label</td><td>${IN('g:discLbl',B.discLbl||'',0,1)}</td></tr>
+<tr><td class="li">Event type</td><td>${BEOEDIT?`<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...Object.keys(BENCH.byType||{})].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`:`<span class="drvval">${B.evType?beoEsc(B.evType):'—'}</span>`}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26</span></td><td>${BEOEDIT?'<button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button>':''}</td></tr>`;
+  /* ---- items ---- */
+  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th>Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th>Line cost</th><th>COGS %<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">CALCULATED</span></th><th>Margin $</th><th>Margin %</th><th></th></tr>`;
+  const itRow=(grp,i,idx)=>{
+    const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${IN(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td>${IN(`it:${grp}:${idx}:u`,i.u||0,58)}</td><td style="color:var(--muted);">${bf2(cost)}</td><td style="color:var(--muted);">${tot?fpc(cost/tot*100):'·'}</td><td>${bf2(mg)}</td><td style="color:var(--muted);">${tot?fpc(mg/tot*100):'·'}</td><td>${BEOEDIT?`<button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button>`:''}</td></tr>`;
+  };
+  let ih=itHead;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — VESSEL &amp; LITTLE WING${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
+  if(BEOSEC.food){
+    B.food.forEach((i,idx)=>{ih+=itRow('food',i,idx);});
+    if(BEOEDIT)ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
+  }
+  ih+=`<tr class="total"><td class="li">Food total</td><td></td><td></td><td>${bf2(C.food)}</td><td></td><td>${bf2(C.cogsF)}</td><td>${C.food?fpc(C.cogsF/C.food*100):'·'}</td><td>${bf2(C.food-C.cogsF)}</td><td>${C.food?fpc((C.food-C.cogsF)/C.food*100):'·'}</td><td></td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — FEES &amp; PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines — click to expand</span>`}</td></tr>`;
+  if(BEOSEC.bev){
+    B.bev.forEach((i,idx)=>{ih+=itRow('bev',i,idx);});
+    if(BEOEDIT)ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
+  }
+  ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td></td><td>${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td></td><td></td><td></td><td></td></tr>`;
+  ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — house estimate ${MU}${B.guests} guests × ${B.cashDrinks} drinks × $${B.cashPrice} · guests pay individually</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td></td><td style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td style="color:var(--muted);">${fpc(B.cashCogs)}</td><td>${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  document.getElementById('vsbeo-items').innerHTML=ih;
+  /* ---- client bill ---- */
+  let bh=`<tr><th class="li" style="min-width:280px;">BEO summary — client view · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
+  if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
+  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
+  if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td></tr>`;
+  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}% ${MU}on food + special event fee${B.salesTax?'':' · tax-exempt client'}</span></td><td>${bf2(C.sTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}% ${MU}on beverage</span></td><td>${bf2(C.lTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Special event fee ${B.sef.toFixed(1)}% ${MU}on F&amp;B + rental</span></td><td>${bf2(C.sef)}</td></tr>`;
+  bh+=`<tr><td class="li">Vessel service charge ${B.svc.toFixed(1)}% ${MU}on F&amp;B only · retained by house — not a gratuity</span></td><td>${bf2(C.svc)}</td></tr>`;
+  if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
+  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}% ${MU}on F&amp;B</span></td><td>−${bf2(C.disc)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
+  if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td></tr>`;
+  const met=C.fb>=B.fbMin;
+  bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td></tr>`;
+  document.getElementById('vsbeo-bill').innerHTML=bh;
+  /* ---- cost engine ---- */
+  let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">RULE — 2 SERVERS + 1 BARTENDER · $35/HR · SHIFT = EVENT + 1 HR</span></th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
+  B.labor.forEach((l,idx)=>{
+    ch+=`<tr><td class="li">${IN(`lab:${idx}:r`,l.r,0,1)}</td><td>${IN(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td>${BEOEDIT?`<button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button>`:''}</td></tr>`;
+  });
+  if(BEOEDIT)ch+=`<tr><td class="li" colspan="6"><button class="badd" data-bx="add:lab">＋ ADD ROLE</button></td></tr>`;
+  ch+=`<tr class="total"><td class="li">Subtotal — event wages</td><td></td><td></td><td></td><td>${bf2(C.wages)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Payroll taxes &amp; benefits ${MU}${B.burden}% of wages</span></td><td></td><td></td><td></td><td>${bf2(C.wages*B.burden/100)}</td><td></td></tr>`;
+  ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
+  ch+=`<tr class="section"><td class="li" colspan="6">DIRECT OPERATING &amp; OTHER EXPENSES — VESSEL DRIVER % × EVENT REVENUE</td></tr>`;
+  ch+=`<tr><td class="li" colspan="6" style="color:var(--muted);font-size:8px;letter-spacing:.04em;">Hard-coded house percentages — constant across all events; applied to this event's revenue.</td></tr>`;
+  BEO_OPEX.forEach(o=>{
+    ch+=`<tr><td class="li">${o.n}</td><td colspan="2" style="color:var(--muted);">${fpc(o.v)}</td><td></td><td>${bf2(C.rev*o.v/100)}</td><td></td></tr>`;
+  });
+  const opct=BEO_OPEX.reduce((a,o)=>a+o.v,0);
+  ch+=`<tr class="total"><td class="li">Total direct operating &amp; other</td><td colspan="2">${fpc(opct)}</td><td></td><td>${bf2(C.opex)}</td><td></td></tr>`;
+  document.getElementById('vsbeo-cost').innerHTML=ch;
+  /* ---- theoretical P&L ---- */
+  const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${C.rev?fpc(v/C.rev*100):'·'}</td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'·'}</td></tr>`;
+  let ph=`<tr><th class="li" style="min-width:300px;">Theoretical event P&amp;L</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
+  ph+=`<tr class="section"><td class="li" colspan="4">EVENT REVENUE — WHAT THE HOUSE KEEPS (EX-TAX)</td></tr>`;
+  ph+=pr('Food &amp; menu',C.food,0,1);
+  if(C.bevPkg>0.005)ph+=pr('Beverage — packages',C.bevPkg,0,1);
+  ph+=pr('Cash bar — house estimate',C.cash,0,1);
+  if(C.unmet>0.005)ph+=pr('Unmet-minimum charge',C.unmet,0,1);
+  if(B.rental>0.005)ph+=pr('Room / space rental',B.rental,0,1);
+  if(C.bevFee>0.005)ph+=pr('Bartender fee',C.bevFee,0,1);
+  ph+=pr('Service charge '+B.svc.toFixed(0)+'%',C.svc,0,1);
+  ph+=pr('Special event fee '+B.sef.toFixed(0)+'%',C.sef,0,1);
+  if(C.disc>0.005)ph+=pr('Less: '+beoEsc(B.discLbl||'discount')+' '+(B.disc||0).toFixed(0)+'% of F&amp;B',-C.disc,0,1);
+  ph+=pr('Total event revenue',C.rev,1);
+  ph+=`<tr class="section"><td class="li" colspan="4">COST OF SALES</td></tr>`;
+  const prc=(n,v,d,dl)=>`<tr><td class="li" style="padding-left:22px;">${n}</td><td>${bf2(v)}</td><td style="color:var(--muted);">${d?fpc(v/d*100):'·'}<span style="display:block;font-size:6.5px;letter-spacing:.06em;">${dl}</span></td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'·'}</td></tr>`;
+  ph+=prc('Food cost',C.cogsF,C.food,'OF FOOD REVENUE');
+  ph+=prc('Beverage &amp; bar cost',C.cogsBv,C.bevRev,'OF BEV REVENUE — PACKAGES + CASH BAR');
+  ph+=pr('Total COGS',C.cogs,1);
+  ph+=pr('Gross profit',C.gp,1);
+  ph+=pr('Event labor — incl. '+B.burden+'% burden',C.labor);
+  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.labor)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.labor)/C.rev*100):'·'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.labor)/B.guests):'·'}</td></tr>`;
+  ph+=pr('Direct operating &amp; other expenses — '+fpc(BEO_OPEX.reduce((a,o)=>a+o.v,0))+' of revenue',C.opex);
+  ph+=pr('Management fee '+B.mgmtPct.toFixed(0)+'% of revenue',C.fee);
+  ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
+  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Event-level view — excludes rent (waived from Aug '26), allocated overhead and the replacement reserve. Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
+  document.getElementById('vsbeo-pnl').innerHTML=ph;
+  /* ---- strip ---- */
+  strip('vsbeo-strip',[
+    ['Client grand total',bf2(C.grand),'incl. tax · due '+bf2(C.due)+' after deposit'],
+    ['House event revenue',bf2(C.rev),'ex-tax · incl. cash bar '+bf2(C.cash)],
+    ['Prime cost',C.rev?fpc((C.cogs+C.labor)/C.rev*100):'—','COGS '+(C.rev?fpc(C.cogs/C.rev*100):'—')+' + labor '+(C.rev?fpc(C.labor/C.rev*100):'—')],
+    ['Theoretical EBITDA',bf2(C.ebitda),C.rev?fpc(C.ebitda/C.rev*100)+' margin':'—'],
+    ['EBITDA / guest',B.guests?bf2(C.ebitda/B.guests):'—','revenue / guest '+(B.guests?bf2(C.rev/B.guests):'—')]]);
+}
+document.addEventListener('change',e=>{
+  const c=e.target.closest('[data-ci]');
+  if(c){
+    const ix=c.dataset.ci.lastIndexOf(':');
+    const id=c.dataset.ci.slice(0,ix), field=c.dataset.ci.slice(ix+1);
+    let v=c.value.trim()===''?null:parseFloat(c.value);
+    if(v!==null&&isNaN(v))return;
+    if(field==='vendor_cost'&&v===null)v=0;
+    const it=CATALOG.find(x=>x.id===id);
+    if(!it)return;
+    it[field]=v;
+    sb.from('menu_items').update({[field]:v}).eq('id',id).then(({error})=>{catStatus(error?'Save failed — '+error.message:'Catalog updated for the whole team.');});
+    buildCatalog();
+    return;
+  }
+  const t=e.target.closest('[data-bi]');
+  if(!t||!BEOD)return;
+  const p=t.dataset.bi.split(':');
+  const txt=p[p.length-1]==='n'||p[p.length-1]==='r'||p[1]==='name'||p[1]==='date'||p[1]==='discLbl'||p[1]==='tab'||p[1]==='evType';
+  const v=txt?t.value:parseFloat(t.value);
+  if(!txt&&isNaN(v))return;
+  if(p[0]==='g')BEOD[p[1]]=v;
+  else if(p[0]==='it')BEOD[p[1]][+p[2]][p[3]]=v;
+  else if(p[0]==='lab')BEOD.labor[+p[1]][p[2]]=v;
+  buildBEO();
+});
+document.addEventListener('click',e=>{
+  const cs=e.target.closest('[data-cs]');
+  if(cs){CATSEC[cs.dataset.cs]=!CATSEC[cs.dataset.cs];buildCatalog();return;}
+  const bs=e.target.closest('[data-bs]');
+  if(bs){BEOSEC[bs.dataset.bs]=!BEOSEC[bs.dataset.bs];buildBEO();return;}
+  const tb=e.target.closest('[data-bt]');
+  if(tb){
+    if(BEOEDIT){beoStatusMsg('Save or Cancel your edits before switching events.');return;}
+    BEOSEL=+tb.dataset.bt;
+    BEOD=BEOS[BEOSEL];
+    selRemember();
+    const dv=document.getElementById('vsbeo-changes');
+    if(dv)dv.style.display='none';
+    beoStatusMsg('Viewing '+(BEOD.tab||BEOD.name)+'.');
+    buildBEO();
+    return;
+  }
+  const t=e.target.closest('[data-bx]');
+  if(!t||!BEOD)return;
+  const p=t.dataset.bx.split(':');
+  if(p[0]==='cat'){openPicker(p[1]);return;}
+  if(p[0]==='bench'){
+    const b=benchFor(BEOD);
+    if(!b.v){beoStatusMsg('No benchmark available.');return;}
+    if(!BEOD.cashPrice||BEOD.cashPrice<=0)BEOD.cashPrice=12;
+    BEOD.cashDrinks=Math.round(b.v/BEOD.cashPrice*100)/100;
+    beoStatusMsg('Cash bar set to the '+b.label+' benchmark — $'+b.v.toFixed(2)+'/guest ('+BEOD.cashDrinks+' drinks × $'+BEOD.cashPrice+').');
+    buildBEO();
+    return;
+  }
+  if(p[0]==='add'){
+    if(p[1]==='lab')BEOD.labor.push({r:'Server',n:1,h:5,rate:35});
+    else BEOD[p[1]].push({n:'New item',q:1,p:0,u:0});
+  }else if(p[0]==='del'){
+    (p[1]==='lab'?BEOD.labor:BEOD[p[1]]).splice(+p[2],1);
+  }
+  buildBEO();
+});
+function beoDiff(a,b){
+  const out=[];
+  const SL={tab:'Tab label',name:'Event name',date:'Date & time',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',cashDrinks:'Cash-bar drinks per guest',cashPrice:'Average drink price',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  Object.keys(SL).forEach(k=>{
+    const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
+    if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
+  });
+  const IT={q:'qty',p:'price',u:'unit cost'};
+  [['food','Food'],['bev','Beverage']].forEach(([g,gl])=>{
+    const A=a[g]||[],Bb=b[g]||[],n=Math.max(A.length,Bb.length);
+    for(let i=0;i<n;i++){
+      const x=A[i],y=Bb[i];
+      if(x&&!y){out.push(gl+': removed "'+x.n+'"');continue;}
+      if(!x&&y){out.push(gl+': added "'+y.n+'"');continue;}
+      if(x.n!==y.n)out.push(gl+': renamed "'+x.n+'" → "'+y.n+'"');
+      ['q','p','u'].forEach(f=>{if((x[f]||0)!==(y[f]||0))out.push(gl+' · '+y.n+' — '+IT[f]+' '+(x[f]||0)+' → '+(y[f]||0));});
+    }
+  });
+  const LB={n:'count',h:'hours',rate:'rate'};
+  const A=a.labor||[],Bb=b.labor||[],n=Math.max(A.length,Bb.length);
+  for(let i=0;i<n;i++){
+    const x=A[i],y=Bb[i];
+    if(x&&!y){out.push('Staffing: removed '+x.r);continue;}
+    if(!x&&y){out.push('Staffing: added '+y.r+' ('+y.n+' × '+y.h+'h @ $'+y.rate+')');continue;}
+    if(x.r!==y.r)out.push('Staffing: renamed '+x.r+' → '+y.r);
+    ['n','h','rate'].forEach(f=>{if((x[f]||0)!==(y[f]||0))out.push('Staffing · '+y.r+' — '+LB[f]+' '+(x[f]||0)+' → '+(y[f]||0));});
+  }
+  return out;
+}
+function setBEOEdit(on){
+  BEOEDIT=on;
+  const e=document.getElementById('vsbeo-edit'),s=document.getElementById('vsbeo-save'),c=document.getElementById('vsbeo-cancel');
+  if(e)e.style.display=on?'none':'';
+  if(s)s.style.display=on?'':'none';
+  if(c)c.style.display=on?'':'none';
+  buildBEO();
+  if(!on&&RT_PENDING){RT_PENDING=false;reloadSoon();}
+}
+function beoGuardEdit(){if(BEOEDIT){beoStatusMsg('Save or Cancel your edits first.');return true;}return false;}
+pill('vsbeo-edit',()=>{
+  if(!BEOD)return;
+  BEOSNAP=JSON.parse(JSON.stringify(payloadOf(BEOD)));
+  const dv=document.getElementById('vsbeo-changes');
+  if(dv)dv.style.display='none';
+  setBEOEdit(true);
+  beoStatusMsg('Editing '+(BEOD.tab||'event')+' — Save shares the changes with the team; Cancel reverts.');
+});
+pill('vsbeo-save',async()=>{
+  if(!BEOD)return;
+  const ch=BEOSNAP?beoDiff(BEOSNAP,payloadOf(BEOD)):[];
+  beoStatusMsg('Saving…');
+  const ok=await saveEvent(BEOD,ch);
+  setBEOEdit(false);
+  if(!ok)return;
+  const dv=document.getElementById('vsbeo-changes');
+  if(dv){
+    dv.style.display='';
+    dv.innerHTML=ch.length
+      ?'<b>Saved — '+ch.length+' change'+(ch.length>1?'s':'')+' to '+beoEsc(BEOD.tab||'this event')+':</b>&nbsp; '+ch.map(beoEsc).join(' &nbsp;·&nbsp; ')
+      :'<b>Saved</b> — no changes from the previous state.';
+  }
+  beoStatusMsg('Saved to the shared workspace.');
+});
+pill('vsbeo-cancel',()=>{
+  if(BEOSNAP&&BEOD){
+    const keep={_id:BEOD._id,_updated:BEOD._updated,_by:BEOD._by,_pos:BEOD._pos};
+    BEOS[BEOSEL]=Object.assign(sanEv(BEOSNAP),keep);
+    BEOD=BEOS[BEOSEL];
+  }
+  setBEOEdit(false);
+  beoStatusMsg('Reverted — no changes kept.');
+});
+pill('vsbeo-new',async()=>{
+  if(beoGuardEdit())return;
+  beoStatusMsg('Creating…');
+  const e=await insertEvent(blankEvent());
+  if(!e)return;
+  BEOS.push(e);
+  BEOSEL=BEOS.length-1;
+  BEOD=e;
+  selRemember();
+  const dv=document.getElementById('vsbeo-changes');
+  if(dv)dv.style.display='none';
+  beoStatusMsg('New event created from the house defaults — use Edit Event to build it out.');
+  buildBEO();
+});
+pill('vsbeo-dup',async()=>{
+  if(beoGuardEdit()||!BEOD)return;
+  const pl=payloadOf(BEOD);
+  pl.tab=(pl.tab||'Event')+' (copy)';
+  pl.contract=null;
+  beoStatusMsg('Duplicating…');
+  const e=await insertEvent(pl);
+  if(!e)return;
+  BEOS.push(e);
+  BEOSEL=BEOS.length-1;
+  BEOD=e;
+  selRemember();
+  beoStatusMsg('Duplicated — editing the copy; the original is untouched.');
+  buildBEO();
+});
+pill('vsbeo-del',async()=>{
+  if(beoGuardEdit()||!BEOD)return;
+  if(BEOS.length<=1){beoStatusMsg('At least one event must remain — create another before deleting this one.');return;}
+  if(!window.confirm('Delete "'+(BEOD.tab||BEOD.name)+'" for the whole team, permanently? Export first if you may want it back.'))return;
+  beoStatusMsg('Deleting…');
+  if(!await removeEvent(BEOD))return;
+  BEOS.splice(BEOSEL,1);
+  BEOSEL=Math.max(0,BEOSEL-1);
+  BEOD=BEOS[BEOSEL];
+  selRemember();
+  const dv=document.getElementById('vsbeo-changes');
+  if(dv)dv.style.display='none';
+  beoStatusMsg('Event deleted.');
+  buildBEO();
+});
+pill('vsbeo-reset',async()=>{
+  if(!BEOD)return;
+  const isContract=BEOD.contract!=null;
+  const msg=isContract
+    ?'Reset "'+(BEOD.tab||BEOD.name)+'" to the executed contract BEO as written? The team\'s saved edits to this event will be lost.'
+    :'Reset "'+(BEOD.tab||BEOD.name)+'" to the blank house defaults? Its menu, staffing and terms will be cleared for the whole team.';
+  if(!window.confirm(msg))return;
+  let pl;
+  if(isContract){
+    pl=payloadOf(BEO_DEFS[BEOD.contract]);
+    pl.contract=BEOD.contract;
+  }else{
+    pl=blankEvent();
+    pl.tab=BEOD.tab;pl.name=BEOD.name;pl.date=BEOD.date;
+  }
+  const keep={_id:BEOD._id,_updated:BEOD._updated,_by:BEOD._by,_pos:BEOD._pos};
+  BEOS[BEOSEL]=Object.assign(sanEv(pl),keep);
+  BEOS[BEOSEL].contract=pl.contract;
+  BEOD=BEOS[BEOSEL];
+  if(BEOEDIT)setBEOEdit(false);
+  beoStatusMsg('Saving…');
+  const ok=await saveEvent(BEOD,['Reset to '+(isContract?'the contract BEO as written':'the blank house defaults')]);
+  const dv=document.getElementById('vsbeo-changes');
+  if(dv)dv.style.display='none';
+  if(ok)beoStatusMsg(isContract?'Reset '+(BEOD.tab||'event')+' to the contract BEO as written.':'Reset '+(BEOD.tab||'event')+' to the blank house defaults.');
+  buildBEO();
+});
+function beoExport(){
+  const data=JSON.stringify({app:'vesselBEO',ver:1,sel:BEOSEL,evs:BEOS.map(payloadOf)},null,1);
+  try{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
+    a.download='beo-scenarios.json';
+    a.click();
+    beoStatusMsg('Exported beo-scenarios.json — a portable backup of every event in the workspace.');
+  }catch(e){beoStatusMsg('Export failed in this viewer.');}
+  if(navigator.clipboard)navigator.clipboard.writeText(data).catch(()=>{});
+}
+function beoImport(){
+  if(beoGuardEdit())return;
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='.json,application/json';
+  inp.onchange=()=>{
+    const f=inp.files&&inp.files[0];
+    if(!f)return;
+    const r=new FileReader();
+    r.onload=async()=>{
+      try{
+        const o=JSON.parse(r.result);
+        if(o&&Array.isArray(o.evs)&&o.evs.length){
+          if(!window.confirm('Add '+o.evs.length+' event'+(o.evs.length>1?'s':'')+' from this file to the shared workspace? Existing events are kept.'))return;
+          beoStatusMsg('Importing…');
+          for(const raw of o.evs){
+            const e=await insertEvent(payloadOf(raw));
+            if(e)BEOS.push(e);
+          }
+          BEOSEL=BEOS.length-1;
+          BEOD=BEOS[BEOSEL];
+          selRemember();
+          beoStatusMsg('Imported — events added to the shared workspace.');
+          buildBEO();
+        }else beoStatusMsg('Import failed — not a valid scenarios file.');
+      }catch(e){beoStatusMsg('Import failed — not a valid scenarios file.');}
+    };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+pill('vsbeo-export',beoExport);
+pill('vsbeo-import',beoImport);
+pill('vsbeo-print',()=>{
+  document.body.classList.add('print-client');
+  const done=()=>{document.body.classList.remove('print-client');window.removeEventListener('afterprint',done);};
+  window.addEventListener('afterprint',done);
+  window.print();
+  setTimeout(done,2000);
+});
+document.getElementById('pick-close').addEventListener('click',closePicker);
+document.getElementById('pick').addEventListener('click',e=>{if(e.target.id==='pick')closePicker();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePicker();});
+document.getElementById('pick-q').addEventListener('input',e=>renderPick(e.target.value));
+document.getElementById('pick-list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-pk]');
+  if(!b||!BEOD)return;
+  const ix=b.dataset.pk.lastIndexOf(':');
+  const id=b.dataset.pk.slice(0,ix), mode=b.dataset.pk.slice(ix+1);
+  const it=CATALOG.find(x=>x.id===id);
+  if(!it)return;
+  const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0):0;
+  BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0});
+  buildBEO();
+  document.getElementById('pick-msg').textContent='Added '+it.name+(price?' at $'+price:' — set the price on the line')+'.';
+});
+document.getElementById('cat-target').addEventListener('change',e=>{
+  const v=parseFloat(e.target.value);
+  if(isNaN(v)||v<=0||v>=100){catStatus('Target must be between 0 and 100.');e.target.value=TARGET;return;}
+  TARGET=v;
+  sb.from('app_settings').upsert({key:'target_cogs_pct',value:{pct:v}}).then(({error})=>{catStatus(error?'Save failed — '+error.message:'Target saved for the whole team.');});
+  buildCatalog();
+});
+
+/* ---------------- auth ---------------- */
+const authEl=document.getElementById('auth'), appEl=document.getElementById('appwrap');
+function authMsg(m){document.getElementById('au-msg').textContent=m||'';}
+async function doSignIn(){
+  const email=document.getElementById('au-email').value.trim();
+  const pass=document.getElementById('au-pass').value;
+  if(!email||!pass){authMsg('Enter your email and password.');return;}
+  const b=document.getElementById('au-signin');
+  b.disabled=true;authMsg('');
+  const {error}=await sb.auth.signInWithPassword({email,password:pass});
+  b.disabled=false;
+  if(error){authMsg(error.message==='Invalid login credentials'?'Invalid email or password.':error.message);return;}
+}
+document.getElementById('au-signin').addEventListener('click',doSignIn);
+document.getElementById('au-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doSignIn();});
+document.getElementById('au-email').addEventListener('keydown',e=>{if(e.key==='Enter')doSignIn();});
+document.getElementById('signout').addEventListener('click',async()=>{await sb.auth.signOut();});
+document.getElementById('chpass').addEventListener('click',async()=>{
+  const p=window.prompt('New password (minimum 8 characters):');
+  if(!p)return;
+  if(p.length<8){beoStatusMsg('Password not changed — minimum 8 characters.');return;}
+  const {error}=await sb.auth.updateUser({password:p});
+  beoStatusMsg(error?'Password change failed — '+error.message:'Password changed.');
+});
+let BOOTED=false;
+async function enterApp(session){
+  ME=(session.user&&session.user.email)||'';
+  document.getElementById('who').textContent=ME;
+  authEl.style.display='none';
+  appEl.style.display='block';
+  if(BOOTED)return;
+  BOOTED=true;
+  beoStatusMsg('Loading events…');
+  const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
+  if(ok){
+    if(!BEOS.length){
+      const e=await insertEvent(blankEvent());
+      if(e){BEOS=[e];BEOSEL=0;BEOD=e;}
+    }
+    buildBEO();
+    buildCatalog();
+    beoStatusMsg('Shared workspace loaded — '+BEOS.length+' event'+(BEOS.length===1?'':'s')+' · catalog '+CATALOG.length+' items.');
+    subscribeRT();
+  }
+}
+function showLogin(){
+  authEl.style.display='flex';
+  appEl.style.display='none';
+}
+sb.auth.onAuthStateChange((event,session)=>{
+  if(session)enterApp(session);
+  else{BOOTED=false;showLogin();}
+});
+const {data:{session}}=await sb.auth.getSession();
+if(session)enterApp(session);else showLogin();
+</script>
+</body>
+</html>
