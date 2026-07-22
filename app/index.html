@@ -287,7 +287,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
       <h1>Menu <em>catalog</em></h1>
     </div>
     <div class="controls" style="margin:0;">
-      <span class="ctl-label">Target food cost</span>
+      <span class="ctl-label">Target COGS — Vessel beverage</span>
       <input class="drvin" id="cat-target" style="width:52px;">
       <span class="ctl-label">% of guest price</span>
     </div>
@@ -657,7 +657,9 @@ function provChips(elId,sel,withAll){
 const CATSEC={};
 const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
 let HIST={basis:'',events:[]};
-function recPrice(cost){if(!cost||!TARGET)return null;return Math.ceil(cost/(TARGET/100)/5)*5;}
+/* Little Havana food: no blanket %. Strategic ladder — cheap items carry more markup, big-ticket items stay guest-friendly, so the BEO PMIX blends to ~50% COGS (pass/fail enforced on the Menu tab). */
+const recTarget=(cost,prov)=>/havana/i.test(prov||'')?(cost<2?35:cost<5?40:cost<10?45:cost<20?50:55):TARGET;
+function recPrice(cost,prov){const t=recTarget(cost,prov);if(!cost||!t)return null;return Math.ceil(cost/(t/100)/5)*5;}
 const DAYPARTS=['Morning (pre-11a)','Midday (11a-2p)','Afternoon (2-5p)','Evening (5p+)'];
 function daypartOf(t){
   const m=String(t||'').match(/(\d{1,2}):(\d{2})\s*([AP])M/i);
@@ -695,7 +697,7 @@ function buildCatalog(){
   const t=document.getElementById('vsbeo-cat');if(!t)return;
   provChips('cat-prov',CATPROV,true);
   const POOL=CATPROV==='All'?CATALOG:CATALOG.filter(i=>provOf(i)===CATPROV);
-  let h=`<tr><th class="li" style="min-width:250px;">Item</th><th style="min-width:80px;">Vendor cost</th><th style="min-width:95px;">Guest price — current</th><th>COGS % now</th><th>Markup ×</th><th style="min-width:100px;">Recommended @ ${TARGET.toFixed(0)}% COGS</th><th style="min-width:120px;">Status</th></tr>`;
+  let h=`<tr><th class="li" style="min-width:250px;">Item</th><th style="min-width:80px;">Vendor cost</th><th style="min-width:95px;">Guest price — current</th><th>COGS % now</th><th>Markup ×</th><th style="min-width:100px;">Recommended price</th><th style="min-width:120px;">Status</th></tr>`;
   if(!POOL.length){
     t.innerHTML=h+`<tr><td class="li" colspan="7" style="color:var(--muted);padding:16px 10px;">No catalog items yet for ${beoEsc(CATPROV)}.</td></tr>`;
     return;
@@ -707,7 +709,7 @@ function buildCatalog(){
     h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} items — click to expand</span>`}</td></tr>`;
     if(!open)return;
     items.forEach(it=>{
-      const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost);
+      const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost,provOf(it));
       const cogs=(cur&&cost)?cost/cur*100:null, mk=(cur&&cost)?cur/cost:null;
       let chip='·';
       if(!cost)chip=`<span style="color:var(--muted);font-weight:700;">MP — SET PER EVENT</span>`;
@@ -719,7 +721,7 @@ function buildCatalog(){
 <td><input class="drvin" data-ci="${it.id}:client_price" value="${cur==null?'':cur}" style="width:64px;" placeholder="—"></td>
 <td style="color:var(--muted);">${cogs?fpc(cogs):'·'}</td>
 <td style="color:var(--muted);">${mk?mk.toFixed(2)+'×':'·'}</td>
-<td style="font-weight:700;">${rec!=null?bf2(rec):'—'}</td>
+<td style="font-weight:700;">${rec!=null?bf2(rec)+` ${MUC}@ ${recTarget(cost,provOf(it))}%</span>`:'—'}</td>
 <td>${chip}</td></tr>`;
     });
   });
@@ -747,7 +749,7 @@ function renderPick(q){
   POOL.forEach(it=>{
     if(q&&!((it.name+' '+it.category).toLowerCase().includes(q)))return;
     if(it.category!==last){h+=`<div class="pkcat">${beoEsc(it.category)}</div>`;last=it.category;}
-    const rec=recPrice(+it.vendor_cost||0);
+    const rec=recPrice(+it.vendor_cost||0,provOf(it));
     const cur=it.client_price==null?null:+it.client_price;
     h+=`<div class="pkrow"><span class="nm">${beoEsc(it.name)}${it.note?`<span class="nt">${beoEsc(it.note)}</span>`:''}</span>
 <span class="pv">cost <b>${+it.vendor_cost?'$'+(+it.vendor_cost).toLocaleString():'MP'}</b></span>
@@ -784,11 +786,12 @@ function beoCalcFor(B){
   const cogs=cogsF+cogsBv;
   const gp=rev-cogs;
   const wages=B.labor.reduce((a,l)=>a+l.n*l.h*l.rate,0);
-  const labor=wages*(1+B.burden/100);
+  const ptb=B.labor.reduce((a,l)=>a+(/contract/i.test(l.r||'')?0:l.n*l.h*l.rate),0)*B.burden/100;   /* PT&B on Server + Bartender only — never contract labor */
+  const labor=wages+ptb;
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
   const fee=rev*B.mgmtPct/100;
   const ebitda=gp-labor-opex-fee;
-  return {food,bev,bevPkg,bevFee,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogs,gp,wages,labor,opex,fee,ebitda};
+  return {food,bev,bevPkg,bevFee,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogs,gp,wages,ptb,labor,opex,fee,ebitda};
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
@@ -926,12 +929,12 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
   if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td></tr>`;
-  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}% ${MU}on food + special event fee${B.salesTax?'':' · tax-exempt client'}</span></td><td>${bf2(C.sTax)}</td></tr>`;
-  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}% ${MU}on beverage</span></td><td>${bf2(C.lTax)}</td></tr>`;
-  bh+=`<tr><td class="li">Special event fee ${B.sef.toFixed(1)}% ${MU}on F&amp;B + rental</span></td><td>${bf2(C.sef)}</td></tr>`;
-  bh+=`<tr><td class="li">Vessel service charge ${B.svc.toFixed(1)}% ${MU}on F&amp;B only · retained by house — not a gratuity</span></td><td>${bf2(C.svc)}</td></tr>`;
+  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td></tr>`;
+  bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td></tr>`;
   if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
-  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}% ${MU}on F&amp;B</span></td><td>−${bf2(C.disc)}</td></tr>`;
+  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
   if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td></tr>`;
@@ -939,34 +942,32 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td></tr>`;
   document.getElementById('vsbeo-bill').innerHTML=bh;
   /* ---- labor (cost engine) ---- */
-  let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">RULE — 2 SERVERS + 1 BARTENDER · $35/HR · SHIFT = EVENT + 1 HR</span></th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
+  let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule</th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
+  const ROLES=['Server','Bartender','Contract Labor'];
+  const RSEL=(idx,v)=>`<select class="drvin txt" data-bi="lab:${idx}:r" style="width:100%;min-width:130px;">${[...ROLES,...(v&&!ROLES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===v?' selected':''}>${beoEsc(o)}</option>`).join('')}</select>`;
   B.labor.forEach((l,idx)=>{
-    ch+=`<tr><td class="li">${IN(`lab:${idx}:r`,l.r,0,1)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
+    ch+=`<tr><td class="li">${RSEL(idx,l.r)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
   });
   ch+=`<tr><td class="li" colspan="6"><button class="badd" data-bx="add:lab">＋ ADD ROLE</button></td></tr>`;
   ch+=`<tr class="total"><td class="li">Subtotal — event wages</td><td></td><td></td><td></td><td>${bf2(C.wages)}</td><td></td></tr>`;
-  ch+=`<tr><td class="li">Payroll taxes &amp; benefits ${MU}${B.burden}% of wages</span></td><td></td><td></td><td></td><td>${bf2(C.wages*B.burden/100)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Payroll taxes &amp; benefits</td><td></td><td></td><td></td><td>${bf2(C.ptb)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
   /* ---- labor recovery: guest-paid fees vs our labor cost ---- */
   const LABFEE=/bartender|barback|server|staff|labor|chef|attendant|security|coat ?check/i;
   const feeLines=[...B.food,...B.bev].filter(i=>LABFEE.test(i.n)&&i.q*i.p>0);
   const feeSum=feeLines.reduce((a,i)=>a+i.q*i.p,0);
-  const labRec=C.svc+feeSum;
+  const comm=(C.fbB+B.rental)*3/100;
+  const labRec=C.svc+C.sef+feeSum-comm;
   const labNet=labRec-C.labor;
   const labOK=labNet>0.005;
-  ch+=`<tr class="section"><td class="li" colspan="6">LABOR RECOVERY — GUEST-PAID FEES MUST EXCEED OUR LABOR COST</td></tr>`;
-  ch+=`<tr><td class="li">Vessel service charge ${MU}${B.svc.toFixed(1)}% on F&amp;B · from Setup — retained by house</span></td><td colspan="3"></td><td>${bf2(C.svc)}</td><td></td></tr>`;
-  feeLines.forEach(i=>{ch+=`<tr><td class="li">${beoEsc(i.n)} ${MU}billed on the menu</span></td><td colspan="3"></td><td>${bf2(i.q*i.p)}</td><td></td></tr>`;});
-  ch+=`<tr class="total"><td class="li">Total labor fees collected from guest</td><td colspan="3"></td><td>${bf2(labRec)}</td><td></td></tr>`;
-  ch+=`<tr><td class="li">Less: total event labor ${MU}wages + ${B.burden}% burden</span></td><td colspan="3"></td><td>−${bf2(C.labor)}</td><td></td></tr>`;
-  ch+=`<tr class="total"><td class="li">Net labor ${labNet>=0?'surplus':'shortfall'} ${MU}coverage ${C.labor?fpc(labRec/C.labor*100):'—'} of labor cost</span></td><td colspan="3">${labOK?'<span class="chip-ok">PASS — FEES COVER LABOR</span>':'<span class="chip-low">FAIL — FEES BELOW LABOR COST</span>'}</td><td style="font-weight:800;color:${labOK?'var(--pos)':'var(--neg)'};">${labNet>=0?'+':'−'}${bf2(Math.abs(labNet))}</td><td></td></tr>`;
-  if(!labOK)ch+=`<tr><td class="li" colspan="6" style="color:var(--muted);font-size:9.5px;">To pass: raise the service charge %, add or increase billed staffing fees (e.g. bartender fee), or trim scheduled hours. Break-even needs ${bf2(C.labor)} recovered.</td></tr>`;
-  ch+=`<tr class="section"><td class="li" colspan="6">DIRECT OPERATING &amp; OTHER EXPENSES — VESSEL DRIVER % × EVENT REVENUE</td></tr>`;
-  BEO_OPEX.forEach(o=>{
-    ch+=`<tr><td class="li">${o.n}</td><td colspan="2" style="color:var(--muted);">${fpc(o.v)}</td><td></td><td>${bf2(C.rev*o.v/100)}</td><td></td></tr>`;
-  });
-  const opct=BEO_OPEX.reduce((a,o)=>a+o.v,0);
-  ch+=`<tr class="total"><td class="li">Total direct operating &amp; other</td><td colspan="2">${fpc(opct)}</td><td></td><td>${bf2(C.opex)}</td><td></td></tr>`;
+  ch+=`<tr class="section"><td class="li" colspan="6">LABOR RECOVERY</td></tr>`;
+  ch+=`<tr><td class="li">Service Charge</td><td colspan="3"></td><td>${bf2(C.svc)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Special Event Fee</td><td colspan="3"></td><td>${bf2(C.sef)}</td><td></td></tr>`;
+  feeLines.forEach(i=>{ch+=`<tr><td class="li">${beoEsc(i.n)}</td><td colspan="3"></td><td>${bf2(i.q*i.p)}</td><td></td></tr>`;});
+  ch+=`<tr><td class="li">Less: Commissions 3%</td><td colspan="3"></td><td>−${bf2(comm)}</td><td></td></tr>`;
+  ch+=`<tr class="total"><td class="li">Total fees collected</td><td colspan="3"></td><td>${bf2(labRec)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Less: total event labor</td><td colspan="3"></td><td>−${bf2(C.labor)}</td><td></td></tr>`;
+  ch+=`<tr class="total"><td class="li">Net labor ${labNet>=0?'surplus':'shortfall'}</td><td colspan="3">${labOK?'<span class="chip-ok">PASS — FEES COVER LABOR</span>':'<span class="chip-low">FAIL — FEES BELOW LABOR COST</span>'}</td><td style="font-weight:800;color:${labOK?'var(--pos)':'var(--neg)'};">${labNet>=0?'+':'−'}${bf2(Math.abs(labNet))}</td><td></td></tr>`;
   document.getElementById('vsbeo-cost').innerHTML=ch;
   const tb=document.getElementById('tab-costs');
   if(tb)tb.innerHTML='Labor <span class="tabbadge '+(labOK?'ok':'bad')+'">'+(labOK?'✓ PASS':'✕ FAIL')+'</span>';
@@ -980,9 +981,9 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   if(C.unmet>0.005)ph+=pr('Unmet-minimum charge',C.unmet,0,1);
   if(B.rental>0.005)ph+=pr('Room / space rental',B.rental,0,1);
   if(C.bevFee>0.005)ph+=pr('Bartender fee',C.bevFee,0,1);
-  ph+=pr('Service charge '+B.svc.toFixed(0)+'%',C.svc,0,1);
-  ph+=pr('Special event fee '+B.sef.toFixed(0)+'%',C.sef,0,1);
-  if(C.disc>0.005)ph+=pr('Less: '+beoEsc(B.discLbl||'discount')+' '+(B.disc||0).toFixed(0)+'% of F&amp;B',-C.disc,0,1);
+  ph+=pr('Service Charge',C.svc,0,1);
+  ph+=pr('Special Event Fee',C.sef,0,1);
+  if(C.disc>0.005)ph+=pr('Less: '+beoEsc(B.discLbl||'discount'),-C.disc,0,1);
   ph+=pr('Total event revenue',C.rev,1);
   ph+=`<tr class="section"><td class="li" colspan="4">COST OF SALES</td></tr>`;
   const prc=(n,v,d,dl)=>`<tr><td class="li" style="padding-left:22px;">${n}</td><td>${bf2(v)}</td><td style="color:var(--muted);">${d?fpc(v/d*100):'·'}<span style="display:block;font-size:6.5px;letter-spacing:.06em;">${dl}</span></td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'·'}</td></tr>`;
@@ -990,10 +991,10 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   ph+=prc('Beverage &amp; bar cost',C.cogsBv,C.bevRev,'OF BEV REVENUE — PACKAGES + CASH BAR');
   ph+=pr('Total COGS',C.cogs,1);
   ph+=pr('Gross profit',C.gp,1);
-  ph+=pr('Event labor — incl. '+B.burden+'% burden',C.labor);
+  ph+=pr('Event labor',C.labor);
   ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.labor)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.labor)/C.rev*100):'·'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.labor)/B.guests):'·'}</td></tr>`;
-  ph+=pr('Direct operating &amp; other expenses — '+fpc(BEO_OPEX.reduce((a,o)=>a+o.v,0))+' of revenue',C.opex);
-  ph+=pr('Management fee '+B.mgmtPct.toFixed(0)+'% of revenue',C.fee);
+  ph+=pr('Direct operating &amp; other expenses',C.opex);
+  ph+=pr('Management fee',C.fee);
   ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
   ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
   document.getElementById('vsbeo-pnl').innerHTML=ph;
@@ -1042,8 +1043,8 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   rh+=rr('Cash bar sales',C.cash,'cash',true);
   if(C.unmet>0.005||av('unmet')!=null)rh+=rr('Unmet-minimum charge',C.unmet,'unmet',true);
   if(B.rental>0.005||av('rental')!=null)rh+=rr('Room / space rental',B.rental,'rental',true);
-  rh+=rr('Service charge',C.svc,'svc',true);
-  rh+=rr('Special event fee',C.sef,'sef',true);
+  rh+=rr('Service Charge',C.svc,'svc',true);
+  rh+=rr('Special Event Fee',C.sef,'sef',true);
   if(C.disc>0.005||av('disc')!=null)rh+=rr('Less: discounts &amp; comps',C.disc,'disc',false);
   rh+=rc('Total event revenue',C.rev,aRev,true);
   rh+=`<tr class="section"><td class="li" colspan="5">COSTS</td></tr>`;
@@ -1051,7 +1052,7 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   rh+=rr('Beverage &amp; bar cost',C.cogsBv,'cogsBv',false);
   rh+=rc('Total COGS',C.cogs,aCogs,false);
   rh+=rc('Gross profit',C.gp,aGp,true);
-  rh+=rr('Event labor — wages incl. burden',C.labor,'labor',false);
+  rh+=rr('Event labor',C.labor,'labor',false);
   rh+=rr('Direct operating &amp; other expenses',C.opex,'opex',false);
   rh+=rr('Management fee',C.fee,'fee',false);
   rh+=rc('EBITDA',C.ebitda,aEb,true);
@@ -1541,7 +1542,7 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   const id=b.dataset.pk.slice(0,ix), mode=b.dataset.pk.slice(ix+1);
   const it=CATALOG.find(x=>x.id===id);
   if(!it)return;
-  const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0):0;
+  const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0,provOf(it)):0;
   BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0});
   buildBEO();
   scheduleSave();
