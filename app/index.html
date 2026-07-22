@@ -675,9 +675,18 @@ function provChips(elId,sel,withAll){
 const CATSEC={};
 const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
 let HIST={basis:'',events:[]};
-/* Little Havana food: no blanket %. Strategic ladder — cheap items carry more markup, big-ticket items stay guest-friendly, so the BEO PMIX blends to ~50% COGS (pass/fail enforced on the Menu tab). */
-const recTarget=(cost,prov)=>/havana/i.test(prov||'')?(cost<2?35:cost<5?40:cost<10?45:cost<20?50:55):TARGET;
-function recPrice(cost,prov){const t=recTarget(cost,prov);if(!cost||!t)return null;return Math.ceil(cost/(t/100)/5)*5;}
+/* Little Havana food: no blanket %. Target COGS keys off what the item IS (its raw-ingredient cost), read from the item name & menu category. Low-ingredient items (sides, salads, starches, desserts, sandwiches, veg apps, dips) carry the biggest markup (~30% COGS); protein appetizers sit mid (~40%); premium centerpieces — entrées, seafood, prime rib, pernil — stay guest-friendly (~48%). Everything lands at/under 50% so the BEO PMIX blends toward the 50% goal (pass/fail enforced on the Menu tab). */
+function recTarget(name,cat,prov){
+  if(!/havana/i.test(prov||''))return TARGET;
+  const s=((cat||'')+' '+(name||'')).toLowerCase();
+  /* Premium — high food cost already; keep markup gentle so it isn't offensive */
+  if(/entr[eé]|seafood|shrimp|scallop|ceviche|salmon|paella|lobster|crab|tuna|oyster|prime rib|beef medallion|pernil|carnita/.test(s))return 48;
+  /* Low ingredient cost — mark up hardest */
+  if(/side|salad|dessert|sandwich|wrap|stationary|starter|vegetarian|rice|bean|potato|fries|tots|chip|plantain|maduro|toston|macaroni|mac &|vegetable|veggie|hummus|dip|fruit|nacho|brownie|cookie|cake|pie|dessert bar|arepa|empanada|croquetta|crud/.test(s))return 30;
+  /* Mid — chicken / pork / beef appetizers & lighter fare */
+  return 40;
+}
+function recPrice(cost,name,cat,prov){const t=recTarget(name,cat,prov);if(!cost||!t)return null;return Math.ceil(cost/(t/100)/5)*5;}
 const DAYPARTS=['Morning (pre-11a)','Midday (11a-2p)','Afternoon (2-5p)','Evening (5p+)'];
 function daypartOf(t){
   const m=String(t||'').match(/(\d{1,2}):(\d{2})\s*([AP])M/i);
@@ -727,7 +736,7 @@ function buildCatalog(){
     h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} items — click to expand</span>`}</td></tr>`;
     if(!open)return;
     items.forEach(it=>{
-      const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost,provOf(it));
+      const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost,it.name,it.category,provOf(it));
       const cogs=(cur&&cost)?cost/cur*100:null, mk=(cur&&cost)?cur/cost:null;
       let chip='·';
       if(!cost)chip=`<span style="color:var(--muted);font-weight:700;">MP — SET PER EVENT</span>`;
@@ -739,7 +748,7 @@ function buildCatalog(){
 <td><input class="drvin" data-ci="${it.id}:client_price" value="${cur==null?'':cur}" style="width:64px;" placeholder="—"></td>
 <td style="color:var(--muted);">${cogs?fpc(cogs):'·'}</td>
 <td style="color:var(--muted);">${mk?mk.toFixed(2)+'×':'·'}</td>
-<td style="font-weight:700;">${rec!=null?bf2(rec)+` ${MUC}@ ${recTarget(cost,provOf(it))}%</span>`:'—'}</td>
+<td style="font-weight:700;">${rec!=null?bf2(rec)+` ${MUC}target ${recTarget(it.name,it.category,provOf(it))}% COGS</span>`:'—'}</td>
 <td>${chip}</td></tr>`;
     });
   });
@@ -767,7 +776,7 @@ function renderPick(q){
   POOL.forEach(it=>{
     if(q&&!((it.name+' '+it.category).toLowerCase().includes(q)))return;
     if(it.category!==last){h+=`<div class="pkcat">${beoEsc(it.category)}</div>`;last=it.category;}
-    const rec=recPrice(+it.vendor_cost||0,provOf(it));
+    const rec=recPrice(+it.vendor_cost||0,it.name,it.category,provOf(it));
     const cur=it.client_price==null?null:+it.client_price;
     h+=`<div class="pkrow"><span class="nm">${beoEsc(it.name)}${it.note?`<span class="nt">${beoEsc(it.note)}</span>`:''}</span>
 <span class="pv">cost <b>${+it.vendor_cost?'$'+(+it.vendor_cost).toLocaleString():'MP'}</b></span>
@@ -1593,7 +1602,7 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   const id=b.dataset.pk.slice(0,ix), mode=b.dataset.pk.slice(ix+1);
   const it=CATALOG.find(x=>x.id===id);
   if(!it)return;
-  const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0,provOf(it)):0;
+  const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0,it.name,it.category,provOf(it)):0;
   BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0});
   buildBEO();
   scheduleSave();
