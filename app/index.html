@@ -197,6 +197,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <nav>
     <button data-nav="events" id="nav-events">Events</button>
     <button data-nav="catalog" id="nav-catalog">Menu Catalog</button>
+    <button data-nav="historicals" id="nav-historicals">Historicals</button>
     <button data-nav="activity" id="nav-activity">Activity</button>
   </nav>
   <div class="navfoot">
@@ -260,7 +261,9 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   </div>
   <div class="secpane" id="pane-bill">
     <h2 id="bill-h2">BEO Summary — <em>Client View</em></h2>
-    <div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:720px;"></table></div>
+    <div class="evmeta" id="bill-head"></div>
+    <div class="scroll"><table class="alloc" id="vsbeo-billit" style="max-width:760px;"></table></div>
+    <div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:760px;"></table></div>
   </div>
   <div class="secpane" id="pane-costs">
     <h2>Event <em>labor</em> — staffing cost vs guest-paid fees</h2>
@@ -292,6 +295,24 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="controls" id="cat-prov" style="margin:8px 0 0;"></div>
   <span class="ctl-label" id="cat-status"></span>
   <div class="scroll"><table class="alloc" id="vsbeo-cat" style="max-width:1060px;"></table></div>
+</section>
+
+<!-- ================= HISTORICALS ================= -->
+<section id="view-historicals" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Historicals <em>— FY26 event actuals</em></h1>
+      <div class="evmeta" id="hist-basis"></div>
+    </div>
+  </div>
+  <div class="bstrip" id="hist-kpis"></div>
+  <h2>Beverage <em>$ / guest</em> — by event type &amp; time of day</h2>
+  <div class="sec-hint" id="hist-hint"></div>
+  <div class="scroll"><table class="alloc" id="hist-matrix" style="max-width:980px;"></table></div>
+  <h2>Event <em>log</em></h2>
+  <div class="controls" id="hist-fty" style="margin:8px 0 0;"></div>
+  <div class="controls" id="hist-fdp" style="margin:4px 0 0;"></div>
+  <div class="scroll"><table class="alloc" id="hist-list" style="max-width:1100px;"></table></div>
 </section>
 
 <!-- ================= ACTIVITY ================= -->
@@ -415,7 +436,8 @@ function blankEvent(){
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
-const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Other'];
+const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
+const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Rooftop Event','Social','Wedding Reception'];
 const TIMES=(()=>{const o=[];for(let h=6;h<26;h++){['00','30'].forEach(m=>{const hh=h%24,ap=hh<12?'AM':'PM';let h12=hh%12;if(h12===0)h12=12;o.push(h12+':'+m+' '+ap);});}return o;})();
 function dispDate(B){
   if(B.evDate){
@@ -484,17 +506,18 @@ function parseHash(){
   const p=h.split('/');
   if(p[0]==='event'&&p[1])return {view:'event',id:p[1]};
   if(p[0]==='catalog')return {view:'catalog',id:null};
+  if(p[0]==='historicals')return {view:'historicals',id:null};
   if(p[0]==='activity')return {view:'activity',id:null};
   return {view:'events',id:null};
 }
 function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
-  ['events','event','catalog','activity'].forEach(v=>{
+  ['events','event','catalog','historicals','activity'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
-  ['events','catalog','activity'].forEach(v=>{
+  ['events','catalog','historicals','activity'].forEach(v=>{
     const b=document.getElementById('nav-'+v);
     if(b)b.classList.toggle('on',ROUTE.view===v||(v==='events'&&ROUTE.view==='event'));
   });
@@ -506,6 +529,7 @@ function renderRoute(){
     buildBEO();
   }
   else if(ROUTE.view==='catalog')buildCatalog();
+  else if(ROUTE.view==='historicals')buildHistoricals();
   else if(ROUTE.view==='activity')buildActivity();
 }
 window.addEventListener('hashchange',()=>{
@@ -620,7 +644,7 @@ document.addEventListener('focusout',()=>{
 });
 
 /* ---------------- menu catalog & benchmarks ---------------- */
-let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40;
+let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40,CLIENTS=[];
 const PROVIDERS=['Little Havana','Little Wing','Vessel','Other'];
 let PICKPROV='Little Havana', CATPROV='All';
 const provOf=it=>it.provider||'Little Havana';
@@ -632,9 +656,24 @@ function provChips(elId,sel,withAll){
 }
 const CATSEC={};
 const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
+let HIST={basis:'',events:[]};
 function recPrice(cost){if(!cost||!TARGET)return null;return Math.ceil(cost/(TARGET/100)/5)*5;}
+const DAYPARTS=['Morning (pre-11a)','Midday (11a-2p)','Afternoon (2-5p)','Evening (5p+)'];
+function daypartOf(t){
+  const m=String(t||'').match(/(\d{1,2}):(\d{2})\s*([AP])M/i);
+  if(!m)return null;
+  const h=(+m[1]%12)+(/p/i.test(m[3])?12:0)+(+m[2])/60;
+  if(h<11)return DAYPARTS[0];
+  if(h<14)return DAYPARTS[1];
+  if(h<17)return DAYPARTS[2];
+  return DAYPARTS[3];
+}
 function benchFor(B){
-  if(B&&B.evType&&BENCH.byType&&BENCH.byType[B.evType]!=null)return{v:+BENCH.byType[B.evType],label:B.evType,n:(BENCH.counts||{})[B.evType]};
+  const ty=B&&B.evType, dp=B?daypartOf(B.startTime):null;
+  const td=BENCH.byTypeDaypart||{}, tdn=BENCH.tdCounts||{};
+  if(ty&&dp&&td[ty+'|'+dp]!=null)return{v:+td[ty+'|'+dp],label:ty+' · '+dp,n:tdn[ty+'|'+dp]};
+  if(ty&&BENCH.byType&&BENCH.byType[ty]!=null)return{v:+BENCH.byType[ty],label:ty,n:(BENCH.counts||{})[ty]};
+  if(dp&&BENCH.byDaypart&&BENCH.byDaypart[dp]!=null)return{v:+BENCH.byDaypart[dp],label:dp,n:(BENCH.dpCounts||{})[dp]};
   return{v:+(BENCH.overall||0),label:'all events',n:null};
 }
 function catStatus(m){const el=document.getElementById('cat-status');if(el)el.textContent=m;}
@@ -647,6 +686,8 @@ async function loadCatalog(){
   if(!st.error)(st.data||[]).forEach(r=>{
     if(r.key==='target_cogs_pct'&&r.value&&r.value.pct)TARGET=+r.value.pct;
     if(r.key==='cashbar_benchmarks'&&r.value)BENCH=r.value;
+    if(r.key==='historical_events'&&r.value&&Array.isArray(r.value.events))HIST=r.value;
+    if(r.key==='client_list'&&r.value&&Array.isArray(r.value.clients))CLIENTS=r.value.clients;
   });
   const ti=document.getElementById('cat-target');if(ti)ti.value=TARGET;
 }
@@ -829,9 +870,9 @@ function buildBEO(){
 <tr><td class="li">Guest count</td><td>${STEP('g:guests',B.guests,56)}</td><td class="li">Sales tax (%)</td><td>${IN('g:salesTax',B.salesTax)}</td><td class="li">Payroll burden (% of wages)</td><td>${IN('g:burden',B.burden)}</td></tr>
 <tr><td class="li">Service charge (%)</td><td>${IN('g:svc',B.svc)}</td><td class="li">Liquor tax (%)</td><td>${IN('g:liqTax',B.liqTax)}</td><td class="li">Management fee (% of revenue)</td><td>${IN('g:mgmtPct',B.mgmtPct)}</td></tr>
 <tr><td class="li">Special event fee (%)</td><td>${IN('g:sef',B.sef)}</td><td class="li">Discount (% of F&amp;B)</td><td>${IN('g:disc',B.disc||0)}</td><td class="li">Discount label</td><td>${IN('g:discLbl',B.discLbl||'',0,1)}</td></tr>
-<tr><td class="li">Event type</td><td>${`<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...Object.keys(BENCH.byType||{})].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26</span></td><td><button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button></td></tr>
+<tr><td class="li">Event type</td><td>${(()=>{const tys=[...new Set([...EV_TYPES,...Object.keys(BENCH.byType||{}),...((HIST.events||[]).map(e=>e.ty).filter(Boolean)),...(B.evType?[B.evType]:[])])].sort();return `<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...tys].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26 · see Historicals</span></td><td><button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button></td></tr>
 <tr><td class="li">Start &amp; end time</td><td>${(()=>{const TSEL=(bi,v)=>`<select class="drvin txt" data-bi="${bi}" style="width:92px;">${['',...TIMES,...(v&&!TIMES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===(v||'')?' selected':''}>${o||'—'}</option>`).join('')}</select>`;return TSEL('g:startTime',B.startTime)+' '+TSEL('g:endTime',B.endTime);})()}</td><td class="li">Date of inquiry</td><td><input type="date" class="drvin txt" data-bi="g:inqDate" value="${attEsc(B.inqDate||'')}" style="width:140px;"></td><td class="li">Sales person</td><td>${IN('g:salesperson',B.salesperson||'',0,1)}</td></tr>
-<tr><td class="li">Source of lead</td><td>${(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li">Company</td><td>${IN('g:company',B.company||'',0,1)}</td><td class="li">Market segment</td><td>${(()=>{const mk=B.market||'';const opts=['',...MKT_SEG,...(mk&&!MKT_SEG.includes(mk)?[mk]:[])];return `<select class="drvin txt" data-bi="g:market" style="width:170px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===mk?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td></tr>
+<tr><td class="li">Source of lead</td><td>${(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li">Company / group</td><td><input class="drvin txt" data-bi="g:company" list="colist" value="${attEsc(B.company||'')}" placeholder="pick or type…"><datalist id="colist">${[...new Set([...CLIENTS,...(B.company?[B.company]:[])])].sort().map(c=>`<option value="${attEsc(c)}">`).join('')}</datalist></td><td class="li">Market segment</td><td>${(()=>{const mk=B.market||'';const opts=['',...MKT_SEG,...(mk&&!MKT_SEG.includes(mk)?[mk]:[])];return `<select class="drvin txt" data-bi="g:market" style="width:170px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===mk?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td></tr>
 ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B.evDate+'T12:00:00');const dd=Math.round((b-a)/86400000);return isNaN(dd)?'':`<tr><td class="li" colspan="6" style="color:var(--muted);">Lead time — inquiry to event: <b>${dd} days</b></td></tr>`;})():''}`;
   /* ---- items ---- */
   const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
@@ -859,8 +900,28 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   document.getElementById('vsbeo-items').innerHTML=ih;
   const tbm=document.getElementById('tab-menu');
   if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
-  /* ---- client bill ---- */
-  let bh=`<tr><th class="li" style="min-width:280px;">BEO summary — client view · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
+  /* ---- client bill: header + itemized invoice + billing summary ---- */
+  document.getElementById('bill-head').innerHTML=[
+    '<b>'+beoEsc(B.name||B.tab||'Event')+'</b>',
+    B.company?('Account: <b>'+beoEsc(B.company)+'</b>'):null,
+    dispDate(B)?beoEsc(dispDate(B)):null,
+    '<b>'+B.guests+'</b> guests',
+    B.fbMin>0?('F&amp;B minimum '+bf0(B.fbMin)):null,
+    B.salesperson?('Event sales: <b>'+beoEsc(B.salesperson)+'</b>'):null
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  let ib=`<tr><th style="min-width:44px;">Qty</th><th class="li" style="min-width:340px;">Item</th><th style="min-width:80px;">Price</th><th style="min-width:90px;">Total</th></tr>`;
+  ib+=`<tr class="section"><td colspan="4" class="li">FOOD — VESSEL &amp; LITTLE WING</td></tr>`;
+  if(B.food.length)B.food.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
+  else ib+=`<tr><td colspan="4" class="li" style="color:var(--muted);">No food selections yet.</td></tr>`;
+  ib+=`<tr class="total"><td></td><td class="li">Food total</td><td></td><td>${bf2(C.food)}</td></tr>`;
+  if(B.bev.length||B.cashDrinks>0){
+    ib+=`<tr class="section"><td colspan="4" class="li">BEVERAGE</td></tr>`;
+    B.bev.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
+    if(B.cashDrinks>0)ib+=`<tr><td>·</td><td class="li">Cash bar — guests pay individually for their own drinks</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+    if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
+  }
+  document.getElementById('vsbeo-billit').innerHTML=ib;
+  let bh=`<tr><th class="li" style="min-width:280px;">Estimated billing · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
   if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
   bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
   if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
@@ -1015,6 +1076,69 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
 }
 let PREVC={id:null,grand:0,ebitda:0};
 
+/* ---------------- historicals view ---------------- */
+let HFTY='All', HFDP='All';
+function buildHistoricals(){
+  const t=document.getElementById('hist-list');
+  if(!t)return;
+  const EV=HIST.events||[];
+  document.getElementById('hist-basis').textContent=HIST.basis||'';
+  if(!EV.length){
+    t.innerHTML='';
+    document.getElementById('hist-matrix').innerHTML='';
+    strip('hist-kpis',[['Events','0','no historical data loaded'],['Beverage revenue','—',''],['Bev $/guest','—',''],['Qualifying events','—','']]);
+    return;
+  }
+  const qual=EV.filter(e=>+e.g>0&&+e.bev>0);
+  const wavg=v=>{const g=v.reduce((a,e)=>a+ +e.g,0);return g?v.reduce((a,e)=>a+ +e.bev,0)/g:0;};
+  strip('hist-kpis',[
+    ['Events tracked',String(EV.length),'Jul 2025 – Jun 2026 · Tripleseat'],
+    ['Total event revenue',bf0(EV.reduce((a,e)=>a+ +e.tot,0)),'ex-tax & fees'],
+    ['Beverage revenue',bf0(EV.reduce((a,e)=>a+ +e.bev,0)),'alcohol + NA'],
+    ['Bev $/guest — overall',bf2(wavg(qual)),qual.length+' events with bar revenue · use as the forecast floor'],
+    ['Best daypart',(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=qual.filter(e=>e.dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk?bf2(bv):'—';})(),(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=qual.filter(e=>e.dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk;})()]]);
+  document.getElementById('hist-hint').textContent='Weighted beverage $ per guest across events that actually rang bar revenue. Cells with few events are directional — the calculator uses type × daypart first, then falls back to type, daypart, then the overall average.';
+  /* type × daypart matrix */
+  const types=[...new Set(qual.map(e=>e.ty))].sort((a,b)=>wavg(qual.filter(e=>e.ty===b))-wavg(qual.filter(e=>e.ty===a)));
+  let mh=`<tr><th class="li" style="min-width:170px;">Event type</th>${DAYPARTS.map(d=>`<th style="min-width:105px;">${beoEsc(d)}</th>`).join('')}<th style="min-width:105px;">All dayparts</th></tr>`;
+  types.forEach(ty=>{
+    const tv=qual.filter(e=>e.ty===ty);
+    mh+=`<tr><td class="li">${beoEsc(ty)} ${MUC}${tv.length} event${tv.length>1?'s':''}</span></td>`;
+    DAYPARTS.forEach(dp=>{
+      const v=tv.filter(e=>e.dp===dp);
+      mh+=v.length?`<td><b>${bf2(wavg(v))}</b> ${MUC}n=${v.length}</span></td>`:`<td style="color:var(--muted);">·</td>`;
+    });
+    mh+=`<td style="font-weight:700;">${bf2(wavg(tv))}</td></tr>`;
+  });
+  mh+=`<tr class="total"><td class="li">All types</td>${DAYPARTS.map(dp=>{const v=qual.filter(e=>e.dp===dp);return `<td>${v.length?bf2(wavg(v)):'·'}</td>`;}).join('')}<td>${bf2(wavg(qual))}</td></tr>`;
+  document.getElementById('hist-matrix').innerHTML=mh;
+  /* filters */
+  const allTypes=[...new Set(EV.map(e=>e.ty))].sort();
+  const chip=(elId,opts,sel,kind)=>{
+    const el=document.getElementById(elId);
+    if(el)el.innerHTML='<span class="ctl-label">'+(kind==='ty'?'Type':'Daypart')+'</span>'+opts.map(o=>`<button class="pill" data-hf="${kind}:${attEsc(o)}"${o===sel?' aria-pressed="true"':''}><span class="dot"></span>${beoEsc(o.toUpperCase())}</button>`).join('');
+  };
+  chip('hist-fty',['All',...allTypes],HFTY,'ty');
+  chip('hist-fdp',['All',...DAYPARTS],HFDP,'dp');
+  /* event log */
+  const rows=EV.filter(e=>(HFTY==='All'||e.ty===HFTY)&&(HFDP==='All'||e.dp===HFDP));
+  let h=`<tr><th class="li" style="min-width:90px;">Date</th><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th class="li">Daypart</th><th>Time</th><th>Guests</th><th>Food</th><th>Beverage</th><th>Bev $/guest</th><th>Total revenue</th></tr>`;
+  rows.forEach(e=>{
+    const bpp=+e.g>0?+e.bev/+e.g:0;
+    h+=`<tr><td class="li" style="color:var(--muted);">${beoEsc(e.d)}</td><td class="li"><span class="evname" style="font-size:11px;">${beoEsc(e.n)}</span>${e.s==='DEFINITE'?` ${MUC}definite — not yet closed</span>`:''}</td>
+<td class="li">${e.ty?`<span class="typechip">${beoEsc(e.ty)}</span>`:'·'}</td>
+<td class="li" style="color:var(--muted);">${beoEsc(e.dp||'·')}</td>
+<td style="color:var(--muted);white-space:nowrap;">${beoEsc((e.st||'')+(e.et?'–'+e.et:''))}</td>
+<td>${+e.g||'·'}</td>
+<td style="color:var(--muted);">${+e.food?bf0(+e.food):'·'}</td>
+<td style="font-weight:700;">${+e.bev?bf0(+e.bev):'·'}</td>
+<td style="font-weight:700;color:${bpp>0?'var(--accent-deep)':'var(--muted)'};">${bpp>0?bf2(bpp):'·'}</td>
+<td>${bf0(+e.tot)}</td></tr>`;
+  });
+  if(!rows.length)h+=`<tr><td class="li" colspan="10" style="color:var(--muted);padding:16px 10px;">No events match these filters.</td></tr>`;
+  t.innerHTML=h;
+}
+
 /* ---------------- activity view ---------------- */
 async function buildActivity(){
   const el=document.getElementById('act-list');
@@ -1087,6 +1211,14 @@ document.addEventListener('keydown',e=>{
   });
 });
 document.addEventListener('click',e=>{
+  const hf=e.target.closest('[data-hf]');
+  if(hf){
+    const ix=hf.dataset.hf.indexOf(':');
+    const kind=hf.dataset.hf.slice(0,ix), val=hf.dataset.hf.slice(ix+1);
+    if(kind==='ty')HFTY=val;else HFDP=val;
+    buildHistoricals();
+    return;
+  }
   const pv=e.target.closest('[data-pv]');
   if(pv){
     if(pv.dataset.pvx==='pick-prov'){PICKPROV=pv.dataset.pv;provChips('pick-prov',PICKPROV,false);renderPick(document.getElementById('pick-q').value);}
