@@ -250,6 +250,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     <button data-sec="costs" id="tab-costs">Labor</button>
     <button data-sec="pnl">P&amp;L</button>
     <button data-sec="recon">Reconciliation</button>
+    <button data-sec="terms">Contract Terms</button>
   </div>
   <div class="secpane" id="pane-setup">
     <h2>Event <em>setup</em> — contract terms &amp; rates</h2>
@@ -277,6 +278,11 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="secpane" id="pane-recon">
     <h2>Event <em>reconciliation</em> — projected vs actual</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-recon" style="max-width:1100px;"></table></div>
+  </div>
+  <div class="secpane" id="pane-terms">
+    <h2>Contract <em>terms</em> — standard event agreement</h2>
+    <div class="scroll"><table class="alloc" id="vsbeo-feetbl" style="max-width:1000px;"></table></div>
+    <div id="vsbeo-terms" style="max-width:1000px;"></div>
   </div>
 </section>
 
@@ -426,6 +432,15 @@ const BEO_OPEX=[
   {n:'Repairs & Maintenance',v:0.7},
   {n:'Utilities',v:1.6},
   {n:'G&A — Uncontrollable (processing, ins., licenses)',v:1.9}];
+/* Standard event agreement — Terms & Conditions. Fees called out here surface as potential client line items on the Contract Terms tab. */
+const TERMS=[
+  {h:'Guaranteed Guest Count',b:"The final guaranteed guest count is due twenty-one (21) calendar days prior to the event date. The guaranteed guest count may be increased after this date only with Operator's prior written approval and is subject to staffing, product availability, and venue capacity. Once the final guarantee has been provided, it may not be reduced, and charges will be based on the guaranteed guest count or the actual number of guests served, whichever is greater. If no final guaranteed guest count is received by the deadline, the guest count stated in this Agreement shall become the final guaranteed guest count. Any increase in attendance above the guaranteed guest count that has not been approved in advance may be subject to an additional surcharge (per guest, set below), in addition to all applicable food and beverage charges, service charges, and taxes. Operator reserves the right to decline admission to guests exceeding the guaranteed guest count if capacity, staffing, safety, or operational limitations prevent accommodation."},
+  {h:'Reservation Time',b:"The event start and end times are set forth in this Agreement. Events extending beyond the contracted end time are not guaranteed an extension and are subject to venue availability. If Operator permits an event to continue beyond the scheduled end time, additional charges of $500 per 30-minute increment (or portion thereof) apply, plus any additional staffing, food and beverage, security, or other operational costs incurred."},
+  {h:'Event Location',b:"If the final guaranteed guest count materially increases or decreases, Operator reserves the right to relocate the event to another space within the property that is better suited to accommodate the event. If the final guest count exceeds the capacity of the originally contracted event space, Operator cannot guarantee that alternate accommodations will be available."},
+  {h:'Service Charge',b:"A mandatory 20% Service Charge will be added to all food and beverage charges. This Service Charge covers administrative, operational, and staffing costs associated with the event and is not a gratuity and is not distributed to employees."},
+  {h:'Menu Selection',b:"Final menu selections are due twenty-one (21) calendar days prior to the event date. If menu selections are not received by the deadline, Operator reserves the right to provide a chef's selection from its available group dining menus. All food and beverage served at the event must be purchased from and prepared by the restaurant. Outside specialty cakes are permitted only with prior approval and are subject to a $5 per person cake service fee."},
+  {h:'Final Payment',b:"The remaining balance of the event contract, together with any additional charges or overages incurred during the event, is due upon conclusion of the event unless otherwise agreed in writing. Payment may be made by cash or credit card. Personal checks are not accepted. Any unpaid balance outstanding for more than thirty (30) days after the event date shall accrue interest at the rate of 1.5% per month, or the maximum rate permitted by applicable law, whichever is less."}
+];
 function blankEvent(){
   return {tab:'New Event',name:'New Event — Vessel',date:'',evType:'',
     inqDate:'',evDate:'',startTime:'',endTime:'',salesperson:'',leadSource:'',company:'',market:'',
@@ -434,9 +449,9 @@ function blankEvent(){
     food:[],bev:[],
     cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,act:{},contract:null};
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc','taxExempt'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc','taxExempt','overageFee'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
@@ -839,7 +854,7 @@ let SECSEL='setup';
 function setSec(s){
   SECSEL=s;
   document.querySelectorAll('#sectabs button').forEach(b=>b.classList.toggle('on',b.dataset.sec===s));
-  ['setup','menu','bill','costs','pnl','recon'].forEach(p=>{
+  ['setup','menu','bill','costs','pnl','recon','terms'].forEach(p=>{
     document.getElementById('pane-'+p).classList.toggle('on',p===s);
   });
 }
@@ -905,6 +920,8 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   }
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — forecast ${MU}${B.cashOn?`${B.guests} guests × $${benchFor(B).v.toFixed(2)}/guest (${beoEsc(benchFor(B).label)}) · guests pay individually`:'off for this event'}</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  const fbTot=C.food+C.bev, fbCogs=C.cogsF+(C.cogsBv-C.cash*B.cashCogs/100);
+  ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}billed menu, excludes cash bar</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'·'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'·'}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
   const tbm=document.getElementById('tab-menu');
   if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
@@ -1063,6 +1080,19 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   rh+=rc('EBITDA',C.ebitda,aEb,true);
   rh+=`<tr><td class="li" style="color:var(--muted);">EBITDA margin</td><td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'·'}</td><td style="color:var(--muted);">${anyAct&&aRev?fpc(aEb/aRev*100):'—'}</td><td colspan="2" style="color:var(--muted);">${anyAct&&aRev&&C.rev?vTxt(aEb/aRev*100-C.ebitda/C.rev*100,false)+' pts':'·'}</td></tr>`;
   document.getElementById('vsbeo-recon').innerHTML=rh;
+  /* ---- contract terms + potential client fees ---- */
+  const OVR=+B.overageFee||0;
+  let ft=`<tr><th class="li" style="min-width:230px;">Potential additional fee</th><th class="li" style="min-width:230px;">When it applies</th><th style="min-width:120px;">Rate</th><th style="min-width:130px;">Estimated exposure</th></tr>`;
+  ft+=`<tr><td class="li">Over-guarantee surcharge</td><td class="li">Attendance above the guaranteed count without prior written approval</td><td>${IN('g:overageFee',OVR,64)} ${MU}$/guest</span></td><td style="color:var(--muted);">${OVR>0?bf2(OVR)+' per extra guest':'set the per-guest rate'}</td></tr>`;
+  ft+=`<tr><td class="li">After-hours extension</td><td class="li">Event continues past the contracted end time (if permitted)</td><td>$500 / 30 min</td><td style="color:var(--muted);">$500 per 30-min block + staffing/F&amp;B/security</td></tr>`;
+  ft+=`<tr><td class="li">Outside cake service fee</td><td class="li">Approved outside specialty cake brought in</td><td>$5 / guest</td><td>${bf2(5*B.guests)} ${MU}${B.guests} guests × $5</span></td></tr>`;
+  ft+=`<tr><td class="li">Unmet F&amp;B minimum</td><td class="li">Food &amp; beverage spend falls below the contract minimum</td><td>shortfall</td><td style="color:${C.unmet>0.005?'var(--neg)':'var(--muted)'};">${C.unmet>0.005?bf2(C.unmet)+' as projected':'minimum met'}</td></tr>`;
+  ft+=`<tr><td class="li">Late-payment interest</td><td class="li">Balance unpaid more than 30 days after the event</td><td>1.5% / month</td><td style="color:var(--muted);">1.5% of the outstanding balance monthly</td></tr>`;
+  ft+=`<tr class="total"><td class="li" colspan="3">Charged on every event (already in the client bill)</td><td></td></tr>`;
+  ft+=`<tr><td class="li">Service charge</td><td class="li" colspan="2">20% on all food &amp; beverage — administrative/operational, not a gratuity</td><td>${bf2(C.svc)}</td></tr>`;
+  ft+=`<tr><td class="li">Special event fee</td><td class="li" colspan="2">${B.sef.toFixed(1)}% on F&amp;B + rental</td><td>${bf2(C.sef)}</td></tr>`;
+  document.getElementById('vsbeo-feetbl').innerHTML=ft;
+  document.getElementById('vsbeo-terms').innerHTML='<h2 style="margin-top:26px;">Terms &amp; <em>Conditions</em></h2>'+TERMS.map(t=>`<div style="margin:0 0 14px;line-height:1.6;"><b style="color:var(--accent-deep);">${beoEsc(t.h)}</b><br><span style="color:var(--ink);">${beoEsc(t.b)}</span></div>`).join('');
   /* ---- strip with change pulses ---- */
   const dGrand=(PREVC.id===B._id)?C.grand-PREVC.grand:0;
   const dEb=(PREVC.id===B._id)?C.ebitda-PREVC.ebitda:0;
@@ -1269,7 +1299,7 @@ document.addEventListener('click',e=>{
 });
 function beoDiff(a,b){
   const out=[];
-  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
   Object.keys(SL).forEach(k=>{
     const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
