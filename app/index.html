@@ -246,11 +246,11 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="controls sectabs" id="sectabs">
     <button data-sec="setup">Setup</button>
     <button data-sec="menu" id="tab-menu">Menu &amp; Beverage</button>
-    <button data-sec="bill">Client Bill</button>
     <button data-sec="costs" id="tab-costs">Labor</button>
-    <button data-sec="pnl">P&amp;L</button>
-    <button data-sec="recon">Reconciliation</button>
     <button data-sec="terms">Contract Terms</button>
+    <button data-sec="pnl">P&amp;L</button>
+    <button data-sec="bill">Client Bill</button>
+    <button data-sec="recon">Reconciliation</button>
   </div>
   <div class="secpane" id="pane-setup">
     <h2>Event <em>setup</em> — contract terms &amp; rates</h2>
@@ -434,7 +434,7 @@ const BEO_OPEX=[
   {n:'G&A — Uncontrollable (processing, ins., licenses)',v:1.9}];
 /* Standard event agreement — Terms & Conditions. Fees called out here surface as potential client line items on the Contract Terms tab. */
 const TERMS=[
-  {h:'Guaranteed Guest Count',b:"The final guaranteed guest count is due twenty-one (21) calendar days prior to the event date. The guaranteed guest count may be increased after this date only with Operator's prior written approval and is subject to staffing, product availability, and venue capacity. Once the final guarantee has been provided, it may not be reduced, and charges will be based on the guaranteed guest count or the actual number of guests served, whichever is greater. If no final guaranteed guest count is received by the deadline, the guest count stated in this Agreement shall become the final guaranteed guest count. Any increase in attendance above the guaranteed guest count that has not been approved in advance may be subject to an additional surcharge (per guest, set below), in addition to all applicable food and beverage charges, service charges, and taxes. Operator reserves the right to decline admission to guests exceeding the guaranteed guest count if capacity, staffing, safety, or operational limitations prevent accommodation."},
+  {h:'Guaranteed Guest Count',b:"The final guaranteed guest count is due twenty-one (21) calendar days prior to the event date. The guaranteed guest count may be increased after this date only with Operator's prior written approval and is subject to staffing, product availability, and venue capacity. Once the final guarantee has been provided, it may not be reduced, and charges will be based on the guaranteed guest count or the actual number of guests served, whichever is greater. If no final guaranteed guest count is received by the deadline, the guest count stated in this Agreement shall become the final guaranteed guest count. Any increase in attendance above the guaranteed guest count that has not been approved in advance may be subject to an additional surcharge of 10% per guest, in addition to all applicable food and beverage charges, service charges, and taxes. Operator reserves the right to decline admission to guests exceeding the guaranteed guest count if capacity, staffing, safety, or operational limitations prevent accommodation."},
   {h:'Reservation Time',b:"The event start and end times are set forth in this Agreement. Events extending beyond the contracted end time are not guaranteed an extension and are subject to venue availability. If Operator permits an event to continue beyond the scheduled end time, additional charges of $500 per 30-minute increment (or portion thereof) apply, plus any additional staffing, food and beverage, security, or other operational costs incurred."},
   {h:'Event Location',b:"If the final guaranteed guest count materially increases or decreases, Operator reserves the right to relocate the event to another space within the property that is better suited to accommodate the event. If the final guest count exceeds the capacity of the originally contracted event space, Operator cannot guarantee that alternate accommodations will be available."},
   {h:'Service Charge',b:"A mandatory 20% Service Charge will be added to all food and beverage charges. This Service Charge covers administrative, operational, and staffing costs associated with the event and is not a gratuity and is not distributed to employees."},
@@ -884,19 +884,43 @@ function buildBEO(){
   const mgCol=p=>p>=tm-0.01?'var(--pos)':(p>=tm-10?'#b98029':'var(--neg)');
   const emg=C.rev?C.ebitda/C.rev*100:0;
   const emgCol=emg>=25?'var(--pos)':(emg>=15?'#b98029':'var(--neg)');
-  /* ---- setup ---- */
-  t.innerHTML=`<tr><th class="li" style="min-width:200px;">Event</th><th style="min-width:170px;">Value</th><th class="li" style="min-width:200px;">Contract term</th><th style="min-width:110px;">Value</th><th class="li" style="min-width:210px;">Cash bar &amp; house assumptions</th><th style="min-width:110px;">Value</th></tr>
-<tr><td class="li">Event name</td><td>${IN('g:name',B.name,0,1)}</td><td class="li">F&amp;B minimum ($)</td><td>${IN('g:fbMin',B.fbMin)}</td><td class="li">Cash bar at this event?</td><td><select class="drvin txt" data-bi="g:cashOn" style="width:80px;min-width:80px;"><option value="1"${B.cashOn?' selected':''}>Yes</option><option value="0"${B.cashOn?'':' selected'}>No</option></select></td></tr>
-<tr><td class="li">Short label</td><td>${IN('g:tab',B.tab,0,1)}</td><td class="li">Room / space rental ($)</td><td>${IN('g:rental',B.rental)}</td><td class="li">Cash bar $/guest — historicals</td><td><span class="drvval">$${benchFor(B).v.toFixed(2)}</span> ${MU}${beoEsc(benchFor(B).label)}${benchFor(B).n?' · n='+benchFor(B).n:''}</span></td></tr>
-<tr><td class="li">Event date</td><td><input type="date" class="drvin txt" data-bi="g:evDate" value="${attEsc(B.evDate||'')}" style="width:150px;">${B.evDate?'':(B.date?` ${MU}${beoEsc(B.date)}</span>`:'')}</td><td class="li">Deposit received ($)</td><td>${IN('g:deposit',B.deposit)}</td><td class="li">Pour cost (% of cash bar sales)</td><td><span class="drvval">${B.cashCogs.toFixed(1)}%</span></td></tr>
-<tr><td class="li">Guest count</td><td>${STEP('g:guests',B.guests,56)}</td><td class="li">Sales tax (%)</td><td><span class="drvval">${B.salesTax.toFixed(1)}%</span>${B.taxExempt?` ${MU}exempt</span>`:''}</td><td class="li">Payroll burden (% of wages)</td><td><span class="drvval">${B.burden.toFixed(1)}%</span></td></tr>
-<tr><td class="li">Service charge (%)</td><td><span class="drvval">${B.svc.toFixed(1)}%</span></td><td class="li">Liquor tax (%)</td><td><span class="drvval">${B.liqTax.toFixed(1)}%</span>${B.taxExempt?` ${MU}exempt</span>`:''}</td><td class="li">Management fee (% of revenue)</td><td><span class="drvval">${B.mgmtPct.toFixed(1)}%</span></td></tr>
-<tr><td class="li">Tax-exempt client?</td><td><select class="drvin txt" data-bi="g:taxExempt" style="width:80px;min-width:80px;"><option value="0"${B.taxExempt?'':' selected'}>No</option><option value="1"${B.taxExempt?' selected':''}>Yes</option></select></td><td class="li" colspan="4" style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax are zeroed for this event — provide the exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</td></tr>
-<tr><td class="li">Special event fee (%)</td><td><span class="drvval">${B.sef.toFixed(1)}%</span></td><td class="li">Discount (% of F&amp;B)</td><td>${IN('g:disc',B.disc||0)}</td><td class="li">Discount label</td><td>${IN('g:discLbl',B.discLbl||'',0,1)}</td></tr>
-<tr><td class="li">Event type</td><td>${(()=>{const tys=[...new Set([...EV_TYPES,...Object.keys(BENCH.byType||{}),...((HIST.events||[]).map(e=>e.ty).filter(Boolean)),...(B.evType?[B.evType]:[])])].sort();return `<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...tys].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li" colspan="4" style="color:var(--muted);">Cash bar forecast — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> × ${B.guests} guests${B.cashOn?` = <b>${bf2(B.guests*benchFor(B).v)}</b>`:' — cash bar off'} · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest</td></tr>
-<tr><td class="li">Start &amp; end time</td><td>${(()=>{const TSEL=(bi,v)=>`<select class="drvin txt" data-bi="${bi}" style="width:92px;min-width:92px;">${['',...TIMES,...(v&&!TIMES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===(v||'')?' selected':''}>${o||'—'}</option>`).join('')}</select>`;return TSEL('g:startTime',B.startTime)+' '+TSEL('g:endTime',B.endTime);})()}</td><td class="li">Date of inquiry</td><td><input type="date" class="drvin txt" data-bi="g:inqDate" value="${attEsc(B.inqDate||'')}" style="width:140px;"></td><td class="li">Sales person</td><td>${IN('g:salesperson',B.salesperson||'',0,1)}</td></tr>
-<tr><td class="li">Source of lead</td><td>${(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li">Company / group</td><td><input class="drvin txt" data-bi="g:company" list="colist" value="${attEsc(B.company||'')}" placeholder="pick or type…"><datalist id="colist">${[...new Set([...CLIENTS,...(B.company?[B.company]:[])])].sort().map(c=>`<option value="${attEsc(c)}">`).join('')}</datalist></td><td class="li">Market segment</td><td>${(()=>{const mk=B.market||'';const opts=['',...MKT_SEG,...(mk&&!MKT_SEG.includes(mk)?[mk]:[])];return `<select class="drvin txt" data-bi="g:market" style="width:170px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===mk?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td></tr>
-${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B.evDate+'T12:00:00');const dd=Math.round((b-a)/86400000);return isNaN(dd)?'':`<tr><td class="li" colspan="6" style="color:var(--muted);">Lead time — inquiry to event: <b>${dd} days</b></td></tr>`;})():''}`;
+  /* ---- setup: grouped, vertical sections ---- */
+  const evTypeSel=(()=>{const tys=[...new Set([...EV_TYPES,...Object.keys(BENCH.byType||{}),...((HIST.events||[]).map(e=>e.ty).filter(Boolean)),...(B.evType?[B.evType]:[])])].sort();return `<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...tys].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})();
+  const timeSel=(()=>{const TSEL=(bi,v)=>`<select class="drvin txt" data-bi="${bi}" style="width:92px;min-width:92px;">${['',...TIMES,...(v&&!TIMES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===(v||'')?' selected':''}>${o||'—'}</option>`).join('')}</select>`;return TSEL('g:startTime',B.startTime)+' '+TSEL('g:endTime',B.endTime);})();
+  const leadSel=(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})();
+  const marketSel=(()=>{const mk=B.market||'';const opts=['',...MKT_SEG,...(mk&&!MKT_SEG.includes(mk)?[mk]:[])];return `<select class="drvin txt" data-bi="g:market" style="width:170px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===mk?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})();
+  const companyIn=`<input class="drvin txt" data-bi="g:company" list="colist" value="${attEsc(B.company||'')}" placeholder="pick or type…"><datalist id="colist">${[...new Set([...CLIENTS,...(B.company?[B.company]:[])])].sort().map(c=>`<option value="${attEsc(c)}">`).join('')}</datalist>`;
+  const cashOnSel=`<select class="drvin txt" data-bi="g:cashOn" style="width:80px;min-width:80px;"><option value="1"${B.cashOn?' selected':''}>Yes</option><option value="0"${B.cashOn?'':' selected'}>No</option></select>`;
+  const taxExemptSel=`<select class="drvin txt" data-bi="g:taxExempt" style="width:80px;min-width:80px;"><option value="0"${B.taxExempt?'':' selected'}>No</option><option value="1"${B.taxExempt?' selected':''}>Yes</option></select>`;
+  const leadDays=(B.inqDate&&B.evDate)?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B.evDate+'T12:00:00');const dd=Math.round((b-a)/86400000);return isNaN(dd)?'':dd+' days';})():'';
+  const evDateIn=`<input type="date" class="drvin txt" data-bi="g:evDate" value="${attEsc(B.evDate||'')}" style="width:150px;">${B.evDate?'':(B.date?` ${MU}${beoEsc(B.date)}</span>`:'')}`;
+  const inqDateIn=`<input type="date" class="drvin txt" data-bi="g:inqDate" value="${attEsc(B.inqDate||'')}" style="width:150px;">`;
+  const R2=(l1,v1,l2,v2)=>`<tr><td class="li">${l1}</td><td>${v1}</td><td class="li">${l2==null?'':l2}</td><td>${v2==null?'':v2}</td></tr>`;
+  const SEC=t=>`<tr class="section"><td class="li" colspan="4">${t}</td></tr>`;
+  const fx=v=>`<span class="drvval">${v.toFixed(1)}%</span>`;
+  const exNote=B.taxExempt?` ${MU}exempt</span>`:'';
+  const bch=benchFor(B);
+  t.innerHTML=`<tr><th class="li" style="min-width:230px;">Field</th><th style="min-width:220px;">Value</th><th class="li" style="min-width:230px;">Field</th><th style="min-width:220px;">Value</th></tr>`
++SEC('Event details')
++R2('Event name',IN('g:name',B.name,0,1),'Short label',IN('g:tab',B.tab,0,1))
++R2('Event date',evDateIn,'Start &amp; end time',timeSel)
++R2('Guest count',STEP('g:guests',B.guests,56),'Event type',evTypeSel)
++SEC('Booking &amp; sales')
++R2('Company / group',companyIn,'Market segment',marketSel)
++R2('Sales person',IN('g:salesperson',B.salesperson||'',0,1),'Source of lead',leadSel)
++R2('Date of inquiry',inqDateIn,'Lead time',leadDays?`<span class="drvval">${leadDays}</span> ${MU}inquiry → event</span>`:'<span style="color:var(--muted);">—</span>')
++SEC('Pricing &amp; minimums')
++R2('F&amp;B minimum ($)',IN('g:fbMin',B.fbMin),'Room / space rental ($)',IN('g:rental',B.rental))
++R2('Deposit received ($)',IN('g:deposit',B.deposit),'Discount (% of F&amp;B)',IN('g:disc',B.disc||0))
++R2('Discount label',IN('g:discLbl',B.discLbl||'',0,1),null,'')
++SEC('Cash bar — forecast from historicals (event type × time of day)')
++R2('Cash bar at this event?',cashOnSel,'Pour cost (% of cash bar sales)',fx(B.cashCogs))
++`<tr><td class="li" colspan="4" style="color:var(--muted);">${B.cashOn?`Forecast — <b>${beoEsc(bch.label)}</b>${bch.n?' · '+bch.n+' events':''}: <b>$${bch.v.toFixed(2)}/guest</b> × ${B.guests} guests = <b>${bf2(B.guests*bch.v)}</b>`:'Cash bar is off for this event — no beverage forecast added.'}</td></tr>`
++SEC('Contract rates — house-fixed')
++R2('Service charge (%)',fx(B.svc),'Special event fee (%)',fx(B.sef))
++R2('Sales tax (%)',fx(B.salesTax)+exNote,'Liquor tax (%)',fx(B.liqTax)+exNote)
++R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
++R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
   /* ---- items ---- */
   const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
@@ -1081,9 +1105,11 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   rh+=`<tr><td class="li" style="color:var(--muted);">EBITDA margin</td><td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'·'}</td><td style="color:var(--muted);">${anyAct&&aRev?fpc(aEb/aRev*100):'—'}</td><td colspan="2" style="color:var(--muted);">${anyAct&&aRev&&C.rev?vTxt(aEb/aRev*100-C.ebitda/C.rev*100,false)+' pts':'·'}</td></tr>`;
   document.getElementById('vsbeo-recon').innerHTML=rh;
   /* ---- contract terms + potential client fees ---- */
-  const OVR=+B.overageFee||0;
+  const OVRPCT=10;
+  const perGuestFb=B.guests>0?(C.food+C.bev)/B.guests:0;
+  const ovrEach=perGuestFb*OVRPCT/100;
   let ft=`<tr><th class="li" style="min-width:230px;">Potential additional fee</th><th class="li" style="min-width:230px;">When it applies</th><th style="min-width:120px;">Rate</th><th style="min-width:130px;">Estimated exposure</th></tr>`;
-  ft+=`<tr><td class="li">Over-guarantee surcharge</td><td class="li">Attendance above the guaranteed count without prior written approval</td><td>${IN('g:overageFee',OVR,64)} ${MU}$/guest</span></td><td style="color:var(--muted);">${OVR>0?bf2(OVR)+' per extra guest':'set the per-guest rate'}</td></tr>`;
+  ft+=`<tr><td class="li">Over-guarantee surcharge</td><td class="li">Attendance above the guaranteed count without prior written approval</td><td>${OVRPCT}% / extra guest</td><td style="color:var(--muted);">${perGuestFb>0?`${bf2(ovrEach)} per extra guest ${MU}${OVRPCT}% of ${bf2(perGuestFb)} avg F&amp;B</span>`:'—'}</td></tr>`;
   ft+=`<tr><td class="li">After-hours extension</td><td class="li">Event continues past the contracted end time (if permitted)</td><td>$500 / 30 min</td><td style="color:var(--muted);">$500 per 30-min block + staffing/F&amp;B/security</td></tr>`;
   ft+=`<tr><td class="li">Outside cake service fee</td><td class="li">Approved outside specialty cake brought in</td><td>$5 / guest</td><td>${bf2(5*B.guests)} ${MU}${B.guests} guests × $5</span></td></tr>`;
   ft+=`<tr><td class="li">Unmet F&amp;B minimum</td><td class="li">Food &amp; beverage spend falls below the contract minimum</td><td>shortfall</td><td style="color:${C.unmet>0.005?'var(--neg)':'var(--muted)'};">${C.unmet>0.005?bf2(C.unmet)+' as projected':'minimum met'}</td></tr>`;
