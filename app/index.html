@@ -250,7 +250,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     <button data-sec="terms">Contract Terms</button>
     <button data-sec="pnl">P&amp;L</button>
     <button data-sec="bill">Client Bill</button>
-    <button data-sec="recon">Reconciliation</button>
+    <button data-sec="recon">Post-Event</button>
   </div>
   <div class="secpane" id="pane-setup">
     <h2>Event <em>setup</em> — contract terms &amp; rates</h2>
@@ -276,7 +276,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     <div class="scroll"><table class="alloc" id="vsbeo-pnl" style="max-width:1100px;"></table></div>
   </div>
   <div class="secpane" id="pane-recon">
-    <h2>Event <em>reconciliation</em> — projected vs actual</h2>
+    <h2><em>Post-event</em> — projected vs actual</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-recon" style="max-width:1100px;"></table></div>
   </div>
   <div class="secpane" id="pane-terms">
@@ -449,9 +449,9 @@ function blankEvent(){
     food:[],bev:[],
     cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,act:{},contract:null};
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc','taxExempt','overageFee'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
@@ -931,10 +931,10 @@ function buildBEO(){
 +R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
 +R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
   /* ---- items ---- */
-  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
+  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">FROM CATALOG</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
     const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost, mgp=tot?mg/tot*100:0;
-    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt">${IN(`it:${grp}:${idx}:u`,i.u||0,58)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'·'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'·'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'·'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'·'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
   ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — VESSEL &amp; LITTLE WING${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
@@ -953,8 +953,8 @@ function buildBEO(){
   }
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — forecast ${MU}${B.cashOn?`${B.guests} guests × $${benchFor(B).v.toFixed(2)}/guest (${beoEsc(benchFor(B).label)}) · guests pay individually`:'off for this event'}</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
-  const fbTot=C.food+C.bev, fbCogs=C.cogsF+(C.cogsBv-C.cash*B.cashCogs/100);
-  ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}billed menu, excludes cash bar</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'·'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'·'}</td><td></td></tr>`;
+  const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
+  ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'·'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'·'}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
   const tbm=document.getElementById('tab-menu');
   if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
@@ -979,22 +979,27 @@ function buildBEO(){
     if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
   }
   document.getElementById('vsbeo-billit').innerHTML=ib;
-  let bh=`<tr><th class="li" style="min-width:280px;">Estimated billing · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
-  if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
-  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
-  if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
-  bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td></tr>`;
-  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td></tr>`;
-  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td></tr>`;
-  bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td></tr>`;
-  bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td></tr>`;
-  if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
-  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td></tr>`;
-  bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
-  if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
-  bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td></tr>`;
+  const ts=B.tsTotal==null?null:+B.tsTotal;
+  const tsMatch=ts!=null&&Math.abs(ts-C.grand)<0.005;
+  const tsInput=`<input class="drvin" data-bi="g:tsTotal" value="${ts==null?'':ts}" inputmode="decimal" placeholder="enter Tripleseat total" style="width:120px;">`;
+  const tsStatus=ts==null?'<span style="color:var(--muted);font-size:8.5px;">enter the Tripleseat BEO grand total to reconcile</span>':(tsMatch?'<span class="chip-ok">✓ MATCHES BEO SUMMARY</span>':`<span class="chip-low">OFF BY ${bf2(Math.abs(ts-C.grand))}</span>`);
+  let bh=`<tr><th class="li" style="min-width:280px;">Estimated billing · per contract</th><th style="min-width:120px;">Amount</th><th style="min-width:150px;">Per Tripleseat</th></tr>`;
+  if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td><td></td></tr>`;
+  if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td><td></td></tr>`;
+  bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td><td></td></tr>`;
+  if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td><td></td></tr>`;
+  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td><td></td></tr>`;
+  bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td><td>${tsInput}</td></tr>`;
+  bh+=`<tr><td class="li" style="color:var(--muted);">Tripleseat reconciliation</td><td></td><td>${tsStatus}</td></tr>`;
+  if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td><td></td></tr>`;
+  bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td><td></td></tr>`;
   const met=C.fb>=B.fbMin;
-  bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td></tr>`;
+  bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td><td></td></tr>`;
   document.getElementById('vsbeo-bill').innerHTML=bh;
   /* ---- labor (cost engine) ---- */
   let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule</th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
@@ -1048,7 +1053,9 @@ function buildBEO(){
   ph+=pr('Gross profit',C.gp,1);
   ph+=pr('Event labor',C.labor);
   ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.labor)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.labor)/C.rev*100):'·'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.labor)/B.guests):'·'}</td></tr>`;
-  ph+=pr('Direct operating &amp; other expenses',C.opex);
+  ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
+  BEO_OPEX.forEach(o=>{ph+=pr(beoEsc(o.n)+' '+MU+o.v.toFixed(1)+'% of revenue</span>',C.rev*o.v/100,0,1);});
+  ph+=pr('Total direct operating &amp; other',C.opex,1);
   ph+=pr('Management fee',C.fee);
   ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
   ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
@@ -1088,7 +1095,7 @@ function buildBEO(){
     const col=d==null?'var(--muted)':((goodPos?d>=-0.005:d<=0.005)?'var(--pos)':'var(--neg)');
     return `<tr class="total"><td class="li">${lbl}</td><td>${bf2(proj)}</td><td>${anyAct?bf2(act):'—'}</td><td style="color:${col};">${d==null?'·':vTxt(d,true)}</td><td>${d==null||!proj?'·':fpc(d/Math.abs(proj)*100)}</td></tr>`;
   };
-  let rh=`<tr><th class="li" style="min-width:210px;">Reconciliation</th><th style="min-width:90px;">Projected</th><th style="min-width:95px;">Actual</th><th style="min-width:90px;">Variance</th><th style="min-width:55px;">Var %</th></tr>`;
+  let rh=`<tr><th class="li" style="min-width:210px;">Post-event</th><th style="min-width:90px;">Projected</th><th style="min-width:95px;">Actual</th><th style="min-width:90px;">Variance</th><th style="min-width:55px;">Var %</th></tr>`;
   rh+=`<tr><td class="li" colspan="5" style="color:var(--muted);font-size:9.5px;">After the event, enter actuals from Toast, Tripleseat and payroll. Blank lines count as $0 in the actual totals. Everything here is ex-tax, matching the theoretical P&amp;L.</td></tr>`;
   rh+=`<tr class="section"><td class="li" colspan="5">ATTENDANCE</td></tr>`;
   rh+=rr('Guest count',B.guests,'guests',true,false);
@@ -1148,7 +1155,8 @@ function buildBEO(){
 let PREVC={id:null,grand:0,ebitda:0};
 
 /* ---------------- historicals view ---------------- */
-let HFTY='All', HFDP='All';
+let HFTY='All', HFDP='All', HSORT={key:'d',dir:1};
+const HCOL={d:{get:e=>e.d,date:true},n:{get:e=>e.n||''},ty:{get:e=>e.ty||''},dp:{get:e=>e.dp||''},st:{get:e=>e.st||''},g:{num:true,get:e=>+e.g||0},food:{num:true,get:e=>+e.food||0},bev:{num:true,get:e=>+e.bev||0},bpp:{num:true,get:e=>+e.g>0?+e.bev/+e.g:0},tot:{num:true,get:e=>+e.tot||0}};
 function buildHistoricals(){
   const t=document.getElementById('hist-list');
   if(!t)return;
@@ -1191,9 +1199,18 @@ function buildHistoricals(){
   };
   chip('hist-fty',['All',...allTypes],HFTY,'ty');
   chip('hist-fdp',['All',...DAYPARTS],HFDP,'dp');
-  /* event log */
+  /* event log — filterable + click-to-sort columns */
   const rows=EV.filter(e=>(HFTY==='All'||e.ty===HFTY)&&(HFDP==='All'||e.dp===HFDP));
-  let h=`<tr><th class="li" style="min-width:90px;">Date</th><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th class="li">Daypart</th><th>Time</th><th>Guests</th><th>Food</th><th>Beverage</th><th>Bev $/guest</th><th>Total revenue</th></tr>`;
+  const sc=HCOL[HSORT.key]||HCOL.d;
+  rows.sort((a,b)=>{
+    let av=sc.get(a),bv=sc.get(b);
+    if(sc.date){const ad=Date.parse(av),bd=Date.parse(bv);if(!isNaN(ad)&&!isNaN(bd)){av=ad;bv=bd;}}
+    if(sc.num||sc.date)return((+av||0)-(+bv||0))*HSORT.dir;
+    return String(av).localeCompare(String(bv))*HSORT.dir;
+  });
+  const HH=[['d','Date','li',90],['n','Event','li',230],['ty','Type','li',0],['dp','Daypart','li',0],['st','Time','',0],['g','Guests','',0],['food','Food','',0],['bev','Beverage','',0],['bpp','Bev $/guest','',0],['tot','Total revenue','',0]];
+  const arr=k=>HSORT.key===k?(HSORT.dir>0?' ▲':' ▼'):'';
+  let h=`<tr>`+HH.map(([k,lbl,cls,mw])=>`<th class="${cls}" data-hs="${k}" style="cursor:pointer;${mw?'min-width:'+mw+'px;':''}">${lbl}${arr(k)}</th>`).join('')+`</tr>`;
   rows.forEach(e=>{
     const bpp=+e.g>0?+e.bev/+e.g:0;
     h+=`<tr><td class="li" style="color:var(--muted);">${beoEsc(e.d)}</td><td class="li"><span class="evname" style="font-size:11px;">${beoEsc(e.n)}</span>${e.s==='DEFINITE'?` ${MUC}definite — not yet closed</span>`:''}</td>
@@ -1290,6 +1307,8 @@ document.addEventListener('click',e=>{
     buildHistoricals();
     return;
   }
+  const hs=e.target.closest('[data-hs]');
+  if(hs){const k=hs.dataset.hs;if(HSORT.key===k)HSORT.dir*=-1;else{HSORT.key=k;HSORT.dir=(k==='d'||k==='n'||k==='ty'||k==='dp'||k==='st')?1:-1;}buildHistoricals();return;}
   const pv=e.target.closest('[data-pv]');
   if(pv){
     if(pv.dataset.pvx==='pick-prov'){PICKPROV=pv.dataset.pv;provChips('pick-prov',PICKPROV,false);renderPick(document.getElementById('pick-q').value);}
@@ -1334,7 +1353,7 @@ document.addEventListener('click',e=>{
 });
 function beoDiff(a,b){
   const out=[];
-  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',tsTotal:'Tripleseat total',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
   Object.keys(SL).forEach(k=>{
     const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
