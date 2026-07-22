@@ -447,11 +447,11 @@ function blankEvent(){
     guests:50,fbMin:1500,rental:0,deposit:0,
     svc:20,sef:5,salesTax:6,liqTax:9,
     food:[],bev:[],
-    cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,
+    cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
     burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
@@ -705,6 +705,8 @@ function benchFor(B){
   if(dp&&BENCH.byDaypart&&BENCH.byDaypart[dp]!=null)return{v:+BENCH.byDaypart[dp],label:dp,n:(BENCH.dpCounts||{})[dp]};
   return{v:+(BENCH.overall||0),label:'all events',n:null};
 }
+/* effective cash-bar $/guest: manual override wins, else historical forecast */
+function cashPpgFor(B){const o=+((B&&B.cashPpg)||0);if(o>0)return{v:o,label:'manual override',n:null,override:true};return benchFor(B);}
 function catStatus(m){const el=document.getElementById('cat-status');if(el)el.textContent=m;}
 async function loadCatalog(){
   const [mi,st]=await Promise.all([
@@ -804,7 +806,7 @@ function beoCalcFor(B){
   const disc=fbB*(B.disc||0)/100;
   const grand=fbB+B.rental+svc+sef+sTax+lTax-disc;
   const due=grand-B.deposit;
-  const cash=B.cashOn?B.guests*benchFor(B).v:0;   /* cash bar forecast from historicals — type × daypart $/guest */
+  const cash=B.cashOn?B.guests*cashPpgFor(B).v:0;   /* cash bar $/guest — manual override or historical forecast */
   const bevPkg=B.bev.reduce((a,i)=>a+((i.u||0)>0?i.q*i.p:0),0);
   const bevFee=bev-bevPkg;
   const bevRev=bevPkg+cash;
@@ -908,7 +910,7 @@ function buildBEO(){
   const SEC=t=>`<tr class="section"><td class="li" colspan="4">${t}</td></tr>`;
   const fx=v=>`<span class="drvval">${v.toFixed(1)}%</span>`;
   const exNote=B.taxExempt?` ${MU}exempt</span>`:'';
-  const bch=benchFor(B);
+  const bch=cashPpgFor(B);
   t.innerHTML=`<tr><th class="li" style="min-width:230px;">Field</th><th style="min-width:220px;">Value</th><th class="li" style="min-width:230px;">Field</th><th style="min-width:220px;">Value</th></tr>`
 +SEC('Event details')
 +R2('Event name',IN('g:name',B.name,0,1),'Short label',IN('g:tab',B.tab,0,1))
@@ -924,7 +926,7 @@ function buildBEO(){
 +R2('Discount label',IN('g:discLbl',B.discLbl||'',0,1),null,'')
 +SEC('Cash bar — forecast from historicals (event type × time of day)')
 +R2('Cash bar at this event?',cashOnSel,'Pour cost (% of cash bar sales)',fx(B.cashCogs))
-+`<tr><td class="li" colspan="4" style="color:var(--muted);">${B.cashOn?`Forecast — <b>${beoEsc(bch.label)}</b>${bch.n?' · '+bch.n+' events':''}: <b>$${bch.v.toFixed(2)}/guest</b> × ${B.guests} guests = <b>${bf2(B.guests*bch.v)}</b>`:'Cash bar is off for this event — no beverage forecast added.'}</td></tr>`
++`<tr><td class="li" colspan="4" style="color:var(--muted);">${B.cashOn?`${bch.override?'Manual override':'Forecast'} — <b>${beoEsc(bch.label)}</b>${bch.n?' · '+bch.n+' events':''}: <b>$${bch.v.toFixed(2)}/guest</b> × ${B.guests} guests = <b>${bf2(B.guests*bch.v)}</b>${bch.override?'':' · override on the Menu &amp; Beverage tab'}`:'Cash bar is off for this event — no beverage forecast added.'}</td></tr>`
 +SEC('Contract rates — house-fixed')
 +R2('Service charge (%)',fx(B.svc),'Special event fee (%)',fx(B.sef))
 +R2('Sales tax (%)',fx(B.salesTax)+exNote,'Liquor tax (%)',fx(B.liqTax)+exNote)
@@ -952,7 +954,11 @@ function buildBEO(){
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
   }
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
-  ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — forecast ${MU}${B.cashOn?`${B.guests} guests × $${benchFor(B).v.toFixed(2)}/guest (${beoEsc(benchFor(B).label)}) · guests pay individually`:'off for this event'}</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  const cfc=benchFor(B), cOv=+B.cashPpg>0;
+  const cashLbl=B.cashOn
+    ?`Cash bar — $<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`} · guests pay individually</span>`
+    :`Cash bar — ${MU}off for this event</span>`;
+  ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
   ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'·'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'·'}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
@@ -981,25 +987,44 @@ function buildBEO(){
   document.getElementById('vsbeo-billit').innerHTML=ib;
   const ts=B.tsTotal==null?null:+B.tsTotal;
   const tsMatch=ts!=null&&Math.abs(ts-C.grand)<0.005;
-  const tsInput=`<input class="drvin" data-bi="g:tsTotal" value="${ts==null?'':ts}" inputmode="decimal" placeholder="enter Tripleseat total" style="width:120px;">`;
-  const tsStatus=ts==null?'<span style="color:var(--muted);font-size:8.5px;">enter the Tripleseat BEO grand total to reconcile</span>':(tsMatch?'<span class="chip-ok">✓ MATCHES BEO SUMMARY</span>':`<span class="chip-low">OFF BY ${bf2(Math.abs(ts-C.grand))}</span>`);
-  let bh=`<tr><th class="li" style="min-width:280px;">Estimated billing · per contract</th><th style="min-width:120px;">Amount</th><th style="min-width:150px;">Per Tripleseat</th></tr>`;
-  if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td><td></td></tr>`;
-  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td><td></td></tr>`;
-  if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td><td></td></tr>`;
-  bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td><td></td></tr>`;
-  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td><td></td></tr>`;
-  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td><td></td></tr>`;
-  bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td><td></td></tr>`;
-  bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td><td></td></tr>`;
-  if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td><td></td></tr>`;
-  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td><td></td></tr>`;
-  bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td><td>${tsInput}</td></tr>`;
-  bh+=`<tr><td class="li" style="color:var(--muted);">Tripleseat reconciliation</td><td></td><td>${tsStatus}</td></tr>`;
-  if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td><td></td></tr>`;
-  bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td><td></td></tr>`;
+  const tsInput=`<input class="drvin" data-bi="g:tsTotal" value="${ts==null?'':ts}" inputmode="decimal" placeholder="0.00" style="width:118px;">`;
+  const tsStatus=ts==null?'<span style="color:var(--muted);font-size:9px;">Awaiting entry</span>':(tsMatch?'<span class="chip-ok">✓ MATCHES</span>':`<span class="chip-low">OFF BY ${bf2(Math.abs(ts-C.grand))}</span>`);
+  let bh=`<tr><th class="li" style="min-width:320px;">Estimated billing · per contract</th><th style="min-width:150px;">Amount</th></tr>`;
+  if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
+  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
+  if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td></tr>`;
+  bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td></tr>`;
+  bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td></tr>`;
+  bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td></tr>`;
+  if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
+  if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
+  if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
+  bh+=`<tr class="total"><td class="li">Estimated amount due</td><td>${bf2(C.due)}</td></tr>`;
   const met=C.fb>=B.fbMin;
-  bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td><td></td></tr>`;
+  bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td></tr>`;
+  /* Tripleseat reconciliation — dedicated strip */
+  bh+=`<tr><td colspan="2" style="padding:0;border-bottom:none;">
+    <div style="margin-top:14px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 14px;background:var(--tint);border-bottom:1px solid var(--line);">
+        <span style="font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:9px;color:var(--accent-deep);">Tripleseat reconciliation</span>
+        ${tsStatus}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;">
+        <div style="flex:1;min-width:150px;">
+          <div style="font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;">Calculator grand total</div>
+          <div style="font-weight:800;font-size:14px;">${bf2(C.grand)}</div>
+        </div>
+        <div style="text-align:right;">
+          <label style="display:block;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px;">Per Tripleseat BEO</label>
+          <span style="color:var(--muted);font-weight:700;margin-right:2px;">$</span>${tsInput}
+        </div>
+      </div>
+      ${ts!=null&&!tsMatch?`<div style="padding:0 14px 11px;color:var(--neg);font-size:9.5px;">Calculator and Tripleseat differ by ${bf2(Math.abs(ts-C.grand))} — reconcile before sending.</div>`:''}
+      ${tsMatch?`<div style="padding:0 14px 11px;color:var(--pos);font-size:9.5px;">Tripleseat BEO ties to the calculator. ✓</div>`:''}
+    </div></td></tr>`;
   document.getElementById('vsbeo-bill').innerHTML=bh;
   /* ---- labor (cost engine) ---- */
   let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule</th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
@@ -1223,7 +1248,11 @@ function buildHistoricals(){
 <td style="font-weight:700;color:${bpp>0?'var(--accent-deep)':'var(--muted)'};">${bpp>0?bf2(bpp):'·'}</td>
 <td>${bf0(+e.tot)}</td></tr>`;
   });
-  if(!rows.length)h+=`<tr><td class="li" colspan="10" style="color:var(--muted);padding:16px 10px;">No events match these filters.</td></tr>`;
+  if(rows.length){
+    const sumG=rows.reduce((a,e)=>a+(+e.g||0),0),sumF=rows.reduce((a,e)=>a+(+e.food||0),0),sumB=rows.reduce((a,e)=>a+(+e.bev||0),0),sumT=rows.reduce((a,e)=>a+(+e.tot||0),0);
+    const qr=rows.filter(e=>+e.bev>0&&+e.g>0),qG=qr.reduce((a,e)=>a+(+e.g||0),0),tbpp=qG?qr.reduce((a,e)=>a+(+e.bev||0),0)/qG:0;
+    h+=`<tr class="total"><td class="li">Total ${MUC}${rows.length} event${rows.length>1?'s':''}</span></td><td class="li"></td><td class="li"></td><td class="li"></td><td></td><td>${sumG||'·'}</td><td>${sumF?bf0(sumF):'·'}</td><td style="font-weight:700;">${sumB?bf0(sumB):'·'}</td><td style="font-weight:700;color:var(--accent-deep);">${tbpp>0?bf2(tbpp):'·'} ${MUC}${qr.length} w/ bar</span></td><td style="font-weight:700;">${bf0(sumT)}</td></tr>`;
+  }else h+=`<tr><td class="li" colspan="10" style="color:var(--muted);padding:16px 10px;">No events match these filters.</td></tr>`;
   t.innerHTML=h;
 }
 
@@ -1270,6 +1299,10 @@ document.addEventListener('change',e=>{
     buildBEO();
     scheduleSave();
     return;
+  }
+  /* clearable numeric fields: empty input resets (tsTotal→null awaiting entry, cashPpg→0 forecast) */
+  if(p[0]==='g'&&t.value.trim()===''&&(p[1]==='tsTotal'||p[1]==='cashPpg')){
+    BEOD[p[1]]=p[1]==='tsTotal'?null:0;buildBEO();scheduleSave();return;
   }
   const txt=p[p.length-1]==='n'||p[p.length-1]==='r'||(p[0]==='g'&&EV_STR.includes(p[1]));
   const v=txt?t.value:parseFloat(t.value);
@@ -1353,7 +1386,7 @@ document.addEventListener('click',e=>{
 });
 function beoDiff(a,b){
   const out=[];
-  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',tsTotal:'Tripleseat total',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',tsTotal:'Tripleseat total',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',cashPpg:'Cash-bar $/guest override',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
   Object.keys(SL).forEach(k=>{
     const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
