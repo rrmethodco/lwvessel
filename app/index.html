@@ -921,10 +921,10 @@ ${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B
   if(B.food.length)B.food.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
   else ib+=`<tr><td colspan="4" class="li" style="color:var(--muted);">No food selections yet.</td></tr>`;
   ib+=`<tr class="total"><td></td><td class="li">Food total</td><td></td><td>${bf2(C.food)}</td></tr>`;
-  if(B.bev.length||B.cashDrinks>0){
+  if(B.bev.length||B.cashOn){
     ib+=`<tr class="section"><td colspan="4" class="li">BEVERAGE</td></tr>`;
     B.bev.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
-    if(B.cashDrinks>0)ib+=`<tr><td>·</td><td class="li">Cash bar — guests pay individually for their own drinks</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+    if(B.cashOn)ib+=`<tr><td>·</td><td class="li">Cash bar — guests pay individually for their own drinks</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
     if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
   }
   document.getElementById('vsbeo-billit').innerHTML=ib;
