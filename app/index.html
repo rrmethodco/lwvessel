@@ -91,6 +91,9 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
 .sectabs button{appearance:none;border:none;background:none;font-family:inherit;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
 .sectabs button:hover{color:var(--accent-deep);}
 .sectabs button.on{color:var(--accent-deep);border-bottom-color:var(--accent);}
+.tabbadge{display:inline-block;border-radius:3px;padding:0 4px;font-size:8px;font-weight:800;margin-left:4px;vertical-align:1px;}
+.tabbadge.ok{background:#e7f4ec;color:#1c7c4d;border:1px solid #bfe0cc;}
+.tabbadge.bad{background:#fbe9e7;color:#b03a2e;border:1px solid #ecc7bd;}
 .secpane{display:none;}
 .secpane.on{display:block;}
 /* sticky totals + pulses */
@@ -211,6 +214,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     </div>
     <div class="controls" style="margin:0;">
       <button class="pill primary" id="vsbeo-new"><span class="dot"></span>＋ NEW EVENT</button>
+      <button class="pill" id="vsbeo-importpdf"><span class="dot"></span>⇪ IMPORT BEO PDF</button>
       <button class="pill" id="vsbeo-import"><span class="dot"></span>↑ IMPORT</button>
       <button class="pill" id="vsbeo-export"><span class="dot"></span>↓ EXPORT</button>
     </div>
@@ -240,9 +244,9 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   <div class="bstrip" id="vsbeo-strip"></div>
   <div class="controls sectabs" id="sectabs">
     <button data-sec="setup">Setup</button>
-    <button data-sec="menu">Menu &amp; Beverage</button>
+    <button data-sec="menu" id="tab-menu">Menu &amp; Beverage</button>
     <button data-sec="bill">Client Bill</button>
-    <button data-sec="costs">Cost Engine</button>
+    <button data-sec="costs" id="tab-costs">Labor</button>
     <button data-sec="pnl">P&amp;L</button>
     <button data-sec="recon">Reconciliation</button>
   </div>
@@ -259,7 +263,7 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     <div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:720px;"></table></div>
   </div>
   <div class="secpane" id="pane-costs">
-    <h2>Event <em>cost engine</em> — labor &amp; direct expenses</h2>
+    <h2>Event <em>labor</em> — staffing cost vs guest-paid fees</h2>
     <div class="scroll"><table class="alloc" id="vsbeo-cost" style="max-width:900px;"></table></div>
   </div>
   <div class="secpane" id="pane-pnl">
@@ -400,7 +404,7 @@ const BEO_OPEX=[
   {n:'G&A — Uncontrollable (processing, ins., licenses)',v:1.9}];
 function blankEvent(){
   return {tab:'New Event',name:'New Event — Vessel',date:'',evType:'',
-    inqDate:'',evDate:'',startTime:'',endTime:'',salesperson:'',leadSource:'',
+    inqDate:'',evDate:'',startTime:'',endTime:'',salesperson:'',leadSource:'',company:'',market:'',
     guests:50,fbMin:1500,rental:0,deposit:0,
     svc:20,sef:5,salesTax:6,liqTax:9,
     food:[],bev:[],
@@ -409,8 +413,9 @@ function blankEvent(){
     burden:16.5,mgmtPct:4,disc:0,discLbl:'',act:{},contract:null};
 }
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashDrinks','cashPrice','cashCogs','burden','mgmtPct','disc'];
-const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource'];
+const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
+const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Other'];
 const TIMES=(()=>{const o=[];for(let h=6;h<26;h++){['00','30'].forEach(m=>{const hh=h%24,ap=hh<12?'AM':'PM';let h12=hh%12;if(h12===0)h12=12;o.push(h12+':'+m+' '+ap);});}return o;})();
 function dispDate(B){
   if(B.evDate){
@@ -769,7 +774,7 @@ function buildEvents(){
     ['Theoretical EBITDA',bf0(totEb),totRev?fpc(totEb/totRev*100)+' blended margin':'—']]);
   let h=`<tr><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th>Guests</th><th>Client total</th><th>House revenue</th><th>EBITDA</th><th>Margin</th><th class="li" style="min-width:130px;">Last saved</th></tr>`;
   rows.forEach(({ev,C})=>{
-    h+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span><span class="evsub">${beoEsc(dispDate(ev)||'date TBD')}</span></td>
+    h+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span><span class="evsub">${beoEsc([ev.company,dispDate(ev)||'date TBD'].filter(Boolean).join(' · '))}</span></td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">·</span>'}</td>
 <td>${ev.guests}</td>
 <td style="font-weight:700;">${bf2(C.grand)}</td>
@@ -799,6 +804,8 @@ function buildBEO(){
   const _emg=C.rev?C.ebitda/C.rev*100:0;
   document.getElementById('ev-meta').innerHTML=[
     dispDate(B)?beoEsc(dispDate(B)):'date TBD',
+    B.company?('<b>'+beoEsc(B.company)+'</b>'):null,
+    B.market?beoEsc(B.market):null,
     B.evType?beoEsc(B.evType):null,
     B.salesperson?('sales: <b>'+beoEsc(B.salesperson)+'</b>'):null,
     '<b>'+B.guests+'</b> guests',
@@ -809,7 +816,8 @@ function buildBEO(){
   const IN=(bi,v,w,txt)=>`<input class="drvin${txt?' txt':''}" data-bi="${bi}" value="${attEsc(String(v))}"${txt?'':' inputmode="decimal"'}${w?` style="width:${w}px;"`:''}>`;
   const STEP=(bi,v,w)=>`<span class="step"><button data-stp="${bi}:-1" tabindex="-1">−</button>${IN(bi,v,w)}<button data-stp="${bi}:1" tabindex="-1">＋</button></span>`;
   const MU='<span style="color:var(--muted);font-size:8.5px;">';
-  const tm=100-TARGET;
+  const FT=50;                       /* blended food-COGS goal for the whole BEO */
+  const tm=100-FT;                   /* per-item margin coloring keys off the blend goal, not a blanket per-item rule */
   const mgCol=p=>p>=tm-0.01?'var(--pos)':(p>=tm-10?'#b98029':'var(--neg)');
   const emg=C.rev?C.ebitda/C.rev*100:0;
   const emgCol=emg>=25?'var(--pos)':(emg>=15?'#b98029':'var(--neg)');
@@ -822,8 +830,9 @@ function buildBEO(){
 <tr><td class="li">Service charge (%)</td><td>${IN('g:svc',B.svc)}</td><td class="li">Liquor tax (%)</td><td>${IN('g:liqTax',B.liqTax)}</td><td class="li">Management fee (% of revenue)</td><td>${IN('g:mgmtPct',B.mgmtPct)}</td></tr>
 <tr><td class="li">Special event fee (%)</td><td>${IN('g:sef',B.sef)}</td><td class="li">Discount (% of F&amp;B)</td><td>${IN('g:disc',B.disc||0)}</td><td class="li">Discount label</td><td>${IN('g:discLbl',B.discLbl||'',0,1)}</td></tr>
 <tr><td class="li">Event type</td><td>${`<select class="drvin txt" data-bi="g:evType" style="width:200px;">${['',...Object.keys(BENCH.byType||{})].map(o=>`<option value="${attEsc(o)}"${o===(B.evType||'')?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`}</td><td class="li" colspan="3" style="color:var(--muted);">Cash-bar history — ${beoEsc(benchFor(B).label)}${benchFor(B).n?' · '+benchFor(B).n+' events':''}: <b>$${benchFor(B).v.toFixed(2)}/guest</b> · overall $${(+(BENCH.overall||0)).toFixed(2)}/guest ${MU}Tripleseat billed beverage · Jul ’25–Jun ’26</span></td><td><button class="badd" data-bx="bench" style="margin:0;">APPLY TO CASH BAR</button></td></tr>
-<tr><td class="li">Start &amp; end time</td><td>${(()=>{const TSEL=(bi,v)=>`<select class="drvin txt" data-bi="${bi}" style="width:92px;">${['',...TIMES].map(o=>`<option value="${attEsc(o)}"${o===(v||'')?' selected':''}>${o||'—'}</option>`).join('')}</select>`;return TSEL('g:startTime',B.startTime)+' '+TSEL('g:endTime',B.endTime);})()}</td><td class="li">Date of inquiry</td><td><input type="date" class="drvin txt" data-bi="g:inqDate" value="${attEsc(B.inqDate||'')}" style="width:140px;"></td><td class="li">Sales person</td><td>${IN('g:salesperson',B.salesperson||'',0,1)}</td></tr>
-<tr><td class="li">Source of lead</td><td>${(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li" colspan="4" style="color:var(--muted);">${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B.evDate+'T12:00:00');const dd=Math.round((b-a)/86400000);return isNaN(dd)?'':'Lead time — inquiry to event: <b>'+dd+' days</b>';})():''}</td></tr>`;
+<tr><td class="li">Start &amp; end time</td><td>${(()=>{const TSEL=(bi,v)=>`<select class="drvin txt" data-bi="${bi}" style="width:92px;">${['',...TIMES,...(v&&!TIMES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===(v||'')?' selected':''}>${o||'—'}</option>`).join('')}</select>`;return TSEL('g:startTime',B.startTime)+' '+TSEL('g:endTime',B.endTime);})()}</td><td class="li">Date of inquiry</td><td><input type="date" class="drvin txt" data-bi="g:inqDate" value="${attEsc(B.inqDate||'')}" style="width:140px;"></td><td class="li">Sales person</td><td>${IN('g:salesperson',B.salesperson||'',0,1)}</td></tr>
+<tr><td class="li">Source of lead</td><td>${(()=>{const src=B.leadSource||'';const opts=['',...LEAD_SRC,...(src&&!LEAD_SRC.includes(src)?[src]:[])];return `<select class="drvin txt" data-bi="g:leadSource" style="width:200px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===src?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td><td class="li">Company</td><td>${IN('g:company',B.company||'',0,1)}</td><td class="li">Market segment</td><td>${(()=>{const mk=B.market||'';const opts=['',...MKT_SEG,...(mk&&!MKT_SEG.includes(mk)?[mk]:[])];return `<select class="drvin txt" data-bi="g:market" style="width:170px;">${opts.map(o=>`<option value="${attEsc(o)}"${o===mk?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;})()}</td></tr>
+${B.inqDate&&B.evDate?(()=>{const a=new Date(B.inqDate+'T12:00:00'),b=new Date(B.evDate+'T12:00:00');const dd=Math.round((b-a)/86400000);return isNaN(dd)?'':`<tr><td class="li" colspan="6" style="color:var(--muted);">Lead time — inquiry to event: <b>${dd} days</b></td></tr>`;})():''}`;
   /* ---- items ---- */
   const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">VENDOR — EDIT</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
@@ -837,6 +846,9 @@ function buildBEO(){
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
   }
   ih+=`<tr class="total"><td class="li">Food total</td><td></td><td></td><td>${bf2(C.food)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsF)}</td><td class="opt">${C.food?fpc(C.cogsF/C.food*100):'·'}</td><td class="opt">${bf2(C.food-C.cogsF)}</td><td style="color:${C.food?mgCol((C.food-C.cogsF)/C.food*100):'inherit'};">${C.food?fpc((C.food-C.cogsF)/C.food*100):'·'}</td><td></td></tr>`;
+  const fPct=C.food?C.cogsF/C.food*100:0;
+  const foodOK=!C.food||fPct<=FT+0.005;
+  ih+=`<tr><td class="li" colspan="10">${foodOK?`<span class="chip-ok">PASS — BLENDED FOOD COGS ${C.food?fpc(fPct):'—'} ≤ ${FT}%</span>`:`<span class="chip-low">FAIL — BLENDED FOOD COGS ${fpc(fPct)} · MUST BE ≤ ${FT}%</span>`} <span style="color:var(--muted);font-size:8.5px;">Goal: the whole food BEO blends to ${FT}% COGS — price items strategically (some higher-cost, some lower) so no single markup feels offensive.${!foodOK&&C.cogsF?` To pass: add ${bf2(C.cogsF/(FT/100)-C.food)} of food price, or cut ${bf2(C.cogsF-C.food*FT/100)} of cost.`:''}</span></td></tr>`;
   ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — FEES &amp; PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines — click to expand</span>`}</td></tr>`;
   if(BEOSEC.bev){
     B.bev.forEach((i,idx)=>{ih+=itRow('bev',i,idx);});
@@ -845,6 +857,8 @@ function buildBEO(){
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   ih+=`<tr><td class="li" style="padding-left:22px;">Cash bar — house estimate ${MU}${B.guests} guests × ${B.cashDrinks} drinks × $${B.cashPrice} · guests pay individually</span></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
+  const tbm=document.getElementById('tab-menu');
+  if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
   /* ---- client bill ---- */
   let bh=`<tr><th class="li" style="min-width:280px;">BEO summary — client view · per contract</th><th style="min-width:120px;">Amount</th></tr>`;
   if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
@@ -863,7 +877,7 @@ function buildBEO(){
   const met=C.fb>=B.fbMin;
   bh+=`<tr><td class="li">F&amp;B minimum ${bf2(B.fbMin)}</td><td style="font-weight:800;color:${met?'#1c7c4d':'#b3541e'};">${met?'✓ Met':'Short '+bf2(B.fbMin-C.fb)}</td></tr>`;
   document.getElementById('vsbeo-bill').innerHTML=bh;
-  /* ---- cost engine ---- */
+  /* ---- labor (cost engine) ---- */
   let ch=`<tr><th class="li" style="min-width:250px;">Staffing schedule<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">RULE — 2 SERVERS + 1 BARTENDER · $35/HR · SHIFT = EVENT + 1 HR</span></th><th>#</th><th>Hours</th><th>Rate</th><th style="min-width:90px;">Wages</th><th></th></tr>`;
   B.labor.forEach((l,idx)=>{
     ch+=`<tr><td class="li">${IN(`lab:${idx}:r`,l.r,0,1)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
@@ -872,6 +886,20 @@ function buildBEO(){
   ch+=`<tr class="total"><td class="li">Subtotal — event wages</td><td></td><td></td><td></td><td>${bf2(C.wages)}</td><td></td></tr>`;
   ch+=`<tr><td class="li">Payroll taxes &amp; benefits ${MU}${B.burden}% of wages</span></td><td></td><td></td><td></td><td>${bf2(C.wages*B.burden/100)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
+  /* ---- labor recovery: guest-paid fees vs our labor cost ---- */
+  const LABFEE=/bartender|barback|server|staff|labor|chef|attendant|security|coat ?check/i;
+  const feeLines=[...B.food,...B.bev].filter(i=>LABFEE.test(i.n)&&i.q*i.p>0);
+  const feeSum=feeLines.reduce((a,i)=>a+i.q*i.p,0);
+  const labRec=C.svc+feeSum;
+  const labNet=labRec-C.labor;
+  const labOK=labNet>0.005;
+  ch+=`<tr class="section"><td class="li" colspan="6">LABOR RECOVERY — GUEST-PAID FEES MUST EXCEED OUR LABOR COST</td></tr>`;
+  ch+=`<tr><td class="li">Vessel service charge ${MU}${B.svc.toFixed(1)}% on F&amp;B · from Setup — retained by house</span></td><td colspan="3"></td><td>${bf2(C.svc)}</td><td></td></tr>`;
+  feeLines.forEach(i=>{ch+=`<tr><td class="li">${beoEsc(i.n)} ${MU}billed on the menu</span></td><td colspan="3"></td><td>${bf2(i.q*i.p)}</td><td></td></tr>`;});
+  ch+=`<tr class="total"><td class="li">Total labor fees collected from guest</td><td colspan="3"></td><td>${bf2(labRec)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Less: total event labor ${MU}wages + ${B.burden}% burden</span></td><td colspan="3"></td><td>−${bf2(C.labor)}</td><td></td></tr>`;
+  ch+=`<tr class="total"><td class="li">Net labor ${labNet>=0?'surplus':'shortfall'} ${MU}coverage ${C.labor?fpc(labRec/C.labor*100):'—'} of labor cost</span></td><td colspan="3">${labOK?'<span class="chip-ok">PASS — FEES COVER LABOR</span>':'<span class="chip-low">FAIL — FEES BELOW LABOR COST</span>'}</td><td style="font-weight:800;color:${labOK?'var(--pos)':'var(--neg)'};">${labNet>=0?'+':'−'}${bf2(Math.abs(labNet))}</td><td></td></tr>`;
+  if(!labOK)ch+=`<tr><td class="li" colspan="6" style="color:var(--muted);font-size:9.5px;">To pass: raise the service charge %, add or increase billed staffing fees (e.g. bartender fee), or trim scheduled hours. Break-even needs ${bf2(C.labor)} recovered.</td></tr>`;
   ch+=`<tr class="section"><td class="li" colspan="6">DIRECT OPERATING &amp; OTHER EXPENSES — VESSEL DRIVER % × EVENT REVENUE</td></tr>`;
   BEO_OPEX.forEach(o=>{
     ch+=`<tr><td class="li">${o.n}</td><td colspan="2" style="color:var(--muted);">${fpc(o.v)}</td><td></td><td>${bf2(C.rev*o.v/100)}</td><td></td></tr>`;
@@ -879,6 +907,8 @@ function buildBEO(){
   const opct=BEO_OPEX.reduce((a,o)=>a+o.v,0);
   ch+=`<tr class="total"><td class="li">Total direct operating &amp; other</td><td colspan="2">${fpc(opct)}</td><td></td><td>${bf2(C.opex)}</td><td></td></tr>`;
   document.getElementById('vsbeo-cost').innerHTML=ch;
+  const tb=document.getElementById('tab-costs');
+  if(tb)tb.innerHTML='Labor <span class="tabbadge '+(labOK?'ok':'bad')+'">'+(labOK?'✓ PASS':'✕ FAIL')+'</span>';
   /* ---- theoretical P&L ---- */
   const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${C.rev?fpc(v/C.rev*100):'·'}</td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'·'}</td></tr>`;
   let ph=`<tr><th class="li" style="min-width:300px;">Theoretical event P&amp;L</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
@@ -1111,7 +1141,7 @@ document.addEventListener('click',e=>{
 });
 function beoDiff(a,b){
   const out=[];
-  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',cashDrinks:'Cash-bar drinks per guest',cashPrice:'Average drink price',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',cashDrinks:'Cash-bar drinks per guest',cashPrice:'Average drink price',cashCogs:'Cash-bar pour cost %',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
   Object.keys(SL).forEach(k=>{
     const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
@@ -1239,6 +1269,124 @@ function beoImport(){
   };
   inp.click();
 }
+/* ---------------- BEO import from a Tripleseat contract PDF ---------------- */
+const PDFJS_BASE='https://esm.sh/pdfjs-dist@4.10.38/legacy/build';
+async function pdfLines(file){
+  const pdfjs=await import(PDFJS_BASE+'/pdf.mjs');
+  try{pdfjs.GlobalWorkerOptions.workerSrc=PDFJS_BASE+'/pdf.worker.mjs';}catch(e){}
+  const doc=await pdfjs.getDocument({data:await file.arrayBuffer()}).promise;
+  const out=[];
+  for(let i=1;i<=doc.numPages;i++){
+    const tc=await (await doc.getPage(i)).getTextContent();
+    const rows=[];
+    tc.items.forEach(it=>{
+      if(!it.str||!it.str.trim())return;
+      const y=it.transform[5],x=it.transform[4];
+      let r=rows.find(rr=>Math.abs(rr.y-y)<=3);
+      if(!r){r={y,parts:[]};rows.push(r);}
+      r.parts.push({x,s:it.str});
+    });
+    rows.sort((a,b)=>b.y-a.y).forEach(r=>{
+      out.push(r.parts.sort((a,b)=>a.x-b.x).map(p=>p.s).join(' ').replace(/\s+/g,' ').trim());
+    });
+  }
+  return out;
+}
+function parseContract(lines){
+  const txt=lines.join('\n');
+  if(!/EVENT CONTRACT/i.test(txt)&&!/EVENT:/.test(txt))return null;
+  const pl=blankEvent();
+  const money=s=>parseFloat(String(s).replace(/[$,]/g,''))||0;
+  const g=re=>{const m=txt.match(re);return m?m[1].trim():'';};
+  pl.name=g(/EVENT:\s*(.+?)\s+DATE:/)||g(/EVENT:\s*(.+)/)||pl.name;
+  pl.tab=pl.name.length>26?pl.name.slice(0,24)+'…':pl.name;
+  const co=g(/ACCOUNT:\s*(.+?)(?:\s+LOCATION:|\n)/);if(co)pl.company=co;
+  const sp=g(/EVENT SALES MANAGER:\s*([A-Za-z .'\-]+)/);if(sp)pl.salesperson=sp;
+  pl.leadSource='Tripleseat inquiry';
+  const fb=g(/FOOD AND BEVERAGE MINIMUM:\s*\$?\s*([\d,]+(?:\.\d+)?)/i);pl.fbMin=fb?money(fb):0;
+  const rn=g(/RENTAL:\s*\$\s*([\d,]+(?:\.\d+)?)/i);if(rn)pl.rental=money(rn);
+  const dm=txt.match(/DATE:\s*[A-Za-z]+,\s*([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})/);
+  if(dm){
+    const mo=['january','february','march','april','may','june','july','august','september','october','november','december'].indexOf(dm[1].toLowerCase());
+    if(mo>=0)pl.evDate=dm[3]+'-'+String(mo+1).padStart(2,'0')+'-'+String(dm[2]).padStart(2,'0');
+  }
+  /* event-summary window: guests + start/end times (cells wrap across rows) */
+  const si=lines.findIndex(l=>/EVENT SUMMARY/i.test(l));
+  if(si>=0){
+    const win=[];
+    for(let i=si+1;i<lines.length&&win.length<12;i++){if(/^Qty\s+Price\s+Total$/i.test(lines[i]))break;win.push(lines[i]);}
+    const wtxt=win.join(' ');
+    const gm=wtxt.match(/(\d{1,4})\s+\$[\d,]/);if(gm)pl.guests=+gm[1];
+    const times=[...wtxt.matchAll(/(\d{1,2}:\d{2})\s*([ap])\.?m\.?/gi)].map(m=>m[1]+' '+m[2].toUpperCase()+'M');
+    if(times.length)pl.startTime=times[0];
+    if(times.length>1)pl.endTime=times[1];
+  }
+  if(!pl.startTime){
+    const tt=txt.match(/(\d{1,2}:\d{2})\s*([ap])\.?m\.?\s*[–—-]\s*(\d{1,2}:\d{2})\s*([ap])\.?m\.?/i);
+    if(tt){pl.startTime=tt[1]+' '+tt[2].toUpperCase()+'M';pl.endTime=tt[3]+' '+tt[4].toUpperCase()+'M';}
+  }
+  if(pl.startTime&&pl.endTime){
+    const mins=s=>{const m=s.match(/(\d{1,2}):(\d{2})\s*([AP])M/i);let h=+m[1]%12+(/p/i.test(m[3])?12:0);return h*60+ +m[2];};
+    let dur=(mins(pl.endTime)-mins(pl.startTime))/60;
+    if(dur<=0)dur+=24;
+    const sh=Math.round((dur+1)*2)/2;   /* house rule: shift = event + 1 hr */
+    pl.labor=[{r:'Server',n:2,h:sh,rate:35},{r:'Bartender',n:1,h:sh,rate:35}];
+  }
+  const pc=(lbl,key)=>{const m=txt.match(new RegExp(lbl+'\\s+([\\d.]+)\\s*%'));if(m)pl[key]=parseFloat(m[1]);};
+  pc('Sales Tax','salesTax');pc('Liquor Tax','liqTax');pc('Special Event Fee','sef');pc('Service Charge','svc');
+  const dp=txt.match(/Deposit[^\n$]*-?\$([\d,]+\.\d{2})/);if(dp)pl.deposit=money(dp[1]);
+  const norm=s=>s.toLowerCase().replace(/\(.*?\)/g,' ').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  const costFor=(name,price)=>{
+    const n=norm(name);let best=null,bl=0;
+    CATALOG.forEach(it=>{const c=norm(it.name);if(c&&(n.includes(c)||c.includes(n))&&c.length>bl){bl=c.length;best=it;}});
+    if(best&&+best.vendor_cost>0)return +best.vendor_cost;
+    return Math.round(price*40)/100;   /* fallback: house 40% COGS convention */
+  };
+  pl.food=[];pl.bev=[];
+  let sec=0,pend=null;
+  for(const l of lines){
+    if(/ESTIMATED BILLING/i.test(l))break;
+    if(/^Qty\s+Price\s+Total$/i.test(l)){sec++;pend=null;continue;}
+    if(!sec)continue;
+    if(/^Total\s+\$/.test(l)){pend=null;continue;}
+    const qm=l.match(/^(\d{1,3})\s+(.+)$/);
+    if(qm&&!/^\d+\s*\./.test(l))pend={q:+qm[1],n:qm[2].replace(/\$\s?[\d,]+\.\d{2}\s+\$\s?[\d,]+\.\d{2}\s*$/,'').trim()};
+    const pm=l.match(/\$\s?([\d,]+\.\d{2})\s+\$\s?([\d,]+\.\d{2})\s*$/);
+    if(pm&&pend){
+      const price=money(pm[1]);
+      const item={n:pend.n,q:pend.q,p:price,u:costFor(pend.n,price)};
+      if(/bartender|fee/i.test(item.n))item.u=0;
+      (sec>=2?pl.bev:pl.food).push(item);
+      pend=null;
+    }
+  }
+  if(!pl.food.length&&!pl.bev.length)return null;
+  return pl;
+}
+function beoImportPdf(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='.pdf,application/pdf';
+  inp.onchange=async()=>{
+    const f=inp.files&&inp.files[0];
+    if(!f)return;
+    evStatus('Reading contract PDF…');
+    try{
+      const lines=await pdfLines(f);
+      const pl=parseContract(lines);
+      if(!pl){evStatus('Could not read that PDF as an event contract — expected the Tripleseat contract format.');return;}
+      evStatus('Creating event…');
+      const e=await insertEvent(pl);
+      if(!e)return;
+      BEOS.push(e);
+      evStatus('');
+      SECSEL='setup';
+      goto('event',e._id);
+      showToast('Imported "'+(pl.tab||pl.name)+'" from the contract — review Setup & Menu. Unit costs are catalog-matched or estimated at 40% of price.');
+    }catch(err){evStatus('Import failed — '+((err&&err.message)||err));}
+  };
+  inp.click();
+}
+pill('vsbeo-importpdf',beoImportPdf);
 pill('vsbeo-export',beoExport);
 pill('vsbeo-import',beoImport);
 pill('vsbeo-print',()=>{
