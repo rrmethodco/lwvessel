@@ -87,6 +87,8 @@ table.evlist tr.ev-month td .mo-inner{display:flex;justify-content:space-between
 table.evlist tr.ev-month td .mo-meta{font-family:-apple-system,sans-serif;font-size:9px;font-weight:700;letter-spacing:.06em;color:#aebdd4;text-transform:uppercase;white-space:nowrap;}
 table.evlist tr.ev-subtotal td{background:var(--tint)!important;border-top:1px solid var(--line-strong);border-bottom:2px solid var(--line-strong);color:var(--ink);}
 table.evlist tr.ev-subtotal:hover td{background:var(--tint)!important;}
+table.evlist tr.ev-grandtotal td{background:#dbe3f1!important;border-top:2px solid var(--accent-deep);border-bottom:2px solid var(--accent-deep);color:var(--navy);font-weight:800;font-size:12px;padding-top:9px;padding-bottom:9px;}
+table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -980,14 +982,18 @@ function beoCalcFor(B){
   applyFixedRates(B);
   const food=B.food.reduce((a,i)=>a+i.q*i.p,0);
   const bev=B.bev.reduce((a,i)=>a+i.q*i.p,0);                     /* beverage packages only */
-  const other=(B.other||[]).reduce((a,i)=>a+i.q*i.p,0);          /* Other Fees (AV, equipment) — taxable, no svc/SEF */
-  const barFee=(B.barFee||[]).reduce((a,i)=>a+i.q*i.p,0);        /* Bar / staffing fees — untaxed revenue + labor recovery */
+  const other=(B.other||[]).reduce((a,i)=>a+i.q*i.p,0);          /* Other Fees (AV, equipment) — sales-taxed; service charge & SEF apply (Tripleseat) */
+  const barFee=(B.barFee||[]).reduce((a,i)=>a+i.q*i.p,0);        /* Bar / staffing fees — no sales/liquor tax; service charge & SEF apply; feeds labor recovery */
   const fb=food+bev;
   const unmet=Math.max(0,B.fbMin-fb);   /* contingent — shown as a potential fee, NOT counted in the pre-event estimate */
   const fbB=fb;                          /* revenue basis = actual F&B booked (no unmet top-up until the event happens) */
-  const svc=fbB*B.svc/100;   /* service charge: F&B only — never rental or other fees */
-  const sef=fbB*B.sef/100;   /* special event fee: F&B only — rental is a facility pass-through (matches the contract T&C) */
-  const sTax=(food+sef+other)*B.salesTax/100;   /* Other Fees are sales-taxed; unmet minimum excluded from the estimate */
+  /* service charge & SEF apply to F&B + Other Fees + Bar/Staffing fees, matching how Tripleseat bills them.
+     Rental stays a facility pass-through (no svc/SEF) — the contract T&C reads "added to all food and beverage
+     charges," and rental-only bookings (e.g. the 70th Birthday) are billed with no service charge on rental. */
+  const feeBase=fbB+other+barFee;
+  const svc=feeBase*B.svc/100;
+  const sef=feeBase*B.sef/100;
+  const sTax=(food+sef+other)*B.salesTax/100;   /* Other Fees are sales-taxed; bar/staffing fees & unmet minimum are not */
   const lTax=bev*B.liqTax/100;
   const disc=fbB*(B.disc||0)/100;
   /* cash bar: only when it is explicitly selected AND no beverage package is on the event */
@@ -1048,7 +1054,7 @@ function buildEvents(){
     date:{get:r=>{const t=evDateTs(r.ev);return t===null?8.64e15:t;}},
     type:{get:r=>(r.ev.evType||'').toLowerCase(),str:1},
     status:{get:r=>(r.ev.status||'').toLowerCase(),str:1},
-    close:{get:r=>r.ev.closePct==null||r.ev.closePct===''?-1:+r.ev.closePct},
+    close:{get:r=>{if(String(r.ev.status||'').trim().toUpperCase()==='DEFINITE')return 100;return r.ev.closePct==null||r.ev.closePct===''?-1:+r.ev.closePct;}},
     guests:{get:r=>+r.ev.guests||0},
     grand:{get:r=>+r.C.grand||0},
     rev:{get:r=>+r.C.rev||0},
@@ -1066,13 +1072,17 @@ function buildEvents(){
   let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
   const bstOpts=ev=>['',...BEO_STATUS].map(o=>`<option value="${attEsc(o)}"${(ev.beoStatus||'')===o?' selected':''}>${o?beoEsc(o):'— set status —'}</option>`).join('');
   const rowHtml=({ev,C})=>{
-    const cp=ev.closePct==null||ev.closePct===''?null:+ev.closePct;
+    const isDef=String(ev.status||'').trim().toUpperCase()==='DEFINITE';
+    const cp=isDef?100:(ev.closePct==null||ev.closePct===''?null:+ev.closePct);
     const cpCol=cp==null?'var(--muted)':(cp>=70?'var(--pos)':(cp>=40?'#b98029':'var(--neg)'));
+    const cpCell=isDef
+      ?`<span title="Definite events are 100% likely to close" style="display:inline-block;font-weight:800;color:var(--pos);">100%</span>`
+      :`<select data-close="${ev._id}" title="Likelihood of closing (%)" style="appearance:none;border:1px solid var(--line-strong);background:#fff;color:${cpCol};font-weight:700;border-radius:4px;padding:3px 6px;font-size:10px;font-family:inherit;cursor:pointer;">${['',0,10,20,30,40,50,60,70,80,90,100].map(o=>{const sel=(o===''?cp==null:(+o===cp));return `<option value="${o}"${sel?' selected':''}>${o===''?'— %':o+'%'}</option>`;}).join('')}</select>`;
     return `<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>
 <td class="li" style="white-space:nowrap;"><span style="font-weight:600;">${beoEsc(evShortDate(ev))}</span>${ev.startTime?`<span class="evsub">${beoEsc(ev.startTime+(ev.endTime?'–'+ev.endTime:''))}</span>`:''}</td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
 <td class="li">${statusChip(ev.status)}</td>
-<td class="li"><span style="display:inline-flex;align-items:center;gap:2px;"><input data-close="${ev._id}" value="${cp==null?'':cp}" inputmode="decimal" placeholder="—" title="Likelihood of closing (%)" style="width:42px;text-align:right;appearance:none;border:1px solid var(--line-strong);background:#fff;color:${cpCol};font-weight:700;border-radius:4px;padding:3px 5px;font-size:10px;font-family:inherit;"><span style="color:var(--muted);font-size:9px;">%</span></span></td>
+<td class="li">${cpCell}</td>
 <td>${ev.guests}</td>
 <td style="font-weight:700;">${bf2(C.grand)}</td>
 <td style="font-weight:700;">${bf2(C.rev)}</td>
@@ -1095,6 +1105,9 @@ function buildEvents(){
       g.rows.forEach(r=>h+=rowHtml(r));
       h+=subRow(g);
     });
+    /* grand total across every month */
+    let aG=0,aR=0,aE=0,aU=0;rows.forEach(({ev,C})=>{aG+=C.grand;aR+=C.rev;aE+=C.ebitda;aU+=(+ev.guests||0);});
+    h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td>${bf2(aG)}</td><td>${bf2(aR)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
   }else{
     rows.forEach(r=>h+=rowHtml(r));
   }
@@ -1211,7 +1224,7 @@ function buildBEO(){
   ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
   ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment &middot; taxable, no service charge / SEF</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment &middot; sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
   if(BEOSEC.other){
     (B.other||[]).forEach((i,idx)=>{ih+=itRow('other',i,idx);});
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:other">＋ ADD OTHER FEE</button></td></tr>`;
@@ -1301,7 +1314,7 @@ function buildBEO(){
   ch+=`<tr><td class="li">Payroll taxes &amp; benefits</td><td></td><td></td><td></td><td>${bf2(C.ptb)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total event labor</td><td></td><td></td><td></td><td>${bf2(C.labor)}</td><td></td></tr>`;
   /* ---- bar / staffing fees: guest-billed, untaxed revenue that offsets labor ---- */
-  ch+=`<tr class="section"><td class="li" colspan="6">BAR / STAFFING FEES ${MU}billed to client &middot; untaxed &middot; offsets labor</span></td></tr>`;
+  ch+=`<tr class="section"><td class="li" colspan="6">BAR / STAFFING FEES ${MU}billed to client &middot; service charge &amp; SEF apply, no sales tax &middot; offsets labor</span></td></tr>`;
   (B.barFee||[]).forEach((i,idx)=>{
     ch+=`<tr><td class="li">${IN(`it:barFee:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:barFee:${idx}:q`,i.q,40)}</td><td></td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:barFee:${idx}:p`,i.p,46)}</span></td><td style="font-weight:700;">${bf2(i.q*i.p)}</td><td><button class="bx" data-bx="del:barFee:${idx}" title="Remove line">✕</button></td></tr>`;
   });
