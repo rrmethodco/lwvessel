@@ -542,10 +542,11 @@ function blankEvent(){
     food:[],bev:[],
     cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoUploaded:0,act:{},contract:null};
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoUploaded:0,approved:0,approver:'',act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded'];
-const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved'];
+const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver'];
+const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
 const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Reunion','Rooftop Event','Shower','Social','Wedding','Wedding Ceremony','Wedding Reception'];
@@ -574,6 +575,7 @@ function sanEv(o){
   return b;
 }
 let BEOS=[];
+let ESORT={key:null,dir:1};
 let BEOD=null;
 const BEOEDIT=true;              /* cells are always live — no edit mode */
 let BEOSNAP=null, SNAP_ID=null;  /* last-saved payload of the open event */
@@ -961,8 +963,29 @@ function buildEvents(){
     ['Client billings',bf0(totGrand),'incl. tax · all events'],
     ['House revenue',bf0(totRev),'ex-tax · incl. cash-bar estimates'],
     ['Theoretical EBITDA',bf0(totEb),totRev?fpc(totEb/totRev*100)+' blended margin':'—']]);
-  let h=`<tr><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th class="li">Status</th><th>Guests</th><th>Client total</th><th>EBITDA</th><th>Margin</th><th class="li">BEO uploaded</th><th class="li" style="min-width:120px;">Last saved</th></tr>`;
+  /* sortable columns */
+  const ESK={
+    name:{get:r=>(r.ev.tab||r.ev.name||'').toLowerCase(),str:1},
+    type:{get:r=>(r.ev.evType||'').toLowerCase(),str:1},
+    status:{get:r=>(r.ev.status||'').toLowerCase(),str:1},
+    guests:{get:r=>+r.ev.guests||0},
+    grand:{get:r=>+r.C.grand||0},
+    ebitda:{get:r=>+r.C.ebitda||0},
+    margin:{get:r=>r.C.rev?r.C.ebitda/r.C.rev:-Infinity},
+    beo:{get:r=>+r.ev.beoUploaded||0},
+    approved:{get:r=>+r.ev.approved||0},
+    approver:{get:r=>(r.ev.approver||'').toLowerCase(),str:1},
+    saved:{get:r=>Date.parse(r.ev._updated)||0}
+  };
+  if(ESORT.key&&ESK[ESORT.key]){
+    const sc=ESK[ESORT.key];
+    rows.sort((a,b)=>{const av=sc.get(a),bv=sc.get(b);return sc.str?String(av).localeCompare(String(bv))*ESORT.dir:((av-bv)*ESORT.dir);});
+  }
+  const EH=[['name','Event','li','min-width:230px;'],['type','Type','li',''],['status','Status','li',''],['guests','Guests','',''],['grand','Client total','',''],['ebitda','EBITDA','',''],['margin','Margin','',''],['beo','BEO uploaded','li',''],['approved','Approved','li',''],['approver','Approver','li','min-width:150px;'],['saved','Last saved','li','min-width:120px;']];
+  const earr=k=>ESORT.key===k?(ESORT.dir>0?' ▲':' ▼'):'';
+  let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
   rows.forEach(({ev,C})=>{
+    const aopts=`<option value=""${!ev.approver?' selected':''}>—</option>`+APPROVERS.map(a=>`<option value="${attEsc(a)}"${ev.approver===a?' selected':''}>${beoEsc(a)}</option>`).join('');
     h+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span><span class="evsub">${beoEsc([ev.company,dispDate(ev)||'date TBD'].filter(Boolean).join(' · '))}</span></td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
 <td class="li">${statusChip(ev.status)}</td>
@@ -971,6 +994,8 @@ function buildEvents(){
 <td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td>
 <td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td>
 <td class="li"><button data-beo="${ev._id}" title="Click to toggle whether the Tripleseat BEO has been uploaded" style="appearance:none;border:1px solid ${ev.beoUploaded?'#bfe0cc':'var(--line-strong)'};background:${ev.beoUploaded?'#e7f4ec':'#fff'};color:${ev.beoUploaded?'#1c7c4d':'var(--muted)'};border-radius:4px;padding:3px 10px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${ev.beoUploaded?'✓ YES':'NO'}</button></td>
+<td class="li"><button data-approve="${ev._id}" title="Click to toggle ownership approval" style="appearance:none;border:1px solid ${ev.approved?'#bfe0cc':'var(--line-strong)'};background:${ev.approved?'#e7f4ec':'#fff'};color:${ev.approved?'#1c7c4d':'var(--muted)'};border-radius:4px;padding:3px 10px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${ev.approved?'✓ YES':'NO'}</button></td>
+<td class="li"><select data-approver="${ev._id}" title="Assign approver" style="appearance:none;border:1px solid var(--line-strong);background:#fff;color:${ev.approver?'var(--ink)':'var(--muted)'};border-radius:4px;padding:3px 8px;font-size:10px;font-family:inherit;cursor:pointer;max-width:140px;">${aopts}</select></td>
 <td class="li" style="color:var(--muted);">${beoEsc(ev._by||'—')}${MUC}${agoFmt(ev._updated)}</span></td></tr>`;
   });
   t.innerHTML=h;
@@ -1411,6 +1436,12 @@ function commitFocus(){const k=_navKey;_navKey=null;if(!k)return;requestAnimatio
 /* record the click target (an input/select) before its predecessor's blur/change fires */
 document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-bi],select[data-bi],input[data-ci],select[data-ci]');_navKey=keyOf(el);},true);
 document.addEventListener('change',e=>{
+  const ax=e.target.closest('[data-approver]');
+  if(ax){
+    const ev=BEOS.find(x=>x._id===ax.dataset.approver);
+    if(ev){ev.approver=ax.value;buildEvents();saveEvent(ev,['Approver → '+(ev.approver||'unassigned')]);}
+    return;
+  }
   const c=e.target.closest('[data-ci]');
   if(c){
     const ix=c.dataset.ci.lastIndexOf(':');
@@ -1506,6 +1537,8 @@ document.addEventListener('click',e=>{
     scheduleSave();
     return;
   }
+  const es=e.target.closest('[data-es]');
+  if(es){const k=es.dataset.es;if(ESORT.key===k)ESORT.dir*=-1;else{ESORT.key=k;ESORT.dir=(k==='name'||k==='type'||k==='status'||k==='approver')?1:-1;}buildEvents();return;}
   const bu=e.target.closest('[data-beo]');
   if(bu){
     e.stopPropagation();
@@ -1513,6 +1546,14 @@ document.addEventListener('click',e=>{
     if(ev){ev.beoUploaded=ev.beoUploaded?0:1;buildEvents();saveEvent(ev,['BEO uploaded '+(ev.beoUploaded?'✓':'cleared')]);}
     return;
   }
+  const ap=e.target.closest('[data-approve]');
+  if(ap){
+    e.stopPropagation();
+    const ev=BEOS.find(x=>x._id===ap.dataset.approve);
+    if(ev){ev.approved=ev.approved?0:1;buildEvents();saveEvent(ev,['Approval '+(ev.approved?'granted':'cleared')]);}
+    return;
+  }
+  if(e.target.closest('[data-approver]'))return; /* let the select's change handler own it */
   const op=e.target.closest('[data-open]');
   if(op){goto('event',op.dataset.open);return;}
   const cs=e.target.closest('[data-cs]');
