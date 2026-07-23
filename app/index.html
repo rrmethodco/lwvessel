@@ -548,7 +548,7 @@ const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
-const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Rooftop Event','Social','Wedding Reception'];
+const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Reunion','Rooftop Event','Shower','Social','Wedding','Wedding Ceremony','Wedding Reception'];
 const TIMES=(()=>{const o=[];for(let h=6;h<26;h++){['00','30'].forEach(m=>{const hh=h%24,ap=hh<12?'AM':'PM';let h12=hh%12;if(h12===0)h12=12;o.push(h12+':'+m+' '+ap);});}return o;})();
 function dispDate(B){
   if(B.evDate){
