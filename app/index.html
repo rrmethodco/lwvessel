@@ -320,13 +320,6 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div>
       <h1>Menu <em>catalog</em></h1>
     </div>
-    <div class="controls" style="margin:0;flex-wrap:wrap;align-items:center;">
-      <span class="ctl-label">Target COGS — Vessel beverage</span>
-      <span style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
-        <input class="drvin" id="cat-target" style="width:52px;">
-        <span class="ctl-label">% of guest price</span>
-      </span>
-    </div>
   </div>
   <div class="controls" id="cat-prov" style="margin:8px 0 0;"></div>
   <span class="ctl-label" id="cat-status"></span>
@@ -780,7 +773,7 @@ document.addEventListener('focusout',()=>{
 });
 
 /* ---------------- menu catalog & benchmarks ---------------- */
-let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=40,CLIENTS=[];
+let CATALOG=[],BENCH={overall:0,byType:{},counts:{},basis:''},TARGET=25,CLIENTS=[];   /* beverage/non-Havana recommended-price target: 25% COGS */
 const PROVIDERS=['Little Havana','Little Wing','Vessel','Other'];
 let PICKPROV='Little Havana', CATPROV='All';
 const provOf=it=>it.provider||'Little Havana';
@@ -893,7 +886,6 @@ async function loadCatalog(){
     if(r.key==='hist_settings'&&r.value){HSET.excl=Array.isArray(r.value.excl)?r.value.excl:[];HSET.scrub=r.value.scrub!==false;}
   });
   refreshBench();  /* apply outlier-scrub + manual exclusions to the cash-bar benchmark the calculator uses */
-  const ti=document.getElementById('cat-target');if(ti)ti.value=TARGET;
 }
 function buildCatalog(){
   const t=document.getElementById('vsbeo-cat');if(!t)return;
@@ -1915,13 +1907,6 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   buildBEO();
   scheduleSave();
   document.getElementById('pick-msg').textContent='Added '+it.name+(price?' at $'+price:' — set the price on the line')+'.';
-});
-document.getElementById('cat-target').addEventListener('change',e=>{
-  const v=parseFloat(e.target.value);
-  if(isNaN(v)||v<=0||v>=100){catStatus('Target must be between 0 and 100.');e.target.value=TARGET;return;}
-  TARGET=v;
-  sb.from('app_settings').upsert({key:'target_cogs_pct',value:{pct:v}}).then(({error})=>{catStatus(error?'Save failed — '+error.message:'Target saved for the whole team.');});
-  buildCatalog();
 });
 
 /* ---------------- boot (login disabled for now) ---------------- */
