@@ -681,12 +681,15 @@ let HIST={basis:'',events:[]};
 function recTarget(name,cat,prov){
   if(!/havana/i.test(prov||''))return TARGET;
   const s=((cat||'')+' '+(name||'')).toLowerCase();
-  /* Premium — high food cost already; keep markup gentle so it isn't offensive */
-  if(/entr[eé]|seafood|shrimp|scallop|ceviche|salmon|paella|lobster|crab|tuna|oyster|prime rib|beef medallion|pernil|carnita/.test(s))return 48;
-  /* Low ingredient cost — mark up hardest */
-  if(/side|salad|dessert|sandwich|wrap|stationary|starter|vegetarian|rice|bean|potato|fries|tots|chip|plantain|maduro|toston|macaroni|mac &|vegetable|veggie|hummus|dip|fruit|nacho|brownie|cookie|cake|pie|dessert bar|arepa|empanada|croquetta|crud/.test(s))return 30;
-  /* Mid — chicken / pork / beef appetizers & lighter fare */
-  return 40;
+  /* Strategy: the food BEO should blend to ~50% COGS. Price each item so no markup is
+     egregious — a gentle gradient centered on 50% (premium items already cost a lot, so
+     they carry the lightest markup; cheap volume items carry a bit more, still ~2.2x). */
+  /* Premium centerpieces — highest ingredient cost, gentlest markup (~1.8x) */
+  if(/entr[eé]|seafood|shrimp|scallop|ceviche|salmon|paella|lobster|crab|tuna|oyster|prime rib|beef medallion|pernil|carnita/.test(s))return 55;
+  /* Value / volume items — low ingredient cost carries the heaviest markup (~2.2x) but small $ */
+  if(/side|salad|dessert|sandwich|wrap|stationary|starter|vegetarian|rice|bean|potato|fries|tots|chip|plantain|maduro|toston|macaroni|mac &|vegetable|veggie|hummus|dip|fruit|nacho|brownie|cookie|cake|pie|dessert bar|arepa|empanada|croquetta|crud/.test(s))return 45;
+  /* Standard mains & hot apps — even 2x markup, the 50% anchor */
+  return 50;
 }
 function recPrice(cost,name,cat,prov){const t=recTarget(name,cat,prov);if(!cost||!t)return null;return Math.ceil(cost/(t/100)/5)*5;}
 const DAYPARTS=['Morning (pre-11a)','Midday (11a-2p)','Afternoon (2-5p)','Evening (5p+)'];
