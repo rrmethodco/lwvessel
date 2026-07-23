@@ -82,6 +82,9 @@ tr.total td{border-top:1px solid var(--line-strong);border-bottom:1px solid var(
 /* event list */
 table.evlist tr.evrow{cursor:pointer;}
 table.evlist tr.evrow:hover td{background:#f3f7fc;}
+table.evlist tr.ev-month td{background:var(--navy)!important;color:#fff!important;padding:0!important;border-top:2px solid var(--navy);}
+table.evlist tr.ev-month td .mo-inner{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 12px;font-family:Georgia,serif;font-size:12.5px;letter-spacing:.02em;}
+table.evlist tr.ev-month td .mo-meta{font-family:-apple-system,sans-serif;font-size:9px;font-weight:700;letter-spacing:.06em;color:#aebdd4;text-transform:uppercase;white-space:nowrap;}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -235,6 +238,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   </div>
   <span class="ctl-label" id="ev-status"></span>
   <div class="bstrip" id="ev-kpis"></div>
+  <div id="ev-grp-btn" style="display:flex;justify-content:flex-end;margin:10px 0 4px;"></div>
   <div class="scroll"><table class="alloc evlist" id="ev-list"></table></div>
   <div class="emptybox" id="ev-empty" style="display:none;">No events yet.<br><b>＋ New Event</b> starts a fresh inquiry from the house defaults.</div>
 </section>
@@ -339,25 +343,25 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="pagehead">
     <div>
       <h1>Vessel <em>— Comp Shop</em> <span class="recd" style="background:#e7f4ec;color:#1c7c4d;border-color:#bfe0cc;">HARST / ProSolutions mystery shop · group &amp; events sales · Q2 2026</span></h1>
-      <div class="ph-sub">Competitive sales shop of ROOST Baltimore vs. three comp-set properties for a 30-person, 2-night group with a day-1 welcome reception. Rankings reflect the shopper's overall buying experience.</div>
+      <div class="ph-sub">Competitive sales shop of Vessel vs. three comp-set properties for a 30-person, 2-night group with a day-1 welcome reception. Rankings reflect the shopper's overall buying experience.</div>
     </div>
   </div>
   <div class="bstrip">
-    <div class="bstat"><div class="k">ROOST ranking</div><div class="v">4 of 4</div><div class="s">despite a "Definitely would buy" rating — process, not hospitality</div></div>
+    <div class="bstat"><div class="k">Vessel ranking</div><div class="v">4 of 4</div><div class="s">despite a "Definitely would buy" rating — process, not hospitality</div></div>
     <div class="bstat"><div class="k">Room rate quoted</div><div class="v">$229 → $219</div><div class="s">2nd highest of set · Courtyard $159 · Kimpton $189–$185 · Canopy $372</div></div>
-    <div class="bstat"><div class="k">F&amp;B minimum</div><div class="v">$0</div><div class="s">only property with none — comps $1,000 / $1,500 / $3,500</div></div>
+    <div class="bstat"><div class="k">F&amp;B minimum</div><div class="v">$1,500</div><div class="s">in line with the comp set — comps $1,000 / $1,500 / $3,500</div></div>
     <div class="bstat"><div class="k">Room rental</div><div class="v">$950</div><div class="s">incl. 30-person welcome reception · set runs $500–$1,500</div></div>
     <div class="bstat"><div class="k">Service charge &amp; fees</div><div class="v">25%</div><div class="s">20% + 5% special event fee · comps 24–25% as one number</div></div>
   </div>
 
   <h2>Sales Matrix <em>— commercial terms</em></h2>
   <div class="scroll"><table class="alloc" style="max-width:1200px;">
-    <tr><th class="li" style="min-width:150px;">Term</th><th class="li cs-hi" style="min-width:200px;">ROOST Baltimore</th><th class="li" style="min-width:200px;">Courtyard Downtown / McHenry Row</th><th class="li" style="min-width:190px;">Canopy Harbor Point</th><th class="li" style="min-width:200px;">Kimpton Monaco Inner Harbor</th></tr>
+    <tr><th class="li" style="min-width:150px;">Term</th><th class="li cs-hi" style="min-width:200px;">Vessel</th><th class="li" style="min-width:200px;">Courtyard Downtown / McHenry Row</th><th class="li" style="min-width:190px;">Canopy Harbor Point</th><th class="li" style="min-width:200px;">Kimpton Monaco Inner Harbor</th></tr>
     <tr><td class="li">Shopper ranking</td><td class="li cs-hi"><b>4</b></td><td class="li"><b>1</b></td><td class="li">2</td><td class="li">3</td></tr>
     <tr><td class="li">Performance summary</td><td class="li cs-hi">Prompt &amp; Pleasant</td><td class="li">Fast &amp; Friendly</td><td class="li">Quick &amp; Pleasant</td><td class="li">Swift &amp; Helpful</td></tr>
     <tr><td class="li">Group rate — 1st quote</td><td class="li cs-hi"><b>$229</b></td><td class="li">$159</td><td class="li">$372</td><td class="li">$189</td></tr>
     <tr><td class="li">After rate resistance</td><td class="li cs-hi"><b>$219</b></td><td class="li">Held — best rate available</td><td class="li">Held — best rate available</td><td class="li">$185</td></tr>
-    <tr><td class="li">F&amp;B minimum</td><td class="li cs-hi"><b>None</b></td><td class="li">$1,000</td><td class="li">$3,500</td><td class="li">$1,500</td></tr>
+    <tr><td class="li">F&amp;B minimum</td><td class="li cs-hi"><b>$1,500</b></td><td class="li">$1,000</td><td class="li">$3,500</td><td class="li">$1,500</td></tr>
     <tr><td class="li">Meeting room rental</td><td class="li cs-hi">$950 incl. welcome reception (30)</td><td class="li">$1,000 incl. welcome reception (30)</td><td class="li">$1,500 incl. welcome reception (30)</td><td class="li">$500 incl. welcome reception (30)</td></tr>
     <tr><td class="li">Reception pricing (à la carte)</td><td class="li cs-hi">Appetizers $110–$325 / 50 pc · displays $50–$60</td><td class="li">Hot canapés $100–$180 / 48 pc · cold $110–$140 / 36 pc · displays $20–$40</td><td class="li">Canapés $6–$15 / pc (25 min) · stations $26–$75</td><td class="li">Canapés $70–$80 / dz or $24–$29 pp · stations $16–$46</td></tr>
     <tr><td class="li">Service charge &amp; fees</td><td class="li cs-hi">25% (20% service + 5% special event)</td><td class="li">24%</td><td class="li">25%</td><td class="li">24%</td></tr>
@@ -365,13 +369,13 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <tr><td class="li">Attrition</td><td class="li cs-hi">Waived as a concession</td><td class="li">80%</td><td class="li">80%</td><td class="li">80%</td></tr>
     <tr><td class="li">Cancellation</td><td class="li cs-hi">Outlined in contract</td><td class="li">Fees within 30 days of event</td><td class="li">Outlined in contract</td><td class="li">100% of anticipated revenue upon signing</td></tr>
     <tr><td class="li">Parking</td><td class="li cs-hi">Offsite self-park $20/car</td><td class="li">Complimentary offsite self-park</td><td class="li">Valet $55/car</td><td class="li">Valet $40 (from $55) · event $25 (from $35)</td></tr>
-    <tr><td class="li">Outside catering</td><td class="li cs-hi">Permitted — $500 fee</td><td class="li">Not permitted</td><td class="li">Not permitted</td><td class="li">Not permitted</td></tr>
+    <tr><td class="li">Outside catering</td><td class="li cs-hi">Not permitted</td><td class="li">Not permitted</td><td class="li">Not permitted</td><td class="li">Not permitted</td></tr>
     <tr><td class="li">Destination fee</td><td class="li cs-hi">None</td><td class="li">None</td><td class="li">None</td><td class="li">None</td></tr>
   </table></div>
 
   <h2>Sales Performance <em>— shopper narrative</em></h2>
   <div class="scroll"><table class="alloc" style="max-width:1200px;">
-    <tr><th class="li" style="min-width:150px;">Dimension</th><th class="li cs-hi" style="min-width:220px;">ROOST Baltimore</th><th class="li" style="min-width:210px;">Courtyard</th><th class="li" style="min-width:210px;">Canopy</th><th class="li" style="min-width:210px;">Kimpton</th></tr>
+    <tr><th class="li" style="min-width:150px;">Dimension</th><th class="li cs-hi" style="min-width:220px;">Vessel</th><th class="li" style="min-width:210px;">Courtyard</th><th class="li" style="min-width:210px;">Canopy</th><th class="li" style="min-width:210px;">Kimpton</th></tr>
     <tr><td class="li">Responsiveness</td><td class="li cs-hi">Quick initial response; follow-ups timely and efficient</td><td class="li">Prompt initial response; consistent follow-up</td><td class="li">Responsive at first; manager change created delays</td><td class="li">Quick response; timely follow-up</td></tr>
     <tr><td class="li">Qualification</td><td class="li cs-hi">Asked date flexibility, event preferences and priorities to tailor the proposal</td><td class="li">Asked dates, budget and preferences</td><td class="li">Sent proposal from the inquiry only; no follow-up questions</td><td class="li">Asked goals, preferences, date flexibility</td></tr>
     <tr><td class="li">Selling &amp; knowledge</td><td class="li cs-hi">Brochures, space images, banquet detail; follow-ups answered with clarity</td><td class="li">Brochures, images, banquet detail; confident follow-up</td><td class="li">Space and banquet information only</td><td class="li">Brochures, images, banquet detail; clear follow-up</td></tr>
@@ -383,11 +387,11 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div class="cs-k">Findings</div>
     <div class="cs-t">What the shop says about Vessel's group &amp; events position</div>
     <ul>
-      <li><b>The 4-of-4 ranking is a process problem, not a hospitality problem.</b> ROOST earned a "Definitely would buy" rating and the warmest rapport notes in the set — but made no proactive attempt to close. The winner (Courtyard) separated itself with a simple "Request a Contract" link.</li>
+      <li><b>The 4-of-4 ranking is a process problem, not a hospitality problem.</b> Vessel earned a "Definitely would buy" rating and the warmest rapport notes in the set — but made no proactive attempt to close. The winner (Courtyard) separated itself with a simple "Request a Contract" link.</li>
       <li><b>Rate position is aggressive for the comp-set standing:</b> $229 quoted ($219 after resistance) — second only to Canopy's $372, +38% over the Courtyard's $159 and +18% over the Kimpton's $185. Defensible only if the sales process and packaging carry it.</li>
-      <li><b>ROOST was the only property quoting no F&amp;B minimum</b> (comps $1,000–$3,500). The BEO calculator treats minimums as the revenue floor on buyouts — quoting none on group receptions is margin left on the table.</li>
+      <li><b>F&amp;B minimum now set at $1,500</b>, in line with the comp set ($1,000–$3,500). The BEO calculator treats minimums as the revenue floor on buyouts — a $0 quote on group receptions leaves margin on the table, so holding this floor matters.</li>
       <li><b>Fee presentation:</b> 25% (20% service + 5% special event fee) is top-of-set and itemized where every comp quotes one number — an unnecessary comparison-shopping snag.</li>
-      <li><b>Concessions are given away at the opening quote:</b> waived attrition and comp internet against the set's standard 80% attrition, plus outside catering permitted ($500 fee) that every comp prohibits — the latter leaks the F&amp;B revenue a minimum should protect.</li>
+      <li><b>Concessions are given away at the opening quote:</b> waived attrition and comp internet against the set's standard 80% attrition — chips better held until a signed contract or rate hold.</li>
       <li><b>Real value points exist to sell the premium:</b> $950 rental is mid-pack (Kimpton $500, Canopy $1,500), and $20 self-parking is the cheapest guest cost in a valet-heavy set.</li>
     </ul>
   </div>
@@ -397,18 +401,18 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div class="cs-t">Suggested changes to the Vessel group &amp; events playbook</div>
     <ul>
       <li><b>Add a closing step to the sales SOP:</b> every proposal goes out with a contract link (or offer to hold the space) and a calendared follow-up within 48 hours — the zero-cost fix for the 4-of-4 ranking.</li>
-      <li><b>Institute a group-event F&amp;B minimum of $1,000–$1,500</b> (buyouts already carry $1,500 per the BEO file) so Vessel is never the only property quoting $0.</li>
+      <li><b>Hold the $1,500 group-event F&amp;B minimum</b> now in place (buyouts already carry $1,500 per the BEO file) so Vessel is never the property quoting $0 against a set at $1,000–$3,500.</li>
       <li><b>Quote fees as a single inclusive 25%</b> in proposals (itemize 20% + 5% only at contract) to match how the comp set presents.</li>
       <li><b>Hold attrition waiver and comps as negotiation chips</b> — open at the set-standard 80% attrition and concede only against a signed contract or rate hold.</li>
-      <li><b>Re-price or restrict outside catering:</b> raise the $500 fee to a level that protects the F&amp;B margin a minimum would have captured, or limit it to specialty items per the contract exception.</li>
+      <li><b>Outside catering now restricted:</b> not permitted, matching every comp in the set — protecting the F&amp;B margin the minimum secures; allow only specialty items by contract exception.</li>
       <li><b>Arm the rate premium with a value sheet:</b> rental incl. 30-person reception, $20 self-parking vs valet-only comps, waived-attrition flexibility — the package that justifies $219 vs the Courtyard's $159.</li>
     </ul>
   </div>
 
   <div class="cs-note" style="margin-top:20px;">
-    <p><b>Scenario shopped:</b> corporate social group of 30 people, 2 nights (May 11–13, 2026, flexible), 30 rooms per night, welcome reception on day 1 (group fully offsite day 2). Four properties shopped by phone/email; ROOST Baltimore fielded by Christopher Allen (Director of Sales). Rankings reflect the shopper's overall buying experience.</p>
-    <p><b>Source:</b> HARST / ProSolutions competitive sales shop — ROOST Baltimore vs. Courtyard Baltimore Downtown/McHenry Row, Canopy Baltimore Harbor Point and Kimpton Monaco Inner Harbor — Q2 2026 meeting timeframe. Ratings and narratives are the shopper's; commercial terms as quoted. Average F&amp;B pricing for breakfast/breaks/lunch was not quoted by any property (reception pricing à la carte only).</p>
-    <p style="margin-top:12px;border-top:1px solid var(--line-strong);padding-top:10px;">Confidential. Prepared by Method Co. in connection with the evaluation of ROOST Baltimore. Figures are preliminary, for discussion purposes only, and subject to diligence. Not for distribution without the consent of Method Co.</p>
+    <p><b>Scenario shopped:</b> corporate social group of 30 people, 2 nights (May 11–13, 2026, flexible), 30 rooms per night, welcome reception on day 1 (group fully offsite day 2). Four properties shopped by phone/email; Vessel fielded by Christopher Allen (Director of Sales). Rankings reflect the shopper's overall buying experience.</p>
+    <p><b>Source:</b> HARST / ProSolutions competitive sales shop — Vessel vs. Courtyard Baltimore Downtown/McHenry Row, Canopy Baltimore Harbor Point and Kimpton Monaco Inner Harbor — Q2 2026 meeting timeframe. Ratings and narratives are the shopper's; commercial terms as quoted. Average F&amp;B pricing for breakfast/breaks/lunch was not quoted by any property (reception pricing à la carte only).</p>
+    <p style="margin-top:12px;border-top:1px solid var(--line-strong);padding-top:10px;">Confidential. Prepared by Method Co. in connection with the evaluation of Vessel. Figures are preliminary, for discussion purposes only, and subject to diligence. Not for distribution without the consent of Method Co.</p>
   </div>
 </section>
 
@@ -560,6 +564,9 @@ function dispDate(B){
   }
   return B.date||'';
 }
+function evDateTs(ev){if(ev&&ev.evDate&&/^\d{4}-\d{2}-\d{2}/.test(ev.evDate)){const t=Date.parse(ev.evDate+'T12:00:00');if(!isNaN(t))return t;}return null;}
+function evShortDate(ev){const t=evDateTs(ev);if(t===null)return 'Date TBD';return new Date(t).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function evMonthGrp(ev){const t=evDateTs(ev);if(t===null)return {key:'~undated',label:'Undated',ord:Infinity};const d=new Date(t);return {key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('en-US',{month:'long',year:'numeric'}),ord:d.getFullYear()*12+d.getMonth()};}
 const ACTF=['guests','food','bev','cash','unmet','rental','svc','sef','disc','cogsF','cogsBv','labor','opex','fee'];
 function sanEv(o){
   const b=blankEvent();
@@ -575,7 +582,8 @@ function sanEv(o){
   return b;
 }
 let BEOS=[];
-let ESORT={key:null,dir:1};
+let ESORT={key:'date',dir:1};
+let EV_GROUP=1; /* group event list by month with sub-headers */
 let BEOD=null;
 const BEOEDIT=true;              /* cells are always live — no edit mode */
 let BEOSNAP=null, SNAP_ID=null;  /* last-saved payload of the open event */
@@ -966,6 +974,7 @@ function buildEvents(){
   /* sortable columns */
   const ESK={
     name:{get:r=>(r.ev.tab||r.ev.name||'').toLowerCase(),str:1},
+    date:{get:r=>{const t=evDateTs(r.ev);return t===null?8.64e15:t;}},
     type:{get:r=>(r.ev.evType||'').toLowerCase(),str:1},
     status:{get:r=>(r.ev.status||'').toLowerCase(),str:1},
     guests:{get:r=>+r.ev.guests||0},
@@ -981,12 +990,14 @@ function buildEvents(){
     const sc=ESK[ESORT.key];
     rows.sort((a,b)=>{const av=sc.get(a),bv=sc.get(b);return sc.str?String(av).localeCompare(String(bv))*ESORT.dir:((av-bv)*ESORT.dir);});
   }
-  const EH=[['name','Event','li','min-width:230px;'],['type','Type','li',''],['status','Status','li',''],['guests','Guests','',''],['grand','Client total','',''],['ebitda','EBITDA','',''],['margin','Margin','',''],['beo','BEO uploaded','li',''],['approved','Approved','li',''],['approver','Approver','li','min-width:150px;'],['saved','Last saved','li','min-width:120px;']];
+  const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['status','Status','li',''],['guests','Guests','',''],['grand','Client total','',''],['ebitda','EBITDA','',''],['margin','Margin','',''],['beo','BEO uploaded','li',''],['approved','Approved','li',''],['approver','Approver','li','min-width:150px;'],['saved','Last saved','li','min-width:120px;']];
   const earr=k=>ESORT.key===k?(ESORT.dir>0?' ▲':' ▼'):'';
+  const grpBtn=`<button data-evgrp="1" title="Group events by month" style="appearance:none;border:1px solid var(--line-strong);background:${EV_GROUP?'var(--tint)':'#fff'};color:${EV_GROUP?'var(--accent-deep)':'var(--muted)'};border-radius:4px;padding:2px 9px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${EV_GROUP?'✓ MONTHLY':'GROUP BY MONTH'}</button>`;
   let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
-  rows.forEach(({ev,C})=>{
+  const rowHtml=({ev,C})=>{
     const aopts=`<option value=""${!ev.approver?' selected':''}>—</option>`+APPROVERS.map(a=>`<option value="${attEsc(a)}"${ev.approver===a?' selected':''}>${beoEsc(a)}</option>`).join('');
-    h+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span><span class="evsub">${beoEsc([ev.company,dispDate(ev)||'date TBD'].filter(Boolean).join(' · '))}</span></td>
+    return `<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>
+<td class="li" style="white-space:nowrap;"><span style="font-weight:600;">${beoEsc(evShortDate(ev))}</span>${ev.startTime?`<span class="evsub">${beoEsc(ev.startTime+(ev.endTime?'–'+ev.endTime:''))}</span>`:''}</td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
 <td class="li">${statusChip(ev.status)}</td>
 <td>${ev.guests}</td>
@@ -997,8 +1008,22 @@ function buildEvents(){
 <td class="li"><button data-approve="${ev._id}" title="Click to toggle ownership approval" style="appearance:none;border:1px solid ${ev.approved?'#bfe0cc':'var(--line-strong)'};background:${ev.approved?'#e7f4ec':'#fff'};color:${ev.approved?'#1c7c4d':'var(--muted)'};border-radius:4px;padding:3px 10px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${ev.approved?'✓ YES':'NO'}</button></td>
 <td class="li"><select data-approver="${ev._id}" title="Assign approver" style="appearance:none;border:1px solid var(--line-strong);background:#fff;color:${ev.approver?'var(--ink)':'var(--muted)'};border-radius:4px;padding:3px 8px;font-size:10px;font-family:inherit;cursor:pointer;max-width:140px;">${aopts}</select></td>
 <td class="li" style="color:var(--muted);">${beoEsc(ev._by||'—')}${MUC}${agoFmt(ev._updated)}</span></td></tr>`;
-  });
+  };
+  if(EV_GROUP){
+    const groups=new Map();
+    rows.forEach(r=>{const m=evMonthGrp(r.ev);if(!groups.has(m.key))groups.set(m.key,{label:m.label,ord:m.ord,rows:[]});groups.get(m.key).rows.push(r);});
+    const mdir=(ESORT.key==='date')?ESORT.dir:1;
+    const ordered=[...groups.values()].sort((a,b)=>{if(a.ord===Infinity)return 1;if(b.ord===Infinity)return -1;return (a.ord-b.ord)*mdir;});
+    ordered.forEach(g=>{
+      let mg=0;g.rows.forEach(({C})=>{mg+=C.grand;});
+      h+=`<tr class="ev-month"><td colspan="${EH.length}"><div class="mo-inner"><span>${beoEsc(g.label)}</span><span class="mo-meta">${g.rows.length} event${g.rows.length!==1?'s':''} · ${bf0(mg)}</span></div></td></tr>`;
+      g.rows.forEach(r=>h+=rowHtml(r));
+    });
+  }else{
+    rows.forEach(r=>h+=rowHtml(r));
+  }
   t.innerHTML=h;
+  const gb=document.getElementById('ev-grp-btn');if(gb)gb.innerHTML=grpBtn;
 }
 
 /* ---------------- event detail view ---------------- */
@@ -1537,6 +1562,8 @@ document.addEventListener('click',e=>{
     scheduleSave();
     return;
   }
+  const eg=e.target.closest('[data-evgrp]');
+  if(eg){EV_GROUP=EV_GROUP?0:1;buildEvents();return;}
   const es=e.target.closest('[data-es]');
   if(es){const k=es.dataset.es;if(ESORT.key===k)ESORT.dir*=-1;else{ESORT.key=k;ESORT.dir=(k==='name'||k==='type'||k==='status'||k==='approver')?1:-1;}buildEvents();return;}
   const bu=e.target.closest('[data-beo]');
