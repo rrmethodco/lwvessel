@@ -542,10 +542,10 @@ function blankEvent(){
     food:[],bev:[],
     cashOn:1,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,act:{},contract:null};
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoUploaded:0,act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal'];
-const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded'];
+const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
 const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Rooftop Event','Social','Wedding Reception'];
@@ -934,6 +934,13 @@ function beoCalcFor(B){
 function beoCalc(){return beoCalcFor(BEOD);}
 
 /* ---------------- events list view ---------------- */
+/* Tripleseat status chip — colour by stage */
+function statusChip(s){
+  const v=String(s||'').trim().toUpperCase();
+  if(!v)return '<span style="color:var(--muted);">—</span>';
+  const c={DEFINITE:['#e7f4ec','#1c7c4d','#bfe0cc'],TENTATIVE:['#fbf3e7','#b98029','#ecd9bd'],PROSPECT:['#eef2f8','#3c5a86','#c9d2e0'],CLOSED:['#eef1f5','#68758c','#d5dbe6'],LOST:['#fbeee7','#b3541e','#ecd0bd']}[v]||['#eef2f8','#3c5a86','#c9d2e0'];
+  return `<span style="display:inline-block;background:${c[0]};color:${c[1]};border:1px solid ${c[2]};border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;">${beoEsc(v)}</span>`;
+}
 function buildEvents(){
   const t=document.getElementById('ev-list'), empty=document.getElementById('ev-empty');
   if(!t)return;
@@ -954,15 +961,16 @@ function buildEvents(){
     ['Client billings',bf0(totGrand),'incl. tax · all events'],
     ['House revenue',bf0(totRev),'ex-tax · incl. cash-bar estimates'],
     ['Theoretical EBITDA',bf0(totEb),totRev?fpc(totEb/totRev*100)+' blended margin':'—']]);
-  let h=`<tr><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th>Guests</th><th>Client total</th><th>House revenue</th><th>EBITDA</th><th>Margin</th><th class="li" style="min-width:130px;">Last saved</th></tr>`;
+  let h=`<tr><th class="li" style="min-width:230px;">Event</th><th class="li">Type</th><th class="li">Status</th><th>Guests</th><th>Client total</th><th>EBITDA</th><th>Margin</th><th class="li">BEO uploaded</th><th class="li" style="min-width:120px;">Last saved</th></tr>`;
   rows.forEach(({ev,C})=>{
     h+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span><span class="evsub">${beoEsc([ev.company,dispDate(ev)||'date TBD'].filter(Boolean).join(' · '))}</span></td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
+<td class="li">${statusChip(ev.status)}</td>
 <td>${ev.guests}</td>
 <td style="font-weight:700;">${bf2(C.grand)}</td>
-<td>${bf2(C.rev)}</td>
 <td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td>
 <td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td>
+<td class="li"><button data-beo="${ev._id}" title="Click to toggle whether the Tripleseat BEO has been uploaded" style="appearance:none;border:1px solid ${ev.beoUploaded?'#bfe0cc':'var(--line-strong)'};background:${ev.beoUploaded?'#e7f4ec':'#fff'};color:${ev.beoUploaded?'#1c7c4d':'var(--muted)'};border-radius:4px;padding:3px 10px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${ev.beoUploaded?'✓ YES':'NO'}</button></td>
 <td class="li" style="color:var(--muted);">${beoEsc(ev._by||'—')}${MUC}${agoFmt(ev._updated)}</span></td></tr>`;
   });
   t.innerHTML=h;
@@ -1496,6 +1504,13 @@ document.addEventListener('click',e=>{
     else BEOD.labor[+p[1]][p[2]]=nv;
     buildBEO();
     scheduleSave();
+    return;
+  }
+  const bu=e.target.closest('[data-beo]');
+  if(bu){
+    e.stopPropagation();
+    const ev=BEOS.find(x=>x._id===bu.dataset.beo);
+    if(ev){ev.beoUploaded=ev.beoUploaded?0:1;buildEvents();saveEvent(ev,['BEO uploaded '+(ev.beoUploaded?'✓':'cleared')]);}
     return;
   }
   const op=e.target.closest('[data-open]');
