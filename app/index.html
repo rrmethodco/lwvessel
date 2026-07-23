@@ -883,16 +883,20 @@ function buildBEO(){
   const B=BEOD, C=beoCalc();
   document.getElementById('ev-title').textContent=B.name||B.tab||'Event';
   const _emg=C.rev?C.ebitda/C.rev*100:0;
-  document.getElementById('ev-meta').innerHTML=[
+  /* client-safe details print on the BEO; margin + save metadata are internal-only (hidden on client print) */
+  const _clientMeta=[
     dispDate(B)?beoEsc(dispDate(B)):'date TBD',
     B.company?('<b>'+beoEsc(B.company)+'</b>'):null,
     B.market?beoEsc(B.market):null,
     B.evType?beoEsc(B.evType):null,
     B.salesperson?('sales: <b>'+beoEsc(B.salesperson)+'</b>'):null,
-    '<b>'+B.guests+'</b> guests',
+    '<b>'+B.guests+'</b> guests'
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  const _internalMeta=[
     `<span class="typechip" style="color:${_emg>=25?'var(--pos)':(_emg>=15?'#b98029':'var(--neg)')};">MARGIN ${fpc(_emg)}</span>`,
     B._by?('last saved by <b>'+beoEsc(B._by)+'</b> · '+agoFmt(B._updated)):null
   ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  document.getElementById('ev-meta').innerHTML=_clientMeta+(_internalMeta?` <span class="internal-only">&nbsp;·&nbsp; ${_internalMeta}</span>`:'');
   setSec(SECSEL);
   const IN=(bi,v,w,txt)=>`<input class="drvin${txt?' txt':''}" data-bi="${bi}" value="${attEsc(String(v))}"${txt?'':' inputmode="decimal"'}${w?` style="width:${w}px;"`:''}>`;
   const STEP=(bi,v,w)=>`<span class="step"><button data-stp="${bi}:-1" tabindex="-1">−</button>${IN(bi,v,w)}<button data-stp="${bi}:1" tabindex="-1">＋</button></span>`;
