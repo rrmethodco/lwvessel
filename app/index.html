@@ -424,6 +424,8 @@ const BEO_DEFS=[{
 }];
 /* House-fixed rates — not editable per event; changing the model is a code/deploy change */
 const FIXED_RATES={svc:20,sef:5,salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25};
+/* FOH management labor — fixed overhead of $1,680/mo, allocated across 100 events/yr = $201.60/event */
+const FOH_MGMT={monthly:1680,eventsYr:100,perEvent:1680*12/100};
 function applyFixedRates(B){if(B){Object.keys(FIXED_RATES).forEach(k=>{B[k]=FIXED_RATES[k];});if(B.taxExempt){B.salesTax=0;B.liqTax=0;}}}
 const BEO_OPEX=[
   {n:'Rentals & Event Equipment',v:1.8},
@@ -824,11 +826,13 @@ function beoCalcFor(B){
   const gp=rev-cogs;
   const wages=B.labor.reduce((a,l)=>a+l.n*l.h*l.rate,0);
   const ptb=B.labor.reduce((a,l)=>a+(/contract/i.test(l.r||'')?0:l.n*l.h*l.rate),0)*B.burden/100;   /* PT&B on Server + Bartender only — never contract labor */
-  const labor=wages+ptb;
+  const labor=wages+ptb;                 /* variable event-staffing labor */
+  const fohMgmt=FOH_MGMT.perEvent;        /* fixed FOH management labor allocation per event */
+  const laborTot=labor+fohMgmt;           /* total labor cost */
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
   const fee=rev*B.mgmtPct/100;
-  const ebitda=gp-labor-opex-fee;
-  return {food,bev,bevPkg,bevFee,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogs,gp,wages,ptb,labor,opex,fee,ebitda};
+  const ebitda=gp-laborTot-opex-fee;
+  return {food,bev,bevPkg,bevFee,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
@@ -952,7 +956,7 @@ function buildBEO(){
     return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — VESSEL &amp; LITTLE WING${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
   if(BEOSEC.food){
     B.food.forEach((i,idx)=>{ih+=itRow('food',i,idx);});
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
@@ -987,7 +991,7 @@ function buildBEO(){
     B.salesperson?('Event sales: <b>'+beoEsc(B.salesperson)+'</b>'):null
   ].filter(Boolean).join(' &nbsp;·&nbsp; ');
   let ib=`<tr><th style="min-width:44px;">Qty</th><th class="li" style="min-width:340px;">Item</th><th style="min-width:80px;">Price</th><th style="min-width:90px;">Total</th></tr>`;
-  ib+=`<tr class="section"><td colspan="4" class="li">FOOD — VESSEL &amp; LITTLE WING</td></tr>`;
+  ib+=`<tr class="section"><td colspan="4" class="li">FOOD — ITEM SELECTION</td></tr>`;
   if(B.food.length)B.food.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
   else ib+=`<tr><td colspan="4" class="li" style="color:var(--muted);">No food selections yet.</td></tr>`;
   ib+=`<tr class="total"><td></td><td class="li">Food total</td><td></td><td>${bf2(C.food)}</td></tr>`;
@@ -1004,7 +1008,7 @@ function buildBEO(){
   const tsStatus=ts==null?'<span style="color:var(--muted);font-size:9px;">Awaiting entry</span>':(tsMatch?'<span class="chip-ok">✓ MATCHES</span>':`<span class="chip-low">OFF BY ${bf2(Math.abs(ts-C.grand))}</span>`);
   let bh=`<tr><th class="li" style="min-width:320px;">Estimated billing · per contract</th><th style="min-width:150px;">Amount</th></tr>`;
   if(C.bev>0.005)bh+=`<tr><td class="li">Beverage</td><td>${bf2(C.bev)}</td></tr>`;
-  bh+=`<tr><td class="li">Food — Vessel &amp; Little Wing</td><td>${bf2(C.food)}</td></tr>`;
+  bh+=`<tr><td class="li">Food — Item Selection</td><td>${bf2(C.food)}</td></tr>`;
   if(C.unmet>0.005)bh+=`<tr><td class="li">Unmet F&amp;B minimum charge</td><td>${bf2(C.unmet)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Subtotal</td><td>${bf2(C.fbB)}</td></tr>`;
   bh+=`<tr><td class="li">Sales tax ${B.salesTax.toFixed(1)}%</td><td>${bf2(C.sTax)}</td></tr>`;
@@ -1089,8 +1093,10 @@ function buildBEO(){
   ph+=prc('Beverage &amp; bar cost',C.cogsBv,C.bevRev,'of bev revenue');
   ph+=pr('Total COGS',C.cogs,1);
   ph+=pr('Gross profit',C.gp,1);
-  ph+=pr('Event labor',C.labor);
-  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.labor)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.labor)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.labor)/B.guests):'—'}</td></tr>`;
+  ph+=pr('Event labor',C.labor,0,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}$${FOH_MGMT.monthly.toLocaleString('en-US')}/mo ÷ ${FOH_MGMT.eventsYr} events/yr</span></td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
+  ph+=pr('Total labor',C.laborTot,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.laborTot)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.laborTot)/B.guests):'—'}</td></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
   BEO_OPEX.forEach(o=>{ph+=pr(beoEsc(o.n),C.rev*o.v/100,0,1);});
   ph+=pr('Total direct operating &amp; other',C.opex,1);
@@ -1105,7 +1111,7 @@ function buildBEO(){
     const wfrow=(l,v,col)=>`<div class="wfrow"><span class="wfl">${l}</span><span class="wftrack"><span class="wfbar" style="width:${Math.max(0,Math.min(100,v/mx*100))}%;background:${col};display:block;"></span></span><span class="wfv">${bf2(v)}</span></div>`;
     viz.innerHTML=wfrow('Revenue',C.rev,'var(--accent-deep)')
       +wfrow('COGS',C.cogs,'#b3541e')
-      +wfrow('Labor',C.labor,'#b98029')
+      +wfrow('Labor',C.laborTot,'#b98029')
       +wfrow('Direct opex',C.opex,'#93a0b5')
       +wfrow('Mgmt fee',C.fee,'#5b6b96')
       +wfrow('EBITDA',C.ebitda,C.ebitda>=0?'var(--pos)':'var(--neg)');
@@ -1119,7 +1125,7 @@ function buildBEO(){
   const aRev=n0(av('food'))+n0(av('bev'))+n0(av('cash'))+n0(av('unmet'))+n0(av('rental'))+n0(av('svc'))+n0(av('sef'))-n0(av('disc'));
   const aCogs=n0(av('cogsF'))+n0(av('cogsBv'));
   const aGp=aRev-aCogs;
-  const aEb=aGp-n0(av('labor'))-n0(av('opex'))-n0(av('fee'));
+  const aEb=aGp-n0(av('labor'))-C.fohMgmt-n0(av('opex'))-n0(av('fee'));   /* FOH mgmt labor is a fixed allocation */
   const vTxt=(d,money)=>(d>=0?'+':'−')+(money?bf2(Math.abs(d)):String(Math.round(Math.abs(d)*100)/100));
   const rr=(lbl,proj,key,goodPos,money)=>{
     if(money===undefined)money=true;
@@ -1153,6 +1159,7 @@ function buildBEO(){
   rh+=rc('Total COGS',C.cogs,aCogs,false);
   rh+=rc('Gross profit',C.gp,aGp,true);
   rh+=rr('Event labor',C.labor,'labor',false);
+  rh+=`<tr><td class="li">FOH management labor ${MU}fixed allocation</span></td><td style="color:var(--muted);">${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
   rh+=rr('Direct operating &amp; other expenses',C.opex,'opex',false);
   rh+=rr('Management fee',C.fee,'fee',false);
   rh+=rc('EBITDA',C.ebitda,aEb,true);
@@ -1180,7 +1187,7 @@ function buildBEO(){
   strip('vsbeo-strip',[
     ['Client grand total',bf2(C.grand),(Math.abs(dGrand)>0.005?dfmt(dGrand)+' · ':'')+'incl. tax · due '+bf2(C.due)],
     ['House event revenue',bf2(C.rev),'ex-tax · incl. cash bar '+bf2(C.cash)],
-    ['Prime cost',C.rev?fpc((C.cogs+C.labor)/C.rev*100):'—','COGS '+(C.rev?fpc(C.cogs/C.rev*100):'—')+' + labor '+(C.rev?fpc(C.labor/C.rev*100):'—')],
+    ['Prime cost',C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—','COGS '+(C.rev?fpc(C.cogs/C.rev*100):'—')+' + labor '+(C.rev?fpc(C.laborTot/C.rev*100):'—')],
     ['Theoretical EBITDA',bf2(C.ebitda),(Math.abs(dEb)>0.005?dfmt(dEb)+' · ':'')+(C.rev?fpc(C.ebitda/C.rev*100)+' margin':'—')],
     ['EBITDA / guest',B.guests?bf2(C.ebitda/B.guests):'—','revenue / guest '+(B.guests?bf2(C.rev/B.guests):'—')]]);
   if(PREVC.id===B._id&&(Math.abs(dGrand)>0.005||Math.abs(dEb)>0.005)){
