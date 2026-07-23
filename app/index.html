@@ -218,8 +218,6 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
     <div class="controls" style="margin:0;">
       <button class="pill primary" id="vsbeo-new"><span class="dot"></span>＋ NEW EVENT</button>
       <button class="pill" id="vsbeo-importpdf"><span class="dot"></span>⇪ IMPORT BEO PDF</button>
-      <button class="pill" id="vsbeo-import"><span class="dot"></span>↑ IMPORT</button>
-      <button class="pill" id="vsbeo-export"><span class="dot"></span>↓ EXPORT</button>
     </div>
   </div>
   <span class="ctl-label" id="ev-status"></span>
@@ -1511,43 +1509,7 @@ pill('vsbeo-reset',async()=>{
   if(ok){BEOSNAP=payloadOf(BEOD);SNAP_ID=BEOD._id;showToast(isContract?'Reset to the contract BEO as written.':'Reset to the blank house defaults.');}
   buildBEO();
 });
-function beoExport(){
-  const data=JSON.stringify({app:'vesselBEO',ver:1,evs:BEOS.map(payloadOf)},null,1);
-  try{
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
-    a.download='beo-scenarios.json';
-    a.click();
-    evStatus('Exported beo-scenarios.json — a portable backup of every event in the workspace.');
-  }catch(e){evStatus('Export failed in this viewer.');}
-  if(navigator.clipboard)navigator.clipboard.writeText(data).catch(()=>{});
-}
-function beoImport(){
-  const inp=document.createElement('input');
-  inp.type='file';inp.accept='.json,application/json';
-  inp.onchange=()=>{
-    const f=inp.files&&inp.files[0];
-    if(!f)return;
-    const r=new FileReader();
-    r.onload=async()=>{
-      try{
-        const o=JSON.parse(r.result);
-        if(o&&Array.isArray(o.evs)&&o.evs.length){
-          if(!window.confirm('Add '+o.evs.length+' event'+(o.evs.length>1?'s':'')+' from this file to the shared workspace? Existing events are kept.'))return;
-          evStatus('Importing…');
-          for(const raw of o.evs){
-            const e=await insertEvent(payloadOf(raw));
-            if(e)BEOS.push(e);
-          }
-          evStatus('Imported — events added to the shared workspace.');
-          buildEvents();
-        }else evStatus('Import failed — not a valid scenarios file.');
-      }catch(e){evStatus('Import failed — not a valid scenarios file.');}
-    };
-    r.readAsText(f);
-  };
-  inp.click();
-}
+/* JSON Import/Export removed — the Supabase workspace persists & shares every event automatically. */
 /* ---------------- BEO import from a Tripleseat contract PDF ---------------- */
 const PDFJS_BASE='https://esm.sh/pdfjs-dist@4.10.38/legacy/build';
 async function pdfLines(file){
@@ -1666,8 +1628,6 @@ function beoImportPdf(){
   inp.click();
 }
 pill('vsbeo-importpdf',beoImportPdf);
-pill('vsbeo-export',beoExport);
-pill('vsbeo-import',beoImport);
 pill('vsbeo-print',()=>{
   const prev=SECSEL;
   setSec('bill');
