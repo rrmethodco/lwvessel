@@ -1211,7 +1211,7 @@ function buildBEO(){
   if(B.bev.length||B.cashOn){
     ib+=`<tr class="section"><td colspan="4" class="li">BEVERAGE</td></tr>`;
     B.bev.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
-    if(B.cashOn)ib+=`<tr><td style="color:var(--muted);">—</td><td class="li">Cash bar — guests pay individually for their own drinks</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+    if(B.cashOn){const cppg=cashPpgFor(B);ib+=`<tr><td style="color:var(--muted);">—</td><td class="li">Cash bar — guests pay individually for their own drinks ${MU}estimated bar spend $${cppg.v.toFixed(0)}/guest × ${B.guests} guests · not billed to host</span></td><td style="color:var(--muted);">$${cppg.v.toFixed(0)}${MU}/guest</span></td><td style="color:var(--muted);">${MU}est.</span> ${bf2(C.cash)}</td></tr>`;}
     if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
   }
   document.getElementById('vsbeo-billit').innerHTML=ib;
@@ -1290,30 +1290,30 @@ function buildBEO(){
   const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${C.rev?fpc(v/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'—'}</td></tr>`;
   let ph=`<tr><th class="li" style="min-width:300px;">Theoretical event P&amp;L</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">EVENT REVENUE — WHAT THE HOUSE KEEPS (EX-TAX)</td></tr>`;
-  ph+=pr('Food &amp; menu',C.food,0,1);
-  if(C.bevPkg>0.005)ph+=pr('Beverage — packages',C.bevPkg,0,1);
-  ph+=pr('Cash bar — house estimate',C.cash,0,1);
-  if(C.unmet>0.005)ph+=pr('Unmet-minimum charge',C.unmet,0,1);
-  if(B.rental>0.005)ph+=pr('Room / space rental',B.rental,0,1);
-  if(C.bevFee>0.005)ph+=pr('Bartender fee',C.bevFee,0,1);
+  ph+=pr('Food',C.food,0,1);
+  if(C.bevPkg>0.005)ph+=pr('Beverage — Packages',C.bevPkg,0,1);
+  ph+=pr('Beverage — House Estimate',C.cash,0,1);
+  if(C.unmet>0.005)ph+=pr('Unmet-Minimum Charge',C.unmet,0,1);
+  if(B.rental>0.005)ph+=pr('Room / Space Rental',B.rental,0,1);
+  if(C.bevFee>0.005)ph+=pr('Bartender Fee',C.bevFee,0,1);
   ph+=pr('Service Charge',C.svc,0,1);
   ph+=pr('Special Event Fee',C.sef,0,1);
   if(C.disc>0.005)ph+=pr('Less: '+beoEsc(B.discLbl||'discount'),-C.disc,0,1);
-  ph+=pr('Total event revenue',C.rev,1);
+  ph+=pr('Total Event Revenue',C.rev,1);
   ph+=`<tr class="section"><td class="li" colspan="4">COST OF SALES</td></tr>`;
   const prc=(n,v,d,dl)=>`<tr><td class="li" style="padding-left:22px;">${n}</td><td>${bf2(v)}</td><td style="color:var(--muted);">${d?fpc(v/d*100):'—'}<span style="display:block;font-size:8px;letter-spacing:.04em;">${dl}</span></td><td style="color:var(--muted);">${B.guests?bf2(v/B.guests):'—'}</td></tr>`;
-  ph+=prc('Food cost',C.cogsF,C.food,'of food revenue');
-  ph+=prc('Beverage &amp; bar cost',C.cogsBv,C.bevRev,'of bev revenue');
+  ph+=prc('Food Cost',C.cogsF,C.food,'of food revenue');
+  ph+=prc('Beverage &amp; Bar Cost',C.cogsBv,C.bevRev,'of bev revenue');
   ph+=pr('Total COGS',C.cogs,1);
-  ph+=pr('Gross profit',C.gp,1);
-  ph+=pr('Event labor',C.labor,0,1);
-  ph+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}$${FOH_MGMT.monthly.toLocaleString('en-US')}/mo × 12 ÷ ${FOH_MGMT.eventsYr} events/yr</span></td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
-  ph+=pr('Total labor',C.laborTot,1);
-  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.laborTot)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.laborTot)/B.guests):'—'}</td></tr>`;
+  ph+=pr('Gross Profit',C.gp,1);
+  ph+=pr('Event Labor',C.labor,0,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;">FOH Management Labor</td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
+  ph+=pr('Total Labor',C.laborTot,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.laborTot)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.laborTot)/B.guests):'—'}</td></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
   BEO_OPEX.forEach(o=>{ph+=pr(beoEsc(o.n),C.rev*o.v/100,0,1);});
-  ph+=pr('Total direct operating &amp; other',C.opex,1);
-  ph+=pr('Management fee',C.fee);
+  ph+=pr('Total Direct Operating &amp; Other',C.opex,1);
+  ph+=pr('Management Fee',C.fee);
   ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
   ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
   document.getElementById('vsbeo-pnl').innerHTML=ph;
