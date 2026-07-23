@@ -180,6 +180,15 @@ table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-t
   table.alloc th.li{min-width:150px!important;}
   table.alloc td.li{white-space:normal;}
   table.alloc th,table.alloc td{padding:5px 7px;}
+  /* Setup form: collapse the 4-col field/value grid to a single stacked column */
+  #vsbeo-setup,#vsbeo-setup tbody,#vsbeo-setup tr,#vsbeo-setup td{display:block;width:100%;}
+  #vsbeo-setup tr{border-bottom:1px solid var(--line-strong);padding:4px 0;}
+  #vsbeo-setup td{border:0;padding:3px 0;text-align:left!important;white-space:normal;background:none!important;}
+  #vsbeo-setup td:empty{display:none;}
+  #vsbeo-setup td.li{color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding-top:9px;}
+  #vsbeo-setup td.li:first-child{padding-top:3px;}
+  #vsbeo-setup tr:first-child{display:none;}   /* hide the FIELD/VALUE header row when stacked */
+  #vsbeo-setup tr.section td{padding-top:12px;color:var(--accent-deep);}
 }
 /* ---------- print ---------- */
 @media print{
@@ -783,18 +792,19 @@ let HIST={basis:'',events:[]};
 /* Little Havana food: no blanket %. Target COGS keys off what the item IS (its raw-ingredient cost), read from the item name & menu category. Low-ingredient items (sides, salads, starches, desserts, sandwiches, veg apps, dips) carry the biggest markup (~30% COGS); protein appetizers sit mid (~40%); premium centerpieces — entrées, seafood, prime rib, pernil — stay guest-friendly (~48%). Everything lands at/under 50% so the BEO PMIX blends toward the 50% goal (pass/fail enforced on the Menu tab). */
 function recTarget(name,cat,prov){
   if(!/havana/i.test(prov||''))return TARGET;
-  const s=((cat||'')+' '+(name||'')).toLowerCase();
-  /* Strategy: the food BEO should blend to ~50% COGS. Price each item so no markup is
-     egregious — a gentle gradient centered on 50% (premium items already cost a lot, so
-     they carry the lightest markup; cheap volume items carry a bit more, still ~2.2x). */
-  /* Premium centerpieces — highest ingredient cost, gentlest markup (~1.8x) */
-  if(/entr[eé]|seafood|shrimp|scallop|ceviche|salmon|paella|lobster|crab|tuna|oyster|prime rib|beef medallion|pernil|carnita/.test(s))return 55;
-  /* Value / volume items — low ingredient cost carries the heaviest markup (~2.2x) but small $ */
-  if(/side|salad|dessert|sandwich|wrap|stationary|starter|vegetarian|rice|bean|potato|fries|tots|chip|plantain|maduro|toston|macaroni|mac &|vegetable|veggie|hummus|dip|fruit|nacho|brownie|cookie|cake|pie|dessert bar|arepa|empanada|croquetta|crud/.test(s))return 45;
-  /* Standard mains & hot apps — even 2x markup, the 50% anchor */
+  const c=(cat||'').toLowerCase();
+  /* Category cost tiers — the Little Havana book is priced so the product mix blends to ~50%
+     with no egregious markup: apps & desserts sharpest, entrées gentlest. */
+  if(/entr/.test(c))return 60;                  /* proteins & mains — food-cost-heavy, ~1.7x */
+  if(/sandwich|wrap/.test(c))return 62;         /* value lunch items, held at their $16 point */
+  if(/salad/.test(c))return 47;                 /* salad bowls */
+  if(/side/.test(c))return 45;                  /* sides & dinner sides */
+  if(/stationary|starter/.test(c))return 43;    /* displays, crudités, nacho bar */
+  if(/seafood/.test(c))return 42;               /* seafood apps — pricier protein, ~2.4x */
+  if(/appetiz|dessert/.test(c))return 40;       /* apps & desserts — hardest markup, 2.5x */
   return 50;
 }
-function recPrice(cost,name,cat,prov){const t=recTarget(name,cat,prov);if(!cost||!t)return null;return Math.ceil(cost/(t/100)/5)*5;}
+function recPrice(cost,name,cat,prov){const t=recTarget(name,cat,prov);if(!cost||!t)return null;return Math.round(cost/(t/100)/5)*5;}
 const DAYPARTS=['Morning (pre-11a)','Midday (11a-2p)','Afternoon (2-5p)','Evening (5p+)','All Day'];
 /* daypart from start time; an event that starts in the AM and runs 6+ hours is "All Day" */
 function daypartOf(t,hrs){
@@ -904,7 +914,7 @@ function buildCatalog(){
       let chip='—';
       if(!cost)chip=`<span style="color:var(--muted);font-weight:700;">MP — SET PER EVENT</span>`;
       else if(cur==null)chip=`<span class="chip-low" style="background:#f1f3f8;color:#68758c;border-color:#d5dbe6;">NOT PRICED</span>`;
-      else if(rec!=null&&cur<rec)chip=`<span class="chip-low">BELOW REC −${bf2(rec-cur).slice(1)}</span>`;
+      else if(rec!=null&&cur<rec-5)chip=`<span class="chip-low">BELOW REC −${bf2(rec-cur).slice(1)}</span>`;
       else chip=`<span class="chip-ok">OK</span>`;
       h+=`<tr><td class="li">${beoEsc(it.name)}${it.note?` ${MUC}${beoEsc(it.note)}</span>`:''}</td>
 <td><input class="drvin" data-ci="${it.id}:vendor_cost" value="${cost}" style="width:58px;"></td>
@@ -1294,7 +1304,7 @@ function buildBEO(){
   ph+=pr('Total COGS',C.cogs,1);
   ph+=pr('Gross profit',C.gp,1);
   ph+=pr('Event labor',C.labor,0,1);
-  ph+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}$${FOH_MGMT.monthly.toLocaleString('en-US')}/mo ÷ ${FOH_MGMT.eventsYr} events/yr</span></td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
+  ph+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}$${FOH_MGMT.monthly.toLocaleString('en-US')}/mo × 12 ÷ ${FOH_MGMT.eventsYr} events/yr</span></td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
   ph+=pr('Total labor',C.laborTot,1);
   ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime cost — COGS + labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.laborTot)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.laborTot)/B.guests):'—'}</td></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
