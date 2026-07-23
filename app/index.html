@@ -333,6 +333,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="sec-hint" id="hist-hint"></div>
   <div class="scroll"><table class="alloc" id="hist-matrix" style="max-width:1200px;"></table></div>
   <h2>Event <em>log</em></h2>
+  <div class="controls" id="hist-scrub" style="margin:8px 0 2px;align-items:center;"></div>
   <div class="controls" id="hist-fty" style="margin:8px 0 0;"></div>
   <div class="controls" id="hist-fdp" style="margin:4px 0 0;"></div>
   <div class="scroll"><table class="alloc" id="hist-list"></table></div>
@@ -821,6 +822,48 @@ function benchFor(B){
 }
 /* effective cash-bar $/guest: manual override wins, else historical forecast */
 function cashPpgFor(B){const o=+((B&&B.cashPpg)||0);if(o>0)return{v:o,label:'manual override',n:null,override:true};return benchFor(B);}
+/* ---- historicals refinement: manual event exclusions + statistical outlier scrub ---- */
+let HSET={excl:[],scrub:true};
+function histKey(e){return (e.d||'')+'|'+(e.n||'');}
+function histQual(){
+  const EV=HIST.events||[];
+  EV.forEach(e=>{e._dp=(daypartOf(e.st,e.hrs)==='All Day')?'All Day':(e.dp||'');});
+  return EV.filter(e=>+e.g>0&&+e.bev>0);
+}
+function histOutliers(qual){
+  /* Tukey IQR fences on beverage $ / guest */
+  const b=qual.map(e=>+e.bev/+e.g).sort((x,y)=>x-y);
+  if(b.length<4)return new Set();
+  const q=p=>{const i=(b.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return b[lo]+(b[hi]-b[lo])*(i-lo);};
+  const q1=q(.25),q3=q(.75),iqr=q3-q1,hf=q3+1.5*iqr,lf=Math.max(0,q1-1.5*iqr);
+  const out=new Set();
+  qual.forEach(e=>{const v=+e.bev/+e.g;if(v>hf||v<lf)out.add(histKey(e));});
+  return out;
+}
+function histEffective(){
+  const qual=histQual();
+  const excl=new Set(HSET.excl||[]);
+  const out=HSET.scrub?histOutliers(qual):new Set();
+  const eff=qual.filter(e=>!excl.has(histKey(e))&&!out.has(histKey(e)));
+  return {qual,eff,excl,out};
+}
+function computeBench(q){
+  const wpp=v=>{const g=v.reduce((a,e)=>a+ +e.g,0);return g?v.reduce((a,e)=>a+ +e.bev,0)/g:0;};
+  const tys=[...new Set(q.map(e=>e.ty))];
+  const byType={},counts={},byDaypart={},dpCounts={},byTypeDaypart={},tdCounts={};
+  tys.forEach(ty=>{const v=q.filter(e=>e.ty===ty);byType[ty]=wpp(v);counts[ty]=v.length;});
+  DAYPARTS.forEach(dp=>{const v=q.filter(e=>e._dp===dp);if(v.length){byDaypart[dp]=wpp(v);dpCounts[dp]=v.length;}});
+  tys.forEach(ty=>DAYPARTS.forEach(dp=>{const v=q.filter(e=>e.ty===ty&&e._dp===dp);if(v.length){const k=ty+'|'+dp;byTypeDaypart[k]=wpp(v);tdCounts[k]=v.length;}}));
+  return {overall:wpp(q),byType,counts,byDaypart,dpCounts,byTypeDaypart,tdCounts,basis:(BENCH&&BENCH.basis)||''};
+}
+function refreshBench(){if((HIST.events||[]).length)BENCH=computeBench(histEffective().eff);}
+async function persistHistSettings(msg){
+  refreshBench();
+  const a=await sb.from('app_settings').upsert({key:'hist_settings',value:{excl:HSET.excl,scrub:HSET.scrub}});
+  const b=await sb.from('app_settings').upsert({key:'cashbar_benchmarks',value:BENCH});
+  const el=document.getElementById('hist-basis');
+  if(el&&msg)el.textContent=msg;
+}
 function catStatus(m){const el=document.getElementById('cat-status');if(el)el.textContent=m;}
 async function loadCatalog(){
   const [mi,st]=await Promise.all([
@@ -833,7 +876,9 @@ async function loadCatalog(){
     if(r.key==='cashbar_benchmarks'&&r.value)BENCH=r.value;
     if(r.key==='historical_events'&&r.value&&Array.isArray(r.value.events))HIST=r.value;
     if(r.key==='client_list'&&r.value&&Array.isArray(r.value.clients))CLIENTS=r.value.clients;
+    if(r.key==='hist_settings'&&r.value){HSET.excl=Array.isArray(r.value.excl)?r.value.excl:[];HSET.scrub=r.value.scrub!==false;}
   });
+  refreshBench();  /* apply outlier-scrub + manual exclusions to the cash-bar benchmark the calculator uses */
   const ti=document.getElementById('cat-target');if(ti)ti.value=TARGET;
 }
 function buildCatalog(){
@@ -1370,20 +1415,28 @@ function buildHistoricals(){
     strip('hist-kpis',[['Events','0','no historical data loaded'],['Beverage revenue','—',''],['Bev $/guest','—',''],['Qualifying events','—','']]);
     return;
   }
-  const qual=EV.filter(e=>+e.g>0&&+e.bev>0);
+  const {qual,eff,excl,out}=histEffective();
+  const scrubbed=qual.length-eff.length;   /* how many qualifying events are removed from the $/pp */
   const wavg=v=>{const g=v.reduce((a,e)=>a+ +e.g,0);return g?v.reduce((a,e)=>a+ +e.bev,0)/g:0;};
   strip('hist-kpis',[
     ['Events tracked',String(EV.length),'Jul 2025 – Jun 2026 · Tripleseat'],
     ['Total event revenue',bf0(EV.reduce((a,e)=>a+ +e.tot,0)),'ex-tax & fees'],
     ['Beverage revenue',bf0(EV.reduce((a,e)=>a+ +e.bev,0)),'alcohol + NA'],
-    ['Bev $/guest — overall',bf2(wavg(qual)),qual.length+' events with bar revenue · use as the forecast floor'],
-    ['Best daypart',(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=qual.filter(e=>e._dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk?bf2(bv):'—';})(),(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=qual.filter(e=>e._dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk;})()]]);
-  document.getElementById('hist-hint').textContent='Weighted beverage $ per guest across events that actually rang bar revenue. Cells with few events are directional — the calculator uses type × daypart first, then falls back to type, daypart, then the overall average.';
-  /* type × daypart matrix */
-  const types=[...new Set(qual.map(e=>e.ty))].sort((a,b)=>wavg(qual.filter(e=>e.ty===b))-wavg(qual.filter(e=>e.ty===a)));
+    ['Bev $/guest — overall',bf2(wavg(eff)),eff.length+' clean events'+(scrubbed?' · '+scrubbed+' removed':'')+' · forecast floor'],
+    ['Best daypart',(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=eff.filter(e=>e._dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk?bf2(bv):'—';})(),(()=>{let bk='',bv=0;DAYPARTS.forEach(dp=>{const v=eff.filter(e=>e._dp===dp);const a=wavg(v);if(v.length&&a>bv){bv=a;bk=dp;}});return bk;})()]]);
+  /* scrub control + status */
+  const ctl=document.getElementById('hist-scrub');
+  if(ctl)ctl.innerHTML=`<button class="pill${HSET.scrub?' primary':''}" data-hscrub="1"><span class="dot"></span>${HSET.scrub?'✓ ':''}SCRUB OUTLIERS</button>`
+    +`<span class="ctl-label" style="margin-left:10px;">`
+    +(HSET.scrub?`${out.size} statistical outlier${out.size!==1?'s':''} auto-removed (Tukey 1.5×IQR on bev $/guest)`:`outlier scrub off — showing all qualifying events`)
+    +(excl.size?` · ${excl.size} manually excluded`:'')
+    +` · toggle any event below with the “In calc” switch`+`</span>`;
+  document.getElementById('hist-hint').textContent='Weighted beverage $ per guest across clean events that rang bar revenue — outliers and manually-excluded events are held out of the $/guest and the calculator’s cash-bar forecast. Cells with few events are directional.';
+  /* type × daypart matrix (built from the clean/effective set) */
+  const types=[...new Set(eff.map(e=>e.ty))].sort((a,b)=>wavg(eff.filter(e=>e.ty===b))-wavg(eff.filter(e=>e.ty===a)));
   let mh=`<tr><th class="li" style="min-width:170px;">Event type</th>${DAYPARTS.map(d=>`<th style="min-width:105px;">${beoEsc(d)}</th>`).join('')}<th style="min-width:105px;">All dayparts</th></tr>`;
   types.forEach(ty=>{
-    const tv=qual.filter(e=>e.ty===ty);
+    const tv=eff.filter(e=>e.ty===ty);
     mh+=`<tr><td class="li">${beoEsc(ty)} ${MUC}${tv.length} event${tv.length>1?'s':''}</span></td>`;
     DAYPARTS.forEach(dp=>{
       const v=tv.filter(e=>e._dp===dp);
@@ -1391,7 +1444,7 @@ function buildHistoricals(){
     });
     mh+=`<td style="font-weight:700;">${bf2(wavg(tv))}</td></tr>`;
   });
-  mh+=`<tr class="total"><td class="li">All types</td>${DAYPARTS.map(dp=>{const v=qual.filter(e=>e._dp===dp);return `<td>${v.length?bf2(wavg(v)):'—'}</td>`;}).join('')}<td>${bf2(wavg(qual))}</td></tr>`;
+  mh+=`<tr class="total"><td class="li">All types</td>${DAYPARTS.map(dp=>{const v=eff.filter(e=>e._dp===dp);return `<td>${v.length?bf2(wavg(v)):'—'}</td>`;}).join('')}<td>${bf2(wavg(eff))}</td></tr>`;
   document.getElementById('hist-matrix').innerHTML=mh;
   /* filters */
   const allTypes=[...new Set(EV.map(e=>e.ty))].sort();
@@ -1412,24 +1465,32 @@ function buildHistoricals(){
   });
   const HH=[['d','Date','li',90],['n','Event','li',230],['ty','Type','li',0],['dp','Daypart','li',0],['st','Time','',0],['g','Guests','',0],['food','Food','',0],['bev','Beverage','',0],['bpp','Bev $/guest','',0],['tot','Total revenue','',0]];
   const arr=k=>HSORT.key===k?(HSORT.dir>0?' ▲':' ▼'):'';
-  let h=`<tr>`+HH.map(([k,lbl,cls,mw])=>`<th class="${cls}" data-hs="${k}" style="cursor:pointer;${mw?'min-width:'+mw+'px;':''}">${lbl}${arr(k)}</th>`).join('')+`</tr>`;
+  const inCalc=e=>{const k=histKey(e);return +e.g>0&&+e.bev>0&&!excl.has(k)&&!(HSET.scrub&&out.has(k));};
+  let h=`<tr>`+HH.map(([k,lbl,cls,mw])=>`<th class="${cls}" data-hs="${k}" style="cursor:pointer;${mw?'min-width:'+mw+'px;':''}">${lbl}${arr(k)}</th>`).join('')+`<th class="li" style="min-width:76px;">In calc</th></tr>`;
   rows.forEach(e=>{
     const bpp=+e.g>0?+e.bev/+e.g:0;
-    h+=`<tr><td class="li" style="color:var(--muted);">${beoEsc(e.d)}</td><td class="li"><span class="evname" style="font-size:11px;">${beoEsc(e.n)}</span>${e.s==='DEFINITE'?` ${MUC}definite — not yet closed</span>`:''}</td>
+    const k=histKey(e), isQual=+e.g>0&&+e.bev>0, isOut=out.has(k), isExcl=excl.has(k), on=inCalc(e);
+    const dim=isQual&&!on?'opacity:.5;':'';
+    let tog;
+    if(!isQual)tog=`<span style="color:var(--line-strong);" title="No bar revenue — never counts toward the $/guest">—</span>`;
+    else{const lbl=isExcl?'✕ OUT':((HSET.scrub&&isOut)?'OUTLIER':'✓ IN');
+      tog=`<button data-hx="${attEsc(k)}" title="Include or exclude this event from the beverage $/guest calculation" style="appearance:none;border:1px solid ${on?'#bfe0cc':'var(--line-strong)'};background:${on?'#e7f4ec':'#fff'};color:${on?'#1c7c4d':(isExcl?'#b3541e':'var(--muted)')};border-radius:4px;padding:2px 8px;font-size:8.5px;font-weight:800;letter-spacing:.05em;cursor:pointer;font-family:inherit;white-space:nowrap;">${lbl}</button>`;}
+    h+=`<tr style="${dim}"><td class="li" style="color:var(--muted);">${beoEsc(e.d)}</td><td class="li"><span class="evname" style="font-size:11px;">${beoEsc(e.n)}</span>${e.s==='DEFINITE'?` ${MUC}definite — not yet closed</span>`:''}</td>
 <td class="li">${e.ty?`<span class="typechip">${beoEsc(e.ty)}</span>`:'—'}</td>
 <td class="li" style="color:var(--muted);">${beoEsc(e._dp||'—')}</td>
 <td style="color:var(--muted);white-space:nowrap;">${beoEsc((e.st||'')+(e.et?'–'+e.et:''))}</td>
 <td>${+e.g||'—'}</td>
 <td style="color:var(--muted);">${+e.food?bf0(+e.food):'—'}</td>
 <td style="font-weight:700;">${+e.bev?bf0(+e.bev):'—'}</td>
-<td style="font-weight:700;color:${bpp>0?'var(--accent-deep)':'var(--muted)'};">${bpp>0?bf2(bpp):'—'}</td>
-<td>${bf0(+e.tot)}</td></tr>`;
+<td style="font-weight:700;color:${bpp>0?'var(--accent-deep)':'var(--muted)'};">${bpp>0?bf2(bpp):'—'}${HSET.scrub&&isOut?` ${MUC}outlier</span>`:''}</td>
+<td>${bf0(+e.tot)}</td>
+<td class="li">${tog}</td></tr>`;
   });
   if(rows.length){
     const sumG=rows.reduce((a,e)=>a+(+e.g||0),0),sumF=rows.reduce((a,e)=>a+(+e.food||0),0),sumB=rows.reduce((a,e)=>a+(+e.bev||0),0),sumT=rows.reduce((a,e)=>a+(+e.tot||0),0);
-    const qr=rows.filter(e=>+e.bev>0&&+e.g>0),qG=qr.reduce((a,e)=>a+(+e.g||0),0),tbpp=qG?qr.reduce((a,e)=>a+(+e.bev||0),0)/qG:0;
-    h+=`<tr class="total"><td class="li">Total ${MUC}${rows.length} event${rows.length>1?'s':''}</span></td><td class="li"></td><td class="li"></td><td class="li"></td><td></td><td>${sumG||'—'}</td><td>${sumF?bf0(sumF):'—'}</td><td style="font-weight:700;">${sumB?bf0(sumB):'—'}</td><td style="font-weight:700;color:var(--accent-deep);">${tbpp>0?bf2(tbpp):'—'} ${MUC}${qr.length} w/ bar</span></td><td style="font-weight:700;">${bf0(sumT)}</td></tr>`;
-  }else h+=`<tr><td class="li" colspan="10" style="color:var(--muted);padding:16px 10px;">No events match these filters.</td></tr>`;
+    const qr=rows.filter(inCalc),qG=qr.reduce((a,e)=>a+(+e.g||0),0),tbpp=qG?qr.reduce((a,e)=>a+(+e.bev||0),0)/qG:0;
+    h+=`<tr class="total"><td class="li">Total ${MUC}${rows.length} event${rows.length>1?'s':''}</span></td><td class="li"></td><td class="li"></td><td class="li"></td><td></td><td>${sumG||'—'}</td><td>${sumF?bf0(sumF):'—'}</td><td style="font-weight:700;">${sumB?bf0(sumB):'—'}</td><td style="font-weight:700;color:var(--accent-deep);">${tbpp>0?bf2(tbpp):'—'} ${MUC}${qr.length} in calc</span></td><td style="font-weight:700;">${bf0(sumT)}</td><td class="li"></td></tr>`;
+  }else h+=`<tr><td class="li" colspan="11" style="color:var(--muted);padding:16px 10px;">No events match these filters.</td></tr>`;
   t.innerHTML=h;
 }
 
@@ -1537,6 +1598,10 @@ document.addEventListener('click',e=>{
     buildHistoricals();
     return;
   }
+  const hsc=e.target.closest('[data-hscrub]');
+  if(hsc){HSET.scrub=!HSET.scrub;buildHistoricals();persistHistSettings(HSET.scrub?'Outlier scrub on — cash-bar forecast updated.':'Outlier scrub off — cash-bar forecast updated.');return;}
+  const hx=e.target.closest('[data-hx]');
+  if(hx){const k=hx.dataset.hx;const s=new Set(HSET.excl||[]);if(s.has(k))s.delete(k);else s.add(k);HSET.excl=[...s];buildHistoricals();persistHistSettings('Event '+(s.has(k)?'excluded from':'restored to')+' the $/guest calculation — forecast updated.');return;}
   const hs=e.target.closest('[data-hs]');
   if(hs){const k=hs.dataset.hs;if(HSORT.key===k)HSORT.dir*=-1;else{HSORT.key=k;HSORT.dir=(k==='d'||k==='n'||k==='ty'||k==='dp'||k==='st')?1:-1;}buildHistoricals();return;}
   const pv=e.target.closest('[data-pv]');
