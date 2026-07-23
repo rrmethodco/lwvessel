@@ -88,7 +88,9 @@ table.evlist tr.ev-month td .mo-meta{font-family:-apple-system,sans-serif;font-s
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
-.emptybox{border:1px dashed var(--line-strong);border-radius:10px;background:#fff;padding:34px 20px;text-align:center;color:var(--muted);margin-top:14px;line-height:1.6;}
+.emptybox{border:1px dashed var(--line-strong);border-radius:10px;background:#fff;padding:20px;text-align:center;color:var(--muted);margin-top:14px;line-height:1.6;}
+.moneyin{display:inline-flex;align-items:center;gap:2px;}
+.moneyin>.mp{color:var(--muted);font-weight:700;font-size:11px;}
 /* section tabs inside event */
 .sectabs{border-bottom:1px solid var(--line-strong);gap:0;margin:14px 0 0;flex-wrap:wrap;}
 .sectabs button{appearance:none;border:none;background:none;font-family:inherit;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
@@ -318,10 +320,12 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div>
       <h1>Menu <em>catalog</em></h1>
     </div>
-    <div class="controls" style="margin:0;">
+    <div class="controls" style="margin:0;flex-wrap:wrap;align-items:center;">
       <span class="ctl-label">Target COGS — Vessel beverage</span>
-      <input class="drvin" id="cat-target" style="width:52px;">
-      <span class="ctl-label">% of guest price</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+        <input class="drvin" id="cat-target" style="width:52px;">
+        <span class="ctl-label">% of guest price</span>
+      </span>
     </div>
   </div>
   <div class="controls" id="cat-prov" style="margin:8px 0 0;"></div>
@@ -906,7 +910,7 @@ function buildCatalog(){
   cats.forEach(c=>{
     const items=POOL.filter(i=>i.category===c);
     const open=!!CATSEC[c];
-    h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} item${items.length===1?'':'s'} — click to expand</span>`}</td></tr>`;
+    h+=`<tr class="section"><td class="li" colspan="7" data-cs="${attEsc(c)}" style="cursor:pointer;"><span class="caret">${open?'▾':'▸'}</span>${beoEsc(c.toUpperCase())}${open?'':` <span style="color:var(--muted);font-weight:600;">· ${items.length} item${items.length===1?'':'s'}</span>`}</td></tr>`;
     if(!open)return;
     items.forEach(it=>{
       const cost=+it.vendor_cost||0, cur=it.client_price==null?null:+it.client_price, rec=recPrice(cost,it.name,it.category,provOf(it));
@@ -917,8 +921,8 @@ function buildCatalog(){
       else if(rec!=null&&cur<rec-5)chip=`<span class="chip-low">BELOW REC −${bf2(rec-cur).slice(1)}</span>`;
       else chip=`<span class="chip-ok">OK</span>`;
       h+=`<tr><td class="li">${beoEsc(it.name)}${it.note?` ${MUC}${beoEsc(it.note)}</span>`:''}</td>
-<td><input class="drvin" data-ci="${it.id}:vendor_cost" value="${cost}" style="width:58px;"></td>
-<td><input class="drvin" data-ci="${it.id}:client_price" value="${cur==null?'':cur}" style="width:64px;" placeholder="—"></td>
+<td><span class="moneyin"><span class="mp">$</span><input class="drvin" data-ci="${it.id}:vendor_cost" value="${cost}" style="width:54px;"></span></td>
+<td><span class="moneyin"><span class="mp">$</span><input class="drvin" data-ci="${it.id}:client_price" value="${cur==null?'':cur}" style="width:60px;" placeholder="—"></span></td>
 <td style="color:var(--muted);">${cogs?fpc(cogs):'—'}</td>
 <td style="color:var(--muted);">${mk?mk.toFixed(2)+'×':'—'}</td>
 <td style="font-weight:700;">${rec!=null?bf2(rec)+` ${MUC}target ${recTarget(it.name,it.category,provOf(it))}% COGS</span>`:'—'}</td>
@@ -969,9 +973,8 @@ function beoCalcFor(B){
   const fb=food+bev;
   const unmet=Math.max(0,B.fbMin-fb);
   const fbB=fb+unmet;
-  const feeBase=fbB+B.rental;
   const svc=fbB*B.svc/100;   /* service charge: F&B only — never rental or other fees */
-  const sef=feeBase*B.sef/100;
+  const sef=fbB*B.sef/100;   /* special event fee: F&B only — rental is a facility pass-through (matches the contract T&C) */
   const sTax=(food+unmet+sef)*B.salesTax/100;
   const lTax=bev*B.liqTax/100;
   const disc=fbB*(B.disc||0)/100;
@@ -1163,10 +1166,10 @@ function buildBEO(){
   const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">FROM CATALOG</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
     const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost, mgp=tot?mg/tot*100:0;
-    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td>${IN(`it:${grp}:${idx}:p`,i.p,58)}</td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:p`,i.p,54)}</span></td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines — click to expand</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines</span>`}</td></tr>`;
   if(BEOSEC.food){
     B.food.forEach((i,idx)=>{ih+=itRow('food',i,idx);});
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
@@ -1175,7 +1178,7 @@ function buildBEO(){
   const fPct=C.food?C.cogsF/C.food*100:0;
   const foodOK=!C.food||fPct<=FT+0.005;
   ih+=`<tr><td class="li" colspan="10">${foodOK?`<span class="chip-ok">PASS — BLENDED FOOD COGS ${C.food?fpc(fPct):'—'} ≤ ${FT}%</span>`:`<span class="chip-low">FAIL — BLENDED FOOD COGS ${fpc(fPct)} · MUST BE ≤ ${FT}%</span>`} <span style="color:var(--muted);font-size:8.5px;">Goal: the whole food BEO blends to ${FT}% COGS — price items strategically (some higher-cost, some lower) so no single markup feels offensive.${!foodOK&&C.cogsF?` To pass: add ${bf2(C.cogsF/(FT/100)-C.food)} of food price, or cut ${bf2(C.cogsF-C.food*FT/100)} of cost.`:''}</span></td></tr>`;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — FEES &amp; PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines — click to expand</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — FEES &amp; PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines</span>`}</td></tr>`;
   if(BEOSEC.bev){
     B.bev.forEach((i,idx)=>{ih+=itRow('bev',i,idx);});
     ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
@@ -1258,7 +1261,7 @@ function buildBEO(){
   const ROLES=['Server','Bartender','Contract Labor'];
   const RSEL=(idx,v)=>`<select class="drvin txt" data-bi="lab:${idx}:r" style="width:100%;min-width:130px;">${[...ROLES,...(v&&!ROLES.includes(v)?[v]:[])].map(o=>`<option value="${attEsc(o)}"${o===v?' selected':''}>${beoEsc(o)}</option>`).join('')}</select>`;
   B.labor.forEach((l,idx)=>{
-    ch+=`<tr><td class="li">${RSEL(idx,l.r)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td>${IN(`lab:${idx}:rate`,l.rate,50)}</td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
+    ch+=`<tr><td class="li">${RSEL(idx,l.r)}</td><td>${STEP(`lab:${idx}:n`,l.n,40)}</td><td>${IN(`lab:${idx}:h`,l.h,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`lab:${idx}:rate`,l.rate,46)}</span></td><td style="font-weight:700;">${bf2(l.n*l.h*l.rate)}</td><td><button class="bx" data-bx="del:lab:${idx}" title="Remove line">✕</button></td></tr>`;
   });
   ch+=`<tr><td class="li" colspan="6"><button class="badd" data-bx="add:lab">＋ ADD ROLE</button></td></tr>`;
   ch+=`<tr class="total"><td class="li">Subtotal — event wages</td><td></td><td></td><td></td><td>${bf2(C.wages)}</td><td></td></tr>`;
@@ -1387,7 +1390,7 @@ function buildBEO(){
   ft+=`<tr><td class="li">Late-payment interest</td><td class="li">Balance unpaid more than 30 days after the event</td><td>1.5% / month</td><td style="color:var(--muted);">1.5% of the outstanding balance monthly</td></tr>`;
   ft+=`<tr class="total"><td class="li" colspan="3">Charged on every event (already in the client bill)</td><td></td></tr>`;
   ft+=`<tr><td class="li">Service charge</td><td class="li" colspan="2">20% on all food &amp; beverage — administrative/operational, not a gratuity</td><td>${bf2(C.svc)}</td></tr>`;
-  ft+=`<tr><td class="li">Special event fee</td><td class="li" colspan="2">${B.sef.toFixed(1)}% on F&amp;B + rental</td><td>${bf2(C.sef)}</td></tr>`;
+  ft+=`<tr><td class="li">Special event fee</td><td class="li" colspan="2">${B.sef.toFixed(1)}% on F&amp;B</td><td>${bf2(C.sef)}</td></tr>`;
   document.getElementById('vsbeo-feetbl').innerHTML=ft;
   document.getElementById('vsbeo-terms').innerHTML='<h2 style="margin-top:26px;">Terms &amp; <em>Conditions</em></h2>'+TERMS.map(t=>`<div style="margin:0 0 14px;line-height:1.6;"><b style="color:var(--accent-deep);">${beoEsc(t.h)}</b><br><span style="color:var(--ink);">${beoEsc(t.b)}</span></div>`).join('');
   /* ---- strip with change pulses ---- */
