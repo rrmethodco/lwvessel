@@ -95,6 +95,7 @@ table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
 .beo-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .beo-actions a.pill{text-decoration:none;}
 .beo-frame{width:100%;height:80vh;min-height:520px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
+pre.ts-diag{background:#0f1b30;color:#cfe0f5;border:1px solid var(--line-strong);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.5;max-height:340px;overflow:auto;white-space:pre-wrap;word-break:break-word;max-width:1000px;}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -256,9 +257,11 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div class="controls" style="margin:0;">
       <button class="pill primary" id="vsbeo-new"><span class="dot"></span>＋ NEW EVENT</button>
       <button class="pill" id="vsbeo-importpdf"><span class="dot"></span>⇪ IMPORT BEO PDF</button>
+      <button class="pill" id="ts-sync"><span class="dot"></span>⟳ SYNC FROM TRIPLESEAT</button>
     </div>
   </div>
   <span class="ctl-label" id="ev-status"></span>
+  <div id="ts-sync-out" style="margin:6px 0;"></div>
   <div class="bstrip" id="ev-kpis"></div>
   <div id="ev-grp-btn" style="display:flex;justify-content:flex-end;margin:10px 0 4px;"></div>
   <div class="scroll"><table class="alloc evlist" id="ev-list"></table></div>
@@ -1948,6 +1951,22 @@ pill('vsbeo-new',async()=>{
   SECSEL='setup';
   goto('event',e._id);
   showToast('New event created — tap any value to edit; changes save automatically.');
+});
+/* Tripleseat connection probe — calls the tripleseat-sync Edge Function and shows the raw result */
+pill('ts-sync',async(btn)=>{
+  const out=document.getElementById('ts-sync-out');
+  if(btn)btn.disabled=true;
+  if(out)out.innerHTML='<span class="ctl-label">Contacting Tripleseat&hellip;</span>';
+  try{
+    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'ping'}});
+    if(error){if(out)out.innerHTML='<pre class="ts-diag">Function error: '+beoEsc(error.message||String(error))+'</pre>';showToast('Tripleseat sync failed — see the panel.');return;}
+    console.log('Tripleseat probe result:',data);
+    const ok=data&&data.tokenObtained;
+    showToast(ok?'Tripleseat authenticated ✓ — sample data in the panel below.':'Tripleseat auth failed — see the panel below.');
+    if(out)out.innerHTML='<pre class="ts-diag">'+beoEsc(JSON.stringify(data,null,2))+'</pre>';
+  }catch(e){
+    if(out)out.innerHTML='<pre class="ts-diag">Invoke failed: '+beoEsc(String(e))+'</pre>';
+  }finally{if(btn)btn.disabled=false;}
 });
 pill('vsbeo-dup',async()=>{
   if(!BEOD)return;
