@@ -403,6 +403,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="controls admin-sub" style="margin:0 0 12px;">
     <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+    <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
   </div>
   <div class="bstrip">
     <div class="bstat"><div class="k">Vessel ranking</div><div class="v">4 of 4</div><div class="s">despite a "Definitely would buy" rating — process, not hospitality</div></div>
@@ -484,8 +485,32 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="controls admin-sub" style="margin:0 0 12px;">
     <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+    <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
   </div>
   <div id="act-list"></div>
+</section>
+
+<!-- ================= USERS (admin) ================= -->
+<section id="view-users" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Users <em>&amp; access</em></h1>
+      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Anyone on this list can sign in with a magic link. Admins also see the Admin area.</div>
+    </div>
+  </div>
+  <div class="controls admin-sub" style="margin:0 0 12px;">
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+    <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+  </div>
+  <div class="controls" style="margin:0 0 14px;gap:8px;align-items:center;flex-wrap:wrap;">
+    <input id="usr-email" type="email" placeholder="name@company.com" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:230px;">
+    <input id="usr-name" type="text" placeholder="Name (optional)" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:150px;">
+    <select id="usr-role" class="drvin txt" style="width:120px;"><option value="user">Standard user</option><option value="admin">Admin</option></select>
+    <button class="pill primary" id="usr-add"><span class="dot"></span>＋ ADD USER</button>
+    <span class="ctl-label" id="usr-msg"></span>
+  </div>
+  <div class="scroll"><table class="alloc" id="usr-list" style="max-width:900px;"></table></div>
 </section>
 
 <!-- ================= EST. MONTHLY P&L ================= -->
@@ -526,10 +551,9 @@ const SB_URL='https://wcqqcfpiiovqposcvrel.supabase.co';
 const SB_KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
 const sb=createClient(SB_URL,SB_KEY);
 let ME='';
-/* Admin area (Comp Shop + Activity) — gated to these signed-in emails. */
-const ADMINS=['rr@methodco.com'];
-const EMAIL_DOMAIN='methodco.com';   /* only this domain may request a magic link */
-function isAdmin(){return ADMINS.includes(String(ME||'').trim().toLowerCase());}
+/* Access control — allowlist + roles live in the app_users table (checked in enterApp). */
+let ROLE='';                       /* 'admin' | 'user' for the signed-in member */
+function isAdmin(){return ROLE==='admin';}
 function refreshAdminNav(){const b=document.getElementById('nav-admin');if(b)b.style.display=isAdmin()?'':'none';}
 
 /* ================= VESSEL — BEO CALCULATOR · APP ================= */
@@ -728,6 +752,7 @@ function parseHash(){
   const p=h.split('/');
   if(p[0]==='event'&&p[1])return {view:'event',id:p[1]};
   if(p[0]==='monthly')return {view:'monthly',id:null};
+  if(p[0]==='users')return {view:'users',id:null};
   if(p[0]==='catalog')return {view:'catalog',id:null};
   if(p[0]==='historicals')return {view:'historicals',id:null};
   if(p[0]==='compshop')return {view:'compshop',id:null};
@@ -737,9 +762,10 @@ function parseHash(){
 function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
-  /* Admin-only areas — soft-gated to admin names */
-  if((ROUTE.view==='compshop'||ROUTE.view==='activity')&&!isAdmin()){goto('events');return;}
-  ['events','event','monthly','catalog','historicals','compshop','activity'].forEach(v=>{
+  /* Admin-only areas — gated to admin role */
+  const ADMIN_VIEWS=['compshop','activity','users'];
+  if(ADMIN_VIEWS.includes(ROUTE.view)&&!isAdmin()){goto('events');return;}
+  ['events','event','monthly','catalog','historicals','compshop','activity','users'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
@@ -748,7 +774,7 @@ function renderRoute(){
     if(b)b.classList.toggle('on',ROUTE.view===v||(v==='events'&&ROUTE.view==='event'));
   });
   const nadm=document.getElementById('nav-admin');
-  if(nadm)nadm.classList.toggle('on',ROUTE.view==='compshop'||ROUTE.view==='activity');
+  if(nadm)nadm.classList.toggle('on',ADMIN_VIEWS.includes(ROUTE.view));
   document.querySelectorAll('.admin-sub button').forEach(b=>b.classList.toggle('on',b.dataset.nav===ROUTE.view));
   if(ROUTE.view==='events')buildEvents();
   else if(ROUTE.view==='monthly')buildMonthly();
@@ -761,6 +787,7 @@ function renderRoute(){
   else if(ROUTE.view==='catalog')buildCatalog();
   else if(ROUTE.view==='historicals')buildHistoricals();
   else if(ROUTE.view==='activity')buildActivity();
+  else if(ROUTE.view==='users')buildUsers();
 }
 window.addEventListener('hashchange',()=>{
   if(NAV_GUARD){NAV_GUARD=false;return;}
@@ -1826,6 +1853,24 @@ async function buildActivity(){
     return `<div class="actrow"><div class="aw"><b>${beoEsc(r.changed_by_email||'unknown')}</b> · ${beoEsc(nm)} · ${agoFmt(r.changed_at)}</div><div class="as">${(r.summary||[]).map(beoEsc).join(' &nbsp;·&nbsp; ')}</div></div>`;
   }).join('');
 }
+/* ---------------- users & access (admin) ---------------- */
+async function buildUsers(){
+  const t=document.getElementById('usr-list');
+  if(!t)return;
+  t.innerHTML='<tr><td class="li" style="color:var(--muted);">Loading…</td></tr>';
+  const {data,error}=await sb.from('app_users').select('email,role,name,created_at').order('role').order('email');
+  if(error){t.innerHTML='<tr><td class="li" style="color:var(--neg);">Could not load users — '+beoEsc(error.message)+'</td></tr>';return;}
+  const rows=data||[];
+  let h=`<tr><th class="li" style="min-width:240px;">Email</th><th class="li" style="min-width:150px;">Name</th><th class="li" style="min-width:140px;">Role</th><th></th></tr>`;
+  rows.forEach(u=>{
+    const isMe=String(u.email).toLowerCase()===ME;
+    const roleSel=`<select data-usrole="${attEsc(u.email)}"${isMe?' disabled title="You can&#39;t change your own role"':''} style="appearance:none;border:1px solid var(--line-strong);background:${isMe?'var(--tint)':'#fff'};border-radius:4px;padding:3px 8px;font-size:11px;font-family:inherit;cursor:${isMe?'default':'pointer'};">`
+      +['user','admin'].map(r=>`<option value="${r}"${u.role===r?' selected':''}>${r==='admin'?'Admin':'Standard user'}</option>`).join('')+`</select>`;
+    h+=`<tr><td class="li">${beoEsc(u.email)}${isMe?' <span class="ctl-label">you</span>':''}</td><td class="li">${beoEsc(u.name||'—')}</td><td class="li">${roleSel}</td><td>${isMe?'':`<button class="bx" data-usdel="${attEsc(u.email)}" title="Remove access">✕</button>`}</td></tr>`;
+  });
+  if(!rows.length)h+=`<tr><td class="li" colspan="4" style="color:var(--muted);">No users yet.</td></tr>`;
+  t.innerHTML=h;
+}
 
 /* ---------------- shared handlers ---------------- */
 /* Focus preservation: committing a field re-renders the whole section (innerHTML),
@@ -1842,6 +1887,8 @@ document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-
 document.addEventListener('change',e=>{
   const mm=e.target.closest('#mp-month');
   if(mm){MSEL=mm.value;MP_SEL=null;buildMonthly();return;}
+  const ur=e.target.closest('[data-usrole]');
+  if(ur){const email=ur.dataset.usrole;sb.from('app_users').update({role:ur.value}).eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' → '+(ur.value==='admin'?'Admin':'Standard user'));buildUsers();});return;}
   const bst=e.target.closest('[data-beostatus]');
   if(bst){
     const ev=BEOS.find(x=>x._id===bst.dataset.beostatus);
@@ -1965,6 +2012,8 @@ document.addEventListener('click',e=>{
   if(mpback){MP_SEL=null;buildMonthly();return;}
   const mps=e.target.closest('[data-mpsel]');
   if(mps){MP_SEL=(MP_SEL===mps.dataset.mpsel)?null:mps.dataset.mpsel;buildMonthly();return;}
+  const ud=e.target.closest('[data-usdel]');
+  if(ud){const email=ud.dataset.usdel;if(window.confirm('Remove access for '+email+'? They will no longer be able to sign in.')){sb.from('app_users').delete().eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' removed.');buildUsers();});}return;}
   const op=e.target.closest('[data-open]');
   if(op){goto('event',op.dataset.open);return;}
   const cs=e.target.closest('[data-cs]');
@@ -2045,6 +2094,19 @@ pill('ts-sync',async(btn)=>{
   }catch(e){
     if(out)out.innerHTML='<pre class="ts-diag">Invoke failed: '+beoEsc(String(e))+'</pre>';
   }finally{if(btn)btn.disabled=false;}
+});
+pill('usr-add',async()=>{
+  const email=(document.getElementById('usr-email').value||'').trim().toLowerCase();
+  const name=(document.getElementById('usr-name').value||'').trim();
+  const role=document.getElementById('usr-role').value;
+  const msg=document.getElementById('usr-msg');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){if(msg)msg.textContent='Enter a valid email address.';return;}
+  if(msg)msg.textContent='Adding…';
+  const {error}=await sb.from('app_users').upsert({email,name:name||null,role},{onConflict:'email'});
+  if(error){if(msg)msg.textContent='Failed — '+error.message;return;}
+  document.getElementById('usr-email').value='';document.getElementById('usr-name').value='';
+  if(msg)msg.textContent=email+' added as '+(role==='admin'?'Admin':'Standard user')+'.';
+  buildUsers();
 });
 pill('vsbeo-dup',async()=>{
   if(!BEOD)return;
@@ -2251,7 +2313,6 @@ async function sendMagicLink(){
   const email=(document.getElementById('login-email').value||'').trim().toLowerCase();
   loginMsg.className='';
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){loginMsg.className='err';loginMsg.textContent='Enter a valid email address.';return;}
-  if(!email.endsWith('@'+EMAIL_DOMAIN)){loginMsg.className='err';loginMsg.textContent='Use your @'+EMAIL_DOMAIN+' email to sign in.';return;}
   loginMsg.textContent='Sending…';
   const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname}});
   if(error){loginMsg.className='err';loginMsg.textContent='Could not send the link — '+error.message;return;}
@@ -2260,17 +2321,33 @@ async function sendMagicLink(){
 document.getElementById('login-send').addEventListener('click',sendMagicLink);
 document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')sendMagicLink();});
 document.getElementById('chname').addEventListener('click',async()=>{try{await sb.auth.signOut();}catch(e){}location.reload();});
-let APP_STARTED=false;
+function showNotAuthorized(email){
+  document.getElementById('appwrap').style.display='none';
+  LOGIN.style.display='flex';
+  LOGIN.querySelector('.login-card').innerHTML=
+    '<div class="login-brand">Vessel <span>Method Co &middot; BEO Pricing</span></div>'
+    +'<h1>Access <em>pending</em></h1>'
+    +'<p class="lp"><b>'+beoEsc(email)+'</b> isn&rsquo;t on the access list yet. Ask an admin to add you, then sign in again.</p>'
+    +'<button id="na-signout" class="pill primary"><span class="dot"></span>SIGN OUT</button>';
+  document.getElementById('na-signout').addEventListener('click',async()=>{try{await sb.auth.signOut();}catch(e){}location.reload();});
+}
+let APP_STARTED=false, ENTERING=false;
 async function enterApp(user){
-  if(APP_STARTED)return; APP_STARTED=true;
-  LOGIN.style.display='none';
-  ME=String(user.email||'').toLowerCase();
-  document.getElementById('who').textContent=ME;
-  refreshAdminNav();
-  document.getElementById('appwrap').style.display='block';
-  evStatus('Loading…');
-  const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
-  if(ok){evStatus('');ROUTE=parseHash();renderRoute();subscribeRT();}
+  if(APP_STARTED||ENTERING)return; ENTERING=true;
+  try{
+    const email=String(user.email||'').toLowerCase();
+    const {data:me}=await sb.from('app_users').select('role,name').eq('email',email).maybeSingle();
+    if(!me){showNotAuthorized(email);return;}
+    APP_STARTED=true;
+    ME=email; ROLE=me.role||'user';
+    LOGIN.style.display='none';
+    document.getElementById('who').textContent=me.name||email;
+    refreshAdminNav();
+    document.getElementById('appwrap').style.display='block';
+    evStatus('Loading…');
+    const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
+    if(ok){evStatus('');ROUTE=parseHash();renderRoute();subscribeRT();}
+  }finally{ENTERING=false;}
 }
 sb.auth.onAuthStateChange((event,session)=>{
   if(session&&session.user)enterApp(session.user);
