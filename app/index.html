@@ -42,6 +42,8 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 /* read-only (external) members: neutralise every editable control while leaving navigation live */
 body.ro input[data-bi],body.ro select[data-bi],body.ro textarea[data-bi],body.ro input[data-ci],body.ro select[data-ci],body.ro [data-beostatus],body.ro [data-close],body.ro [data-stp],body.ro [data-bx],body.ro .badd,body.ro .bx,body.ro #usr-email,body.ro #usr-name,body.ro #usr-role,body.ro #usr-add,body.ro [data-usrole],body.ro [data-usdel]{pointer-events:none!important;opacity:.6;cursor:not-allowed;}
 body.ro input[data-bi],body.ro select[data-bi],body.ro input[data-ci],body.ro select[data-ci]{background:#f3f4f7!important;color:var(--muted)!important;}
+/* editor-only actions — hidden entirely for read-only (external) members */
+body.ro #ts-sync,body.ro #vsbeo-new,body.ro #vsbeo-importpdf,body.ro #vsbeo-dup,body.ro #vsbeo-del,body.ro #vsbeo-reset{display:none!important;}
 .navfoot button{appearance:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:#cdd8ea;border-radius:3px;padding:5px 9px;font-size:8.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:inherit;text-transform:uppercase;margin:0 6px 6px 0;}
 .navfoot button:hover{color:#fff;border-color:#fff;}
 .main{margin-left:200px;padding:22px 30px 60px;max-width:none;}
@@ -2182,6 +2184,7 @@ function beoDiff(a,b){
   return out;
 }
 pill('vsbeo-new',async()=>{
+  if(!canEdit())return;   /* read-only members cannot create events */
   evStatus('Creating…');
   const e=await insertEvent(blankEvent());
   if(!e)return;
@@ -2193,6 +2196,7 @@ pill('vsbeo-new',async()=>{
 });
 /* Tripleseat connection probe — calls the tripleseat-sync Edge Function and shows the raw result */
 pill('ts-sync',async(btn)=>{
+  if(!canEdit()){showToast('Tripleseat sync is available to internal users only.');return;}   /* external members cannot sync */
   const out=document.getElementById('ts-sync-out');
   if(btn)btn.disabled=true;
   if(out)out.innerHTML='<span class="ctl-label">Contacting Tripleseat&hellip;</span>';
@@ -2221,7 +2225,7 @@ pill('usr-add',async()=>{
   buildUsers();
 });
 pill('vsbeo-dup',async()=>{
-  if(!BEOD)return;
+  if(!BEOD||!canEdit())return;
   await flushSave();
   const pl=payloadOf(BEOD);
   pl.tab=(pl.tab||'Event')+' (copy)';
@@ -2234,7 +2238,7 @@ pill('vsbeo-dup',async()=>{
   showToast('Duplicated — this is the copy; the original is untouched.');
 });
 pill('vsbeo-del',async()=>{
-  if(!BEOD)return;
+  if(!BEOD||!canEdit())return;
   if(!window.confirm('Delete "'+(BEOD.tab||BEOD.name)+'" for the whole team, permanently? Export a backup first if you may want it back.'))return;
   DIRTY=false;clearTimeout(saveTimer);
   if(!await removeEvent(BEOD))return;
@@ -2244,7 +2248,7 @@ pill('vsbeo-del',async()=>{
   showToast('Event deleted.');
 });
 pill('vsbeo-reset',async()=>{
-  if(!BEOD)return;
+  if(!BEOD||!canEdit())return;
   const isContract=BEOD.contract!=null;
   const msg=isContract
     ?'Reset "'+(BEOD.tab||BEOD.name)+'" to the executed contract BEO as written? The team\'s saved edits to this event will be lost.'
@@ -2364,6 +2368,7 @@ function parseContract(lines){
   return pl;
 }
 function beoImportPdf(){
+  if(!canEdit())return;   /* read-only members cannot import BEOs */
   const inp=document.createElement('input');
   inp.type='file';inp.accept='.pdf,application/pdf';
   inp.onchange=async()=>{
