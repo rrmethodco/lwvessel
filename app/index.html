@@ -16,6 +16,19 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 .recd{display:inline-block;background:#e7f4ec;color:#1c7c4d;border:1px solid #bfe0cc;border-radius:4px;padding:2px 8px;font-size:8.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;vertical-align:2px;margin-left:8px;}
 /* ---------- app shell ---------- */
 #appwrap{display:none;}
+#login{display:none;position:fixed;inset:0;z-index:200;background:var(--navy);align-items:center;justify-content:center;padding:24px;}
+#login .login-card{background:#fff;border:1px solid var(--line-strong);border-radius:14px;max-width:420px;width:100%;padding:34px 30px;box-shadow:0 24px 70px rgba(0,0,0,.35);}
+#login .login-brand{font-family:Georgia,serif;font-size:20px;color:var(--ink);margin-bottom:22px;}
+#login .login-brand span{display:block;font-family:-apple-system,system-ui,sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+#login h1{font-family:Georgia,serif;font-weight:600;font-size:26px;color:var(--ink);margin:0 0 6px;}
+#login h1 em{color:var(--accent);font-style:italic;}
+#login p.lp{color:var(--muted);font-size:12.5px;line-height:1.55;margin:0 0 18px;}
+#login-email{width:100%;box-sizing:border-box;border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;margin-bottom:12px;}
+#login-email:focus{outline:none;border-color:var(--accent);}
+#login-send{width:100%;justify-content:center;}
+#login-msg{margin-top:14px;font-size:12px;color:var(--muted);min-height:16px;line-height:1.5;}
+#login-msg.ok{color:var(--pos);}
+#login-msg.err{color:var(--neg);}
 .sidenav{position:fixed;left:0;top:0;bottom:0;width:200px;background:var(--navy);padding:16px 8px 14px;z-index:50;display:flex;flex-direction:column;}
 .navbrand{font-family:Georgia,serif;color:#fff;font-size:16px;padding:0 10px 14px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:12px;}
 .navbrand span{display:block;font-family:-apple-system,sans-serif;font-size:8px;letter-spacing:.14em;color:#8fa2c2;margin-top:4px;text-transform:uppercase;}
@@ -97,6 +110,10 @@ table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
 .beo-frame{width:100%;height:80vh;min-height:520px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
 pre.ts-diag{background:#0f1b30;color:#cfe0f5;border:1px solid var(--line-strong);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.5;max-height:340px;overflow:auto;white-space:pre-wrap;word-break:break-word;max-width:1000px;}
 .admin-sub button.on{background:var(--tint);border-color:var(--accent);color:var(--accent-deep);font-weight:800;}
+table.evlist tr.evrow.mp-sel td{background:#e8f0fb!important;box-shadow:inset 3px 0 0 var(--accent);}
+table.evlist tr.evrow.mp-sel:hover td{background:#e8f0fb!important;}
+.mpback{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--accent-deep);border-radius:5px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.03em;cursor:pointer;font-family:inherit;}
+.mpback:hover{border-color:var(--accent);background:var(--tint);}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -231,6 +248,17 @@ table.alloc th.cs-hi{background:#dce6f4;}
 </head>
 <body>
 
+<div id="login">
+  <div class="login-card">
+    <div class="login-brand">Vessel <span>Method Co &middot; BEO Pricing</span></div>
+    <h1>Sign <em>in</em></h1>
+    <p class="lp">Enter your Method Co email and we&rsquo;ll send you a one&#8209;click magic link &mdash; no password needed.</p>
+    <input id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="you@methodco.com">
+    <button id="login-send" class="pill primary"><span class="dot"></span>SEND MAGIC LINK</button>
+    <div id="login-msg"></div>
+  </div>
+</div>
+
 <div id="appwrap">
 <aside class="sidenav">
   <div class="navbrand">Vessel <span>Method Co · BEO Pricing</span></div>
@@ -243,7 +271,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   </nav>
   <div class="navfoot">
     <span class="who" id="who"></span>
-    <button id="chname">Change name</button>
+    <button id="chname">Sign out</button>
   </div>
 </aside>
 <main class="main">
@@ -498,9 +526,9 @@ const SB_URL='https://wcqqcfpiiovqposcvrel.supabase.co';
 const SB_KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
 const sb=createClient(SB_URL,SB_KEY);
 let ME='';
-/* Admin area (Comp Shop + Activity) — gated to these names. Note: identity is the self-entered
-   name (no login yet), so this is soft gating; swap for real auth if hard access control is needed. */
-const ADMINS=['ross','ross richardson','rr','rr@methodco.com'];
+/* Admin area (Comp Shop + Activity) — gated to these signed-in emails. */
+const ADMINS=['rr@methodco.com'];
+const EMAIL_DOMAIN='methodco.com';   /* only this domain may request a magic link */
 function isAdmin(){return ADMINS.includes(String(ME||'').trim().toLowerCase());}
 function refreshAdminNav(){const b=document.getElementById('nav-admin');if(b)b.style.display=isAdmin()?'':'none';}
 
@@ -1188,7 +1216,7 @@ function buildEvents(){
 }
 
 /* ---------------- estimated monthly P&L ---------------- */
-let MSEL=null;
+let MSEL=null, MP_SEL=null;   /* MSEL = selected month; MP_SEL = drilled-into event id (null = whole-month rollup) */
 const MP_STATUS=new Set(['DEFINITE','CLOSED']);   /* booked pipeline only */
 function monthlyGroups(){
   const groups=new Map();
@@ -1226,47 +1254,60 @@ function buildMonthly(){
     A.ebitda+=C.ebitda;A.bevRev+=C.bevRev;A.guests+=(+ev.guests||0);
     return {ev,C};
   });
-  const G=A.guests;
-  strip('mp-kpis',[
+  /* drill-down: if an event row is selected, the P&L shows THAT event; otherwise the whole-month rollup */
+  const selRow=MP_SEL?rows.find(r=>r.ev._id===MP_SEL):null;
+  if(MP_SEL&&!selRow)MP_SEL=null;
+  const P=selRow?selRow.C:A;
+  const G=selRow?(+selRow.ev.guests||0):A.guests;
+  const selName=selRow?(selRow.ev.tab||selRow.ev.name||'Event'):'';
+  strip('mp-kpis',selRow?[
+    ['Event',selName.length>20?selName.slice(0,20)+'…':selName,grp.label+' · single event'],
+    ['Est. revenue',bf0(P.rev),G.toLocaleString()+' guests · ex-tax'],
+    ['Est. EBITDA',bf0(P.ebitda),P.rev?fpc(P.ebitda/P.rev*100)+' margin':'—'],
+    ['Client billing',bf0(P.grand),'incl. tax']]:[
     ['Events',String(grp.evs.length),grp.label+' · definite & closed'],
     ['Est. revenue',bf0(A.rev),G.toLocaleString()+' guests · ex-tax'],
     ['Est. EBITDA',bf0(A.ebitda),A.rev?fpc(A.ebitda/A.rev*100)+' margin':'—'],
     ['Client billings',bf0(A.grand),'incl. tax']]);
-  const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${A.rev?fpc(v/A.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2(v/G):'—'}</td></tr>`;
-  let ph=`<tr><th class="li" style="min-width:300px;">Estimated monthly P&amp;L &mdash; ${beoEsc(grp.label)}</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
+  const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${P.rev?fpc(v/P.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2(v/G):'—'}</td></tr>`;
+  const pTitle=selRow
+    ?`<button data-mpback class="mpback">&#9664; ${beoEsc(grp.label)} total</button> <span style="color:var(--muted);font-weight:400;">/</span> <span style="font-style:italic;">${beoEsc(selName)}</span>`
+    :`Estimated monthly P&amp;L &mdash; ${beoEsc(grp.label)}`;
+  let ph=`<tr><th class="li" style="min-width:300px;">${pTitle}</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">EVENT REVENUE — WHAT THE HOUSE KEEPS (EX-TAX)</td></tr>`;
-  ph+=pr('Food',A.food,0,1);
-  if(A.bevPkg>0.005)ph+=pr('Beverage — Packages',A.bevPkg,0,1);
-  if(A.cash>0.005)ph+=pr('Beverage — House Estimate',A.cash,0,1);
-  if(A.rental>0.005)ph+=pr('Room / Space Rental',A.rental,0,1);
-  if(A.other>0.005)ph+=pr('Other Fees',A.other,0,1);
-  if(A.barFee>0.005)ph+=pr('Bartender / Staffing Fees',A.barFee,0,1);
-  ph+=pr('Service Charge',A.svc,0,1);
-  ph+=pr('Special Event Fee',A.sef,0,1);
-  if(A.disc>0.005)ph+=pr('Less: discounts &amp; comps',-A.disc,0,1);
-  ph+=pr('Total Event Revenue',A.rev,1);
+  ph+=pr('Food',P.food,0,1);
+  if(P.bevPkg>0.005)ph+=pr('Beverage — Packages',P.bevPkg,0,1);
+  if(P.cash>0.005)ph+=pr('Beverage — House Estimate',P.cash,0,1);
+  if((selRow?(+selRow.ev.rental||0):P.rental)>0.005)ph+=pr('Room / Space Rental',selRow?(+selRow.ev.rental||0):P.rental,0,1);
+  if(P.other>0.005)ph+=pr('Other Fees',P.other,0,1);
+  if(P.barFee>0.005)ph+=pr('Bartender / Staffing Fees',P.barFee,0,1);
+  ph+=pr('Service Charge',P.svc,0,1);
+  ph+=pr('Special Event Fee',P.sef,0,1);
+  if(P.disc>0.005)ph+=pr('Less: discounts &amp; comps',-P.disc,0,1);
+  ph+=pr('Total Event Revenue',P.rev,1);
   ph+=`<tr class="section"><td class="li" colspan="4">COST OF SALES</td></tr>`;
   const prc=(n,v,d,dl)=>`<tr><td class="li" style="padding-left:22px;">${n}</td><td>${bf2(v)}</td><td style="color:var(--muted);">${d?fpc(v/d*100):'—'}<span style="display:block;font-size:8px;letter-spacing:.04em;">${dl}</span></td><td style="color:var(--muted);">${G?bf2(v/G):'—'}</td></tr>`;
-  ph+=prc('Food Cost',A.cogsF,A.food,'of food revenue');
-  ph+=prc('Beverage &amp; Bar Cost',A.cogsBv,A.bevRev,'of bev revenue');
-  ph+=pr('Total COGS',A.cogs,1);
-  ph+=pr('Gross Profit',A.gp,1);
-  ph+=pr('Event Labor',A.labor,0,1);
-  ph+=pr('FOH Management Labor',A.fohMgmt,0,1);
-  ph+=pr('Total Labor',A.laborTot,1);
-  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(A.cogs+A.laborTot)}</td><td style="color:var(--muted);">${A.rev?fpc((A.cogs+A.laborTot)/A.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2((A.cogs+A.laborTot)/G):'—'}</td></tr>`;
+  ph+=prc('Food Cost',P.cogsF,P.food,'of food revenue');
+  ph+=prc('Beverage &amp; Bar Cost',P.cogsBv,P.bevRev,'of bev revenue');
+  ph+=pr('Total COGS',P.cogs,1);
+  ph+=pr('Gross Profit',P.gp,1);
+  ph+=pr('Event Labor',P.labor,0,1);
+  ph+=pr('FOH Management Labor',P.fohMgmt,0,1);
+  ph+=pr('Total Labor',P.laborTot,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(P.cogs+P.laborTot)}</td><td style="color:var(--muted);">${P.rev?fpc((P.cogs+P.laborTot)/P.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2((P.cogs+P.laborTot)/G):'—'}</td></tr>`;
   ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
-  ph+=pr('Total Direct Operating &amp; Other',A.opex,1);
-  ph+=pr('Management Fee',A.fee);
-  ph+=pr('Estimated Net Income / EBITDA',A.ebitda,1);
-  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(A.sTax+A.lTax)})${A.grat>0.005?` and gratuity (${bf2(A.grat)})`:''} are pass-through and excluded from revenue. Rolls up only Definite &amp; Closed events for ${beoEsc(grp.label)}; each event carries its own fixed FOH management labor allocation.</td></tr>`;
+  ph+=pr('Total Direct Operating &amp; Other',P.opex,1);
+  ph+=pr('Management Fee',P.fee);
+  ph+=pr(selRow?'Estimated Event Net Income / EBITDA':'Estimated Net Income / EBITDA',P.ebitda,1);
+  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(P.sTax+P.lTax)})${P.grat>0.005?` and gratuity (${bf2(P.grat)})`:''} are pass-through and excluded from revenue. ${selRow?'Single Definite/Closed event; carries a fixed FOH management labor allocation.':'Rolls up only Definite &amp; Closed events for '+beoEsc(grp.label)+'; each event carries its own fixed FOH management labor allocation.'} ${selRow?'':'<b>Click any event below to drill into its P&amp;L.</b>'}</td></tr>`;
   pnl.innerHTML=ph;
   let eh=`<tr><th class="li" style="min-width:220px;">Event</th><th class="li" style="min-width:110px;">Date</th><th class="li">Status</th><th>Guests</th><th>Est. revenue</th><th>Est. EBITDA</th><th>Margin</th></tr>`;
   rows.sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0)));
   rows.forEach(({ev,C})=>{
-    eh+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td><td class="li" style="white-space:nowrap;">${beoEsc(evShortDate(ev))}</td><td class="li">${statusChip(ev.status)}</td><td>${ev.guests}</td><td style="font-weight:700;">${bf2(C.rev)}</td><td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td><td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td></tr>`;
+    const on=ev._id===MP_SEL;
+    eh+=`<tr class="evrow${on?' mp-sel':''}" data-mpsel="${ev._id}" title="Click to view this event's P&amp;L"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td><td class="li" style="white-space:nowrap;">${beoEsc(evShortDate(ev))}</td><td class="li">${statusChip(ev.status)}</td><td>${ev.guests}</td><td style="font-weight:700;">${bf2(C.rev)}</td><td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td><td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td></tr>`;
   });
-  eh+=`<tr class="total"><td class="li">Total — ${grp.evs.length} event${grp.evs.length!==1?'s':''}</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${G.toLocaleString()}</td><td style="font-weight:800;">${bf2(A.rev)}</td><td style="font-weight:800;color:${A.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(A.ebitda)}</td><td>${A.rev?fpc(A.ebitda/A.rev*100):'—'}</td></tr>`;
+  eh+=`<tr class="total"><td class="li">Total — ${grp.evs.length} event${grp.evs.length!==1?'s':''}</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${A.guests.toLocaleString()}</td><td style="font-weight:800;">${bf2(A.rev)}</td><td style="font-weight:800;color:${A.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(A.ebitda)}</td><td>${A.rev?fpc(A.ebitda/A.rev*100):'—'}</td></tr>`;
   evtbl.innerHTML=eh;
 }
 
@@ -1800,7 +1841,7 @@ function commitFocus(){const k=_navKey;_navKey=null;if(!k)return;requestAnimatio
 document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-bi],select[data-bi],input[data-ci],select[data-ci]');_navKey=keyOf(el);},true);
 document.addEventListener('change',e=>{
   const mm=e.target.closest('#mp-month');
-  if(mm){MSEL=mm.value;buildMonthly();return;}
+  if(mm){MSEL=mm.value;MP_SEL=null;buildMonthly();return;}
   const bst=e.target.closest('[data-beostatus]');
   if(bst){
     const ev=BEOS.find(x=>x._id===bst.dataset.beostatus);
@@ -1920,6 +1961,10 @@ document.addEventListener('click',e=>{
   const es=e.target.closest('[data-es]');
   if(es){const k=es.dataset.es;if(ESORT.key===k)ESORT.dir*=-1;else{ESORT.key=k;ESORT.dir=(k==='name'||k==='type'||k==='status'||k==='approver')?1:-1;}buildEvents();return;}
   if(e.target.closest('[data-beostatus]')||e.target.closest('[data-close]'))return; /* let the change handler own these */
+  const mpback=e.target.closest('[data-mpback]');
+  if(mpback){MP_SEL=null;buildMonthly();return;}
+  const mps=e.target.closest('[data-mpsel]');
+  if(mps){MP_SEL=(MP_SEL===mps.dataset.mpsel)?null:mps.dataset.mpsel;buildMonthly();return;}
   const op=e.target.closest('[data-open]');
   if(op){goto('event',op.dataset.open);return;}
   const cs=e.target.closest('[data-cs]');
@@ -2195,30 +2240,45 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   document.getElementById('pick-msg').textContent='Added '+it.name+(price?' at $'+price:' — set the price on the line')+'.';
 });
 
-/* ---------------- boot (login disabled for now) ---------------- */
-function setName(n){
-  try{window.localStorage.setItem('vesselBEO.name',n);}catch(e){}
-  ME=n;
-  document.getElementById('who').textContent=n;
+/* ---------------- boot · magic-link auth ---------------- */
+const LOGIN=document.getElementById('login'), loginMsg=document.getElementById('login-msg');
+function showLogin(){
+  document.getElementById('appwrap').style.display='none';
+  LOGIN.style.display='flex';
+  const em=document.getElementById('login-email');if(em)setTimeout(()=>em.focus(),60);
+}
+async function sendMagicLink(){
+  const email=(document.getElementById('login-email').value||'').trim().toLowerCase();
+  loginMsg.className='';
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){loginMsg.className='err';loginMsg.textContent='Enter a valid email address.';return;}
+  if(!email.endsWith('@'+EMAIL_DOMAIN)){loginMsg.className='err';loginMsg.textContent='Use your @'+EMAIL_DOMAIN+' email to sign in.';return;}
+  loginMsg.textContent='Sending…';
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname}});
+  if(error){loginMsg.className='err';loginMsg.textContent='Could not send the link — '+error.message;return;}
+  loginMsg.className='ok';loginMsg.textContent='Check your inbox — a magic link is on its way to '+email+'. Click it to sign in (it can take a minute).';
+}
+document.getElementById('login-send').addEventListener('click',sendMagicLink);
+document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')sendMagicLink();});
+document.getElementById('chname').addEventListener('click',async()=>{try{await sb.auth.signOut();}catch(e){}location.reload();});
+let APP_STARTED=false;
+async function enterApp(user){
+  if(APP_STARTED)return; APP_STARTED=true;
+  LOGIN.style.display='none';
+  ME=String(user.email||'').toLowerCase();
+  document.getElementById('who').textContent=ME;
   refreshAdminNav();
+  document.getElementById('appwrap').style.display='block';
+  evStatus('Loading…');
+  const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
+  if(ok){evStatus('');ROUTE=parseHash();renderRoute();subscribeRT();}
 }
-document.getElementById('chname').addEventListener('click',()=>{
-  const n=window.prompt('Your name (shown in the change log):',ME||'');
-  if(n&&n.trim())setName(n.trim());
+sb.auth.onAuthStateChange((event,session)=>{
+  if(session&&session.user)enterApp(session.user);
+  else if(event==='SIGNED_OUT'){APP_STARTED=false;location.reload();}
 });
-let NM='';
-try{NM=window.localStorage.getItem('vesselBEO.name')||'';}catch(e){}
-if(!NM)NM=((window.prompt('Your name (shown in the change log):')||'').trim())||'team';
-setName(NM);
-document.getElementById('appwrap').style.display='block';
-evStatus('Loading…');
-const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
-if(ok){
-  evStatus('');
-  ROUTE=parseHash();
-  renderRoute();
-  subscribeRT();
-}
+const {data:{session:_sess}}=await sb.auth.getSession();
+if(_sess&&_sess.user)await enterApp(_sess.user);
+else showLogin();
 </script>
 </body>
 </html>
