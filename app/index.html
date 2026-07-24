@@ -89,6 +89,12 @@ table.evlist tr.ev-subtotal td{background:var(--tint)!important;border-top:1px s
 table.evlist tr.ev-subtotal:hover td{background:var(--tint)!important;}
 table.evlist tr.ev-grandtotal td{background:#dbe3f1!important;border-top:2px solid var(--accent-deep);border-bottom:2px solid var(--accent-deep);color:var(--navy);font-weight:800;font-size:12px;padding-top:9px;padding-bottom:9px;}
 table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
+/* Tripleseat BEO viewer */
+.beo-drop{border:2px dashed var(--line-strong);border-radius:12px;padding:44px 22px;text-align:center;background:#fff;max-width:640px;}
+.beo-drop.drag{border-color:var(--accent);background:var(--tint);}
+.beo-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.beo-actions a.pill{text-decoration:none;}
+.beo-frame{width:100%;height:80vh;min-height:520px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -283,6 +289,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button data-sec="terms">Contract Terms</button>
     <button data-sec="pnl">P&amp;L</button>
     <button data-sec="bill">Client Bill</button>
+    <button data-sec="beo">Tripleseat BEO</button>
     <button data-sec="recon">Post-Event</button>
   </div>
   <div class="secpane" id="pane-setup">
@@ -298,6 +305,10 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div class="evmeta" id="bill-head"></div>
     <div class="scroll"><table class="alloc" id="vsbeo-billit" style="max-width:900px;"></table></div>
     <div class="scroll" id="bill-wrap"><table class="alloc" id="vsbeo-bill" style="max-width:900px;"></table></div>
+  </div>
+  <div class="secpane" id="pane-beo">
+    <h2>Tripleseat <em>BEO</em> — the executed contract</h2>
+    <div id="beo-pdf-wrap"></div>
   </div>
   <div class="secpane" id="pane-costs">
     <h2>Event <em>labor</em> — staffing cost vs guest-paid fees</h2>
@@ -590,10 +601,10 @@ function blankEvent(){
     food:[],bev:[],other:[],barFee:[],
     cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',act:{},contract:null};
+    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
 }
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
-const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus'];
+const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized'];
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
@@ -1231,11 +1242,66 @@ let SECSEL='setup';
 function setSec(s){
   SECSEL=s;
   document.querySelectorAll('#sectabs button').forEach(b=>b.classList.toggle('on',b.dataset.sec===s));
-  ['setup','menu','bill','costs','pnl','recon','terms'].forEach(p=>{
+  ['setup','menu','bill','beo','costs','pnl','recon','terms'].forEach(p=>{
     document.getElementById('pane-'+p).classList.toggle('on',p===s);
   });
+  if(s==='beo')renderBeoPdf();
 }
 document.querySelectorAll('#sectabs button').forEach(b=>b.addEventListener('click',()=>setSec(b.dataset.sec)));
+/* ---- Tripleseat BEO PDF: upload to Supabase Storage, view via signed URL ---- */
+function beoSlug(){return (BEOD&&(BEOD.tab||BEOD.name)||'beo').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48)||'beo';}
+async function renderBeoPdf(){
+  const wrap=document.getElementById('beo-pdf-wrap');
+  if(!wrap||!BEOD)return;
+  const path=BEOD.beoPdf||'';
+  if(!path){
+    wrap.innerHTML=`<div class="beo-drop" id="beo-drop">
+      <div style="font-size:30px;line-height:1;">⇪</div>
+      <div style="font-weight:800;margin:8px 0 2px;">Upload the Tripleseat BEO</div>
+      <div style="color:var(--muted);font-size:11px;margin-bottom:14px;">Export the executed contract as a PDF from Tripleseat and drop it here (or choose a file). Everyone on the team will be able to view it.</div>
+      <button class="pill primary" id="beo-pick"><span class="dot"></span>CHOOSE PDF</button>
+      <input type="file" id="beo-file" accept="application/pdf" style="display:none;">
+      <div class="ctl-label" id="beo-msg" style="margin-top:12px;"></div>
+    </div>`;
+    return;
+  }
+  wrap.innerHTML=`<div class="beo-actions">
+      <span class="ctl-label" id="beo-msg">Loading the BEO…</span><span style="flex:1;"></span>
+      <a class="pill" id="beo-open" target="_blank" rel="noopener"><span class="dot"></span>OPEN IN NEW TAB</a>
+      <button class="pill" id="beo-replace"><span class="dot"></span>REPLACE</button>
+      <input type="file" id="beo-file" accept="application/pdf" style="display:none;">
+    </div><div id="beo-frame-wrap"></div>`;
+  const msg=document.getElementById('beo-msg');
+  const {data,error}=await sb.storage.from('beo-pdfs').createSignedUrl(path,3600);
+  if(error||!data){if(msg)msg.textContent='Could not load the PDF — '+(error?error.message:'unknown')+'. Use Replace to re-upload.';return;}
+  const url=data.signedUrl;
+  const fw=document.getElementById('beo-frame-wrap');
+  if(fw)fw.innerHTML=`<iframe src="${attEsc(url)}" title="Tripleseat BEO" class="beo-frame"></iframe>`;
+  const open=document.getElementById('beo-open');if(open)open.href=url;
+  if(msg)msg.textContent='Executed Tripleseat contract';
+}
+async function uploadBeoPdf(file){
+  if(!file||!BEOD)return;
+  const msg=document.getElementById('beo-msg');
+  if(file.type!=='application/pdf'&&!/\.pdf$/i.test(file.name||'')){if(msg)msg.textContent='Please choose a PDF file.';return;}
+  const path=BEOD._id+'/'+beoSlug()+'.pdf';
+  if(msg)msg.textContent='Uploading…';
+  const {error}=await sb.storage.from('beo-pdfs').upload(path,file,{upsert:true,contentType:'application/pdf'});
+  if(error){if(msg)msg.textContent='Upload failed — '+error.message;return;}
+  BEOD.beoPdf=path;
+  await saveEvent(BEOD,['Tripleseat BEO uploaded']);
+  renderBeoPdf();
+  showToast('Tripleseat BEO uploaded — viewable by the whole team.');
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('#beo-pick')||e.target.closest('#beo-replace')){const f=document.getElementById('beo-file');if(f)f.click();}
+});
+document.addEventListener('change',e=>{
+  const bf=e.target.closest('#beo-file');
+  if(bf&&bf.files&&bf.files[0])uploadBeoPdf(bf.files[0]);
+});
+document.addEventListener('dragover',e=>{if(e.target.closest('#beo-drop')){e.preventDefault();e.dataTransfer.dropEffect='copy';}});
+document.addEventListener('drop',e=>{const d=e.target.closest('#beo-drop');if(d){e.preventDefault();const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(f)uploadBeoPdf(f);}});
 function buildBEO(){
   const t=document.getElementById('vsbeo-setup');
   if(!t||!BEOD)return;
