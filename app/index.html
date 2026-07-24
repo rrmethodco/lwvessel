@@ -749,11 +749,11 @@ function blankEvent(){
     guests:50,fbMin:1500,rental:0,deposit:0,
     svc:20,sef:5,gratuity:0,salesTax:6,liqTax:9,
     food:[],bev:[],other:[],barFee:[],
-    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
+    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,cashInGrand:1,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
     burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized','Removed'];
@@ -1211,7 +1211,10 @@ function beoCalcFor(B){
   /* cash bar: forecast is auto-suppressed when a beverage package is on the event, but a manual
      $/guest override (cashPpg) is always honored — lets you force a cash bar alongside a package */
   const cash=(B.cashOn&&(+B.cashPpg>0||bev<=0.005))?B.guests*cashPpgFor(B).v:0;
-  const grand=fbB+cash+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;   /* cash bar is included in the client grand total */
+  /* cashInGrand (default 1): a hosted cash/consumption bar is billed to the client → in the grand total.
+     Set 0 for a guest-paid bar (guests pay individually) — still house revenue & EBITDA, but NOT on the client's contract total */
+  const cashG=(B.cashInGrand===0)?0:cash;
+  const grand=fbB+cashG+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;
   const due=grand-B.deposit;
   const bevPkg=bev;
   const bevRev=bevPkg+cash;
@@ -1229,7 +1232,7 @@ function beoCalcFor(B){
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
   const fee=rev*B.mgmtPct/100;
   const ebitda=gp-laborTot-opex-fee;
-  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
+  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,cashG,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
@@ -1593,13 +1596,17 @@ function buildBEO(){
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td class="li"></td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   const cfc=benchFor(B), cOv=+B.cashPpg>0, hasPkg=C.bev>0.005;
   const cashIn=`$<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests`;
-  const cashLbl=B.cashOn
+  /* toggle: is the bar billed to the client (hosted → in grand) or guest-paid (house revenue only)? */
+  const inGrand=B.cashInGrand!==0;
+  const cashBillSel=`<span style="display:inline-block;margin-top:3px;font-size:9px;color:var(--muted);">On client bill? <select class="drvin txt" data-bi="g:cashInGrand" style="width:130px;min-width:130px;"><option value="1"${inGrand?' selected':''}>Yes — hosted (in grand)</option><option value="0"${inGrand?'':' selected'}>No — guest-paid</option></select></span>`;
+  const cashLbl=(B.cashOn
     ?(hasPkg
       ?(cOv
         ?`Cash bar (manual override) — ${cashIn} ${MU}a beverage package is on this event; this manual cash-bar estimate is added on top &middot; enter 0 to suppress</span>`
         :`Cash bar — ${cashIn} ${MU}suppressed by default (a beverage package is on this event) &middot; type a $/guest to manually add a cash bar anyway</span>`)
-      :`Cash bar — ${cashIn} ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`} · guests pay individually</span>`)
-    :`Cash bar — ${MU}off for this event</span>`;
+      :`Cash bar — ${cashIn} ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`}</span>`)
+    :`Cash bar — ${MU}off for this event</span>`)
+    +((B.cashOn&&C.cash>0.005)?'<br>'+cashBillSel:'');
   ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td class="li"></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
   ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td class="li"></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
@@ -1629,7 +1636,8 @@ function buildBEO(){
   if(B.bev.length||B.cashOn){
     ib+=`<tr class="section"><td colspan="4" class="li">BEVERAGE</td></tr>`;
     B.bev.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
-    if(B.cashOn&&C.cash>0.005){const cppg=cashPpgFor(B);ib+=`<tr><td>${B.guests}</td><td class="li">Cash bar ${MU}est. bar spend $${cppg.v.toFixed(0)}/guest × ${B.guests} guests · guests pay individually · included in client total</span></td><td>$${cppg.v.toFixed(0)}</td><td>${MU}est.</span> ${bf2(C.cash)}</td></tr>`;}
+    if(B.cashOn&&C.cash>0.005){const cppg=cashPpgFor(B);const onBill=C.cashG>0.005;
+      ib+=`<tr><td style="${onBill?'':'color:var(--muted);'}">${onBill?B.guests:'—'}</td><td class="li">Cash bar ${MU}$${cppg.v.toFixed(0)}/guest × ${B.guests} guests · ${onBill?'on consumption · included in client total':'guests pay individually · house revenue, not billed to host'}</span></td><td style="${onBill?'':'color:var(--muted);'}">$${cppg.v.toFixed(0)}</td><td style="${onBill?'':'color:var(--muted);'}">${MU}${onBill?'':'est. '}</span>${bf2(C.cash)}</td></tr>`;}
     if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
   }
   if((B.other||[]).length||(B.barFee||[]).length){
@@ -1655,7 +1663,7 @@ function buildBEO(){
   if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
   if(C.other>0.005)bh+=`<tr><td class="li">Other Fees</td><td>${bf2(C.other)}</td></tr>`;
   if(C.barFee>0.005)bh+=`<tr><td class="li">Bartender / Staffing Fees</td><td>${bf2(C.barFee)}</td></tr>`;
-  if(C.cash>0.005)bh+=`<tr><td class="li">Cash bar ${MU}guest-paid estimate</span></td><td>${bf2(C.cash)}</td></tr>`;
+  if(C.cashG>0.005)bh+=`<tr><td class="li">Cash bar ${MU}on consumption</span></td><td>${bf2(C.cashG)}</td></tr>`;
   if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
   if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
