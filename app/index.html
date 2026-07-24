@@ -228,6 +228,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="navbrand">Vessel <span>Method Co · BEO Pricing</span></div>
   <nav>
     <button data-nav="events" id="nav-events">Events</button>
+    <button data-nav="monthly" id="nav-monthly">Est. Monthly P&amp;L</button>
     <button data-nav="catalog" id="nav-catalog">Menu Catalog</button>
     <button data-nav="historicals" id="nav-historicals">Historicals</button>
     <button data-nav="compshop" id="nav-compshop">Comp Shop</button>
@@ -437,6 +438,24 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div id="act-list"></div>
 </section>
 
+<!-- ================= EST. MONTHLY P&L ================= -->
+<section id="view-monthly" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Est. Monthly <em>P&amp;L</em></h1>
+      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Booked pipeline &mdash; Definite &amp; Closed events only</div>
+    </div>
+    <div class="controls" style="margin:0;align-items:center;">
+      <span class="ctl-label">Month</span>
+      <select id="mp-month" class="drvin txt" style="width:230px;"></select>
+    </div>
+  </div>
+  <div class="bstrip" id="mp-kpis"></div>
+  <div class="scroll"><table class="alloc" id="mp-pnl" style="max-width:1100px;"></table></div>
+  <div style="font-family:Georgia,serif;font-size:14px;color:var(--ink);margin:22px 0 8px;">Events in this month</div>
+  <div class="scroll"><table class="alloc evlist" id="mp-events" style="max-width:1100px;"></table></div>
+</section>
+
 </main>
 </div>
 
@@ -567,13 +586,13 @@ function blankEvent(){
   return {tab:'New Event',name:'New Event — Vessel',date:'',evType:'',
     inqDate:'',evDate:'',startTime:'',endTime:'',salesperson:'',leadSource:'',company:'',market:'',
     guests:50,fbMin:1500,rental:0,deposit:0,
-    svc:20,sef:5,salesTax:6,liqTax:9,
+    svc:20,sef:5,gratuity:0,salesTax:6,liqTax:9,
     food:[],bev:[],other:[],barFee:[],
     cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
     burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized'];
@@ -653,6 +672,7 @@ function parseHash(){
   const h=(location.hash||'').replace(/^#\/?/,'');
   const p=h.split('/');
   if(p[0]==='event'&&p[1])return {view:'event',id:p[1]};
+  if(p[0]==='monthly')return {view:'monthly',id:null};
   if(p[0]==='catalog')return {view:'catalog',id:null};
   if(p[0]==='historicals')return {view:'historicals',id:null};
   if(p[0]==='compshop')return {view:'compshop',id:null};
@@ -662,15 +682,16 @@ function parseHash(){
 function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
-  ['events','event','catalog','historicals','compshop','activity'].forEach(v=>{
+  ['events','event','monthly','catalog','historicals','compshop','activity'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
-  ['events','catalog','historicals','compshop','activity'].forEach(v=>{
+  ['events','monthly','catalog','historicals','compshop','activity'].forEach(v=>{
     const b=document.getElementById('nav-'+v);
     if(b)b.classList.toggle('on',ROUTE.view===v||(v==='events'&&ROUTE.view==='event'));
   });
   if(ROUTE.view==='events')buildEvents();
+  else if(ROUTE.view==='monthly')buildMonthly();
   else if(ROUTE.view==='event'){
     BEOD=BEOS.find(e=>e._id===ROUTE.id)||null;
     if(!BEOD){goto('events');return;}
@@ -993,12 +1014,13 @@ function beoCalcFor(B){
   const feeBase=fbB+other+barFee;
   const svc=feeBase*B.svc/100;
   const sef=feeBase*B.sef/100;
-  const sTax=(food+sef+other)*B.salesTax/100;   /* Other Fees are sales-taxed; bar/staffing fees & unmet minimum are not */
+  const grat=fbB*(B.gratuity||0)/100;   /* gratuity — F&B only; a pass-through to staff. Hits the client total & TS reconciliation, NOT revenue/EBITDA */
+  const sTax=(food+sef+other)*B.salesTax/100;   /* Other Fees are sales-taxed; bar/staffing fees, gratuity & unmet minimum are not */
   const lTax=bev*B.liqTax/100;
   const disc=fbB*(B.disc||0)/100;
   /* cash bar: only when it is explicitly selected AND no beverage package is on the event */
   const cash=(B.cashOn&&bev<=0.005)?B.guests*cashPpgFor(B).v:0;
-  const grand=fbB+B.rental+other+barFee+svc+sef+sTax+lTax-disc;
+  const grand=fbB+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;
   const due=grand-B.deposit;
   const bevPkg=bev;
   const bevRev=bevPkg+cash;
@@ -1016,7 +1038,7 @@ function beoCalcFor(B){
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
   const fee=rev*B.mgmtPct/100;
   const ebitda=gp-laborTot-opex-fee;
-  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
+  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
@@ -1115,6 +1137,89 @@ function buildEvents(){
   const gb=document.getElementById('ev-grp-btn');if(gb)gb.innerHTML=grpBtn;
 }
 
+/* ---------------- estimated monthly P&L ---------------- */
+let MSEL=null;
+const MP_STATUS=new Set(['DEFINITE','CLOSED']);   /* booked pipeline only */
+function monthlyGroups(){
+  const groups=new Map();
+  BEOS.forEach(ev=>{
+    if(!MP_STATUS.has(String(ev.status||'').trim().toUpperCase()))return;
+    const m=evMonthGrp(ev);
+    if(m.ord===Infinity)return;                    /* skip undated events */
+    if(!groups.has(m.key))groups.set(m.key,{key:m.key,label:m.label,ord:m.ord,evs:[]});
+    groups.get(m.key).evs.push(ev);
+  });
+  return [...groups.values()].sort((a,b)=>a.ord-b.ord);
+}
+function buildMonthly(){
+  const sel=document.getElementById('mp-month');
+  if(!sel)return;
+  const groups=monthlyGroups();
+  const pnl=document.getElementById('mp-pnl'), evtbl=document.getElementById('mp-events');
+  if(!groups.length){
+    sel.innerHTML='<option>— no Definite or Closed events —</option>';
+    strip('mp-kpis',[['Events','0','no definite / closed events booked'],['Est. revenue','—',''],['Est. EBITDA','—',''],['Client billings','—','']]);
+    pnl.innerHTML='<tr><td class="li" style="color:var(--muted);padding:14px;">No Definite or Closed events on the calendar yet. As events move to Definite, their estimated P&amp;L rolls up here by month.</td></tr>';
+    evtbl.innerHTML='';
+    return;
+  }
+  if(!MSEL||!groups.some(g=>g.key===MSEL))MSEL=groups[0].key;
+  sel.innerHTML=groups.map(g=>`<option value="${g.key}"${g.key===MSEL?' selected':''}>${beoEsc(g.label)} · ${g.evs.length} event${g.evs.length!==1?'s':''}</option>`).join('');
+  const grp=groups.find(g=>g.key===MSEL);
+  const A={food:0,bev:0,other:0,barFee:0,bevPkg:0,cash:0,rental:0,svc:0,sef:0,grat:0,disc:0,sTax:0,lTax:0,grand:0,rev:0,cogsF:0,cogsBv:0,cogsO:0,cogs:0,gp:0,labor:0,fohMgmt:0,laborTot:0,opex:0,fee:0,ebitda:0,bevRev:0,guests:0};
+  const rows=grp.evs.map(ev=>{
+    const C=beoCalcFor(ev);
+    A.food+=C.food;A.bev+=C.bev;A.other+=C.other;A.barFee+=C.barFee;A.bevPkg+=C.bevPkg;A.cash+=C.cash;
+    A.rental+=(+ev.rental||0);A.svc+=C.svc;A.sef+=C.sef;A.grat+=C.grat;A.disc+=C.disc;A.sTax+=C.sTax;A.lTax+=C.lTax;
+    A.grand+=C.grand;A.rev+=C.rev;A.cogsF+=C.cogsF;A.cogsBv+=C.cogsBv;A.cogsO+=C.cogsO;A.cogs+=C.cogs;
+    A.gp+=C.gp;A.labor+=C.labor;A.fohMgmt+=C.fohMgmt;A.laborTot+=C.laborTot;A.opex+=C.opex;A.fee+=C.fee;
+    A.ebitda+=C.ebitda;A.bevRev+=C.bevRev;A.guests+=(+ev.guests||0);
+    return {ev,C};
+  });
+  const G=A.guests;
+  strip('mp-kpis',[
+    ['Events',String(grp.evs.length),grp.label+' · definite & closed'],
+    ['Est. revenue',bf0(A.rev),G.toLocaleString()+' guests · ex-tax'],
+    ['Est. EBITDA',bf0(A.ebitda),A.rev?fpc(A.ebitda/A.rev*100)+' margin':'—'],
+    ['Client billings',bf0(A.grand),'incl. tax']]);
+  const pr=(n,v,b,ind)=>`<tr${b?' class="total"':''}><td class="li"${ind?' style="padding-left:22px;"':''}>${n}</td><td style="${b?'font-weight:800;':''}">${bf2(v)}</td><td style="color:var(--muted);">${A.rev?fpc(v/A.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2(v/G):'—'}</td></tr>`;
+  let ph=`<tr><th class="li" style="min-width:300px;">Estimated monthly P&amp;L &mdash; ${beoEsc(grp.label)}</th><th style="min-width:100px;">$</th><th style="min-width:70px;">% Rev</th><th style="min-width:80px;">$ / Guest</th></tr>`;
+  ph+=`<tr class="section"><td class="li" colspan="4">EVENT REVENUE — WHAT THE HOUSE KEEPS (EX-TAX)</td></tr>`;
+  ph+=pr('Food',A.food,0,1);
+  if(A.bevPkg>0.005)ph+=pr('Beverage — Packages',A.bevPkg,0,1);
+  if(A.cash>0.005)ph+=pr('Beverage — House Estimate',A.cash,0,1);
+  if(A.rental>0.005)ph+=pr('Room / Space Rental',A.rental,0,1);
+  if(A.other>0.005)ph+=pr('Other Fees',A.other,0,1);
+  if(A.barFee>0.005)ph+=pr('Bartender / Staffing Fees',A.barFee,0,1);
+  ph+=pr('Service Charge',A.svc,0,1);
+  ph+=pr('Special Event Fee',A.sef,0,1);
+  if(A.disc>0.005)ph+=pr('Less: discounts &amp; comps',-A.disc,0,1);
+  ph+=pr('Total Event Revenue',A.rev,1);
+  ph+=`<tr class="section"><td class="li" colspan="4">COST OF SALES</td></tr>`;
+  const prc=(n,v,d,dl)=>`<tr><td class="li" style="padding-left:22px;">${n}</td><td>${bf2(v)}</td><td style="color:var(--muted);">${d?fpc(v/d*100):'—'}<span style="display:block;font-size:8px;letter-spacing:.04em;">${dl}</span></td><td style="color:var(--muted);">${G?bf2(v/G):'—'}</td></tr>`;
+  ph+=prc('Food Cost',A.cogsF,A.food,'of food revenue');
+  ph+=prc('Beverage &amp; Bar Cost',A.cogsBv,A.bevRev,'of bev revenue');
+  ph+=pr('Total COGS',A.cogs,1);
+  ph+=pr('Gross Profit',A.gp,1);
+  ph+=pr('Event Labor',A.labor,0,1);
+  ph+=pr('FOH Management Labor',A.fohMgmt,0,1);
+  ph+=pr('Total Labor',A.laborTot,1);
+  ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(A.cogs+A.laborTot)}</td><td style="color:var(--muted);">${A.rev?fpc((A.cogs+A.laborTot)/A.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2((A.cogs+A.laborTot)/G):'—'}</td></tr>`;
+  ph+=`<tr class="section"><td class="li" colspan="4">DIRECT OPERATING &amp; OTHER EXPENSES</td></tr>`;
+  ph+=pr('Total Direct Operating &amp; Other',A.opex,1);
+  ph+=pr('Management Fee',A.fee);
+  ph+=pr('Estimated Net Income / EBITDA',A.ebitda,1);
+  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(A.sTax+A.lTax)})${A.grat>0.005?` and gratuity (${bf2(A.grat)})`:''} are pass-through and excluded from revenue. Rolls up only Definite &amp; Closed events for ${beoEsc(grp.label)}; each event carries its own fixed FOH management labor allocation.</td></tr>`;
+  pnl.innerHTML=ph;
+  let eh=`<tr><th class="li" style="min-width:220px;">Event</th><th class="li" style="min-width:110px;">Date</th><th class="li">Status</th><th>Guests</th><th>Est. revenue</th><th>Est. EBITDA</th><th>Margin</th></tr>`;
+  rows.sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0)));
+  rows.forEach(({ev,C})=>{
+    eh+=`<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td><td class="li" style="white-space:nowrap;">${beoEsc(evShortDate(ev))}</td><td class="li">${statusChip(ev.status)}</td><td>${ev.guests}</td><td style="font-weight:700;">${bf2(C.rev)}</td><td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td><td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td></tr>`;
+  });
+  eh+=`<tr class="total"><td class="li">Total — ${grp.evs.length} event${grp.evs.length!==1?'s':''}</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${G.toLocaleString()}</td><td style="font-weight:800;">${bf2(A.rev)}</td><td style="font-weight:800;color:${A.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(A.ebitda)}</td><td>${A.rev?fpc(A.ebitda/A.rev*100):'—'}</td></tr>`;
+  evtbl.innerHTML=eh;
+}
+
 /* ---------------- event detail view ---------------- */
 let SECSEL='setup';
 function setSec(s){
@@ -1188,8 +1293,9 @@ function buildBEO(){
 +SEC('Cash bar — forecast from historicals (event type × time of day)')
 +R2('Cash bar at this event?',cashOnSel,'Pour cost (% of cash bar sales)',fx(B.cashCogs))
 +`<tr><td class="li" colspan="4" style="color:var(--muted);">${B.cashOn?(C.bev>0.005?`Cash bar selected, but a beverage package is already on this event — <b>the cash-bar estimate is suppressed</b> so beverage revenue isn't double-counted. Remove the package to forecast a cash bar.`:`${bch.override?'Manual override':'Forecast'} — <b>${beoEsc(bch.label)}</b>${bch.n?' · '+bch.n+' events':''}: <b>$${bch.v.toFixed(2)}/guest</b> × ${B.guests} guests = <b>${bf2(B.guests*bch.v)}</b>${bch.override?'':' · override on the Menu &amp; Beverage tab'}`):'Cash bar is off for this event — no beverage forecast added.'}</td></tr>`
-+SEC('Contract rates — house-fixed')
-+R2('Service charge (%)',fx(B.svc),'Special event fee (%)',fx(B.sef))
++SEC('Contract rates')
++R2('Service charge (%)',fx(B.svc)+` ${MU}house-fixed 20%</span>`,'Special event fee (%)',fx(B.sef)+` ${MU}house-fixed 5%</span>`)
++R2('Gratuity (% of F&amp;B)',IN('g:gratuity',B.gratuity||0),null,`<span style="color:var(--muted);">Set per event. Pass-through to staff &mdash; added to the client total &amp; Tripleseat reconciliation, but excluded from revenue &amp; EBITDA.</span>`)
 +R2('Sales tax (%)',fx(B.salesTax)+exNote,'Liquor tax (%)',fx(B.liqTax)+exNote)
 +R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
 +R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
@@ -1272,6 +1378,7 @@ function buildBEO(){
   bh+=`<tr><td class="li">Liquor tax ${B.liqTax.toFixed(1)}%</td><td>${bf2(C.lTax)}</td></tr>`;
   bh+=`<tr><td class="li">Special Event Fee ${B.sef.toFixed(1)}%</td><td>${bf2(C.sef)}</td></tr>`;
   bh+=`<tr><td class="li">Service Charge ${B.svc.toFixed(1)}%</td><td>${bf2(C.svc)}</td></tr>`;
+  if(C.grat>0.005)bh+=`<tr><td class="li">Gratuity ${(B.gratuity||0).toFixed(1)}%</td><td>${bf2(C.grat)}</td></tr>`;
   if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
   if(C.other>0.005)bh+=`<tr><td class="li">Other Fees</td><td>${bf2(C.other)}</td></tr>`;
   if(C.barFee>0.005)bh+=`<tr><td class="li">Bartender / Staffing Fees</td><td>${bf2(C.barFee)}</td></tr>`;
@@ -1367,7 +1474,7 @@ function buildBEO(){
   ph+=pr('Total Direct Operating &amp; Other',C.opex,1);
   ph+=pr('Management Fee',C.fee);
   ph+=pr('Theoretical Net Income / EBITDA',C.ebitda,1);
-  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)}) are pass-through and excluded from revenue.</td></tr>`;
+  ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(C.sTax+C.lTax)})${C.grat>0.005?` and gratuity (${bf2(C.grat)})`:''} are pass-through and excluded from revenue.</td></tr>`;
   document.getElementById('vsbeo-pnl').innerHTML=ph;
   /* ---- waterfall ---- */
   const viz=document.getElementById('pnl-viz');
@@ -1585,6 +1692,8 @@ function commitFocus(){const k=_navKey;_navKey=null;if(!k)return;requestAnimatio
 /* record the click target (an input/select) before its predecessor's blur/change fires */
 document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-bi],select[data-bi],input[data-ci],select[data-ci]');_navKey=keyOf(el);},true);
 document.addEventListener('change',e=>{
+  const mm=e.target.closest('#mp-month');
+  if(mm){MSEL=mm.value;buildMonthly();return;}
   const bst=e.target.closest('[data-beostatus]');
   if(bst){
     const ev=BEOS.find(x=>x._id===bst.dataset.beostatus);
@@ -1725,7 +1834,7 @@ document.addEventListener('click',e=>{
 });
 function beoDiff(a,b){
   const out=[];
-  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',tsTotal:'Tripleseat total',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',cashPpg:'Cash-bar $/guest override',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
+  const SL={tab:'Short label',name:'Event name',date:'Date & time',evDate:'Event date',startTime:'Start time',endTime:'End time',inqDate:'Date of inquiry',salesperson:'Sales person',leadSource:'Source of lead',company:'Company',market:'Market segment',evType:'Event type',guests:'Guest count',fbMin:'F&B minimum',rental:'Rental',deposit:'Deposit',svc:'Service charge %',sef:'Special event fee %',gratuity:'Gratuity %',salesTax:'Sales tax %',liqTax:'Liquor tax %',taxExempt:'Tax-exempt',overageFee:'Over-guarantee surcharge $/guest',tsTotal:'Tripleseat total',cashOn:'Cash bar on/off',cashCogs:'Cash-bar pour cost %',cashPpg:'Cash-bar $/guest override',burden:'Payroll burden %',mgmtPct:'Management fee %',disc:'Discount %',discLbl:'Discount label'};
   Object.keys(SL).forEach(k=>{
     const x=a[k]==null?'':a[k], y=b[k]==null?'':b[k];
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
