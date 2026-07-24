@@ -38,6 +38,10 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 .sidenav nav button.on{color:#fff;box-shadow:inset 3px 0 0 var(--accent);background:rgba(255,255,255,.06);}
 .navfoot{margin-top:auto;border-top:1px solid rgba(255,255,255,.12);padding:12px 10px 0;}
 .navfoot .who{display:block;font-size:8.5px;letter-spacing:.06em;color:#8fa2c2;text-transform:uppercase;font-weight:700;margin-bottom:9px;word-break:break-all;}
+.robadge{display:inline-block;background:rgba(255,255,255,.10);color:#cdd8ea;border:1px solid rgba(255,255,255,.22);border-radius:3px;padding:2px 7px;font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin:0 6px 9px 0;}
+/* read-only (external) members: neutralise every editable control while leaving navigation live */
+body.ro input[data-bi],body.ro select[data-bi],body.ro textarea[data-bi],body.ro input[data-ci],body.ro select[data-ci],body.ro [data-beostatus],body.ro [data-close],body.ro [data-stp],body.ro [data-bx],body.ro .badd,body.ro .bx,body.ro #usr-email,body.ro #usr-name,body.ro #usr-role,body.ro #usr-add,body.ro [data-usrole],body.ro [data-usdel]{pointer-events:none!important;opacity:.6;cursor:not-allowed;}
+body.ro input[data-bi],body.ro select[data-bi],body.ro input[data-ci],body.ro select[data-ci]{background:#f3f4f7!important;color:var(--muted)!important;}
 .navfoot button{appearance:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:#cdd8ea;border-radius:3px;padding:5px 9px;font-size:8.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:inherit;text-transform:uppercase;margin:0 6px 6px 0;}
 .navfoot button:hover{color:#fff;border-color:#fff;}
 .main{margin-left:200px;padding:22px 30px 60px;max-width:none;}
@@ -115,6 +119,7 @@ table.evlist tr.evrow.mp-sel:hover td{background:#e8f0fb!important;}
 .mpback{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--accent-deep);border-radius:5px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.03em;cursor:pointer;font-family:inherit;}
 .mpback:hover{border-color:var(--accent);background:var(--tint);}
 table.evlist td .evname{font-weight:700;font-size:12px;}
+.col-esttotal{display:none;}   /* Est. Total column hidden for now (per request) */
 table.evlist tr.ev-removed td{color:var(--muted);}
 table.evlist tr.ev-removed .evname{text-decoration:line-through;color:var(--muted);}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
@@ -273,6 +278,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   </nav>
   <div class="navfoot">
     <span class="who" id="who"></span>
+    <span id="robadge" class="robadge" style="display:none;">View only</span>
     <button id="chname">Sign out</button>
   </div>
 </aside>
@@ -403,7 +409,8 @@ table.alloc th.cs-hi{background:#dce6f4;}
     </div>
   </div>
   <div class="controls admin-sub" style="margin:0 0 12px;">
-    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP · HOTELS</button>
+    <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
   </div>
@@ -477,6 +484,75 @@ table.alloc th.cs-hi{background:#dce6f4;}
   </div>
 </section>
 
+<!-- ================= COMP SHOP · F&B / VENUES ================= -->
+<section id="view-compshop2" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Vessel <em>— F&amp;B Comp Shop</em> <span class="recd" style="background:#eef2f8;color:#3c5a86;border-color:#c9d2e0;">Waterfront restaurant &amp; private-events comp set · Baltimore · Q3 2026</span></h1>
+      <div class="ph-sub">Vessel vs. the four South-Baltimore waterfront F&amp;B venues it competes with for private events &amp; buyouts &mdash; Rye Street Tavern, Urbano, Nick&rsquo;s Fish House and Copper Shark. Desk scan of public listings; hard commercial terms are quote-on-request across the restaurant set (flagged below).</div>
+    </div>
+  </div>
+  <div class="controls admin-sub" style="margin:0 0 12px;">
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP · HOTELS</button>
+    <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
+    <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+    <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+  </div>
+  <div class="bstrip">
+    <div class="bstat"><div class="k">Comp set</div><div class="v">4 venues</div><div class="s">all South-Baltimore waterfront / peninsula · private events &amp; buyouts</div></div>
+    <div class="bstat"><div class="k">Published terms</div><div class="v">Vessel only</div><div class="s">every restaurant comp is &ldquo;quote on request&rdquo; — a speed-to-quote edge</div></div>
+    <div class="bstat"><div class="k">Scale spectrum</div><div class="v">≤115 → 400</div><div class="s">Vessel &amp; Copper Shark intimate · Rye St. Overlook 250/400 · Nick&rsquo;s large deck</div></div>
+    <div class="bstat"><div class="k">On-the-water</div><div class="v">3 of 5</div><div class="s">Vessel · Rye Street · Nick&rsquo;s on the water; Copper Shark &amp; Urbano near-water</div></div>
+    <div class="bstat"><div class="k">Catering model</div><div class="v">In-house</div><div class="s">no outside catering across the set · Urbano also sells its own off-prem catering</div></div>
+  </div>
+
+  <h2>Venue Matrix <em>— private events &amp; buyouts</em></h2>
+  <div class="scroll"><table class="alloc" style="max-width:1280px;">
+    <tr><th class="li" style="min-width:150px;">Attribute</th><th class="li cs-hi" style="min-width:190px;">Vessel</th><th class="li" style="min-width:200px;">Rye Street Tavern</th><th class="li" style="min-width:180px;">Urbano</th><th class="li" style="min-width:190px;">Nick&rsquo;s Fish House</th><th class="li" style="min-width:180px;">Copper Shark</th></tr>
+    <tr><td class="li">Neighborhood</td><td class="li cs-hi">South Baltimore waterfront</td><td class="li">Baltimore Peninsula (Port Covington)</td><td class="li">Baltimore Peninsula · Rye Street Market</td><td class="li">Middle Branch / Port Covington</td><td class="li">Locust Point · Foundry on Fort Ave</td></tr>
+    <tr><td class="li">Concept</td><td class="li cs-hi">Waterfront private-event buyout venue</td><td class="li">New American · NoHo Hospitality (Carmellini); 315-seat flagship</td><td class="li">Tex-Mex &amp; margaritas · multi-unit (MD + VA)</td><td class="li">Casual seafood / crab house</td><td class="li">Bourbon-focused seasonal American</td></tr>
+    <tr><td class="li">Largest event space</td><td class="li cs-hi">Full buyout · ≈115 (per BEO history)</td><td class="li"><b>Overlook 250 seated / 400 reception</b>; Entire Loft ≤150</td><td class="li">≈4,500 sq ft · customizable <span style="color:var(--muted);">(capacity n/p)</span></td><td class="li">Waterfront deck + bar + dining <span style="color:var(--muted);">(capacity n/p)</span></td><td class="li">Private room + patio · ≈4,700 sq ft <span style="color:var(--muted);">(capacity n/p)</span></td></tr>
+    <tr><td class="li">On the water</td><td class="li cs-hi"><b>Yes</b> — waterfront</td><td class="li">Yes — harbor / peninsula views</td><td class="li">Near-water (peninsula)</td><td class="li">Yes — deck on the water · free boat dockage</td><td class="li">Near-water (Locust Point)</td></tr>
+    <tr><td class="li">Private-dining format</td><td class="li cs-hi">Exclusive full buyout</td><td class="li">Multiple private &amp; semi-private (Overlook, Loft, Patio, Bar)</td><td class="li">Semi-private / customizable</td><td class="li">Deck / dining-room / full-venue</td><td class="li">Semi-private room; no dedicated large PDR</td></tr>
+    <tr><td class="li">F&amp;B minimum</td><td class="li cs-hi"><b>$1,500</b> (published)</td><td class="li">Quote on request</td><td class="li">Quote on request</td><td class="li">Quote on request</td><td class="li">Quote on request</td></tr>
+    <tr><td class="li">Rental / venue fee</td><td class="li cs-hi"><b>$950</b> incl. reception (published)</td><td class="li">Full-venue buyout ≈$7,000 <span style="color:var(--muted);">(packet ref)</span></td><td class="li">Quote on request</td><td class="li">Quote on request</td><td class="li">Quote on request</td></tr>
+    <tr><td class="li">Service charge &amp; fees</td><td class="li cs-hi"><b>25%</b> (20% svc + 5% SEF), published</td><td class="li">Quote on request</td><td class="li">Quote on request</td><td class="li">Quote on request</td><td class="li">Quote on request</td></tr>
+    <tr><td class="li">Outside catering</td><td class="li cs-hi">Not permitted</td><td class="li">Not permitted (in-house)</td><td class="li">In-house · also sells off-prem catering</td><td class="li">In-house catering staff</td><td class="li">In-house</td></tr>
+    <tr><td class="li">Brand / draw</td><td class="li cs-hi">Method Co. hospitality · intimacy &amp; flexibility</td><td class="li">National brand equity (Carmellini / NoHo)</td><td class="li">Value Mexican · margarita program</td><td class="li">Local institution · casual crab-house</td><td class="li">Bourbon program · design-forward room</td></tr>
+    <tr><td class="li">Best-fit occasion</td><td class="li cs-hi">Showers, birthdays, corporate socials, receptions</td><td class="li">Large weddings, galas, corporate flagship events</td><td class="li">Casual parties, happy hours, catered off-sites</td><td class="li">Weddings, big casual waterfront parties</td><td class="li">Intimate dinners, cocktail receptions</td></tr>
+  </table></div>
+
+  <div class="cs-card">
+    <div class="cs-k">Findings</div>
+    <div class="cs-t">Where Vessel sits in the waterfront F&amp;B comp set</div>
+    <ul>
+      <li><b>Vessel is the only venue publishing entry terms.</b> $1,500 F&amp;B minimum, $950 rental and a 25% service structure are all on the record; all four restaurant comps make the client call for a quote. Speed-and-clarity of pricing is a live differentiator, not a marketing line.</li>
+      <li><b>Scale splits the set in two.</b> Rye Street&rsquo;s Overlook (250 seated / 400 reception) and Nick&rsquo;s large waterfront deck are the big-format players; Vessel and Copper Shark are intimate (≤115); Urbano is mid-size. Vessel&rsquo;s natural peer is Copper Shark, and its opening is the ≤120-guest booking a 400-cap room makes feel empty.</li>
+      <li><b>Waterfront is table stakes here.</b> Vessel, Rye Street and Nick&rsquo;s are all on the water; Copper Shark (Locust Point) and Urbano (Peninsula) are near-water. The view alone doesn&rsquo;t separate Vessel — <b>exclusive full-buyout + transparent pricing</b> does.</li>
+      <li><b>Catering lanes differ.</b> Everyone is in-house / no-outside-catering, but Urbano uniquely pushes its own <em>off-premise</em> catering — a different competitor lane (they&rsquo;ll cater the client&rsquo;s space, not just host).</li>
+      <li><b>Brand asymmetry.</b> Rye Street carries NoHo Hospitality (Andrew Carmellini) national equity and a 315-seat flagship; Vessel can&rsquo;t out-brand it and shouldn&rsquo;t try — it wins on intimacy, flexibility and Method Co. service.</li>
+    </ul>
+  </div>
+
+  <div class="cs-card act">
+    <div class="cs-k">Recommended actions — for approval</div>
+    <div class="cs-t">How Vessel should sell against the F&amp;B set</div>
+    <ul>
+      <li><b>Lead with published terms + a same-day quote.</b> The entire restaurant comp set forces a &ldquo;call for pricing&rdquo; — be the easy yes with a number in hand before they&rsquo;ve heard back from the others.</li>
+      <li><b>Sell the full-buyout exclusive vs. a restaurant&rsquo;s corner.</b> Against Copper Shark and Urbano&rsquo;s semi-private rooms, Vessel gives the client the <em>whole</em> waterfront space — position exclusivity, not square footage.</li>
+      <li><b>Own the overflow lane below Rye Street&rsquo;s Overlook.</b> Target ≤120-guest events where a 250/400 room is oversized and impersonal — the sweet spot Vessel&rsquo;s buyout actually fits.</li>
+      <li><b>Counter Urbano&rsquo;s off-prem catering by owning the on-site experience</b> they can&rsquo;t replicate off the water.</li>
+      <li><b>Re-shop for hard terms.</b> None of the four publish F&amp;B minimums, rentals or service %; a quick phone/email mystery shop (as done for the hotel set) would close every &ldquo;quote on request&rdquo; gap in the matrix above.</li>
+    </ul>
+  </div>
+
+  <div class="cs-note" style="margin-top:20px;">
+    <p><b>Comp set:</b> Rye Street Tavern (Baltimore Peninsula), Urbano / Urbano 116 (Baltimore Peninsula · Rye Street Market), Nick&rsquo;s Fish House (2600 Insulator Dr, Middle Branch) and Copper Shark (921 E Fort Ave, Locust Point) &mdash; the South-Baltimore waterfront F&amp;B venues most directly competing with Vessel for private events and buyouts.</p>
+    <p><b>Source &amp; caveat:</b> desk scan of public venue listings, event pages and press (Q3 2026). Capacities marked <span style="color:var(--muted);">(n/p)</span> and every &ldquo;quote on request&rdquo; cell are <b>not published</b> — confirm with a live sales shop before using in negotiation. Unlike the Hotels comp shop, this set was not phone-shopped.</p>
+    <p style="margin-top:12px;border-top:1px solid var(--line-strong);padding-top:10px;">Confidential. Prepared by Method Co. in connection with the evaluation of Vessel. Figures are preliminary, for discussion purposes only, and subject to diligence. Not for distribution without the consent of Method Co.</p>
+  </div>
+</section>
+
 <!-- ================= ACTIVITY ================= -->
 <section id="view-activity" class="view">
   <div class="pagehead">
@@ -485,7 +561,8 @@ table.alloc th.cs-hi{background:#dce6f4;}
     </div>
   </div>
   <div class="controls admin-sub" style="margin:0 0 12px;">
-    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP · HOTELS</button>
+    <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
   </div>
@@ -497,18 +574,19 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="pagehead">
     <div>
       <h1>Users <em>&amp; access</em></h1>
-      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Anyone on this list can sign in with a magic link. Admins also see the Admin area.</div>
+      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Anyone on this list can sign in with a magic link. <b>Admins</b> also see the Admin area · <b>Standard users</b> can edit events &amp; menu · <b>External</b> members are read-only — they can open events and drill into the P&amp;L but cannot change anything.</div>
     </div>
   </div>
   <div class="controls admin-sub" style="margin:0 0 12px;">
-    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP · HOTELS</button>
+    <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
   </div>
   <div class="controls" style="margin:0 0 14px;gap:8px;align-items:center;flex-wrap:wrap;">
     <input id="usr-email" type="email" placeholder="name@company.com" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:230px;">
     <input id="usr-name" type="text" placeholder="Name (optional)" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:150px;">
-    <select id="usr-role" class="drvin txt" style="width:120px;"><option value="user">Standard user</option><option value="admin">Admin</option></select>
+    <select id="usr-role" class="drvin txt" style="width:170px;"><option value="user">Standard user</option><option value="admin">Admin</option><option value="external">External (read-only)</option></select>
     <button class="pill primary" id="usr-add"><span class="dot"></span>＋ ADD USER</button>
     <span class="ctl-label" id="usr-msg"></span>
   </div>
@@ -554,8 +632,10 @@ const SB_KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
 const sb=createClient(SB_URL,SB_KEY);
 let ME='';
 /* Access control — allowlist + roles live in the app_users table (checked in enterApp). */
-let ROLE='';                       /* 'admin' | 'user' for the signed-in member */
+let ROLE='';                       /* 'admin' | 'user' | 'external' for the signed-in member */
 function isAdmin(){return ROLE==='admin';}
+function canEdit(){return ROLE==='admin'||ROLE==='user';}   /* 'external' = read-only: can view & drill down, cannot edit */
+const ROLE_LABELS={admin:'Admin',user:'Standard user',external:'External (read-only)'};
 function refreshAdminNav(){const b=document.getElementById('nav-admin');if(b)b.style.display=isAdmin()?'':'none';}
 
 /* ================= VESSEL — BEO CALCULATOR · APP ================= */
@@ -759,6 +839,7 @@ function parseHash(){
   if(p[0]==='catalog')return {view:'catalog',id:null};
   if(p[0]==='historicals')return {view:'historicals',id:null};
   if(p[0]==='compshop')return {view:'compshop',id:null};
+  if(p[0]==='compshop2')return {view:'compshop2',id:null};
   if(p[0]==='activity')return {view:'activity',id:null};
   return {view:'events',id:null};
 }
@@ -766,9 +847,9 @@ function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
   /* Admin-only areas — gated to admin role */
-  const ADMIN_VIEWS=['compshop','activity','users'];
+  const ADMIN_VIEWS=['compshop','compshop2','activity','users'];
   if(ADMIN_VIEWS.includes(ROUTE.view)&&!isAdmin()){goto('events');return;}
-  ['events','event','monthly','catalog','historicals','compshop','activity','users'].forEach(v=>{
+  ['events','event','monthly','catalog','historicals','compshop','compshop2','activity','users'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
@@ -845,14 +926,14 @@ async function removeEvent(ev){
 }
 /* ---------------- autosave ---------------- */
 function scheduleSave(){
-  if(!BEOD)return;
+  if(!BEOD||!canEdit())return;
   DIRTY=true;
   clearTimeout(saveTimer);
   saveTimer=setTimeout(flushSave,1200);
 }
 async function flushSave(){
   clearTimeout(saveTimer);
-  if(!DIRTY||!BEOD)return;
+  if(!DIRTY||!BEOD||!canEdit())return;
   const cur=payloadOf(BEOD);
   const ch=BEOSNAP?beoDiff(BEOSNAP,cur):[];
   if(!ch.length){DIRTY=false;return;}
@@ -1202,7 +1283,7 @@ function buildEvents(){
   const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['status','Status','li',''],['close','Likelihood','li',''],['guests','Guests','',''],['grand','Est. Total','',''],['rev','Est. Revenue','',''],['ebitda','Est. EBITDA','',''],['margin','Est. Margin','',''],['beo','BEO status','li','min-width:140px;']];
   const earr=k=>ESORT.key===k?(ESORT.dir>0?' ▲':' ▼'):'';
   const grpBtn=`<button data-evgrp="1" title="Group events by month" style="appearance:none;border:1px solid var(--line-strong);background:${EV_GROUP?'var(--tint)':'#fff'};color:${EV_GROUP?'var(--accent-deep)':'var(--muted)'};border-radius:4px;padding:2px 9px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${EV_GROUP?'✓ MONTHLY':'GROUP BY MONTH'}</button>`;
-  let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
+  let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}${k==='grand'?' col-esttotal':''}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
   const bstOpts=ev=>['',...BEO_STATUS].map(o=>`<option value="${attEsc(o)}"${(ev.beoStatus||'')===o?' selected':''}>${o?beoEsc(o):'— set status —'}</option>`).join('');
   const rowHtml=({ev,C,E,rm})=>{
     const isDef=String(ev.status||'').trim().toUpperCase()==='DEFINITE';
@@ -1218,7 +1299,7 @@ function buildEvents(){
 <td class="li">${statusChip(ev.status)}</td>
 <td class="li">${cpCell}</td>
 <td>${ev.guests}</td>
-<td style="font-weight:700;">${bf2(E.grand)}</td>
+<td class="col-esttotal" style="font-weight:700;">${bf2(E.grand)}</td>
 <td style="font-weight:700;">${bf2(E.rev)}</td>
 <td style="font-weight:700;color:${rm?'var(--muted)':(E.ebitda>=0?'var(--pos)':'var(--neg)')};">${bf2(E.ebitda)}</td>
 <td style="color:var(--muted);">${E.rev?fpc(E.ebitda/E.rev*100):'—'}</td>
@@ -1226,7 +1307,7 @@ function buildEvents(){
   };
   const subRow=(g)=>{
     let sg=0,sr=0,se=0,su=0;g.rows.forEach(({E})=>{sg+=E.grand;sr+=E.rev;se+=E.ebitda;su+=E.guests;});
-    return `<tr class="ev-subtotal"><td class="li" style="font-weight:800;">${beoEsc(g.label)} subtotal</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${su.toLocaleString()}</td><td style="font-weight:800;">${bf2(sg)}</td><td style="font-weight:800;">${bf2(sr)}</td><td style="font-weight:800;color:${se>=0?'var(--pos)':'var(--neg)'};">${bf2(se)}</td><td style="color:var(--muted);">${sr?fpc(se/sr*100):'—'}</td><td class="li"></td></tr>`;
+    return `<tr class="ev-subtotal"><td class="li" style="font-weight:800;">${beoEsc(g.label)} subtotal</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${su.toLocaleString()}</td><td class="col-esttotal" style="font-weight:800;">${bf2(sg)}</td><td style="font-weight:800;">${bf2(sr)}</td><td style="font-weight:800;color:${se>=0?'var(--pos)':'var(--neg)'};">${bf2(se)}</td><td style="color:var(--muted);">${sr?fpc(se/sr*100):'—'}</td><td class="li"></td></tr>`;
   };
   if(EV_GROUP){
     const groups=new Map();
@@ -1241,7 +1322,7 @@ function buildEvents(){
     });
     /* grand total across every month */
     let aG=0,aR=0,aE=0,aU=0;rows.forEach(({E})=>{aG+=E.grand;aR+=E.rev;aE+=E.ebitda;aU+=E.guests;});
-    h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td>${bf2(aG)}</td><td>${bf2(aR)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
+    h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td class="col-esttotal">${bf2(aG)}</td><td>${bf2(aR)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
   }else{
     rows.forEach(r=>h+=rowHtml(r));
   }
@@ -1872,8 +1953,8 @@ async function buildUsers(){
   let h=`<tr><th class="li" style="min-width:240px;">Email</th><th class="li" style="min-width:150px;">Name</th><th class="li" style="min-width:140px;">Role</th><th></th></tr>`;
   rows.forEach(u=>{
     const isMe=String(u.email).toLowerCase()===ME;
-    const roleSel=`<select data-usrole="${attEsc(u.email)}"${isMe?' disabled title="You can&#39;t change your own role"':''} style="appearance:none;border:1px solid var(--line-strong);background:${isMe?'var(--tint)':'#fff'};border-radius:4px;padding:3px 8px;font-size:11px;font-family:inherit;cursor:${isMe?'default':'pointer'};">`
-      +['user','admin'].map(r=>`<option value="${r}"${u.role===r?' selected':''}>${r==='admin'?'Admin':'Standard user'}</option>`).join('')+`</select>`;
+    const roleSel=`<select data-usrole="${attEsc(u.email)}"${isMe?' disabled title="You can&#39;t change your own role"':''} style="appearance:none;border:1px solid var(--line-strong);background:${isMe?'var(--tint)':'#fff'};border-radius:4px;padding:3px 8px;font-size:11px;font-family:inherit;cursor:${isMe?'default':'pointer'};min-width:150px;">`
+      +['user','admin','external'].map(r=>`<option value="${r}"${u.role===r?' selected':''}>${ROLE_LABELS[r]}</option>`).join('')+`</select>`;
     h+=`<tr><td class="li">${beoEsc(u.email)}${isMe?' <span class="ctl-label">you</span>':''}</td><td class="li">${beoEsc(u.name||'—')}</td><td class="li">${roleSel}</td><td>${isMe?'':`<button class="bx" data-usdel="${attEsc(u.email)}" title="Remove access">✕</button>`}</td></tr>`;
   });
   if(!rows.length)h+=`<tr><td class="li" colspan="4" style="color:var(--muted);">No users yet.</td></tr>`;
@@ -1895,6 +1976,7 @@ document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-
 document.addEventListener('change',e=>{
   const mm=e.target.closest('#mp-month');
   if(mm){MSEL=mm.value;MP_SEL=null;buildMonthly();return;}
+  if(!canEdit())return;   /* read-only (external) members: view & drill down only, no writes */
   const ur=e.target.closest('[data-usrole]');
   if(ur){const email=ur.dataset.usrole;sb.from('app_users').update({role:ur.value}).eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' → '+(ur.value==='admin'?'Admin':'Standard user'));buildUsers();});return;}
   const bst=e.target.closest('[data-beostatus]');
@@ -1995,7 +2077,7 @@ document.addEventListener('click',e=>{
     return;
   }
   const st=e.target.closest('[data-stp]');
-  if(st&&BEOD){
+  if(st&&BEOD&&canEdit()){
     const parts=st.dataset.stp.split(':');
     const d=+parts.pop();
     const p=parts;
@@ -2029,7 +2111,7 @@ document.addEventListener('click',e=>{
   const bs=e.target.closest('[data-bs]');
   if(bs){BEOSEC[bs.dataset.bs]=!BEOSEC[bs.dataset.bs];buildBEO();return;}
   const t=e.target.closest('[data-bx]');
-  if(!t||!BEOD)return;
+  if(!t||!BEOD||!canEdit())return;
   const p=t.dataset.bx.split(':');
   if(p[0]==='cat'){openPicker(p[1]);return;}
   if(p[0]==='add'){
@@ -2351,6 +2433,8 @@ async function enterApp(user){
     LOGIN.style.display='none';
     document.getElementById('who').textContent=me.name||email;
     refreshAdminNav();
+    document.body.classList.toggle('ro',!canEdit());   /* external = read-only chrome */
+    const rb=document.getElementById('robadge');if(rb)rb.style.display=canEdit()?'none':'';
     document.getElementById('appwrap').style.display='block';
     evStatus('Loading…');
     const [ok]=await Promise.all([loadEvents(),loadCatalog()]);
