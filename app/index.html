@@ -1088,7 +1088,7 @@ function buildEvents(){
     const sc=ESK[ESORT.key];
     rows.sort((a,b)=>{const av=sc.get(a),bv=sc.get(b);return sc.str?String(av).localeCompare(String(bv))*ESORT.dir:((av-bv)*ESORT.dir);});
   }
-  const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['status','Status','li',''],['close','Likelihood','li',''],['guests','Guests','',''],['grand','Estimated Total','',''],['rev','Estimated Revenue','',''],['ebitda','Estimated EBITDA','',''],['margin','Margin','',''],['beo','BEO status','li','min-width:140px;']];
+  const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['status','Status','li',''],['close','Likelihood','li',''],['guests','Guests','',''],['grand','Est. Total','',''],['rev','Est. Revenue','',''],['ebitda','Est. EBITDA','',''],['margin','Est. Margin','',''],['beo','BEO status','li','min-width:140px;']];
   const earr=k=>ESORT.key===k?(ESORT.dir>0?' ▲':' ▼'):'';
   const grpBtn=`<button data-evgrp="1" title="Group events by month" style="appearance:none;border:1px solid var(--line-strong);background:${EV_GROUP?'var(--tint)':'#fff'};color:${EV_GROUP?'var(--accent-deep)':'var(--muted)'};border-radius:4px;padding:2px 9px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${EV_GROUP?'✓ MONTHLY':'GROUP BY MONTH'}</button>`;
   let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
