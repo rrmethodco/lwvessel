@@ -546,7 +546,7 @@ const BEO_DEFS=[{
   mgmtPct:4, disc:15, discLbl:'Military discount'
 }];
 /* House-fixed rates — not editable per event; changing the model is a code/deploy change */
-const FIXED_RATES={svc:20,sef:5,salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25};
+const FIXED_RATES={salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25};   /* svc & sef are per-event (default 20/5) — some BEOs waive them or use gratuity instead */
 /* FOH management labor — fixed overhead of $1,680/mo, allocated across 100 events/yr = $201.60/event */
 const FOH_MGMT={monthly:1680,eventsYr:100,perEvent:1680*12/100};
 function applyFixedRates(B){if(B){Object.keys(FIXED_RATES).forEach(k=>{B[k]=FIXED_RATES[k];});if(B.taxExempt){B.salesTax=0;B.liqTax=0;}}}
@@ -1008,10 +1008,10 @@ function beoCalcFor(B){
   const fb=food+bev;
   const unmet=Math.max(0,B.fbMin-fb);   /* contingent — shown as a potential fee, NOT counted in the pre-event estimate */
   const fbB=fb;                          /* revenue basis = actual F&B booked (no unmet top-up until the event happens) */
-  /* service charge & SEF apply to F&B + Other Fees + Bar/Staffing fees, matching how Tripleseat bills them.
-     Rental stays a facility pass-through (no svc/SEF) — the contract T&C reads "added to all food and beverage
-     charges," and rental-only bookings (e.g. the 70th Birthday) are billed with no service charge on rental. */
-  const feeBase=fbB+other+barFee;
+  /* service charge & SEF apply to F&B + rental + Other Fees + Bar/Staffing fees, matching how Tripleseat
+     bills them (verified against the contract scans: e.g. UMD 20% × ($539 F&B + $800 rental) = $267.80).
+     The rate is per-event: events that waive the service charge or bill a gratuity instead set svc to 0. */
+  const feeBase=fbB+B.rental+other+barFee;
   const svc=feeBase*B.svc/100;
   const sef=feeBase*B.sef/100;
   const grat=fbB*(B.gratuity||0)/100;   /* gratuity — F&B only; a pass-through to staff. Hits the client total & TS reconciliation, NOT revenue/EBITDA */
@@ -1294,8 +1294,8 @@ function buildBEO(){
 +R2('Cash bar at this event?',cashOnSel,'Pour cost (% of cash bar sales)',fx(B.cashCogs))
 +`<tr><td class="li" colspan="4" style="color:var(--muted);">${B.cashOn?(C.bev>0.005?`Cash bar selected, but a beverage package is already on this event — <b>the cash-bar estimate is suppressed</b> so beverage revenue isn't double-counted. Remove the package to forecast a cash bar.`:`${bch.override?'Manual override':'Forecast'} — <b>${beoEsc(bch.label)}</b>${bch.n?' · '+bch.n+' events':''}: <b>$${bch.v.toFixed(2)}/guest</b> × ${B.guests} guests = <b>${bf2(B.guests*bch.v)}</b>${bch.override?'':' · override on the Menu &amp; Beverage tab'}`):'Cash bar is off for this event — no beverage forecast added.'}</td></tr>`
 +SEC('Contract rates')
-+R2('Service charge (%)',fx(B.svc)+` ${MU}house-fixed 20%</span>`,'Special event fee (%)',fx(B.sef)+` ${MU}house-fixed 5%</span>`)
-+R2('Gratuity (% of F&amp;B)',IN('g:gratuity',B.gratuity||0),null,`<span style="color:var(--muted);">Set per event. Pass-through to staff &mdash; added to the client total &amp; Tripleseat reconciliation, but excluded from revenue &amp; EBITDA.</span>`)
++R2('Service charge (%)',IN('g:svc',B.svc)+` ${MU}of F&amp;B + rental &middot; revenue</span>`,'Special event fee (%)',IN('g:sef',B.sef)+` ${MU}of F&amp;B + rental</span>`)
++R2('Gratuity (% of F&amp;B)',IN('g:gratuity',B.gratuity||0),null,`<span style="color:var(--muted);">Service charge &amp; SEF apply to F&amp;B + rental (default 20% / 5%; set to 0 for events that waive them or bill a gratuity instead). Gratuity is a pass-through to staff &mdash; in the client total &amp; TS reconciliation, but excluded from revenue &amp; EBITDA.</span>`)
 +R2('Sales tax (%)',fx(B.salesTax)+exNote,'Liquor tax (%)',fx(B.liqTax)+exNote)
 +R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
 +R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
