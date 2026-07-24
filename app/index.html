@@ -115,6 +115,8 @@ table.evlist tr.evrow.mp-sel:hover td{background:#e8f0fb!important;}
 .mpback{appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--accent-deep);border-radius:5px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.03em;cursor:pointer;font-family:inherit;}
 .mpback:hover{border-color:var(--accent);background:var(--tint);}
 table.evlist td .evname{font-weight:700;font-size:12px;}
+table.evlist tr.ev-removed td{color:var(--muted);}
+table.evlist tr.ev-removed .evname{text-decoration:line-through;color:var(--muted);}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
 .emptybox{border:1px dashed var(--line-strong);border-radius:10px;background:#fff;padding:20px;text-align:center;color:var(--muted);margin-top:14px;line-height:1.6;}
@@ -674,7 +676,8 @@ function blankEvent(){
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
-const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized'];
+const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized','Removed'];
+const beoRemoved=ev=>String(ev&&ev.beoStatus||'')==='Removed';   /* Removed = out of the pipeline; zeroes its total/revenue/EBITDA */
 const LEAD_SRC=['Tripleseat inquiry','Website','Instagram / social','Phone','Email','Walk-in','Referral','Repeat client','ROOST / hotel','Other'];
 const MKT_SEG=['Corporate','Social','Wedding & related','Non-profit / charity','Education / university','Government','Association','Military / SMERF','Media / production','Other'];
 const EV_TYPES=['Birthday','Breakfast','Brunch','Cocktail Hour/Reception','Corporate Events','Dinner','Engagement','Lunch','Media','Meeting','Reunion','Rooftop Event','Shower','Social','Wedding','Wedding Ceremony','Wedding Reception'];
@@ -1167,8 +1170,11 @@ function buildEvents(){
   let totGrand=0,totRev=0,totEb=0,totGuests=0;
   const rows=BEOS.map(ev=>{
     const C=beoCalcFor(ev);
-    totGrand+=C.grand;totRev+=C.rev;totEb+=C.ebitda;totGuests+=ev.guests;
-    return {ev,C};
+    const rm=beoRemoved(ev);
+    /* a Removed BEO contributes nothing to the pipeline */
+    const E={grand:rm?0:C.grand,rev:rm?0:C.rev,ebitda:rm?0:C.ebitda,guests:rm?0:(+ev.guests||0)};
+    totGrand+=E.grand;totRev+=E.rev;totEb+=E.ebitda;totGuests+=E.guests;
+    return {ev,C,E,rm};
   });
   strip('ev-kpis',[
     ['Events',String(BEOS.length),totGuests.toLocaleString()+' guests total'],
@@ -1183,10 +1189,10 @@ function buildEvents(){
     status:{get:r=>(r.ev.status||'').toLowerCase(),str:1},
     close:{get:r=>{if(String(r.ev.status||'').trim().toUpperCase()==='DEFINITE')return 100;return r.ev.closePct==null||r.ev.closePct===''?-1:+r.ev.closePct;}},
     guests:{get:r=>+r.ev.guests||0},
-    grand:{get:r=>+r.C.grand||0},
-    rev:{get:r=>+r.C.rev||0},
-    ebitda:{get:r=>+r.C.ebitda||0},
-    margin:{get:r=>r.C.rev?r.C.ebitda/r.C.rev:-Infinity},
+    grand:{get:r=>+r.E.grand||0},
+    rev:{get:r=>+r.E.rev||0},
+    ebitda:{get:r=>+r.E.ebitda||0},
+    margin:{get:r=>r.E.rev?r.E.ebitda/r.E.rev:-Infinity},
     beo:{get:r=>{const i=BEO_STATUS.indexOf(r.ev.beoStatus||'');return i<0?-1:i;}}
   };
   if(ESORT.key&&ESK[ESORT.key]){
@@ -1198,27 +1204,28 @@ function buildEvents(){
   const grpBtn=`<button data-evgrp="1" title="Group events by month" style="appearance:none;border:1px solid var(--line-strong);background:${EV_GROUP?'var(--tint)':'#fff'};color:${EV_GROUP?'var(--accent-deep)':'var(--muted)'};border-radius:4px;padding:2px 9px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${EV_GROUP?'✓ MONTHLY':'GROUP BY MONTH'}</button>`;
   let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
   const bstOpts=ev=>['',...BEO_STATUS].map(o=>`<option value="${attEsc(o)}"${(ev.beoStatus||'')===o?' selected':''}>${o?beoEsc(o):'— set status —'}</option>`).join('');
-  const rowHtml=({ev,C})=>{
+  const rowHtml=({ev,C,E,rm})=>{
     const isDef=String(ev.status||'').trim().toUpperCase()==='DEFINITE';
     const cp=isDef?100:(ev.closePct==null||ev.closePct===''?null:+ev.closePct);
     const cpCol=cp==null?'var(--muted)':(cp>=70?'var(--pos)':(cp>=40?'#b98029':'var(--neg)'));
     const cpCell=isDef
       ?`<span title="Definite events are 100% likely to close" style="display:inline-block;font-weight:800;color:var(--pos);">100%</span>`
       :`<select data-close="${ev._id}" title="Likelihood of closing (%)" style="appearance:none;border:1px solid var(--line-strong);background:#fff;color:${cpCol};font-weight:700;border-radius:4px;padding:3px 6px;font-size:10px;font-family:inherit;cursor:pointer;">${['',0,10,20,30,40,50,60,70,80,90,100].map(o=>{const sel=(o===''?cp==null:(+o===cp));return `<option value="${o}"${sel?' selected':''}>${o===''?'— %':o+'%'}</option>`;}).join('')}</select>`;
-    return `<tr class="evrow" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>
+    const bsStyle=rm?'border:1px solid #ecd0bd;background:#fbeee7;color:#b3541e;':`border:1px solid ${ev.beoStatus?'#bfe0cc':'var(--line-strong)'};background:${ev.beoStatus?'#f2f8f4':'#fff'};color:${ev.beoStatus?'var(--ink)':'var(--muted)'};`;
+    return `<tr class="evrow${rm?' ev-removed':''}" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>
 <td class="li" style="white-space:nowrap;"><span style="font-weight:600;">${beoEsc(evShortDate(ev))}</span>${ev.startTime?`<span class="evsub">${beoEsc(ev.startTime+(ev.endTime?'–'+ev.endTime:''))}</span>`:''}</td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
 <td class="li">${statusChip(ev.status)}</td>
 <td class="li">${cpCell}</td>
 <td>${ev.guests}</td>
-<td style="font-weight:700;">${bf2(C.grand)}</td>
-<td style="font-weight:700;">${bf2(C.rev)}</td>
-<td style="font-weight:700;color:${C.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(C.ebitda)}</td>
-<td style="color:var(--muted);">${C.rev?fpc(C.ebitda/C.rev*100):'—'}</td>
-<td class="li"><select data-beostatus="${ev._id}" title="BEO status" style="appearance:none;border:1px solid ${ev.beoStatus?'#bfe0cc':'var(--line-strong)'};background:${ev.beoStatus?'#f2f8f4':'#fff'};color:${ev.beoStatus?'var(--ink)':'var(--muted)'};border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;max-width:150px;">${bstOpts(ev)}</select></td></tr>`;
+<td style="font-weight:700;">${bf2(E.grand)}</td>
+<td style="font-weight:700;">${bf2(E.rev)}</td>
+<td style="font-weight:700;color:${rm?'var(--muted)':(E.ebitda>=0?'var(--pos)':'var(--neg)')};">${bf2(E.ebitda)}</td>
+<td style="color:var(--muted);">${E.rev?fpc(E.ebitda/E.rev*100):'—'}</td>
+<td class="li"><select data-beostatus="${ev._id}" title="BEO status" style="appearance:none;${bsStyle}border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;max-width:150px;">${bstOpts(ev)}</select></td></tr>`;
   };
   const subRow=(g)=>{
-    let sg=0,sr=0,se=0,su=0;g.rows.forEach(({ev,C})=>{sg+=C.grand;sr+=C.rev;se+=C.ebitda;su+=(+ev.guests||0);});
+    let sg=0,sr=0,se=0,su=0;g.rows.forEach(({E})=>{sg+=E.grand;sr+=E.rev;se+=E.ebitda;su+=E.guests;});
     return `<tr class="ev-subtotal"><td class="li" style="font-weight:800;">${beoEsc(g.label)} subtotal</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${su.toLocaleString()}</td><td style="font-weight:800;">${bf2(sg)}</td><td style="font-weight:800;">${bf2(sr)}</td><td style="font-weight:800;color:${se>=0?'var(--pos)':'var(--neg)'};">${bf2(se)}</td><td style="color:var(--muted);">${sr?fpc(se/sr*100):'—'}</td><td class="li"></td></tr>`;
   };
   if(EV_GROUP){
@@ -1227,13 +1234,13 @@ function buildEvents(){
     const mdir=(ESORT.key==='date')?ESORT.dir:1;
     const ordered=[...groups.values()].sort((a,b)=>{if(a.ord===Infinity)return 1;if(b.ord===Infinity)return -1;return (a.ord-b.ord)*mdir;});
     ordered.forEach(g=>{
-      let mg=0;g.rows.forEach(({C})=>{mg+=C.grand;});
+      let mg=0;g.rows.forEach(({E})=>{mg+=E.grand;});
       h+=`<tr class="ev-month"><td colspan="${EH.length}"><div class="mo-inner"><span>${beoEsc(g.label)}</span><span class="mo-meta">${g.rows.length} event${g.rows.length!==1?'s':''} · ${bf0(mg)}</span></div></td></tr>`;
       g.rows.forEach(r=>h+=rowHtml(r));
       h+=subRow(g);
     });
     /* grand total across every month */
-    let aG=0,aR=0,aE=0,aU=0;rows.forEach(({ev,C})=>{aG+=C.grand;aR+=C.rev;aE+=C.ebitda;aU+=(+ev.guests||0);});
+    let aG=0,aR=0,aE=0,aU=0;rows.forEach(({E})=>{aG+=E.grand;aR+=E.rev;aE+=E.ebitda;aU+=E.guests;});
     h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td>${bf2(aG)}</td><td>${bf2(aR)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
   }else{
     rows.forEach(r=>h+=rowHtml(r));
@@ -1248,6 +1255,7 @@ const MP_STATUS=new Set(['DEFINITE','CLOSED']);   /* booked pipeline only */
 function monthlyGroups(){
   const groups=new Map();
   BEOS.forEach(ev=>{
+    if(beoRemoved(ev))return;                                       /* Removed BEOs are out of the pipeline */
     if(!MP_STATUS.has(String(ev.status||'').trim().toUpperCase()))return;
     const m=evMonthGrp(ev);
     if(m.ord===Infinity)return;                    /* skip undated events */
