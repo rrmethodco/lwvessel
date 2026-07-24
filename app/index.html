@@ -999,10 +999,16 @@ ${cur==null&&rec==null?`<button data-pk="${it.id}:mp">ADD — PRICE IT</button>`
 }
 
 /* ---------------- calc engine ---------------- */
+/* Non-alcoholic beverages (soda, coffee, soft-drink & beverage stations, N/A packages) are sales-taxed,
+   not liquor-taxed. Alcoholic packages / bars / consumption / signature drinks default to liquor tax. */
+const NA_BEV=/\bn\/?a\b|non.?alcohol|soda|lemonade|soft.?drink|beverage station|drink station|coffee|\btea\b|iced tea|juice|\bwater\b|punch|mocktail|lemonade/i;
+function isNAbev(n){return NA_BEV.test(String(n||''));}
 function beoCalcFor(B){
   applyFixedRates(B);
   const food=B.food.reduce((a,i)=>a+i.q*i.p,0);
-  const bev=B.bev.reduce((a,i)=>a+i.q*i.p,0);                     /* beverage packages only */
+  const bev=B.bev.reduce((a,i)=>a+i.q*i.p,0);                     /* all beverage lines (alcoholic packages + non-alcoholic stations) */
+  const bevNA=B.bev.reduce((a,i)=>a+(isNAbev(i.n)?i.q*i.p:0),0); /* non-alcoholic beverages — sales-taxed, not liquor-taxed (matches Tripleseat) */
+  const bevAlc=bev-bevNA;                                         /* alcoholic beverages — liquor tax */
   const other=(B.other||[]).reduce((a,i)=>a+i.q*i.p,0);          /* Other Fees (AV, equipment) — sales-taxed; service charge & SEF apply (Tripleseat) */
   const barFee=(B.barFee||[]).reduce((a,i)=>a+i.q*i.p,0);        /* Bar / staffing fees — no sales/liquor tax; service charge & SEF apply; feeds labor recovery */
   const fb=food+bev;
@@ -1014,9 +1020,9 @@ function beoCalcFor(B){
   const feeBase=fbB+B.rental+other+barFee;
   const svc=feeBase*B.svc/100;
   const sef=feeBase*B.sef/100;
-  const grat=fbB*(B.gratuity||0)/100;   /* gratuity — F&B only; a pass-through to staff. Hits the client total & TS reconciliation, NOT revenue/EBITDA */
-  const sTax=(food+sef+other)*B.salesTax/100;   /* Other Fees are sales-taxed; bar/staffing fees, gratuity & unmet minimum are not */
-  const lTax=bev*B.liqTax/100;
+  const grat=(fbB+other)*(B.gratuity||0)/100;   /* gratuity on F&B + Other Fees (Tripleseat tips these) — pass-through to staff; in the client total & TS reconciliation, NOT revenue/EBITDA */
+  const sTax=(food+bevNA+sef+other)*B.salesTax/100;   /* sales tax: food + non-alcoholic beverages + SEF + Other Fees. Bar/staffing fees, gratuity & unmet minimum are not taxed */
+  const lTax=bevAlc*B.liqTax/100;                       /* liquor tax on alcoholic beverages only */
   const disc=fbB*(B.disc||0)/100;
   /* cash bar: only when it is explicitly selected AND no beverage package is on the event */
   const cash=(B.cashOn&&bev<=0.005)?B.guests*cashPpgFor(B).v:0;
