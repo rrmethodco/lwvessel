@@ -1244,7 +1244,7 @@ function buildEvents(){
   if(!t)return;
   if(!BEOS.length){
     t.innerHTML='';t.style.display='none';empty.style.display='';
-    strip('ev-kpis',[['Events','0','no events in the workspace yet'],['Client billings','—',''],['Theoretical EBITDA','—',''],['Avg margin','—','']]);
+    strip('ev-kpis',[['Events','0','no events in the workspace yet'],['Estimated revenue','—',''],['Estimated EBITDA','—',''],['Avg margin','—','']]);
     return;
   }
   t.style.display='';empty.style.display='none';
@@ -1259,7 +1259,7 @@ function buildEvents(){
   });
   strip('ev-kpis',[
     ['Events',String(BEOS.length),totGuests.toLocaleString()+' guests total'],
-    ['Estimated billings',bf0(totGrand),'incl. tax · all events'],
+    /* 'Estimated billings' (Est. Total) card hidden for now — see col-esttotal */
     ['Estimated revenue',bf0(totRev),'ex-tax · incl. cash-bar estimates'],
     ['Estimated EBITDA',bf0(totEb),totRev?fpc(totEb/totRev*100)+' blended margin':'—']]);
   /* sortable columns */
