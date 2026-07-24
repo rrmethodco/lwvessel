@@ -1172,7 +1172,7 @@ ${cur==null&&rec==null?`<button data-pk="${it.id}:mp">ADD — PRICE IT</button>`
 /* ---------------- calc engine ---------------- */
 /* Non-alcoholic beverages (soda, coffee, soft-drink & beverage stations, N/A packages) are sales-taxed,
    not liquor-taxed. Alcoholic packages / bars / consumption / signature drinks default to liquor tax. */
-const NA_BEV=/\bn\/?a\b|non.?alcohol|soda|lemonade|soft.?drink|beverage station|drink station|coffee|\btea\b|iced tea|juice|\bwater\b|punch|mocktail|lemonade/i;
+const NA_BEV=/\bn\/?a\b|non.?alcohol|soda|lemonade|soft.?drink|beverage station|drink station|coffee|\btea\b|iced tea|juice|\bwater\b|punch|mocktail|\bcoke\b|\bcokes\b|sprite|ginger ale|canned/i;
 function isNAbev(n){return NA_BEV.test(String(n||''));}
 /* best-guess vendor for a menu line — from name markers, then the catalog, then the group */
 function inferProv(n,grp){
@@ -1192,7 +1192,7 @@ function beoCalcFor(B){
   const bev=B.bev.reduce((a,i)=>a+i.q*i.p,0);                     /* all beverage lines (alcoholic packages + non-alcoholic stations) */
   const bevNA=B.bev.reduce((a,i)=>a+(isNAbev(i.n)?i.q*i.p:0),0); /* non-alcoholic beverages — sales-taxed, not liquor-taxed (matches Tripleseat) */
   const bevAlc=bev-bevNA;                                         /* alcoholic beverages — liquor tax */
-  const other=(B.other||[]).reduce((a,i)=>a+i.q*i.p,0);          /* Other Fees (AV, equipment) — sales-taxed; service charge & SEF apply (Tripleseat) */
+  const other=(B.other||[]).reduce((a,i)=>a+i.q*i.p,0);          /* Other Fees (AV, equipment, outside catering) — NOT sales-taxed (per Tripleseat scans); service charge & SEF apply */
   const barFee=(B.barFee||[]).reduce((a,i)=>a+i.q*i.p,0);        /* Bar / staffing fees — no sales/liquor tax; service charge & SEF apply; feeds labor recovery */
   const fb=food+bev;
   const unmet=Math.max(0,B.fbMin-fb);   /* contingent — shown as a potential fee, NOT counted in the pre-event estimate */
@@ -1204,7 +1204,7 @@ function beoCalcFor(B){
   const svc=feeBase*B.svc/100;
   const sef=feeBase*B.sef/100;
   const grat=(fbB+other)*(B.gratuity||0)/100;   /* gratuity on F&B + Other Fees (Tripleseat tips these) — pass-through to staff; in the client total & TS reconciliation, NOT revenue/EBITDA */
-  const sTax=(food+bevNA+sef+other)*B.salesTax/100;   /* sales tax: food + non-alcoholic beverages + SEF + Other Fees. Bar/staffing fees, gratuity & unmet minimum are not taxed */
+  const sTax=(food+bevNA)*B.salesTax/100;   /* sales tax: food + non-alcoholic beverages ONLY — verified against Tripleseat contract scans (SEF, service charge, Other Fees/AV, bar & staffing fees, rental, gratuity & unmet minimum are NOT sales-taxed) */
   const lTax=bevAlc*B.liqTax/100;                       /* liquor tax on alcoholic beverages only */
   const disc=fbB*(B.disc||0)/100;
   /* cash bar: only when it is explicitly selected AND no beverage package is on the event */
@@ -1603,7 +1603,7 @@ function buildBEO(){
   ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td class="li"></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
   ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td class="li"></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
-  ih+=`<tr class="section"><td class="li" colspan="11" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment &middot; sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="11" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment, outside catering &middot; not sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
   if(BEOSEC.other){
     (B.other||[]).forEach((i,idx)=>{ih+=itRow('other',i,idx);});
     ih+=`<tr><td class="li" colspan="11"><button class="badd" data-bx="add:other">＋ ADD OTHER FEE</button></td></tr>`;
