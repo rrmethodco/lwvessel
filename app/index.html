@@ -1208,7 +1208,9 @@ function beoCalcFor(B){
   const lTax=bevAlc*B.liqTax/100;                       /* liquor tax on alcoholic beverages only */
   const disc=fbB*(B.disc||0)/100;
   /* cash bar: only when it is explicitly selected AND no beverage package is on the event */
-  const cash=(B.cashOn&&bev<=0.005)?B.guests*cashPpgFor(B).v:0;
+  /* cash bar: forecast is auto-suppressed when a beverage package is on the event, but a manual
+     $/guest override (cashPpg) is always honored — lets you force a cash bar alongside a package */
+  const cash=(B.cashOn&&(+B.cashPpg>0||bev<=0.005))?B.guests*cashPpgFor(B).v:0;
   const grand=fbB+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;
   const due=grand-B.deposit;
   const bevPkg=bev;
@@ -1565,10 +1567,13 @@ function buildBEO(){
   /* ---- items ---- */
   const PROVS=['Little Havana','Little Wing','Vessel','Other'];
   const PSEL=(grp,idx,i)=>{const cur=(i.prov!=null&&i.prov!=='')?i.prov:inferProv(i.n,grp);return `<select class="drvin txt" data-bi="it:${grp}:${idx}:prov" style="width:120px;min-width:120px;">${['',...PROVS,...(cur&&!PROVS.includes(cur)?[cur]:[])].map(o=>`<option value="${attEsc(o)}"${o===cur?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;};
-  const itHead=`<tr><th class="li" style="min-width:260px;">Item</th><th class="li" style="min-width:128px;">Provider</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">FROM CATALOG</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
+  const itHead=`<tr><th class="li" style="min-width:260px;">Item</th><th class="li" style="min-width:128px;">Provider</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">EDITABLE</span></th><th class="opt">Line cost</th><th class="opt">COGS %<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">EDITABLE</span></th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
     const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost, mgp=tot?mg/tot*100:0;
-    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td class="li">${PSEL(grp,idx,i)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:p`,i.p,54)}</span></td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
+    const cogsPctVal=(+i.p>0)?(+((i.u||0)/i.p*100).toFixed(2)):'';   /* COGS% = unit cost / price */
+    const uIn=`<span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:u`,i.u||0,54)}</span>`;
+    const cogsIn=`${IN(`it:${grp}:${idx}:cogs`,cogsPctVal,44)}<span style="color:var(--muted);">%</span>`;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td class="li">${PSEL(grp,idx,i)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:p`,i.p,54)}</span></td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt">${uIn}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt">${cogsIn}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
   ih+=`<tr class="section"><td class="li" colspan="11" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines</span>`}</td></tr>`;
@@ -1586,11 +1591,14 @@ function buildBEO(){
     ih+=`<tr><td class="li" colspan="11"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
   }
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td class="li"></td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
-  const cfc=benchFor(B), cOv=+B.cashPpg>0;
+  const cfc=benchFor(B), cOv=+B.cashPpg>0, hasPkg=C.bev>0.005;
+  const cashIn=`$<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests`;
   const cashLbl=B.cashOn
-    ?(C.bev>0.005
-      ?`Cash bar — ${MU}suppressed: a beverage package is already on this event, so no separate cash-bar estimate is added</span>`
-      :`Cash bar — $<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`} · guests pay individually</span>`)
+    ?(hasPkg
+      ?(cOv
+        ?`Cash bar (manual override) — ${cashIn} ${MU}a beverage package is on this event; this manual cash-bar estimate is added on top &middot; enter 0 to suppress</span>`
+        :`Cash bar — ${cashIn} ${MU}suppressed by default (a beverage package is on this event) &middot; type a $/guest to manually add a cash bar anyway</span>`)
+      :`Cash bar — ${cashIn} ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`} · guests pay individually</span>`)
     :`Cash bar — ${MU}off for this event</span>`;
   ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td class="li"></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
@@ -2029,7 +2037,11 @@ document.addEventListener('change',e=>{
   const v=txt?t.value:parseFloat(String(t.value).replace(/,/g,''));
   if(!txt&&isNaN(v))return;
   if(p[0]==='g')BEOD[p[1]]=v;
-  else if(p[0]==='it')BEOD[p[1]][+p[2]][p[3]]=v;
+  else if(p[0]==='it'){
+    const it=BEOD[p[1]][+p[2]];
+    if(p[3]==='cogs')it.u=(+it.p>0)?(+it.p*v/100):0;   /* enter a cost % → derive unit cost from the price */
+    else it[p[3]]=v;
+  }
   else if(p[0]==='lab')BEOD.labor[+p[1]][p[2]]=v;
   buildBEO();
   commitFocus();
