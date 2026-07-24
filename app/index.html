@@ -96,6 +96,7 @@ table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
 .beo-actions a.pill{text-decoration:none;}
 .beo-frame{width:100%;height:80vh;min-height:520px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
 pre.ts-diag{background:#0f1b30;color:#cfe0f5;border:1px solid var(--line-strong);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.5;max-height:340px;overflow:auto;white-space:pre-wrap;word-break:break-word;max-width:1000px;}
+.admin-sub button.on{background:var(--tint);border-color:var(--accent);color:var(--accent-deep);font-weight:800;}
 table.evlist td .evname{font-weight:700;font-size:12px;}
 table.evlist td .evsub{display:block;color:var(--muted);font-size:9.5px;margin-top:1px;}
 .typechip{display:inline-block;background:var(--tint);color:var(--accent-deep);border:1px solid var(--line-strong);border-radius:3px;padding:1px 7px;font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -238,8 +239,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button data-nav="monthly" id="nav-monthly">Est. Monthly P&amp;L</button>
     <button data-nav="catalog" id="nav-catalog">Menu Catalog</button>
     <button data-nav="historicals" id="nav-historicals">Historicals</button>
-    <button data-nav="compshop" id="nav-compshop">Comp Shop</button>
-    <button data-nav="activity" id="nav-activity">Activity</button>
+    <button data-nav="compshop" id="nav-admin" style="display:none;">Admin</button>
   </nav>
   <div class="navfoot">
     <span class="who" id="who"></span>
@@ -372,6 +372,10 @@ table.alloc th.cs-hi{background:#dce6f4;}
       <div class="ph-sub">Competitive sales shop of Vessel vs. three comp-set properties for a 30-person, 2-night group with a day-1 welcome reception. Rankings reflect the shopper's overall buying experience.</div>
     </div>
   </div>
+  <div class="controls admin-sub" style="margin:0 0 12px;">
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+  </div>
   <div class="bstrip">
     <div class="bstat"><div class="k">Vessel ranking</div><div class="v">4 of 4</div><div class="s">despite a "Definitely would buy" rating — process, not hospitality</div></div>
     <div class="bstat"><div class="k">Room rate quoted</div><div class="v">$229 → $219</div><div class="s">2nd highest of set · Courtyard $159 · Kimpton $189–$185 · Canopy $372</div></div>
@@ -449,6 +453,10 @@ table.alloc th.cs-hi{background:#dce6f4;}
       <h1>Activity</h1>
     </div>
   </div>
+  <div class="controls admin-sub" style="margin:0 0 12px;">
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP</button>
+    <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+  </div>
   <div id="act-list"></div>
 </section>
 
@@ -490,6 +498,11 @@ const SB_URL='https://wcqqcfpiiovqposcvrel.supabase.co';
 const SB_KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
 const sb=createClient(SB_URL,SB_KEY);
 let ME='';
+/* Admin area (Comp Shop + Activity) — gated to these names. Note: identity is the self-entered
+   name (no login yet), so this is soft gating; swap for real auth if hard access control is needed. */
+const ADMINS=['ross','ross richardson','rr','rr@methodco.com'];
+function isAdmin(){return ADMINS.includes(String(ME||'').trim().toLowerCase());}
+function refreshAdminNav(){const b=document.getElementById('nav-admin');if(b)b.style.display=isAdmin()?'':'none';}
 
 /* ================= VESSEL — BEO CALCULATOR · APP ================= */
 const BEO_DEFS=[{
@@ -633,7 +646,7 @@ function sanEv(o){
   EV_NUM.forEach(k=>{const v=parseFloat(o[k]);if(!isNaN(v))b[k]=v;});
   EV_STR.forEach(k=>{if(o[k]!=null)b[k]=String(o[k]);});
   ['food','bev','other','barFee'].forEach(g=>{
-    if(Array.isArray(o[g]))b[g]=o[g].map(i=>({n:String((i&&i.n)!=null?i.n:'Item'),q:+(i&&i.q)||0,p:+(i&&i.p)||0,u:+(i&&i.u)||0}));
+    if(Array.isArray(o[g]))b[g]=o[g].map(i=>({n:String((i&&i.n)!=null?i.n:'Item'),q:+(i&&i.q)||0,p:+(i&&i.p)||0,u:+(i&&i.u)||0,prov:String((i&&i.prov)!=null?i.prov:'')}));
   });
   if(o.closePct==null||o.closePct==='')b.closePct=null;
   if(Array.isArray(o.labor))b.labor=o.labor.map(l=>({r:String((l&&l.r)!=null?l.r:'Server'),n:+(l&&l.n)||0,h:+(l&&l.h)||0,rate:+(l&&l.rate)||0}));
@@ -696,14 +709,19 @@ function parseHash(){
 function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
+  /* Admin-only areas — soft-gated to admin names */
+  if((ROUTE.view==='compshop'||ROUTE.view==='activity')&&!isAdmin()){goto('events');return;}
   ['events','event','monthly','catalog','historicals','compshop','activity'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
-  ['events','monthly','catalog','historicals','compshop','activity'].forEach(v=>{
+  ['events','monthly','catalog','historicals'].forEach(v=>{
     const b=document.getElementById('nav-'+v);
     if(b)b.classList.toggle('on',ROUTE.view===v||(v==='events'&&ROUTE.view==='event'));
   });
+  const nadm=document.getElementById('nav-admin');
+  if(nadm)nadm.classList.toggle('on',ROUTE.view==='compshop'||ROUTE.view==='activity');
+  document.querySelectorAll('.admin-sub button').forEach(b=>b.classList.toggle('on',b.dataset.nav===ROUTE.view));
   if(ROUTE.view==='events')buildEvents();
   else if(ROUTE.view==='monthly')buildMonthly();
   else if(ROUTE.view==='event'){
@@ -1017,6 +1035,18 @@ ${cur==null&&rec==null?`<button data-pk="${it.id}:mp">ADD — PRICE IT</button>`
    not liquor-taxed. Alcoholic packages / bars / consumption / signature drinks default to liquor tax. */
 const NA_BEV=/\bn\/?a\b|non.?alcohol|soda|lemonade|soft.?drink|beverage station|drink station|coffee|\btea\b|iced tea|juice|\bwater\b|punch|mocktail|lemonade/i;
 function isNAbev(n){return NA_BEV.test(String(n||''));}
+/* best-guess vendor for a menu line — from name markers, then the catalog, then the group */
+function inferProv(n,grp){
+  const s=String(n||'');
+  if(/\blh\b|little\s*havana|\(lh\)/i.test(s))return 'Little Havana';
+  if(/\blw\b|little\s*wing|\(lw\)/i.test(s))return 'Little Wing';
+  if(grp==='other'||grp==='barFee')return 'Other';
+  const key=s.replace(/\s*\(.*?\)\s*/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+  const hit=(typeof CATALOG!=='undefined'&&CATALOG||[]).find(c=>c.name&&c.name.toLowerCase()===key);
+  if(hit&&hit.provider)return hit.provider;
+  if(grp==='bev')return 'Vessel';
+  return '';
+}
 function beoCalcFor(B){
   applyFixedRates(B);
   const food=B.food.reduce((a,i)=>a+i.q*i.p,0);
@@ -1375,42 +1405,44 @@ function buildBEO(){
 +R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
 +R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
   /* ---- items ---- */
-  const itHead=`<tr><th class="li" style="min-width:280px;">Item</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">FROM CATALOG</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
+  const PROVS=['Little Havana','Little Wing','Vessel','Other'];
+  const PSEL=(grp,idx,i)=>{const cur=(i.prov!=null&&i.prov!=='')?i.prov:inferProv(i.n,grp);return `<select class="drvin txt" data-bi="it:${grp}:${idx}:prov" style="width:120px;min-width:120px;">${['',...PROVS,...(cur&&!PROVS.includes(cur)?[cur]:[])].map(o=>`<option value="${attEsc(o)}"${o===cur?' selected':''}>${o?beoEsc(o):'—'}</option>`).join('')}</select>`;};
+  const itHead=`<tr><th class="li" style="min-width:260px;">Item</th><th class="li" style="min-width:128px;">Provider</th><th>Qty</th><th>Price<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">WE SET</span></th><th>Line total</th><th class="opt">Unit cost<span style="display:block;font-size:6.5px;letter-spacing:.08em;color:#93a0b5;font-weight:800;">FROM CATALOG</span></th><th class="opt">Line cost</th><th class="opt">COGS %</th><th class="opt">Margin $</th><th>Margin %</th><th></th></tr>`;
   const itRow=(grp,i,idx)=>{
     const tot=i.q*i.p, cost=i.q*(i.u||0), mg=tot-cost, mgp=tot?mg/tot*100:0;
-    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:p`,i.p,54)}</span></td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
+    return `<tr><td class="li">${IN(`it:${grp}:${idx}:n`,i.n,0,1)}</td><td class="li">${PSEL(grp,idx,i)}</td><td>${STEP(`it:${grp}:${idx}:q`,i.q,44)}</td><td><span class="moneyin"><span class="mp">$</span>${IN(`it:${grp}:${idx}:p`,i.p,54)}</span></td><td style="font-weight:700;">${bf2(tot)}</td><td class="opt" style="color:var(--muted);">${bf2(i.u||0)}</td><td class="opt" style="color:var(--muted);">${bf2(cost)}</td><td class="opt" style="color:var(--muted);">${tot?fpc(cost/tot*100):'—'}</td><td class="opt">${bf2(mg)}</td><td style="font-weight:700;color:${tot?mgCol(mgp):'var(--muted)'};">${tot?fpc(mgp):'—'}</td><td><button class="bx" data-bx="del:${grp}:${idx}" title="Remove line">✕</button></td></tr>`;
   };
   let ih=itHead;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines</span>`}</td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="11" data-bs="food" style="cursor:pointer;"><span class="caret">${BEOSEC.food?'▾':'▸'}</span>FOOD — ITEM SELECTION${BEOSEC.food?'':` <span style="color:var(--muted);font-weight:600;">· ${B.food.length} lines</span>`}</td></tr>`;
   if(BEOSEC.food){
     B.food.forEach((i,idx)=>{ih+=itRow('food',i,idx);});
-    ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
+    ih+=`<tr><td class="li" colspan="11"><button class="badd" data-bx="add:food">＋ ADD FOOD LINE</button> <button class="badd" data-bx="cat:food">＋ FROM CATALOG</button></td></tr>`;
   }
-  ih+=`<tr class="total"><td class="li">Food total</td><td></td><td></td><td>${bf2(C.food)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsF)}</td><td class="opt">${C.food?fpc(C.cogsF/C.food*100):'—'}</td><td class="opt">${bf2(C.food-C.cogsF)}</td><td style="color:${C.food?mgCol((C.food-C.cogsF)/C.food*100):'inherit'};">${C.food?fpc((C.food-C.cogsF)/C.food*100):'—'}</td><td></td></tr>`;
+  ih+=`<tr class="total"><td class="li">Food total</td><td class="li"></td><td></td><td></td><td>${bf2(C.food)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsF)}</td><td class="opt">${C.food?fpc(C.cogsF/C.food*100):'—'}</td><td class="opt">${bf2(C.food-C.cogsF)}</td><td style="color:${C.food?mgCol((C.food-C.cogsF)/C.food*100):'inherit'};">${C.food?fpc((C.food-C.cogsF)/C.food*100):'—'}</td><td></td></tr>`;
   const fPct=C.food?C.cogsF/C.food*100:0;
   const foodOK=!C.food||fPct<=FT+0.005;
-  ih+=`<tr><td class="li" colspan="10">${foodOK?`<span class="chip-ok">PASS — BLENDED FOOD COGS ${C.food?fpc(fPct):'—'} ≤ ${FT}%</span>`:`<span class="chip-low">FAIL — BLENDED FOOD COGS ${fpc(fPct)} · MUST BE ≤ ${FT}%</span>`} <span style="color:var(--muted);font-size:8.5px;">Goal: the whole food BEO blends to ${FT}% COGS — price items strategically (some higher-cost, some lower) so no single markup feels offensive.${!foodOK&&C.cogsF?` To pass: add ${bf2(C.cogsF/(FT/100)-C.food)} of food price, or cut ${bf2(C.cogsF-C.food*FT/100)} of cost.`:''}</span></td></tr>`;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines</span>`}</td></tr>`;
+  ih+=`<tr><td class="li" colspan="11">${foodOK?`<span class="chip-ok">PASS — BLENDED FOOD COGS ${C.food?fpc(fPct):'—'} ≤ ${FT}%</span>`:`<span class="chip-low">FAIL — BLENDED FOOD COGS ${fpc(fPct)} · MUST BE ≤ ${FT}%</span>`} <span style="color:var(--muted);font-size:8.5px;">Goal: the whole food BEO blends to ${FT}% COGS — price items strategically (some higher-cost, some lower) so no single markup feels offensive.${!foodOK&&C.cogsF?` To pass: add ${bf2(C.cogsF/(FT/100)-C.food)} of food price, or cut ${bf2(C.cogsF-C.food*FT/100)} of cost.`:''}</span></td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="11" data-bs="bev" style="cursor:pointer;"><span class="caret">${BEOSEC.bev?'▾':'▸'}</span>BEVERAGE — PACKAGES${BEOSEC.bev?'':` <span style="color:var(--muted);font-weight:600;">· ${B.bev.length} lines</span>`}</td></tr>`;
   if(BEOSEC.bev){
     B.bev.forEach((i,idx)=>{ih+=itRow('bev',i,idx);});
-    ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
+    ih+=`<tr><td class="li" colspan="11"><button class="badd" data-bx="add:bev">＋ ADD BEVERAGE LINE</button> <button class="badd" data-bx="cat:bev">＋ FROM CATALOG</button></td></tr>`;
   }
-  ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
+  ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td class="li"></td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   const cfc=benchFor(B), cOv=+B.cashPpg>0;
   const cashLbl=B.cashOn
     ?(C.bev>0.005
       ?`Cash bar — ${MU}suppressed: a beverage package is already on this event, so no separate cash-bar estimate is added</span>`
       :`Cash bar — $<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests ${MU}${cOv?`manual override — enter 0 to revert to forecast`:`forecast · ${beoEsc(cfc.label)}${cfc.n?', '+cfc.n+' events':''} · type to override`} · guests pay individually</span>`)
     :`Cash bar — ${MU}off for this event</span>`;
-  ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td class="li"></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
-  ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
-  ih+=`<tr class="section"><td class="li" colspan="10" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment &middot; sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
+  ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td class="li"></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
+  ih+=`<tr class="section"><td class="li" colspan="11" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment &middot; sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
   if(BEOSEC.other){
     (B.other||[]).forEach((i,idx)=>{ih+=itRow('other',i,idx);});
-    ih+=`<tr><td class="li" colspan="10"><button class="badd" data-bx="add:other">＋ ADD OTHER FEE</button></td></tr>`;
+    ih+=`<tr><td class="li" colspan="11"><button class="badd" data-bx="add:other">＋ ADD OTHER FEE</button></td></tr>`;
   }
-  ih+=`<tr class="total"><td class="li">Other fees total</td><td></td><td></td><td>${bf2(C.other)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsO)}</td><td class="opt">${C.other?fpc(C.cogsO/C.other*100):'—'}</td><td class="opt">${bf2(C.other-C.cogsO)}</td><td>${C.other?fpc((C.other-C.cogsO)/C.other*100):'—'}</td><td></td></tr>`;
+  ih+=`<tr class="total"><td class="li">Other fees total</td><td class="li"></td><td></td><td></td><td>${bf2(C.other)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsO)}</td><td class="opt">${C.other?fpc(C.cogsO/C.other*100):'—'}</td><td class="opt">${bf2(C.other-C.cogsO)}</td><td>${C.other?fpc((C.other-C.cogsO)/C.other*100):'—'}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
   const tbm=document.getElementById('tab-menu');
   if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
@@ -1814,7 +1846,7 @@ document.addEventListener('change',e=>{
   if(p[0]==='g'&&t.value.trim()===''&&(p[1]==='tsTotal'||p[1]==='cashPpg')){
     BEOD[p[1]]=p[1]==='tsTotal'?null:0;buildBEO();scheduleSave();return;
   }
-  const txt=p[p.length-1]==='n'||p[p.length-1]==='r'||(p[0]==='g'&&EV_STR.includes(p[1]));
+  const txt=p[p.length-1]==='n'||p[p.length-1]==='r'||p[p.length-1]==='prov'||(p[0]==='g'&&EV_STR.includes(p[1]));
   const v=txt?t.value:parseFloat(String(t.value).replace(/,/g,''));
   if(!txt&&isNaN(v))return;
   if(p[0]==='g')BEOD[p[1]]=v;
@@ -1900,7 +1932,7 @@ document.addEventListener('click',e=>{
   if(p[0]==='cat'){openPicker(p[1]);return;}
   if(p[0]==='add'){
     if(p[1]==='lab')BEOD.labor.push({r:'Server',n:1,h:5,rate:35});
-    else BEOD[p[1]].push({n:'New item',q:1,p:0,u:0});
+    else BEOD[p[1]].push({n:'New item',q:1,p:0,u:0,prov:(p[1]==='other'||p[1]==='barFee')?'Other':''});
   }else if(p[0]==='del'){
     (p[1]==='lab'?BEOD.labor:BEOD[p[1]]).splice(+p[2],1);
   }
@@ -1915,7 +1947,7 @@ function beoDiff(a,b){
     if(String(x)!==String(y))out.push(SL[k]+': '+(x===''?'—':x)+' → '+(y===''?'—':y));
   });
   const IT={q:'qty',p:'price',u:'unit cost'};
-  [['food','Food'],['bev','Beverage']].forEach(([g,gl])=>{
+  [['food','Food'],['bev','Beverage'],['other','Other Fees'],['barFee','Bar/Staffing']].forEach(([g,gl])=>{
     const A=a[g]||[],Bb=b[g]||[],n=Math.max(A.length,Bb.length);
     for(let i=0;i<n;i++){
       const x=A[i],y=Bb[i];
@@ -1923,6 +1955,7 @@ function beoDiff(a,b){
       if(!x&&y){out.push(gl+': added "'+y.n+'"');continue;}
       if(x.n!==y.n)out.push(gl+': renamed "'+x.n+'" → "'+y.n+'"');
       ['q','p','u'].forEach(f=>{if((x[f]||0)!==(y[f]||0))out.push(gl+' · '+y.n+' — '+IT[f]+' '+(x[f]||0)+' → '+(y[f]||0));});
+      if(String(x.prov||'')!==String(y.prov||''))out.push(gl+' · '+y.n+' — provider '+(x.prov||'—')+' → '+(y.prov||'—'));
     }
   });
   const LB={n:'count',h:'hours',rate:'rate'};
@@ -2156,7 +2189,7 @@ document.getElementById('pick-list').addEventListener('click',e=>{
   const it=CATALOG.find(x=>x.id===id);
   if(!it)return;
   const price=mode==='cur'?+it.client_price:mode==='rec'?recPrice(+it.vendor_cost||0,it.name,it.category,provOf(it)):0;
-  BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0});
+  BEOD[PICKGRP].push({n:it.name,q:1,p:price||0,u:+it.vendor_cost||0,prov:provOf(it)||inferProv(it.name,PICKGRP)});
   buildBEO();
   scheduleSave();
   document.getElementById('pick-msg').textContent='Added '+it.name+(price?' at $'+price:' — set the price on the line')+'.';
@@ -2167,6 +2200,7 @@ function setName(n){
   try{window.localStorage.setItem('vesselBEO.name',n);}catch(e){}
   ME=n;
   document.getElementById('who').textContent=n;
+  refreshAdminNav();
 }
 document.getElementById('chname').addEventListener('click',()=>{
   const n=window.prompt('Your name (shown in the change log):',ME||'');
