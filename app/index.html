@@ -1211,7 +1211,7 @@ function beoCalcFor(B){
   /* cash bar: forecast is auto-suppressed when a beverage package is on the event, but a manual
      $/guest override (cashPpg) is always honored — lets you force a cash bar alongside a package */
   const cash=(B.cashOn&&(+B.cashPpg>0||bev<=0.005))?B.guests*cashPpgFor(B).v:0;
-  const grand=fbB+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;
+  const grand=fbB+cash+B.rental+other+barFee+svc+sef+grat+sTax+lTax-disc;   /* cash bar is included in the client grand total */
   const due=grand-B.deposit;
   const bevPkg=bev;
   const bevRev=bevPkg+cash;
@@ -1629,7 +1629,7 @@ function buildBEO(){
   if(B.bev.length||B.cashOn){
     ib+=`<tr class="section"><td colspan="4" class="li">BEVERAGE</td></tr>`;
     B.bev.forEach(i=>{ib+=`<tr><td>${i.q}</td><td class="li">${beoEsc(i.n)}</td><td>${bf2(i.p)}</td><td>${bf2(i.q*i.p)}</td></tr>`;});
-    if(B.cashOn){const cppg=cashPpgFor(B);ib+=`<tr><td style="color:var(--muted);">—</td><td class="li">Cash bar — guests pay individually for their own drinks ${MU}estimated bar spend $${cppg.v.toFixed(0)}/guest × ${B.guests} guests · not billed to host</span></td><td style="color:var(--muted);">$${cppg.v.toFixed(0)}${MU}/guest</span></td><td style="color:var(--muted);">${MU}est.</span> ${bf2(C.cash)}</td></tr>`;}
+    if(B.cashOn&&C.cash>0.005){const cppg=cashPpgFor(B);ib+=`<tr><td>${B.guests}</td><td class="li">Cash bar ${MU}est. bar spend $${cppg.v.toFixed(0)}/guest × ${B.guests} guests · guests pay individually · included in client total</span></td><td>$${cppg.v.toFixed(0)}</td><td>${MU}est.</span> ${bf2(C.cash)}</td></tr>`;}
     if(B.bev.length)ib+=`<tr class="total"><td></td><td class="li">Beverage total</td><td></td><td>${bf2(C.bev)}</td></tr>`;
   }
   if((B.other||[]).length||(B.barFee||[]).length){
@@ -1655,6 +1655,7 @@ function buildBEO(){
   if(B.rental>0.005)bh+=`<tr><td class="li">Rental fee</td><td>${bf2(B.rental)}</td></tr>`;
   if(C.other>0.005)bh+=`<tr><td class="li">Other Fees</td><td>${bf2(C.other)}</td></tr>`;
   if(C.barFee>0.005)bh+=`<tr><td class="li">Bartender / Staffing Fees</td><td>${bf2(C.barFee)}</td></tr>`;
+  if(C.cash>0.005)bh+=`<tr><td class="li">Cash bar ${MU}guest-paid estimate</span></td><td>${bf2(C.cash)}</td></tr>`;
   if(C.disc>0.005)bh+=`<tr><td class="li">${beoEsc(B.discLbl||'Discount')} ${(B.disc||0).toFixed(1)}%</td><td>−${bf2(C.disc)}</td></tr>`;
   bh+=`<tr class="total"><td class="li">Grand total</td><td>${bf2(C.grand)}</td></tr>`;
   if(B.deposit>0.005)bh+=`<tr><td class="li">Deposit received</td><td>−${bf2(B.deposit)}</td></tr>`;
