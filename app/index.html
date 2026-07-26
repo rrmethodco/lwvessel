@@ -751,11 +751,11 @@ function blankEvent(){
     guests:50,fbMin:1500,rental:0,deposit:0,
     svc:20,sef:5,gratuity:0,salesTax:6,liqTax:9,
     food:[],bev:[],other:[],barFee:[],
-    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,cashInGrand:1,
+    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,cashInGrand:1,feeFlat:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
     burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized','Removed'];
@@ -1232,7 +1232,9 @@ function beoCalcFor(B){
   const fohMgmt=FOH_MGMT.perEvent;        /* fixed FOH management labor allocation per event */
   const laborTot=labor+fohMgmt;           /* total labor cost */
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
-  const fee=rev*B.mgmtPct/100;
+  /* management fee: normally % of revenue, but a per-event flat override (feeFlat) can replace it
+     — used e.g. for July's flat $4k/month allocated $500 across the 8 events (4% resumes in August) */
+  const fee=(+B.feeFlat>0)?+B.feeFlat:rev*B.mgmtPct/100;
   const ebitda=gp-laborTot-opex-fee;
   return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,cashG,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
 }
@@ -1567,7 +1569,7 @@ function buildBEO(){
 +R2('Service charge (%)',IN('g:svc',B.svc)+` ${MU}of F&amp;B + rental &middot; revenue</span>`,'Special event fee (%)',IN('g:sef',B.sef)+` ${MU}of F&amp;B + rental</span>`)
 +R2('Gratuity (% of F&amp;B)',IN('g:gratuity',B.gratuity||0),null,`<span style="color:var(--muted);">Service charge &amp; SEF apply to F&amp;B + rental (default 20% / 5%; set to 0 for events that waive them or bill a gratuity instead). Gratuity is a pass-through to staff &mdash; in the client total &amp; TS reconciliation, but excluded from revenue &amp; EBITDA.</span>`)
 +R2('Sales tax (%)',fx(B.salesTax)+exNote,'Liquor tax (%)',fx(B.liqTax)+exNote)
-+R2('Payroll burden (% of wages)',fx(B.burden),'Management fee (% of revenue)',fx(B.mgmtPct))
++R2('Payroll burden (% of wages)',fx(B.burden),'Management fee',(+B.feeFlat>0?`<span class="drvval">$${(+B.feeFlat).toLocaleString('en-US')}</span> ${MU}flat/event`:fx(B.mgmtPct)+` ${MU}of revenue`)+`</span> &middot; flat override $${IN('g:feeFlat',B.feeFlat||0,60)} ${MU}${+B.feeFlat>0?'flat fee in use — enter 0 to revert to the %':'0 = use the %'}</span>`)
 +R2('Tax-exempt client?',taxExemptSel,'',`<span style="color:var(--muted);">${B.taxExempt?'Sales &amp; liquor tax zeroed — exemption certificate on file.':'Standard 6% sales / 9% liquor tax applied.'}</span>`);
   /* ---- items ---- */
   const PROVS=['Little Havana','Little Wing','Vessel','Other'];
