@@ -116,7 +116,8 @@ table.evlist tr.ev-grandtotal:hover td{background:#dbe3f1!important;}
 .beo-actions{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .beo-actions a.pill{text-decoration:none;}
 .beo-frame{width:100%;height:80vh;min-height:520px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
-pre.ts-diag{background:#0f1b30;color:#cfe0f5;border:1px solid var(--line-strong);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.5;max-height:340px;overflow:auto;white-space:pre-wrap;word-break:break-word;max-width:1000px;}
+.ts-diag{background:#0f1b30;color:#cfe0f5;border:1px solid var(--line-strong);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.5;max-height:340px;overflow:auto;word-break:break-word;max-width:1000px;}
+pre.ts-diag{white-space:pre-wrap;}
 .admin-sub button.on{background:var(--tint);border-color:var(--accent);color:var(--accent-deep);font-weight:800;}
 table.evlist tr.evrow.mp-sel td{background:#e8f0fb!important;box-shadow:inset 3px 0 0 var(--accent);}
 table.evlist tr.evrow.mp-sel:hover td{background:#e8f0fb!important;}
@@ -2402,12 +2403,30 @@ pill('ts-sync',async(btn)=>{
   if(btn)btn.disabled=true;
   if(out)out.innerHTML='<span class="ctl-label">Contacting Tripleseat&hellip;</span>';
   try{
-    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'ping',venue:VENUE}});
+    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'probe',venue:VENUE}});
     if(error){if(out)out.innerHTML='<pre class="ts-diag">Function error: '+beoEsc(error.message||String(error))+'</pre>';showToast('Tripleseat sync failed — see the panel.');return;}
     console.log('Tripleseat probe result:',data);
     const ok=data&&data.tokenObtained;
-    showToast(ok?'Tripleseat authenticated ✓ — sample data in the panel below.':'Tripleseat auth failed — see the panel below.');
-    if(out)out.innerHTML='<pre class="ts-diag">'+beoEsc(JSON.stringify(data,null,2))+'</pre>';
+    /* Lead with a scannable coverage table (endpoint → HTTP status → # data points),
+       then the full probe JSON below for anyone who wants every field. */
+    let head='';
+    const cov=data&&data.coverage;
+    if(cov&&typeof cov==='object'){
+      const rows=Object.entries(cov).map(([name,c])=>{
+        const st=c&&c.status,fc=(c&&c.fields)!=null?c.fields:'—';
+        const good=st>=200&&st<300;
+        const col=good?'var(--pos)':'var(--neg)';
+        return `<tr><td style="padding:2px 12px 2px 0;font-weight:700;">${beoEsc(name)}</td>`
+          +`<td style="padding:2px 12px 2px 0;color:${col};font-variant-numeric:tabular-nums;">${st!=null?beoEsc(String(st)):(c&&c.error?'err':'—')}</td>`
+          +`<td style="padding:2px 0;color:var(--muted);font-variant-numeric:tabular-nums;">${beoEsc(String(fc))}</td></tr>`;
+      }).join('');
+      const totalFields=Object.values(cov).reduce((a,c)=>a+((c&&typeof c.fields==='number')?c.fields:0),0);
+      head=`<div class="ts-diag" style="margin-bottom:8px;">`
+        +`<div style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:10px;color:var(--accent-deep);margin-bottom:6px;">Tripleseat coverage — ${totalFields} data points across ${Object.keys(cov).length} surfaces</div>`
+        +`<table style="border-collapse:collapse;font-size:11px;"><thead><tr style="color:var(--muted);text-transform:uppercase;font-size:8.5px;letter-spacing:.08em;"><td style="padding:0 12px 4px 0;">Surface</td><td style="padding:0 12px 4px 0;">HTTP</td><td style="padding:0 0 4px;">Fields</td></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+    showToast(ok?'Tripleseat authenticated ✓ — coverage in the panel below.':'Tripleseat auth failed — see the panel below.');
+    if(out)out.innerHTML=head+'<pre class="ts-diag">'+beoEsc(JSON.stringify(data,null,2))+'</pre>';
   }catch(e){
     if(out)out.innerHTML='<pre class="ts-diag">Invoke failed: '+beoEsc(String(e))+'</pre>';
   }finally{if(btn)btn.disabled=false;}
