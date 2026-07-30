@@ -32,6 +32,8 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 .sidenav{position:fixed;left:0;top:0;bottom:0;width:200px;background:var(--navy);padding:16px 8px 14px;z-index:50;display:flex;flex-direction:column;}
 .navbrand{font-family:Georgia,serif;color:#fff;font-size:16px;padding:0 10px 14px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:12px;}
 .navbrand span{display:block;font-family:-apple-system,sans-serif;font-size:8px;letter-spacing:.14em;color:#8fa2c2;margin-top:4px;text-transform:uppercase;}
+.venue-switch{width:100%;margin:0 0 12px;padding:8px 10px;background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:8px;font-family:inherit;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;cursor:pointer;}
+.venue-switch option{color:#111;}
 .sidenav nav{display:flex;flex-direction:column;gap:2px;}
 .sidenav nav button{appearance:none;background:transparent;border:none;color:#aebdd4;font-family:inherit;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;text-align:left;padding:10px 12px;border-radius:0 8px 8px 0;cursor:pointer;display:block;width:100%;}
 .sidenav nav button:hover{color:#fff;}
@@ -259,7 +261,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
 
 <div id="login">
   <div class="login-card">
-    <div class="login-brand">Vessel <span>Method Co &middot; BEO Pricing</span></div>
+    <div class="login-brand">Method Co <span>Events &middot; BEO Pricing</span></div>
     <h1>Sign <em>in</em></h1>
     <p class="lp">Enter your Method Co email and we&rsquo;ll send you a one&#8209;click magic link &mdash; no password needed.</p>
     <input id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="you@methodco.com">
@@ -271,6 +273,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
 <div id="appwrap">
 <aside class="sidenav">
   <div class="navbrand">Vessel <span>Method Co · BEO Pricing</span></div>
+  <select id="venue-switch" class="venue-switch" style="display:none;" aria-label="Venue"></select>
   <nav>
     <button data-nav="events" id="nav-events">Events</button>
     <button data-nav="monthly" id="nav-monthly">Est. Monthly P&amp;L</button>
@@ -415,6 +418,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+    <button class="pill" data-nav="venues"><span class="dot"></span>VENUE SETTINGS</button>
   </div>
   <div class="bstrip">
     <div class="bstat"><div class="k">Vessel ranking</div><div class="v">4 of 4</div><div class="s">despite a "Definitely would buy" rating — process, not hospitality</div></div>
@@ -499,6 +503,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+    <button class="pill" data-nav="venues"><span class="dot"></span>VENUE SETTINGS</button>
   </div>
   <div class="bstrip">
     <div class="bstat"><div class="k">Comp set</div><div class="v">4 venues</div><div class="s">all South-Baltimore waterfront / peninsula · private events &amp; buyouts</div></div>
@@ -567,6 +572,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+    <button class="pill" data-nav="venues"><span class="dot"></span>VENUE SETTINGS</button>
   </div>
   <div id="act-list"></div>
 </section>
@@ -584,6 +590,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
     <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
     <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+    <button class="pill" data-nav="venues"><span class="dot"></span>VENUE SETTINGS</button>
   </div>
   <div class="controls" style="margin:0 0 14px;gap:8px;align-items:center;flex-wrap:wrap;">
     <input id="usr-email" type="email" placeholder="name@company.com" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:230px;">
@@ -593,6 +600,31 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <span class="ctl-label" id="usr-msg"></span>
   </div>
   <div class="scroll"><table class="alloc" id="usr-list" style="max-width:900px;"></table></div>
+</section>
+
+<!-- ================= VENUE SETTINGS ================= -->
+<section id="view-venues" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Venue <em>settings</em></h1>
+      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Each venue carries its own events, menu, historicals and pricing config. House-fixed rates, branding and the comp-shop area are set per venue here. An empty override falls back to the Vessel default.</div>
+    </div>
+  </div>
+  <div class="controls admin-sub" style="margin:0 0 12px;">
+    <button class="pill" data-nav="compshop"><span class="dot"></span>COMP SHOP · HOTELS</button>
+    <button class="pill" data-nav="compshop2"><span class="dot"></span>COMP SHOP · F&amp;B</button>
+    <button class="pill" data-nav="activity"><span class="dot"></span>ACTIVITY</button>
+    <button class="pill" data-nav="users"><span class="dot"></span>USERS</button>
+    <button class="pill" data-nav="venues"><span class="dot"></span>VENUE SETTINGS</button>
+  </div>
+  <div class="controls" style="margin:0 0 14px;gap:8px;align-items:center;flex-wrap:wrap;">
+    <input id="ven-id" type="text" placeholder="id (e.g. anthology)" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:150px;">
+    <input id="ven-name" type="text" placeholder="Display name" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:170px;">
+    <input id="ven-city" type="text" placeholder="City, ST" style="border:1px solid var(--line-strong);border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;min-width:150px;">
+    <button class="pill primary" id="ven-add"><span class="dot"></span>＋ ADD VENUE</button>
+    <span class="ctl-label" id="ven-msg"></span>
+  </div>
+  <div id="ven-list"></div>
 </section>
 
 <!-- ================= EST. MONTHLY P&L ================= -->
@@ -713,6 +745,74 @@ const FIXED_RATES={salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25};   /* 
 /* FOH management labor — fixed overhead of $1,680/mo, allocated across 100 events/yr = $201.60/event */
 const FOH_MGMT={monthly:1680,eventsYr:100,perEvent:1680*12/100};
 function applyFixedRates(B){if(B){Object.keys(FIXED_RATES).forEach(k=>{B[k]=FIXED_RATES[k];});if(B.taxExempt){B.salesTax=0;B.liqTax=0;}}}
+/* ---------------- multi-venue config ----------------
+   Each venue carries a `config` jsonb in the `venues` table. An empty config
+   means "use these Vessel defaults"; a venue overrides only the keys it needs.
+   applyVCFG() folds the active venue's config onto the live rate/branding
+   globals so the rest of the calculator keeps reading FIXED_RATES / FOH_MGMT /
+   TARGET without knowing which venue is loaded. */
+const DEFAULT_VCFG={
+  branding:{name:'Vessel',tagline:'Method Co · BEO Pricing',city:'Baltimore, MD'},
+  fixedRates:{salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25},
+  fohMgmt:{monthly:1680,eventsYr:100},
+  targetCogs:25,
+  compShop:true
+};
+let VENUES=[], VENUE='vessel', VCFG=DEFAULT_VCFG, MY_VENUES=[];
+function venueCfg(id){
+  const v=(VENUES||[]).find(x=>x.id===id), c=(v&&v.config)||{};
+  return {
+    branding:Object.assign({},DEFAULT_VCFG.branding,c.branding||{}),
+    fixedRates:Object.assign({},DEFAULT_VCFG.fixedRates,c.fixedRates||{}),
+    fohMgmt:Object.assign({},DEFAULT_VCFG.fohMgmt,c.fohMgmt||{}),
+    targetCogs:(c.targetCogs!=null?+c.targetCogs:DEFAULT_VCFG.targetCogs),
+    compShop:(c.compShop!=null?!!c.compShop:DEFAULT_VCFG.compShop)
+  };
+}
+function applyVCFG(){
+  VCFG=venueCfg(VENUE);
+  Object.keys(FIXED_RATES).forEach(k=>{if(VCFG.fixedRates[k]!=null)FIXED_RATES[k]=+VCFG.fixedRates[k];});
+  FOH_MGMT.monthly=+VCFG.fohMgmt.monthly; FOH_MGMT.eventsYr=+VCFG.fohMgmt.eventsYr;
+  FOH_MGMT.perEvent=FOH_MGMT.monthly*12/(FOH_MGMT.eventsYr||1);
+  TARGET=+VCFG.targetCogs;
+  applyBranding();
+  applyCompGate();
+}
+function applyBranding(){
+  const b=VCFG.branding||DEFAULT_VCFG.branding;
+  document.title=b.name+' — BEO Calculator · Method Co';
+  const nb=document.querySelector('.sidenav .navbrand');
+  if(nb)nb.innerHTML=beoEsc(b.name)+' <span>'+beoEsc(b.tagline)+'</span>';
+}
+/* Comp-shop area is Vessel-specific (Baltimore competitive data). Show its tabs
+   only for venues whose config opts in; hide them elsewhere and retarget Admin. */
+function applyCompGate(){
+  const show=!!(VCFG&&VCFG.compShop);
+  document.querySelectorAll('.admin-sub button[data-nav="compshop"],.admin-sub button[data-nav="compshop2"]').forEach(b=>{b.style.display=show?'':'none';});
+  const na=document.getElementById('nav-admin');
+  if(na)na.dataset.nav=show?'compshop':'activity';
+}
+function renderVenueSwitch(){
+  const sel=document.getElementById('venue-switch');
+  if(!sel)return;
+  if((VENUES||[]).length<2){sel.style.display='none';return;}
+  sel.style.display='';
+  sel.innerHTML=VENUES.map(v=>`<option value="${attEsc(v.id)}"${v.id===VENUE?' selected':''}>${beoEsc(v.name)}</option>`).join('');
+}
+async function switchVenue(v){
+  if(v===VENUE||!(VENUES||[]).some(x=>x.id===v))return;
+  await flushSave();
+  VENUE=v; try{localStorage.setItem('beo_venue',v);}catch(e){}
+  applyVCFG();
+  BEOD=null; BEOSNAP=null; SNAP_ID=null;
+  BENCH={overall:0,byType:{},counts:{},basis:''}; HIST={basis:'',events:[]}; CLIENTS=[]; CATALOG=[];
+  evStatus('Loading '+VCFG.branding.name+'…');
+  await Promise.all([loadEvents(),loadCatalog()]);
+  evStatus('');
+  renderVenueSwitch();
+  goto('events');
+  subscribeRT();
+}
 const BEO_OPEX=[
   {n:'Rentals & Event Equipment',v:1.8},
   {n:'Linen, Cleaning & Consumables',v:2.8},
@@ -746,14 +846,15 @@ const TERMS=[
   {h:"Authority",b:"If Patron is signing on behalf of a corporation, partnership, association, organization, or other entity, the individual signing represents and warrants that they are duly authorized to execute this Agreement and bind such entity to its terms."}
 ];
 function blankEvent(){
-  return {tab:'New Event',name:'New Event — Vessel',date:'',evType:'',
+  const R=FIXED_RATES;
+  return {tab:'New Event',name:'New Event — '+((VCFG&&VCFG.branding&&VCFG.branding.name)||'Vessel'),date:'',evType:'',
     inqDate:'',evDate:'',startTime:'',endTime:'',salesperson:'',leadSource:'',company:'',market:'',
     guests:50,fbMin:1500,rental:0,deposit:0,
-    svc:20,sef:5,gratuity:0,salesTax:6,liqTax:9,
+    svc:20,sef:5,gratuity:0,salesTax:R.salesTax,liqTax:R.liqTax,
     food:[],bev:[],other:[],barFee:[],
-    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:25,cashPpg:0,cashInGrand:1,feeFlat:0,
+    cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:R.cashCogs,cashPpg:0,cashInGrand:1,feeFlat:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:16.5,mgmtPct:4,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
+    burden:R.burden,mgmtPct:R.mgmtPct,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
 }
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
@@ -843,15 +944,17 @@ function parseHash(){
   if(p[0]==='compshop')return {view:'compshop',id:null};
   if(p[0]==='compshop2')return {view:'compshop2',id:null};
   if(p[0]==='activity')return {view:'activity',id:null};
+  if(p[0]==='venues')return {view:'venues',id:null};
   return {view:'events',id:null};
 }
 function hashFor(r){return r.view==='event'?'#/event/'+r.id:'#/'+r.view;}
 function goto(view,id){location.hash=hashFor({view,id});}
 function renderRoute(){
   /* Admin-only areas — gated to admin role */
-  const ADMIN_VIEWS=['compshop','compshop2','activity','users'];
+  const ADMIN_VIEWS=['compshop','compshop2','activity','users','venues'];
   if(ADMIN_VIEWS.includes(ROUTE.view)&&!isAdmin()){goto('events');return;}
-  ['events','event','monthly','catalog','historicals','compshop','compshop2','activity','users'].forEach(v=>{
+  if((ROUTE.view==='compshop'||ROUTE.view==='compshop2')&&!(VCFG&&VCFG.compShop)){goto('activity');return;}
+  ['events','event','monthly','catalog','historicals','compshop','compshop2','activity','users','venues'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
@@ -874,6 +977,7 @@ function renderRoute(){
   else if(ROUTE.view==='historicals')buildHistoricals();
   else if(ROUTE.view==='activity')buildActivity();
   else if(ROUTE.view==='users')buildUsers();
+  else if(ROUTE.view==='venues')buildVenues();
 }
 window.addEventListener('hashchange',()=>{
   if(NAV_GUARD){NAV_GUARD=false;return;}
@@ -882,12 +986,13 @@ window.addEventListener('hashchange',()=>{
   renderRoute();
 });
 document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.nav)));
+document.getElementById('venue-switch').addEventListener('change',e=>switchVenue(e.target.value));
 document.getElementById('backlist').addEventListener('click',()=>goto('events'));
 
 /* ---------------- cloud data layer ---------------- */
 function payloadOf(ev){return sanEv(ev);}
 async function loadEvents(){
-  const {data,error}=await sb.from('beo_events').select('id,payload,position,updated_at,updated_by_email').order('position').order('created_at');
+  const {data,error}=await sb.from('beo_events').select('id,payload,position,updated_at,updated_by_email').eq('venue',VENUE).order('position').order('created_at');
   if(error){evStatus('Load failed — '+error.message);beoStatusMsg('Load failed — '+error.message);return false;}
   BEOS=(data||[]).map(r=>{const e=sanEv(r.payload);e._id=r.id;e._updated=r.updated_at;e._by=r.updated_by_email;e._pos=r.position;return e;});
   return true;
@@ -911,12 +1016,12 @@ async function saveEvent(ev,changes){
     }
   }else ev._updated=data[0].updated_at;
   ev._by=ME;
-  if(changes&&changes.length)await sb.from('beo_event_changes').insert({event_id:ev._id,changed_by_email:ME,summary:changes});
+  if(changes&&changes.length)await sb.from('beo_event_changes').insert({event_id:ev._id,changed_by_email:ME,summary:changes,venue:VENUE});
   return true;
 }
 async function insertEvent(pl){
   const pos=BEOS.length?Math.max(...BEOS.map(e=>e._pos||0))+1:1;
-  const {data,error}=await sb.from('beo_events').insert({payload:pl,position:pos,updated_by_email:ME,created_by_email:ME}).select('id,position,updated_at').single();
+  const {data,error}=await sb.from('beo_events').insert({payload:pl,position:pos,venue:VENUE,updated_by_email:ME,created_by_email:ME}).select('id,position,updated_at').single();
   if(error){evStatus('Create failed — '+error.message);beoStatusMsg('Create failed — '+error.message);return null;}
   const e=sanEv(pl);e._id=data.id;e._pos=data.position;e._updated=data.updated_at;e._by=ME;
   return e;
@@ -974,9 +1079,11 @@ function reloadSoon(){
     renderRoute();
   },500);
 }
+let RT_CH=null;
 function subscribeRT(){
-  sb.channel('beo_events_rt')
-    .on('postgres_changes',{event:'*',schema:'public',table:'beo_events'},()=>{
+  if(RT_CH){try{sb.removeChannel(RT_CH);}catch(e){}RT_CH=null;}
+  RT_CH=sb.channel('beo_events_rt_'+VENUE)
+    .on('postgres_changes',{event:'*',schema:'public',table:'beo_events',filter:'venue=eq.'+VENUE},()=>{
       if(editingNow()){RT_PENDING=true;return;}
       reloadSoon();
     })
@@ -1080,16 +1187,16 @@ function computeBench(q){
 function refreshBench(){if((HIST.events||[]).length)BENCH=computeBench(histEffective().eff);}
 async function persistHistSettings(msg){
   refreshBench();
-  const a=await sb.from('app_settings').upsert({key:'hist_settings',value:{excl:HSET.excl,scrub:HSET.scrub}});
-  const b=await sb.from('app_settings').upsert({key:'cashbar_benchmarks',value:BENCH});
+  const a=await sb.from('app_settings').upsert({venue:VENUE,key:'hist_settings',value:{excl:HSET.excl,scrub:HSET.scrub}},{onConflict:'venue,key'});
+  const b=await sb.from('app_settings').upsert({venue:VENUE,key:'cashbar_benchmarks',value:BENCH},{onConflict:'venue,key'});
   const el=document.getElementById('hist-basis');
   if(el&&msg)el.textContent=msg;
 }
 function catStatus(m){const el=document.getElementById('cat-status');if(el)el.textContent=m;}
 async function loadCatalog(){
   const [mi,st]=await Promise.all([
-    sb.from('menu_items').select('*').eq('active',true).order('sort'),
-    sb.from('app_settings').select('key,value')
+    sb.from('menu_items').select('*').eq('active',true).eq('venue',VENUE).order('sort'),
+    sb.from('app_settings').select('key,value').eq('venue',VENUE)
   ]);
   if(!mi.error)CATALOG=mi.data||[];
   if(!st.error)(st.data||[]).forEach(r=>{
@@ -1955,7 +2062,7 @@ async function buildActivity(){
   const el=document.getElementById('act-list');
   if(!el)return;
   el.innerHTML='<div class="sec-hint">Loading activity…</div>';
-  const {data,error}=await sb.from('beo_event_changes').select('event_id,changed_by_email,changed_at,summary').order('changed_at',{ascending:false}).limit(60);
+  const {data,error}=await sb.from('beo_event_changes').select('event_id,changed_by_email,changed_at,summary').eq('venue',VENUE).order('changed_at',{ascending:false}).limit(60);
   if(error){el.innerHTML='<div class="sec-hint">Could not load activity — '+beoEsc(error.message)+'</div>';return;}
   if(!data||!data.length){el.innerHTML='<div class="emptybox">No changes recorded yet — every Save writes an entry here.</div>';return;}
   el.innerHTML=data.map(r=>{
@@ -1969,18 +2076,103 @@ async function buildUsers(){
   const t=document.getElementById('usr-list');
   if(!t)return;
   t.innerHTML='<tr><td class="li" style="color:var(--muted);">Loading…</td></tr>';
-  const {data,error}=await sb.from('app_users').select('email,role,name,created_at').order('role').order('email');
+  const {data,error}=await sb.from('app_users').select('email,role,name,venues,created_at').order('role').order('email');
   if(error){t.innerHTML='<tr><td class="li" style="color:var(--neg);">Could not load users — '+beoEsc(error.message)+'</td></tr>';return;}
   const rows=data||[];
-  let h=`<tr><th class="li" style="min-width:240px;">Email</th><th class="li" style="min-width:150px;">Name</th><th class="li" style="min-width:140px;">Role</th><th></th></tr>`;
+  const multi=(VENUES||[]).length>1;
+  let h=`<tr><th class="li" style="min-width:240px;">Email</th><th class="li" style="min-width:150px;">Name</th><th class="li" style="min-width:140px;">Role</th>${multi?'<th class="li" style="min-width:170px;">Venues</th>':''}<th></th></tr>`;
   rows.forEach(u=>{
     const isMe=String(u.email).toLowerCase()===ME;
     const roleSel=`<select data-usrole="${attEsc(u.email)}"${isMe?' disabled title="You can&#39;t change your own role"':''} style="appearance:none;border:1px solid var(--line-strong);background:${isMe?'var(--tint)':'#fff'};border-radius:4px;padding:3px 8px;font-size:11px;font-family:inherit;cursor:${isMe?'default':'pointer'};min-width:150px;">`
       +['user','admin','external'].map(r=>`<option value="${r}"${u.role===r?' selected':''}>${ROLE_LABELS[r]}</option>`).join('')+`</select>`;
-    h+=`<tr><td class="li">${beoEsc(u.email)}${isMe?' <span class="ctl-label">you</span>':''}</td><td class="li">${beoEsc(u.name||'—')}</td><td class="li">${roleSel}</td><td>${isMe?'':`<button class="bx" data-usdel="${attEsc(u.email)}" title="Remove access">✕</button>`}</td></tr>`;
+    let venCell='';
+    if(multi){
+      venCell=u.role==='admin'
+        ? '<span class="ctl-label">All venues</span>'
+        : (VENUES||[]).map(v=>{const on=Array.isArray(u.venues)&&u.venues.includes(v.id);
+            return `<label style="display:inline-flex;align-items:center;gap:4px;margin-right:10px;font-size:11px;cursor:pointer;"><input type="checkbox" data-usvenue="${attEsc(u.email)}" data-vid="${attEsc(v.id)}"${on?' checked':''} style="cursor:pointer;">${beoEsc(v.name)}</label>`;}).join('');
+    }
+    h+=`<tr><td class="li">${beoEsc(u.email)}${isMe?' <span class="ctl-label">you</span>':''}</td><td class="li">${beoEsc(u.name||'—')}</td><td class="li">${roleSel}</td>${multi?`<td class="li">${venCell}</td>`:''}<td>${isMe?'':`<button class="bx" data-usdel="${attEsc(u.email)}" title="Remove access">✕</button>`}</td></tr>`;
   });
-  if(!rows.length)h+=`<tr><td class="li" colspan="4" style="color:var(--muted);">No users yet.</td></tr>`;
+  if(!rows.length)h+=`<tr><td class="li" colspan="${multi?5:4}" style="color:var(--muted);">No users yet.</td></tr>`;
   t.innerHTML=h;
+}
+
+/* ---------------- venue settings (admin) ---------------- */
+function venStat(m){const el=document.getElementById('ven-msg');if(el)el.textContent=m||'';}
+function buildVenues(){
+  const wrap=document.getElementById('ven-list');if(!wrap)return;
+  const vf=(id,path,val,w)=>`<input class="drvin" data-vf="${attEsc(id+':'+path)}" value="${attEsc(val==null?'':val)}" style="width:${w||90}px;border:1px solid var(--line-strong);border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;">`;
+  const num=(id,path,val,w)=>`<input class="drvin" type="number" step="any" data-vf="${attEsc(id+':'+path)}" value="${val==null?'':val}" style="width:${w||70}px;border:1px solid var(--line-strong);border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;">`;
+  const lbl=t=>`<span class="ctl-label" style="display:block;margin-bottom:3px;">${t}</span>`;
+  const fld=(t,inp)=>`<div>${lbl(t)}${inp}</div>`;
+  let h='';
+  (VENUES||[]).forEach(v=>{
+    const c=venueCfg(v.id), b=c.branding, r=c.fixedRates, fm=c.fohMgmt;
+    const isCur=v.id===VENUE;
+    h+=`<div style="border:1px solid var(--line-strong);border-radius:12px;padding:16px 18px;margin-bottom:16px;background:#fff;max-width:920px;">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;">
+        <b style="font-size:15px;">${beoEsc(v.name)}</b>
+        <span class="ctl-label">id: ${beoEsc(v.id)}</span>
+        ${isCur?'<span class="ctl-label" style="color:var(--accent-deep);">● currently viewing</span>':''}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px 18px;align-items:flex-start;">
+        ${fld('Display name',vf(v.id,'name',v.name,150))}
+        ${fld('Tagline',vf(v.id,'branding.tagline',b.tagline,190))}
+        ${fld('City, ST',vf(v.id,'branding.city',b.city,140))}
+        ${fld('Sales tax %',num(v.id,'fixedRates.salesTax',r.salesTax))}
+        ${fld('Liquor tax %',num(v.id,'fixedRates.liqTax',r.liqTax))}
+        ${fld('Payroll burden %',num(v.id,'fixedRates.burden',r.burden))}
+        ${fld('Mgmt fee %',num(v.id,'fixedRates.mgmtPct',r.mgmtPct))}
+        ${fld('Cash-bar COGS %',num(v.id,'fixedRates.cashCogs',r.cashCogs))}
+        ${fld('Target COGS %',num(v.id,'targetCogs',c.targetCogs))}
+        ${fld('FOH mgmt $/mo',num(v.id,'fohMgmt.monthly',fm.monthly,90))}
+        ${fld('Events / yr',num(v.id,'fohMgmt.eventsYr',fm.eventsYr))}
+        ${fld('Sort',num(v.id,'sort',v.sort==null?0:v.sort,60))}
+        <div>${lbl('Comp-shop area')}<label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding-top:2px;"><input type="checkbox" data-vf="${attEsc(v.id+':compShop')}"${c.compShop?' checked':''}> show comp shop</label></div>
+        <div>${lbl('Active')}<label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding-top:2px;"><input type="checkbox" data-vf="${attEsc(v.id+':active')}"${v.active!==false?' checked':''}> venue active</label></div>
+      </div>
+      <div style="margin-top:14px;"><button class="pill primary" data-vsave="${attEsc(v.id)}"><span class="dot"></span>SAVE ${beoEsc(v.name.toUpperCase())}</button></div>
+    </div>`;
+  });
+  if(!(VENUES||[]).length)h='<div style="color:var(--muted);">No venues yet.</div>';
+  wrap.innerHTML=h;
+}
+async function saveVenue(id){
+  const g=path=>{const el=document.querySelector(`[data-vf="${cssEsc(id+':'+path)}"]`);if(!el)return undefined;return el.type==='checkbox'?el.checked:el.value;};
+  const n=path=>{const v=g(path);return v===''||v==null?null:+v;};
+  const name=(g('name')||'').trim()||id;
+  const config={
+    branding:{name:name,tagline:(g('branding.tagline')||'').trim(),city:(g('branding.city')||'').trim()},
+    fixedRates:{salesTax:n('fixedRates.salesTax'),liqTax:n('fixedRates.liqTax'),burden:n('fixedRates.burden'),mgmtPct:n('fixedRates.mgmtPct'),cashCogs:n('fixedRates.cashCogs')},
+    fohMgmt:{monthly:n('fohMgmt.monthly'),eventsYr:n('fohMgmt.eventsYr')},
+    targetCogs:n('targetCogs'),
+    compShop:!!g('compShop')
+  };
+  venStat('Saving…');
+  const {error}=await sb.from('venues').update({name:name,city:(g('branding.city')||'').trim(),sort:(n('sort')||0),active:!!g('active'),config}).eq('id',id);
+  if(error){venStat('Save failed — '+error.message);return;}
+  const {data:reg}=await sb.from('venues').select('id,name,city,active,sort,config').eq('active',true).order('sort');
+  const all=(reg||[]);
+  VENUES=isAdmin()?all:all.filter(v=>Array.isArray(MY_VENUES)&&MY_VENUES.includes(v.id));
+  if(!VENUES.some(v=>v.id===VENUE)){VENUE=(VENUES[0]&&VENUES[0].id)||'vessel';}
+  applyVCFG();renderVenueSwitch();buildVenues();
+  venStat(name+' saved.');
+}
+async function addVenue(){
+  const id=(document.getElementById('ven-id').value||'').trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+  const name=(document.getElementById('ven-name').value||'').trim();
+  const city=(document.getElementById('ven-city').value||'').trim();
+  if(!id||!name){venStat('Enter both an id and a display name.');return;}
+  venStat('Adding…');
+  const sort=(VENUES||[]).reduce((m,v)=>Math.max(m,v.sort||0),0)+1;
+  const {error}=await sb.from('venues').insert({id,name,city,sort,active:true,config:{branding:{name,tagline:'Method Co · Events Pricing',city}}});
+  if(error){venStat('Failed — '+error.message);return;}
+  document.getElementById('ven-id').value='';document.getElementById('ven-name').value='';document.getElementById('ven-city').value='';
+  const {data:reg}=await sb.from('venues').select('id,name,city,active,sort,config').eq('active',true).order('sort');
+  VENUES=(reg||[]);
+  renderVenueSwitch();buildVenues();
+  venStat(name+' added. It starts empty — seed its menu and events, and grant users access on the Users tab.');
 }
 
 /* ---------------- shared handlers ---------------- */
@@ -2001,6 +2193,11 @@ document.addEventListener('change',e=>{
   if(!canEdit())return;   /* read-only (external) members: view & drill down only, no writes */
   const ur=e.target.closest('[data-usrole]');
   if(ur){const email=ur.dataset.usrole;sb.from('app_users').update({role:ur.value}).eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' → '+(ur.value==='admin'?'Admin':'Standard user'));buildUsers();});return;}
+  const uv=e.target.closest('[data-usvenue]');
+  if(uv){const email=uv.dataset.usvenue;
+    const checked=[...document.querySelectorAll(`[data-usvenue="${cssEsc(email)}"]`)].filter(x=>x.checked).map(x=>x.dataset.vid);
+    sb.from('app_users').update({venues:checked}).eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' → '+(checked.length?checked.join(', '):'no venues'));});
+    return;}
   const bst=e.target.closest('[data-beostatus]');
   if(bst){
     const ev=BEOS.find(x=>x._id===bst.dataset.beostatus);
@@ -2130,6 +2327,8 @@ document.addEventListener('click',e=>{
   if(mps){MP_SEL=(MP_SEL===mps.dataset.mpsel)?null:mps.dataset.mpsel;buildMonthly();return;}
   const ud=e.target.closest('[data-usdel]');
   if(ud){const email=ud.dataset.usdel;if(window.confirm('Remove access for '+email+'? They will no longer be able to sign in.')){sb.from('app_users').delete().eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' removed.');buildUsers();});}return;}
+  const vs=e.target.closest('[data-vsave]');
+  if(vs){saveVenue(vs.dataset.vsave);return;}
   const op=e.target.closest('[data-open]');
   if(op){goto('event',op.dataset.open);return;}
   const cs=e.target.closest('[data-cs]');
@@ -2203,7 +2402,7 @@ pill('ts-sync',async(btn)=>{
   if(btn)btn.disabled=true;
   if(out)out.innerHTML='<span class="ctl-label">Contacting Tripleseat&hellip;</span>';
   try{
-    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'ping'}});
+    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'ping',venue:VENUE}});
     if(error){if(out)out.innerHTML='<pre class="ts-diag">Function error: '+beoEsc(error.message||String(error))+'</pre>';showToast('Tripleseat sync failed — see the panel.');return;}
     console.log('Tripleseat probe result:',data);
     const ok=data&&data.tokenObtained;
@@ -2220,12 +2419,13 @@ pill('usr-add',async()=>{
   const msg=document.getElementById('usr-msg');
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){if(msg)msg.textContent='Enter a valid email address.';return;}
   if(msg)msg.textContent='Adding…';
-  const {error}=await sb.from('app_users').upsert({email,name:name||null,role},{onConflict:'email'});
+  const {error}=await sb.from('app_users').upsert({email,name:name||null,role,venues:(VENUES||[]).map(v=>v.id)},{onConflict:'email'});
   if(error){if(msg)msg.textContent='Failed — '+error.message;return;}
   document.getElementById('usr-email').value='';document.getElementById('usr-name').value='';
   if(msg)msg.textContent=email+' added as '+(role==='admin'?'Admin':'Standard user')+'.';
   buildUsers();
 });
+pill('ven-add',addVenue);
 pill('vsbeo-dup',async()=>{
   if(!BEOD||!canEdit())return;
   await flushSave();
@@ -2444,24 +2644,36 @@ function showNotAuthorized(email){
   document.getElementById('appwrap').style.display='none';
   LOGIN.style.display='flex';
   LOGIN.querySelector('.login-card').innerHTML=
-    '<div class="login-brand">Vessel <span>Method Co &middot; BEO Pricing</span></div>'
+    '<div class="login-brand">Method Co <span>Events &middot; BEO Pricing</span></div>'
     +'<h1>Access <em>pending</em></h1>'
     +'<p class="lp"><b>'+beoEsc(email)+'</b> isn&rsquo;t on the access list yet. Ask an admin to add you, then sign in again.</p>'
     +'<button id="na-signout" class="pill primary"><span class="dot"></span>SIGN OUT</button>';
   document.getElementById('na-signout').addEventListener('click',async()=>{try{await sb.auth.signOut();}catch(e){}location.reload();});
+}
+async function initVenues(me){
+  const {data:reg}=await sb.from('venues').select('id,name,city,active,sort,config').eq('active',true).order('sort');
+  const all=(reg||[]);
+  MY_VENUES=Array.isArray(me.venues)?me.venues:[];
+  VENUES=isAdmin()?all:all.filter(v=>MY_VENUES.includes(v.id));
+  if(!VENUES.length)VENUES=all.filter(v=>v.id==='vessel');   /* safety net — never lock a member out */
+  let want='vessel'; try{want=localStorage.getItem('beo_venue')||'vessel';}catch(e){}
+  VENUE=(VENUES.some(v=>v.id===want)?want:((VENUES[0]&&VENUES[0].id)||'vessel'));
+  applyVCFG();
+  renderVenueSwitch();
 }
 let APP_STARTED=false, ENTERING=false;
 async function enterApp(user){
   if(APP_STARTED||ENTERING)return; ENTERING=true;
   try{
     const email=String(user.email||'').toLowerCase();
-    const {data:me}=await sb.from('app_users').select('role,name').eq('email',email).maybeSingle();
+    const {data:me}=await sb.from('app_users').select('role,name,venues').eq('email',email).maybeSingle();
     if(!me){showNotAuthorized(email);return;}
     APP_STARTED=true;
     ME=email; ROLE=me.role||'user';
     LOGIN.style.display='none';
     document.getElementById('who').textContent=me.name||email;
     refreshAdminNav();
+    await initVenues(me);
     document.body.classList.toggle('ro',!canEdit());   /* external = read-only chrome */
     const rb=document.getElementById('robadge');if(rb)rb.style.display=canEdit()?'none':'';
     document.getElementById('appwrap').style.display='block';
