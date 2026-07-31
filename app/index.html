@@ -45,7 +45,7 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 body.ro input[data-bi],body.ro select[data-bi],body.ro textarea[data-bi],body.ro input[data-ci],body.ro select[data-ci],body.ro [data-beostatus],body.ro [data-close],body.ro [data-stp],body.ro [data-bx],body.ro .badd,body.ro .bx,body.ro #usr-email,body.ro #usr-name,body.ro #usr-role,body.ro #usr-add,body.ro [data-usrole],body.ro [data-usdel]{pointer-events:none!important;opacity:.6;cursor:not-allowed;}
 body.ro input[data-bi],body.ro select[data-bi],body.ro input[data-ci],body.ro select[data-ci]{background:#f3f4f7!important;color:var(--muted)!important;}
 /* editor-only actions — hidden entirely for read-only (external) members */
-body.ro #ts-sync,body.ro #ts-import,body.ro #vsbeo-new,body.ro #vsbeo-importpdf,body.ro #vsbeo-dup,body.ro #vsbeo-del,body.ro #vsbeo-reset{display:none!important;}
+body.ro #ts-sync,body.ro #ts-import,body.ro #ts-import-filters,body.ro #vsbeo-new,body.ro #vsbeo-importpdf,body.ro #vsbeo-dup,body.ro #vsbeo-del,body.ro #vsbeo-reset{display:none!important;}
 .navfoot button{appearance:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:#cdd8ea;border-radius:3px;padding:5px 9px;font-size:8.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:inherit;text-transform:uppercase;margin:0 6px 6px 0;}
 .navfoot button:hover{color:#fff;border-color:#fff;}
 .main{margin-left:200px;padding:22px 30px 60px;max-width:none;}
@@ -304,6 +304,16 @@ table.alloc th.cs-hi{background:#dce6f4;}
     </div>
   </div>
   <span class="ctl-label" id="ev-status"></span>
+  <div id="ts-import-filters" style="display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:6px 0;font-size:11px;color:var(--muted);">
+    <span style="text-transform:uppercase;letter-spacing:.06em;font-weight:700;">Import filter</span>
+    <label><input type="checkbox" class="ts-imp-st" value="DEFINITE" checked> Definite</label>
+    <label><input type="checkbox" class="ts-imp-st" value="CLOSED" checked> Closed</label>
+    <label><input type="checkbox" class="ts-imp-st" value="TENTATIVE"> Tentative</label>
+    <label><input type="checkbox" class="ts-imp-st" value="PROSPECT"> Prospect</label>
+    <label><input type="checkbox" class="ts-imp-st" value="LOST"> Lost</label>
+    <label>From <input type="date" id="ts-imp-since" value="2026-01-01" style="font-size:11px;"></label>
+    <label>To <input type="date" id="ts-imp-until" style="font-size:11px;"></label>
+  </div>
   <div id="ts-import-out" style="margin:6px 0;"></div>
   <div id="ts-sync-out" style="margin:6px 0;"></div>
   <div class="bstrip" id="ev-kpis"></div>
@@ -2402,11 +2412,18 @@ pill('vsbeo-new',async()=>{
    Two-step: PREVIEW (commit:false) reports the matched location + event count and
    a sample mapping without writing; CONFIRM (commit:true) upserts the events. */
 function tsImpEsc(s){return beoEsc(String(s==null?'':s));}
+function tsImpFilters(){
+  const statuses=Array.from(document.querySelectorAll('.ts-imp-st')).filter(c=>c.checked).map(c=>c.value);
+  const since=(document.getElementById('ts-imp-since')||{}).value||null;
+  const until=(document.getElementById('ts-imp-until')||{}).value||null;
+  return {statuses,since,until};
+}
 async function tsImportRun(commit){
   const out=document.getElementById('ts-import-out');
   if(out)out.innerHTML='<span class="ctl-label">'+(commit?'Importing from Tripleseat&hellip;':'Checking Tripleseat&hellip;')+'</span>';
   try{
-    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'import',venue:VENUE,commit:!!commit}});
+    const f=tsImpFilters();
+    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'import',venue:VENUE,commit:!!commit,statuses:f.statuses,since:f.since,until:f.until}});
     if(error){if(out)out.innerHTML='<pre class="ts-diag">Function error: '+tsImpEsc(error.message||error)+'</pre>';showToast('Tripleseat import failed — see the panel.');return;}
     console.log('Tripleseat import result:',data);
     if(data&&data.error&&!data.matchedLocation){
@@ -2425,9 +2442,13 @@ async function tsImportRun(commit){
         +`<td style="padding:2px 10px 2px 0;">${tsImpEsc(p.status||'—')}</td>`
         +`<td style="padding:2px 10px 2px 0;font-variant-numeric:tabular-nums;">${p.guests!=null?tsImpEsc(p.guests):'—'}</td>`
         +`<td style="padding:2px 0;font-variant-numeric:tabular-nums;">${p.tsTotal!=null?'$'+Number(p.tsTotal).toLocaleString():'—'}</td></tr>`;}).join('');
+      const atLoc=(data&&data.eventsAtLocation)!=null?data.eventsAtLocation:n;
+      const flt=(data&&data.filters)||{};
+      const fltDesc=((flt.statuses&&flt.statuses.length)?flt.statuses.join(' / '):'any status')
+        +(flt.since?', from '+tsImpEsc(flt.since):'')+(flt.until?' to '+tsImpEsc(flt.until):'');
       if(out)out.innerHTML='<div class="ts-diag">'
         +'<div style="font-weight:800;">Matched location: '+tsImpEsc(loc&&loc.name)+' <span style="color:var(--muted);">(id '+tsImpEsc(loc&&loc.id)+')</span></div>'
-        +'<div style="margin:4px 0;">Found <b>'+n+'</b> event'+(n===1?'':'s')+' for this location'+(data.truncated?' (more may exist — capped at this run)':'')+'. Nothing imported yet.</div>'
+        +'<div style="margin:4px 0;"><b>'+n+'</b> of '+atLoc+' event'+(atLoc===1?'':'s')+' at this location match your filter (<span style="color:var(--muted);">'+fltDesc+'</span>)'+(data.truncated?' — note: location list was capped this run':'')+'. Nothing imported yet.</div>'
         +(rows?'<table style="border-collapse:collapse;font-size:11px;margin:6px 0;"><thead><tr style="color:var(--muted);text-transform:uppercase;font-size:8.5px;letter-spacing:.08em;"><td style="padding:0 10px 4px 0;">Event</td><td style="padding:0 10px 4px 0;">Date</td><td style="padding:0 10px 4px 0;">Status</td><td style="padding:0 10px 4px 0;">Guests</td><td>TS total</td></tr></thead><tbody>'+rows+'</tbody></table>':'')
         +(n>0?'<button class="pill primary" id="ts-import-confirm"><span class="dot"></span>IMPORT '+n+' EVENT'+(n===1?'':'S')+' →</button>':'<div style="color:var(--muted);">No events to import.</div>')
         +'</div>';

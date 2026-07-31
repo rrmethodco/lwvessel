@@ -399,7 +399,17 @@ async function pool<T, R>(items: T[], limit: number, fn: (t: T, i: number) => Pr
   return out;
 }
 
-async function runImport(token: string, venue: string, opts: { commit: boolean; maxEvents: number }, gateEmail: string) {
+// Status + date accessors used to filter the fetched event list before we spend
+// detail fetches on events we won't import.
+function evStatusOf(e: any): string {
+  return String(firstDefined(pick(e, ["status", "event_status", "status_name"]), dig(e, "status.name")) || "").toUpperCase();
+}
+function evDateOf(e: any): string {
+  const s = firstDefined(pick(e, ["event_start_iso8601", "event_date_iso8601", "start_date", "event_start", "event_date", "date"]), dig(e, "event_start_at"));
+  return toDatePart(s);
+}
+
+async function runImport(token: string, venue: string, opts: { commit: boolean; maxEvents: number; statuses: string[]; since: string | null; until: string | null }, gateEmail: string) {
   const supaUrl = Deno.env.get("SUPABASE_URL")!;
   const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const svc = createClient(supaUrl, svcKey);
@@ -426,13 +436,23 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
 
   const fetched = await fetchLocationEvents(token, loc.matched.id, loc.matched.name, 15);
   result.locationFilterParam = fetched.param;
-  result.eventsFound = fetched.events.length;
+  result.eventsAtLocation = fetched.events.length;
   result.rawEventsScanned = fetched.rawCount;
   result.truncated = fetched.truncated;
 
+  // Apply status + date-range filters (e.g. only DEFINITE/CLOSED from 2026-01-01)
+  // at the list level, before spending detail fetches on events we won't import.
+  const wantStatuses = (opts.statuses || []).map((s) => String(s).trim().toUpperCase()).filter(Boolean);
+  let filtered = fetched.events;
+  if (wantStatuses.length) filtered = filtered.filter((e) => wantStatuses.includes(evStatusOf(e)));
+  if (opts.since) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d >= opts.since!; });
+  if (opts.until) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d <= opts.until!; });
+  result.filters = { statuses: wantStatuses, since: opts.since, until: opts.until };
+  result.eventsFound = filtered.length;
+
   // Enrich with per-event detail (financials, guest count) — all events on
   // commit, a small sample on preview — concurrency-capped to avoid timeouts.
-  const list = fetched.events.slice(0, opts.maxEvents);
+  const list = filtered.slice(0, opts.maxEvents);
   const detailCount = opts.commit ? list.length : Math.min(3, list.length);
   const enriched = await pool(list, 8, async (e, i) => {
     const id = firstDefined(dig(e, "id"), dig(e, "event_id"));
@@ -525,8 +545,12 @@ Deno.serve(async (req: Request) => {
   if (mode === "import") {
     const commit = !!(body && body.commit) || url.searchParams.get("commit") === "true";
     const maxEvents = Math.max(1, Math.min(1000, +(body?.maxEvents ?? url.searchParams.get("maxEvents") ?? 500) || 500));
+    const statuses = Array.isArray(body?.statuses) ? body.statuses
+      : (url.searchParams.get("statuses") ? url.searchParams.get("statuses")!.split(",") : []);
+    const since = (body?.since || url.searchParams.get("since") || null) as string | null;
+    const until = (body?.until || url.searchParams.get("until") || null) as string | null;
     try {
-      const r = await runImport(token, venue, { commit, maxEvents }, gate.email);
+      const r = await runImport(token, venue, { commit, maxEvents, statuses, since, until }, gate.email);
       Object.assign(out, r);
     } catch (e) {
       out.error = String(e);
