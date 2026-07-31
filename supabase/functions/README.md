@@ -6,7 +6,33 @@ version-controlled source of record — keep it in sync with what is deployed.
 
 ## `tripleseat-sync`
 
-Called from the app's **Tripleseat sync** button (`mode: "probe"`). It:
+### `mode: "import"` — populate a venue's events
+
+Called from the app's **Import events from Tripleseat** button. The app renders
+the Events tab from the local `beo_events` table (venue-scoped) — it does **not**
+read Tripleseat live — so this mode is what actually fills a venue's events.
+
+1. Resolves the venue → Tripleseat **location** by name
+   (`venues.config.tripleseatLocation`, else the venue's branding name) against
+   `/v1/locations.json`.
+2. Fetches that location's events (server-side location filter is best-effort and
+   the results are **also** filtered client-side by the event's own location, so a
+   wrong/ignored filter param can never pull another location's events), then
+   drills each event's detail for financials/guest count.
+3. Maps each event to the `beo_events` payload shape (envelope fields: name, date,
+   times, guests, status, type, account, salesperson, lead source, TS total,
+   deposit — line-item/COGS arrays are left empty since they need the venue menu).
+4. Upserts idempotently on `(venue, ext_id)` where `ext_id` is the Tripleseat
+   event id (see `supabase/migrations/20260731_beo_events_ext_id.sql`).
+
+Runs as a **preview** by default (`commit:false`) — reporting the matched
+location, event count, and a sample mapping without writing — and only writes
+when called again with `commit:true`. A few raw + mapped samples are persisted to
+the `ts_probe` table each run for inspection.
+
+### `mode: "probe"` — connection diagnostics
+
+Called from the app's **Tripleseat diagnostics** button. It:
 
 1. Verifies the caller is a signed-in internal editor (`app_users.role` of
    `admin` or `user`); external read-only members and anonymous callers are

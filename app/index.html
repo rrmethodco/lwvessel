@@ -45,7 +45,7 @@ h2{font-family:Georgia,serif;font-weight:400;font-size:17px;margin:22px 0 4px;}
 body.ro input[data-bi],body.ro select[data-bi],body.ro textarea[data-bi],body.ro input[data-ci],body.ro select[data-ci],body.ro [data-beostatus],body.ro [data-close],body.ro [data-stp],body.ro [data-bx],body.ro .badd,body.ro .bx,body.ro #usr-email,body.ro #usr-name,body.ro #usr-role,body.ro #usr-add,body.ro [data-usrole],body.ro [data-usdel]{pointer-events:none!important;opacity:.6;cursor:not-allowed;}
 body.ro input[data-bi],body.ro select[data-bi],body.ro input[data-ci],body.ro select[data-ci]{background:#f3f4f7!important;color:var(--muted)!important;}
 /* editor-only actions — hidden entirely for read-only (external) members */
-body.ro #ts-sync,body.ro #vsbeo-new,body.ro #vsbeo-importpdf,body.ro #vsbeo-dup,body.ro #vsbeo-del,body.ro #vsbeo-reset{display:none!important;}
+body.ro #ts-sync,body.ro #ts-import,body.ro #vsbeo-new,body.ro #vsbeo-importpdf,body.ro #vsbeo-dup,body.ro #vsbeo-del,body.ro #vsbeo-reset{display:none!important;}
 .navfoot button{appearance:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:#cdd8ea;border-radius:3px;padding:5px 9px;font-size:8.5px;font-weight:700;letter-spacing:.08em;cursor:pointer;font-family:inherit;text-transform:uppercase;margin:0 6px 6px 0;}
 .navfoot button:hover{color:#fff;border-color:#fff;}
 .main{margin-left:200px;padding:22px 30px 60px;max-width:none;}
@@ -299,10 +299,12 @@ table.alloc th.cs-hi{background:#dce6f4;}
     <div class="controls" style="margin:0;">
       <button class="pill primary" id="vsbeo-new"><span class="dot"></span>＋ NEW EVENT</button>
       <button class="pill" id="vsbeo-importpdf"><span class="dot"></span>⇪ IMPORT BEO PDF</button>
-      <button class="pill" id="ts-sync"><span class="dot"></span>⟳ SYNC FROM TRIPLESEAT</button>
+      <button class="pill" id="ts-import"><span class="dot"></span>⟳ IMPORT EVENTS FROM TRIPLESEAT</button>
+      <button class="pill" id="ts-sync" title="Diagnostics: probe the Tripleseat connection and report data-point coverage"><span class="dot"></span>⚙ TRIPLESEAT DIAGNOSTICS</button>
     </div>
   </div>
   <span class="ctl-label" id="ev-status"></span>
+  <div id="ts-import-out" style="margin:6px 0;"></div>
   <div id="ts-sync-out" style="margin:6px 0;"></div>
   <div class="bstrip" id="ev-kpis"></div>
   <div id="ev-grp-btn" style="display:flex;justify-content:flex-end;margin:10px 0 4px;"></div>
@@ -2395,6 +2397,57 @@ pill('vsbeo-new',async()=>{
   SECSEL='setup';
   goto('event',e._id);
   showToast('New event created — tap any value to edit; changes save automatically.');
+});
+/* Import events for the active venue from Tripleseat into beo_events.
+   Two-step: PREVIEW (commit:false) reports the matched location + event count and
+   a sample mapping without writing; CONFIRM (commit:true) upserts the events. */
+function tsImpEsc(s){return beoEsc(String(s==null?'':s));}
+async function tsImportRun(commit){
+  const out=document.getElementById('ts-import-out');
+  if(out)out.innerHTML='<span class="ctl-label">'+(commit?'Importing from Tripleseat&hellip;':'Checking Tripleseat&hellip;')+'</span>';
+  try{
+    const {data,error}=await sb.functions.invoke('tripleseat-sync',{body:{mode:'import',venue:VENUE,commit:!!commit}});
+    if(error){if(out)out.innerHTML='<pre class="ts-diag">Function error: '+tsImpEsc(error.message||error)+'</pre>';showToast('Tripleseat import failed — see the panel.');return;}
+    console.log('Tripleseat import result:',data);
+    if(data&&data.error&&!data.matchedLocation){
+      const locs=(data.locationsAvailable||[]).map(l=>`<li>${tsImpEsc(l.name)} <span style="color:var(--muted);">(id ${tsImpEsc(l.id)})</span></li>`).join('');
+      if(out)out.innerHTML='<div class="ts-diag"><b>Couldn’t match a Tripleseat location for “'+tsImpEsc(data.wantedLocation||VENUE)+'”.</b>'
+        +(locs?'<div style="margin-top:6px;">Locations Tripleseat returned:</div><ul style="margin:4px 0 0 16px;">'+locs+'</ul>':'')
+        +'<div style="margin-top:6px;color:var(--muted);">Set the exact location name in Venue Settings (config.tripleseatLocation) and try again.</div></div>';
+      return;
+    }
+    const loc=data&&data.matchedLocation;
+    const n=(data&&data.eventsFound)||0;
+    if(!commit){
+      const sample=(data&&data.sample)||[];
+      const rows=sample.map(s=>{const p=s.payload||{};return `<tr><td style="padding:2px 10px 2px 0;">${tsImpEsc(p.tab||p.name)}</td>`
+        +`<td style="padding:2px 10px 2px 0;color:var(--muted);">${tsImpEsc(p.evDate||'—')}</td>`
+        +`<td style="padding:2px 10px 2px 0;">${tsImpEsc(p.status||'—')}</td>`
+        +`<td style="padding:2px 10px 2px 0;font-variant-numeric:tabular-nums;">${p.guests!=null?tsImpEsc(p.guests):'—'}</td>`
+        +`<td style="padding:2px 0;font-variant-numeric:tabular-nums;">${p.tsTotal!=null?'$'+Number(p.tsTotal).toLocaleString():'—'}</td></tr>`;}).join('');
+      if(out)out.innerHTML='<div class="ts-diag">'
+        +'<div style="font-weight:800;">Matched location: '+tsImpEsc(loc&&loc.name)+' <span style="color:var(--muted);">(id '+tsImpEsc(loc&&loc.id)+')</span></div>'
+        +'<div style="margin:4px 0;">Found <b>'+n+'</b> event'+(n===1?'':'s')+' for this location'+(data.truncated?' (more may exist — capped at this run)':'')+'. Nothing imported yet.</div>'
+        +(rows?'<table style="border-collapse:collapse;font-size:11px;margin:6px 0;"><thead><tr style="color:var(--muted);text-transform:uppercase;font-size:8.5px;letter-spacing:.08em;"><td style="padding:0 10px 4px 0;">Event</td><td style="padding:0 10px 4px 0;">Date</td><td style="padding:0 10px 4px 0;">Status</td><td style="padding:0 10px 4px 0;">Guests</td><td>TS total</td></tr></thead><tbody>'+rows+'</tbody></table>':'')
+        +(n>0?'<button class="pill primary" id="ts-import-confirm"><span class="dot"></span>IMPORT '+n+' EVENT'+(n===1?'':'S')+' →</button>':'<div style="color:var(--muted);">No events to import.</div>')
+        +'</div>';
+      const cb=document.getElementById('ts-import-confirm');
+      if(cb)cb.addEventListener('click',()=>tsImportRun(true));
+      return;
+    }
+    /* commit */
+    const imp=(data&&data.imported)!=null?data.imported:0;
+    if(out)out.innerHTML='<div class="ts-diag" style="color:var(--pos);font-weight:700;">Imported '+imp+' event'+(imp===1?'':'s')+' from '+tsImpEsc(loc&&loc.name)+'.</div>';
+    showToast('Imported '+imp+' event'+(imp===1?'':'s')+' from Tripleseat ✓');
+    await loadEvents();renderRoute();
+  }catch(e){
+    if(out)out.innerHTML='<pre class="ts-diag">Invoke failed: '+tsImpEsc(e)+'</pre>';
+  }
+}
+pill('ts-import',async(btn)=>{
+  if(!canEdit()){showToast('Tripleseat import is available to internal users only.');return;}
+  if(btn)btn.disabled=true;
+  try{await tsImportRun(false);}finally{if(btn)btn.disabled=false;}
 });
 /* Tripleseat connection probe — calls the tripleseat-sync Edge Function and shows the raw result */
 pill('ts-sync',async(btn)=>{

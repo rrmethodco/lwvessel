@@ -177,6 +177,306 @@ async function probeFirst(paths: string[], token: string, opts: { sample?: boole
   return last ?? { error: "no paths", tried };
 }
 
+// ============================================================================
+//  IMPORT: pull a venue's Tripleseat events into the app's beo_events table.
+//  The app renders events from beo_events (venue-scoped) — it does NOT read
+//  Tripleseat live — so this is what actually populates a venue's Events tab.
+// ============================================================================
+
+// First non-empty (non-null / non-blank) value among candidate keys on `obj`.
+function pick(obj: any, keys: string[]): any {
+  if (!obj || typeof obj !== "object") return undefined;
+  for (const k of keys) {
+    const v = obj[k];
+    if (v !== null && v !== undefined && v !== "") return v;
+  }
+  return undefined;
+}
+// Nested value at a dot-path (e.g. "account.name"), if present.
+function dig(obj: any, path: string): any {
+  let cur = obj;
+  for (const seg of path.split(".")) {
+    if (cur == null || typeof cur !== "object") return undefined;
+    cur = cur[seg];
+  }
+  return (cur === "" ? undefined : cur);
+}
+function firstDefined(...vals: any[]): any {
+  for (const v of vals) if (v !== null && v !== undefined && v !== "") return v;
+  return undefined;
+}
+function toNum(v: any): number | null {
+  if (v === null || v === undefined || v === "") return null;
+  const n = typeof v === "number" ? v : parseFloat(String(v).replace(/[$,]/g, ""));
+  return isNaN(n) ? null : n;
+}
+// 'YYYY-MM-DD' from an ISO datetime / date string.
+function toDatePart(v: any): string {
+  if (!v) return "";
+  const s = String(v);
+  const m = s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  const d = new Date(s);
+  if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  return "";
+}
+// 'H:MM AM/PM' from an ISO datetime, else pass through a already-formatted time.
+function toTime(v: any): string {
+  if (!v) return "";
+  const s = String(v);
+  const dt = s.match(/\d{4}-\d{2}-\d{2}[T ](\d{2}):(\d{2})/);
+  let hh: number, mm: string;
+  if (dt) { hh = +dt[1]; mm = dt[2]; }
+  else {
+    const t = s.match(/(\d{1,2}):(\d{2})\s*([AaPp][Mm])?/);
+    if (!t) return "";
+    hh = +t[1]; mm = t[2];
+    if (t[3]) return `${((hh % 12) || 12)}:${mm} ${t[3].toUpperCase()}`;
+  }
+  const ap = hh < 12 ? "AM" : "PM";
+  let h12 = hh % 12; if (h12 === 0) h12 = 12;
+  return `${h12}:${mm} ${ap}`;
+}
+
+// Resolve a venue -> Tripleseat location. Matches the configured location name
+// (venues.config.tripleseatLocation, else branding.name, else the venue id)
+// against /v1/locations.json, case-insensitively.
+async function resolveLocation(token: string, wanted: string) {
+  const r = await fetch(`${TS_BASE}/v1/locations.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+  const status = r.status;
+  const j = await r.json().catch(() => null);
+  const arr = unwrap(j) || [];
+  const norm = (s: any) => String(s ?? "").trim().toLowerCase();
+  const want = norm(wanted);
+  const all = arr.map((l: any) => ({ id: firstDefined(l.id, l.location_id), name: firstDefined(l.name, l.location_name, l.title) }));
+  const hit = all.find((l: any) => norm(l.name) === want) || all.find((l: any) => want.length > 2 && norm(l.name).includes(want));
+  return { matched: hit || null, locations: all, status };
+}
+
+// Map one Tripleseat event (list row merged with detail) to a beo_events payload.
+// Only high-confidence "envelope" fields are set; line items / COGS need the
+// venue menu and are left empty for a first import (revenue totals still show).
+function mapEvent(src: any, venueName: string): { extId: string; payload: any } {
+  const extId = String(firstDefined(dig(src, "id"), dig(src, "event_id"), dig(src, "uid")));
+  const rawName = firstDefined(pick(src, ["name", "event_name", "title"]), `Event ${extId}`);
+  const start = firstDefined(pick(src, ["event_start", "start_date", "event_date", "date", "start_time"]), dig(src, "event_start_at"));
+  const end = firstDefined(pick(src, ["event_end", "end_date", "end_time"]), dig(src, "event_end_at"));
+  const statusRaw = firstDefined(pick(src, ["status", "event_status", "status_name"]), dig(src, "status.name"));
+  const guests = toNum(firstDefined(
+    pick(src, ["guest_count", "expected_headcount", "final_headcount", "actual_headcount", "headcount", "guests", "expected_count", "guaranteed_count"]),
+  ));
+  const total = toNum(firstDefined(
+    pick(src, ["grand_total", "total", "total_amount", "revenue_total", "gross_total"]),
+    dig(src, "financials.grand_total"), dig(src, "financials.total"), dig(src, "totals.grand_total"),
+  ));
+  const deposit = toNum(firstDefined(
+    pick(src, ["deposit", "deposit_total", "deposit_amount"]),
+    dig(src, "financials.deposit"), dig(src, "financials.deposit_total"),
+  ));
+  const company = firstDefined(
+    pick(src, ["account_name"]), dig(src, "account.name"),
+    [dig(src, "contact.first_name"), dig(src, "contact.last_name")].filter(Boolean).join(" ") || undefined,
+    pick(src, ["contact_name"]),
+  );
+  const salesperson = firstDefined(
+    pick(src, ["salesperson", "sales_person", "owner_name", "manager_name", "user_name"]),
+    dig(src, "owner.name"), dig(src, "manager.name"), dig(src, "user.name"),
+    [dig(src, "owner.first_name"), dig(src, "owner.last_name")].filter(Boolean).join(" ") || undefined,
+  );
+  const evType = firstDefined(pick(src, ["event_type", "event_type_name", "type_name", "type"]), dig(src, "event_type.name"));
+  const market = firstDefined(pick(src, ["market_segment", "market_segment_name", "market"]), dig(src, "market_segment.name"));
+  const leadSource = firstDefined(pick(src, ["lead_source", "lead_source_name", "source", "referral_source"]), dig(src, "lead_source.name"));
+  const inq = firstDefined(pick(src, ["inquiry_date", "created_at", "created", "created_on"]), dig(src, "lead.created_at"));
+
+  const payload: any = {
+    tab: String(rawName),
+    name: `${rawName} — ${venueName}`,
+    evDate: toDatePart(start),
+    startTime: toTime(start),
+    endTime: toTime(end),
+    guests: guests != null ? guests : 50,
+    status: statusRaw ? String(statusRaw).trim().toUpperCase() : "",
+    evType: evType ? String(evType) : "",
+    market: market ? String(market) : "",
+    company: company ? String(company) : "",
+    salesperson: salesperson ? String(salesperson) : "",
+    leadSource: leadSource ? String(leadSource) : "Tripleseat inquiry",
+    inqDate: toDatePart(inq),
+    tsTotal: total,
+    deposit: deposit != null ? deposit : 0,
+  };
+  return { extId, payload };
+}
+
+// Fetch a bounded set of events for a location. Server-side location filtering
+// (param name varies) is best-effort; we ALSO filter client-side by matching the
+// event's own location to the target id/name, so a wrong/ignored filter param
+// can never import another location's events.
+async function fetchLocationEvents(token: string, locId: any, locName: string, maxPages: number) {
+  const per = 100;
+  const attempts = [
+    (p: number) => `/v1/events.json?location_id=${locId}&per_page=${per}&page=${p}`,
+    (p: number) => `/v1/events.json?location_ids[]=${locId}&per_page=${per}&page=${p}`,
+    (p: number) => `/v1/events.json?per_page=${per}&page=${p}`,
+  ];
+  const norm = (s: any) => String(s ?? "").trim().toLowerCase();
+  const wantId = String(locId), wantName = norm(locName);
+  const matchesLoc = (e: any) => {
+    const eid = firstDefined(dig(e, "location_id"), dig(e, "location.id"));
+    const enm = firstDefined(dig(e, "location_name"), dig(e, "location.name"), dig(e, "location"));
+    if (eid != null && String(eid) === wantId) return true;
+    if (enm != null && norm(enm) === wantName) return true;
+    // If the event carries no location info at all, keep it only when we trusted
+    // a server-side filter (attempt 0/1); attempt 2 is unfiltered, so drop it.
+    return eid == null && enm == null;
+  };
+
+  for (let a = 0; a < attempts.length; a++) {
+    const build = attempts[a];
+    // Probe page 1 to see if this param shape is accepted.
+    const first = await fetch(`${TS_BASE}${build(1)}`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+    if (first.status < 200 || first.status >= 300) continue;
+    const j1 = await first.json().catch(() => null);
+    const arr1 = unwrap(j1) || [];
+    // Pull remaining pages in parallel (bounded).
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(0, maxPages - 1) }, (_, i) => i + 2).map(async (p) => {
+        const r = await fetch(`${TS_BASE}${build(p)}`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+        if (r.status < 200 || r.status >= 300) return [] as any[];
+        const j = await r.json().catch(() => null);
+        return unwrap(j) || [];
+      }),
+    );
+    const all = [arr1, ...rest].flat();
+    // Dedupe by event id — guards against Tripleseat ignoring the `page` param
+    // and returning the same page repeatedly (which would also break the upsert).
+    const seen = new Set<string>();
+    const uniq = all.filter((e) => {
+      const id = String(firstDefined(dig(e, "id"), dig(e, "event_id"), ""));
+      if (!id || seen.has(id)) return false;
+      seen.add(id); return true;
+    });
+    const matched = uniq.filter(matchesLoc);
+    const truncated = arr1.length === per && rest.length > 0 && rest[rest.length - 1].length === per;
+    return { events: matched, rawCount: all.length, uniqueCount: uniq.length, param: a === 0 ? "location_id" : a === 1 ? "location_ids[]" : "none(client-filtered)", truncated };
+  }
+  return { events: [] as any[], rawCount: 0, uniqueCount: 0, param: "none", truncated: false };
+}
+
+// Simple concurrency-capped map (Tripleseat detail fetches — avoid N+1 blowups).
+async function pool<T, R>(items: T[], limit: number, fn: (t: T, i: number) => Promise<R>): Promise<R[]> {
+  const out: R[] = new Array(items.length);
+  let idx = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (idx < items.length) {
+      const i = idx++;
+      out[i] = await fn(items[i], i);
+    }
+  });
+  await Promise.all(workers);
+  return out;
+}
+
+async function runImport(token: string, venue: string, opts: { commit: boolean; maxEvents: number }, gateEmail: string) {
+  const supaUrl = Deno.env.get("SUPABASE_URL")!;
+  const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const svc = createClient(supaUrl, svcKey);
+
+  // Venue -> desired Tripleseat location name.
+  const { data: vrow } = await svc.from("venues").select("name, config").eq("id", venue).maybeSingle();
+  const cfg: any = vrow?.config || {};
+  const venueName = firstDefined(cfg?.branding?.name, vrow?.name, venue);
+  const wantedLoc = firstDefined(cfg?.tripleseatLocation, cfg?.branding?.name, vrow?.name, venue);
+
+  const loc = await resolveLocation(token, wantedLoc);
+  const result: Record<string, unknown> = {
+    venue, venueName, wantedLocation: wantedLoc,
+    locationStatus: loc.status,
+    matchedLocation: loc.matched,
+    locationsAvailable: loc.locations,
+    commit: opts.commit,
+  };
+  if (!loc.matched || loc.matched.id == null) {
+    result.error = `No Tripleseat location matched "${wantedLoc}". See locationsAvailable.`;
+    return result;
+  }
+
+  const fetched = await fetchLocationEvents(token, loc.matched.id, loc.matched.name, 15);
+  result.locationFilterParam = fetched.param;
+  result.eventsFound = fetched.events.length;
+  result.rawEventsScanned = fetched.rawCount;
+  result.truncated = fetched.truncated;
+
+  // Enrich with per-event detail (financials, guest count) — all events on
+  // commit, a small sample on preview — concurrency-capped to avoid timeouts.
+  const list = fetched.events.slice(0, opts.maxEvents);
+  const detailCount = opts.commit ? list.length : Math.min(3, list.length);
+  const enriched = await pool(list, 8, async (e, i) => {
+    const id = firstDefined(dig(e, "id"), dig(e, "event_id"));
+    if (i < detailCount && id != null) {
+      const r = await fetch(`${TS_BASE}/v1/events/${id}.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+      if (r.status >= 200 && r.status < 300) {
+        const d = await r.json().catch(() => null);
+        const dd = (d && (d.event || d.result || d)) || {};
+        return { ...e, ...dd };
+      }
+    }
+    return e;
+  });
+
+  const mapped = enriched.map((e) => mapEvent(e, venueName));
+  result.sample = mapped.slice(0, 3).map((m, i) => ({ extId: m.extId, payload: m.payload, raw: enriched[i] }));
+
+  // Persist a couple of raw+mapped samples for offline inspection/debugging.
+  try {
+    await svc.from("ts_probe").insert(
+      mapped.slice(0, 3).map((m, i) => ({
+        run_id: `import-${venue}`,
+        label: `event:${m.extId}`,
+        url: "/v1/events/{id}.json",
+        status: 200,
+        ok: true,
+        shape: "event",
+        keys: Object.keys(enriched[i] || {}),
+        sample: enriched[i],
+        note: `mapped=${JSON.stringify(m.payload)} · caller=${gateEmail}`,
+      })),
+    );
+  } catch (_e) { /* best-effort debug persistence */ }
+
+  if (!opts.commit) {
+    result.note = "PREVIEW ONLY — nothing written. Re-run with commit:true to import.";
+    return result;
+  }
+
+  // Upsert every mapped event (idempotent on venue+ext_id). Dedupe defensively
+  // and drop any row without a usable ext_id (would break the conflict target).
+  const seenIds = new Set<string>();
+  const rows = mapped
+    .filter((m) => m.extId && m.extId !== "undefined" && m.extId !== "null" && !seenIds.has(m.extId) && seenIds.add(m.extId))
+    .map((m, i) => ({
+      venue,
+      ext_id: m.extId,
+      source: "tripleseat",
+      payload: m.payload,
+      position: i,
+      created_by_email: gateEmail,
+      updated_by_email: gateEmail,
+    }));
+  let upserted = 0; const errors: string[] = [];
+  // Chunk to keep each request modest.
+  for (let i = 0; i < rows.length; i += 50) {
+    const chunk = rows.slice(i, i + 50);
+    const { error, count } = await svc.from("beo_events")
+      .upsert(chunk, { onConflict: "venue,ext_id", ignoreDuplicates: false, count: "exact" });
+    if (error) errors.push(error.message);
+    else upserted += (count ?? chunk.length);
+  }
+  result.imported = upserted;
+  if (errors.length) result.upsertErrors = errors;
+  return result;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   const key = req.headers.get("apikey") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
@@ -197,6 +497,19 @@ Deno.serve(async (req: Request) => {
   out.tokenEndpoint = t.endpoint;
   if (!t.token) { out.error = t.error; out.tokenStatus = t.status; return json(out, 200); }
   const token = t.token;
+
+  // ---- IMPORT mode: populate this venue's beo_events from Tripleseat ----
+  if (mode === "import") {
+    const commit = !!(body && body.commit) || url.searchParams.get("commit") === "true";
+    const maxEvents = Math.max(1, Math.min(1000, +(body?.maxEvents ?? url.searchParams.get("maxEvents") ?? 500) || 500));
+    try {
+      const r = await runImport(token, venue, { commit, maxEvents }, gate.email);
+      Object.assign(out, r);
+    } catch (e) {
+      out.error = String(e);
+    }
+    return json(out, 200);
+  }
 
   const coverage: Record<string, unknown> = {};
   const detail: Record<string, unknown> = {};
