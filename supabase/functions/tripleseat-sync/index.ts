@@ -440,33 +440,51 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
   result.rawEventsScanned = fetched.rawCount;
   result.truncated = fetched.truncated;
 
+  // Tripleseat's events LIST rows do NOT reliably carry status or the event
+  // date — those only appear in the per-event detail payload. So we must drill
+  // detail FIRST and filter on the enriched rows; filtering the list rows drops
+  // everything (empty status/date never matches). Bounded to avoid timeouts.
+  const ENRICH_CAP = 300;
+  const toEnrich = fetched.events.slice(0, ENRICH_CAP);
+  result.enrichCapped = fetched.events.length > ENRICH_CAP;
+  const enrichedAll = await pool(toEnrich, 12, async (e) => {
+    const id = firstDefined(dig(e, "id"), dig(e, "event_id"));
+    if (id == null) return e;
+    const r = await fetch(`${TS_BASE}/v1/events/${id}.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+    if (r.status >= 200 && r.status < 300) {
+      const d = await r.json().catch(() => null);
+      const dd = itemOf((d && (d.event || d.result || d)) || {}, "event");
+      return { ...e, ...dd };
+    }
+    return e;
+  });
+
+  // Breakdown across ALL enriched events, so the preview can report what's
+  // actually in Tripleseat (status mix + date span) even when nothing matches
+  // the requested filter — this is how we tell "filter too narrow" apart from
+  // "this location only holds placeholder prospect leads".
+  const statusBreakdown: Record<string, number> = {};
+  let minDate: string | null = null, maxDate: string | null = null;
+  for (const e of enrichedAll) {
+    const st = evStatusOf(e) || "(none)";
+    statusBreakdown[st] = (statusBreakdown[st] || 0) + 1;
+    const d = evDateOf(e);
+    if (d) { if (!minDate || d < minDate) minDate = d; if (!maxDate || d > maxDate) maxDate = d; }
+  }
+  result.statusBreakdown = statusBreakdown;
+  result.dateSpan = { min: minDate, max: maxDate };
+
   // Apply status + date-range filters (e.g. only DEFINITE/CLOSED from 2026-01-01)
-  // at the list level, before spending detail fetches on events we won't import.
+  // on the enriched rows.
   const wantStatuses = (opts.statuses || []).map((s) => String(s).trim().toUpperCase()).filter(Boolean);
-  let filtered = fetched.events;
+  let filtered = enrichedAll;
   if (wantStatuses.length) filtered = filtered.filter((e) => wantStatuses.includes(evStatusOf(e)));
   if (opts.since) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d >= opts.since!; });
   if (opts.until) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d <= opts.until!; });
   result.filters = { statuses: wantStatuses, since: opts.since, until: opts.until };
   result.eventsFound = filtered.length;
 
-  // Enrich with per-event detail (financials, guest count) — all events on
-  // commit, a small sample on preview — concurrency-capped to avoid timeouts.
-  const list = filtered.slice(0, opts.maxEvents);
-  const detailCount = opts.commit ? list.length : Math.min(3, list.length);
-  const enriched = await pool(list, 8, async (e, i) => {
-    const id = firstDefined(dig(e, "id"), dig(e, "event_id"));
-    if (i < detailCount && id != null) {
-      const r = await fetch(`${TS_BASE}/v1/events/${id}.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
-      if (r.status >= 200 && r.status < 300) {
-        const d = await r.json().catch(() => null);
-        const dd = itemOf((d && (d.event || d.result || d)) || {}, "event");
-        return { ...e, ...dd };
-      }
-    }
-    return e;
-  });
-
+  const enriched = filtered.slice(0, opts.maxEvents);
   const mapped = enriched.map((e) => mapEvent(e, venueName));
   result.sample = mapped.slice(0, 3).map((m, i) => ({ extId: m.extId, payload: m.payload, raw: enriched[i] }));
 
