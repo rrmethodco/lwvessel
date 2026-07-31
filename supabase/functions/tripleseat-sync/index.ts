@@ -329,75 +329,102 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
   return { extId, payload };
 }
 
-// Fetch a bounded set of events for a location. Server-side location filtering
-// (param name varies) is best-effort; we ALSO filter client-side by matching the
-// event's own location to the target id/name, so a wrong/ignored filter param
-// can never import another location's events.
-async function fetchLocationEvents(token: string, locId: any, locName: string, maxPages: number) {
-  const per = 100;
-  const attempts = [
-    (p: number) => `/v1/events.json?location_id=${locId}&per_page=${per}&page=${p}`,
-    (p: number) => `/v1/events.json?location_ids[]=${locId}&per_page=${per}&page=${p}`,
-    (p: number) => `/v1/events.json?per_page=${per}&page=${p}`,
-  ];
-  const norm = (s: any) => String(s ?? "").trim().toLowerCase();
-  const wantId = String(locId), wantName = norm(locName);
-  const matchesLoc = (e: any) => {
-    const eid = firstDefined(dig(e, "location_id"), dig(e, "location.id"));
-    const enm = firstDefined(dig(e, "location_name"), dig(e, "location.name"), dig(e, "location"));
-    if (eid != null && String(eid) === wantId) return true;
-    if (enm != null && norm(enm) === wantName) return true;
-    // If the event carries no location info at all, keep it only when we trusted
-    // a server-side filter (attempt 0/1); attempt 2 is unfiltered, so drop it.
-    return eid == null && enm == null;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Fetch a location's events via the SEARCH endpoint, one status at a time.
+//
+// Hard-won lessons (verified empirically against the live API — see the CSV
+// report that has 527 real 2026 events for this location):
+//  - GET /v1/events.json IGNORES location_id and every date param, and returns
+//    events OLDEST-first, so paging it only ever surfaced ancient dead leads.
+//  - GET /v1/events/search.json returns FULL event objects (financials, guest
+//    count, booking, account — no per-event detail fetch needed) as
+//    { total_pages, results: [ {event:{…}} ] }, 50 per page.
+//  - It honours `status`, `order=event_start` and `sort_direction=desc`. Date
+//    params are all ignored, and location_id only biases (≈60% match), so we
+//    filter location + date range CLIENT-side.
+//  - Ordering by event_start desc + a real status (DEFINITE/CLOSED/TENTATIVE)
+//    lands directly on the 2026 bookings; the junk far-future placeholder dates
+//    (2035, 2609, …) live only on PROSPECT/LOST leads, which we don't request.
+//
+// So: for each wanted status, page desc, keep this location's in-range events,
+// and stop once a page's newest event predates `since` (everything older
+// follows). Deleted/test bookings are skipped.
+async function fetchLocationEventsSearch(
+  token: string,
+  locId: any,
+  opts: { statuses: string[]; since: string | null; until: string | null; maxPagesPerStatus: number },
+) {
+  const wantStatuses = (opts.statuses && opts.statuses.length ? opts.statuses : ["DEFINITE", "CLOSED", "TENTATIVE"])
+    .map((s) => String(s).trim().toUpperCase()).filter(Boolean);
+  const collected = new Map<string, any>();
+  const pagesByStatus: Record<string, number> = {};
+  let scanned = 0, truncated = false, rateLimited = false;
+  const CONC = 5; // pages fetched concurrently per wave (search endpoint is ~4s/call)
+
+  // Fetch one page, retrying through rate limits.
+  const fetchPage = async (st: string, page: number): Promise<{ rows: any[]; totalPages: number }> => {
+    for (let retry = 0; retry <= 3; retry++) {
+      const u = `/v1/events/search.json?location_id=${locId}&status=${encodeURIComponent(st)}&order=event_start&sort_direction=desc&page=${page}`;
+      const r = await fetch(`${TS_BASE}${u}`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
+      if (r.status === 429) { rateLimited = true; await sleep(1200 * (retry + 1)); continue; }
+      if (r.status < 200 || r.status >= 300) return { rows: [], totalPages: 0 };
+      const j = await r.json().catch(() => null);
+      return { rows: ((j && j.results) || []).map((e: any) => itemOf(e, "event")), totalPages: (j && j.total_pages) || 1 };
+    }
+    return { rows: [], totalPages: 0 };
   };
 
-  for (let a = 0; a < attempts.length; a++) {
-    const build = attempts[a];
-    // Probe page 1 to see if this param shape is accepted.
-    const first = await fetch(`${TS_BASE}${build(1)}`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
-    if (first.status < 200 || first.status >= 300) continue;
-    const j1 = await first.json().catch(() => null);
-    const arr1 = unwrap(j1) || [];
-    // Pull remaining pages in parallel (bounded).
-    const rest = await Promise.all(
-      Array.from({ length: Math.max(0, maxPages - 1) }, (_, i) => i + 2).map(async (p) => {
-        const r = await fetch(`${TS_BASE}${build(p)}`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
-        if (r.status < 200 || r.status >= 300) return [] as any[];
-        const j = await r.json().catch(() => null);
-        return unwrap(j) || [];
-      }),
-    );
-    // Unwrap the per-item { event: {...} } wrapper Tripleseat uses.
-    const all = [arr1, ...rest].flat().map((e) => itemOf(e, "event"));
-    // Dedupe by event id — guards against Tripleseat ignoring the `page` param
-    // and returning the same page repeatedly (which would also break the upsert).
-    const seen = new Set<string>();
-    const uniq = all.filter((e) => {
+  // Collect this location's in-range events from a page; return the page's
+  // newest event date (used to know when we've paged past `since`).
+  const processRows = (rows: any[]): string => {
+    let pageMax = "";
+    for (const e of rows) {
+      const d = evDateOf(e);
+      if (d && d > pageMax) pageMax = d;
+      if (String(firstDefined(dig(e, "location_id"), dig(e, "location.id")) ?? "") !== String(locId)) continue;
+      if (firstDefined(dig(e, "deleted_at"), dig(e, "booking.deleted_at"))) continue; // skip deleted/test bookings
+      if (opts.since && d && d < opts.since) continue;
+      if (opts.until && d && d > opts.until) continue;
       const id = String(firstDefined(dig(e, "id"), dig(e, "event_id"), ""));
-      if (!id || seen.has(id)) return false;
-      seen.add(id); return true;
-    });
-    const matched = uniq.filter(matchesLoc);
-    const truncated = arr1.length === per && rest.length > 0 && rest[rest.length - 1].length === per;
-    return { events: matched, rawCount: all.length, uniqueCount: uniq.length, param: a === 0 ? "location_id" : a === 1 ? "location_ids[]" : "none(client-filtered)", truncated };
+      if (id) collected.set(id, e);
+    }
+    return pageMax;
+  };
+
+  for (const st of wantStatuses) {
+    // Page 1 tells us total_pages; every subsequent page fetched in concurrent
+    // waves, stopping the wave after any page's newest event predates `since`
+    // (desc order → the rest are older). We may over-read up to CONC-1 pages
+    // past the boundary; those rows are simply filtered out.
+    const p1 = await fetchPage(st, 1);
+    scanned += p1.rows.length;
+    let stop = !p1.rows.length;
+    const p1Max = processRows(p1.rows);
+    if (opts.since && p1Max && p1Max < opts.since) stop = true;
+    pagesByStatus[st] = 1;
+    const totalPages = Math.min(p1.totalPages || 1, opts.maxPagesPerStatus);
+    let next = 2;
+    while (!stop && next <= totalPages) {
+      const batch: number[] = [];
+      for (let p = next; p < next + CONC && p <= totalPages; p++) batch.push(p);
+      const res = await Promise.all(batch.map((p) => fetchPage(st, p).then((r) => ({ p, ...r }))));
+      res.sort((a, b) => a.p - b.p);
+      for (const rr of res) {
+        scanned += rr.rows.length;
+        const mx = processRows(rr.rows);
+        pagesByStatus[st] = Math.max(pagesByStatus[st] || 0, rr.p);
+        if (!rr.rows.length) stop = true;
+        if (opts.since && mx && mx < opts.since) stop = true;
+      }
+      next += CONC;
+      if (next > opts.maxPagesPerStatus) { truncated = true; break; }
+      if (!stop) await sleep(120);
+    }
   }
-  return { events: [] as any[], rawCount: 0, uniqueCount: 0, param: "none", truncated: false };
+  return { events: [...collected.values()], scanned, truncated, rateLimited, pagesByStatus, statusesQueried: wantStatuses };
 }
 
-// Simple concurrency-capped map (Tripleseat detail fetches — avoid N+1 blowups).
-async function pool<T, R>(items: T[], limit: number, fn: (t: T, i: number) => Promise<R>): Promise<R[]> {
-  const out: R[] = new Array(items.length);
-  let idx = 0;
-  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (idx < items.length) {
-      const i = idx++;
-      out[i] = await fn(items[i], i);
-    }
-  });
-  await Promise.all(workers);
-  return out;
-}
 
 // Status + date accessors used to filter the fetched event list before we spend
 // detail fetches on events we won't import.
@@ -434,38 +461,26 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
     return result;
   }
 
-  const fetched = await fetchLocationEvents(token, loc.matched.id, loc.matched.name, 15);
-  result.locationFilterParam = fetched.param;
-  result.eventsAtLocation = fetched.events.length;
-  result.rawEventsScanned = fetched.rawCount;
-  result.truncated = fetched.truncated;
-
-  // Tripleseat's events LIST rows do NOT reliably carry status or the event
-  // date — those only appear in the per-event detail payload. So we must drill
-  // detail FIRST and filter on the enriched rows; filtering the list rows drops
-  // everything (empty status/date never matches). Bounded to avoid timeouts.
-  const ENRICH_CAP = 300;
-  const toEnrich = fetched.events.slice(0, ENRICH_CAP);
-  result.enrichCapped = fetched.events.length > ENRICH_CAP;
-  const enrichedAll = await pool(toEnrich, 12, async (e) => {
-    const id = firstDefined(dig(e, "id"), dig(e, "event_id"));
-    if (id == null) return e;
-    const r = await fetch(`${TS_BASE}/v1/events/${id}.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
-    if (r.status >= 200 && r.status < 300) {
-      const d = await r.json().catch(() => null);
-      const dd = itemOf((d && (d.event || d.result || d)) || {}, "event");
-      return { ...e, ...dd };
-    }
-    return e;
+  const wantStatuses = (opts.statuses || []).map((s) => String(s).trim().toUpperCase()).filter(Boolean);
+  // The search endpoint returns full event objects already scoped to the
+  // requested status/location/date window — no per-event detail fetch needed.
+  const fetched = await fetchLocationEventsSearch(token, loc.matched.id, {
+    statuses: wantStatuses, since: opts.since, until: opts.until, maxPagesPerStatus: 40,
   });
+  result.statusesQueried = fetched.statusesQueried;
+  result.pagesByStatus = fetched.pagesByStatus;
+  result.rawEventsScanned = fetched.scanned;
+  result.truncated = fetched.truncated;
+  result.rateLimited = fetched.rateLimited;
 
-  // Breakdown across ALL enriched events, so the preview can report what's
-  // actually in Tripleseat (status mix + date span) even when nothing matches
-  // the requested filter — this is how we tell "filter too narrow" apart from
-  // "this location only holds placeholder prospect leads".
+  const events = fetched.events;
+  result.eventsAtLocation = events.length;
+
+  // Status + date breakdown over the events we pulled (all already location- and
+  // window-scoped), so the preview can report what matched.
   const statusBreakdown: Record<string, number> = {};
   let minDate: string | null = null, maxDate: string | null = null;
-  for (const e of enrichedAll) {
+  for (const e of events) {
     const st = evStatusOf(e) || "(none)";
     statusBreakdown[st] = (statusBreakdown[st] || 0) + 1;
     const d = evDateOf(e);
@@ -473,18 +488,10 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
   }
   result.statusBreakdown = statusBreakdown;
   result.dateSpan = { min: minDate, max: maxDate };
-
-  // Apply status + date-range filters (e.g. only DEFINITE/CLOSED from 2026-01-01)
-  // on the enriched rows.
-  const wantStatuses = (opts.statuses || []).map((s) => String(s).trim().toUpperCase()).filter(Boolean);
-  let filtered = enrichedAll;
-  if (wantStatuses.length) filtered = filtered.filter((e) => wantStatuses.includes(evStatusOf(e)));
-  if (opts.since) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d >= opts.since!; });
-  if (opts.until) filtered = filtered.filter((e) => { const d = evDateOf(e); return d && d <= opts.until!; });
   result.filters = { statuses: wantStatuses, since: opts.since, until: opts.until };
-  result.eventsFound = filtered.length;
+  result.eventsFound = events.length;
 
-  const enriched = filtered.slice(0, opts.maxEvents);
+  const enriched = events.slice(0, opts.maxEvents);
   const mapped = enriched.map((e) => mapEvent(e, venueName));
   result.sample = mapped.slice(0, 3).map((m, i) => ({ extId: m.extId, payload: m.payload, raw: enriched[i] }));
 
