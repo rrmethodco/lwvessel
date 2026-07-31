@@ -271,20 +271,27 @@ async function resolveLocation(token: string, wanted: string) {
 function mapEvent(src: any, venueName: string): { extId: string; payload: any } {
   const extId = String(firstDefined(dig(src, "id"), dig(src, "event_id"), dig(src, "uid")));
   const rawName = firstDefined(pick(src, ["name", "event_name", "title"]), `Event ${extId}`);
-  const start = firstDefined(pick(src, ["event_start", "start_date", "event_date", "date", "start_time"]), dig(src, "event_start_at"));
-  const end = firstDefined(pick(src, ["event_end", "end_date", "end_time"]), dig(src, "event_end_at"));
+  // Prefer the ISO-8601 fields (unambiguous) over Tripleseat's M/D/Y strings.
+  const start = firstDefined(pick(src, ["event_start_iso8601", "event_date_iso8601", "start_date", "event_start", "event_date", "date", "start_time"]), dig(src, "event_start_at"));
+  const end = firstDefined(pick(src, ["event_end_iso8601", "event_end", "end_date", "end_time"]), dig(src, "event_end_at"));
   const statusRaw = firstDefined(pick(src, ["status", "event_status", "status_name"]), dig(src, "status.name"));
   const guests = toNum(firstDefined(
-    pick(src, ["guest_count", "expected_headcount", "final_headcount", "actual_headcount", "headcount", "guests", "expected_count", "guaranteed_count"]),
+    pick(src, ["guest_count", "expected_headcount", "final_headcount", "actual_headcount", "headcount", "guests", "expected_count", "guaranteed_count", "guaranteed_guest_count"]),
+    dig(src, "forecast_event.estimated_guest_count"),
   ));
+  // Tripleseat keeps the event grand_total null until priced; the summed totals
+  // live on the parent booking, so fall back to those.
   const total = toNum(firstDefined(
-    pick(src, ["grand_total", "total", "total_amount", "revenue_total", "gross_total"]),
+    pick(src, ["grand_total", "total", "total_amount", "revenue_total", "gross_total", "actual_amount"]),
+    dig(src, "booking.total_event_grand_total"), dig(src, "booking.total_grand_total"), dig(src, "booking.total_actual_amount"),
     dig(src, "financials.grand_total"), dig(src, "financials.total"), dig(src, "totals.grand_total"),
   ));
   const deposit = toNum(firstDefined(
     pick(src, ["deposit", "deposit_total", "deposit_amount"]),
     dig(src, "financials.deposit"), dig(src, "financials.deposit_total"),
   ));
+  const rental = toNum(firstDefined(pick(src, ["rental_fee"]), dig(src, "booking.total_rental_fee")));
+  const fbMin = toNum(firstDefined(pick(src, ["food_and_beverage_min"]), dig(src, "booking.total_food_and_beverage_min")));
   const company = firstDefined(
     pick(src, ["account_name"]), dig(src, "account.name"),
     [dig(src, "contact.first_name"), dig(src, "contact.last_name")].filter(Boolean).join(" ") || undefined,
@@ -297,7 +304,7 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
   );
   const evType = firstDefined(pick(src, ["event_type", "event_type_name", "type_name", "type"]), dig(src, "event_type.name"));
   const market = firstDefined(pick(src, ["market_segment", "market_segment_name", "market"]), dig(src, "market_segment.name"));
-  const leadSource = firstDefined(pick(src, ["lead_source", "lead_source_name", "source", "referral_source"]), dig(src, "lead_source.name"));
+  const leadSource = firstDefined(pick(src, ["lead_source", "lead_source_name", "source", "referral_source"]), dig(src, "lead_source.name"), dig(src, "booking.lead.lead_source.name"));
   const inq = firstDefined(pick(src, ["inquiry_date", "created_at", "created", "created_on"]), dig(src, "lead.created_at"));
 
   const payload: any = {
@@ -316,7 +323,9 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
     inqDate: toDatePart(inq),
     tsTotal: total,
     deposit: deposit != null ? deposit : 0,
+    rental: rental != null ? rental : 0,
   };
+  if (fbMin != null) payload.fbMin = fbMin;
   return { extId, payload };
 }
 
