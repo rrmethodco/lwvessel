@@ -2452,10 +2452,16 @@ async function tsImportRun(commit){
       const breakdown=sb?('<div style="margin:4px 0;color:var(--muted);font-size:11px;">Across all '+atLoc+' at this location — status: '+sbStr
         +(span&&span.min?'; dates '+tsImpEsc(span.min)+' → '+tsImpEsc(span.max):'')+'.'
         +(n===0?' <span style="color:var(--warn,#c96);">Nothing matched — widen the status set or date range above.</span>':'')+'</div>'):'';
+      // When nothing matched, list the other Tripleseat locations this token can
+      // see so the user can point the venue at the right one (config.tripleseatLocation).
+      const locs=(data&&data.locationsAvailable)||[];
+      const otherLocs=(n===0&&locs.length>1)?('<details style="margin:4px 0;font-size:11px;"><summary style="cursor:pointer;color:var(--muted);">All '+locs.length+' Tripleseat locations your token can see</summary>'
+        +'<div style="margin:4px 0;max-height:180px;overflow:auto;">'+locs.map(l=>'<div style="padding:1px 0;'+(loc&&String(l.id)===String(loc.id)?'font-weight:700;':'')+'">'+tsImpEsc(l.name||'(unnamed)')+' <span style="color:var(--muted);">(id '+tsImpEsc(l.id)+')</span></div>').join('')+'</div></details>'):'';
       if(out)out.innerHTML='<div class="ts-diag">'
         +'<div style="font-weight:800;">Matched location: '+tsImpEsc(loc&&loc.name)+' <span style="color:var(--muted);">(id '+tsImpEsc(loc&&loc.id)+')</span></div>'
         +'<div style="margin:4px 0;"><b>'+n+'</b> of '+atLoc+' event'+(atLoc===1?'':'s')+' at this location match your filter (<span style="color:var(--muted);">'+fltDesc+'</span>)'+(data.truncated?' — note: location list was capped this run':'')+'. Nothing imported yet.</div>'
         +breakdown
+        +otherLocs
         +(rows?'<table style="border-collapse:collapse;font-size:11px;margin:6px 0;"><thead><tr style="color:var(--muted);text-transform:uppercase;font-size:8.5px;letter-spacing:.08em;"><td style="padding:0 10px 4px 0;">Event</td><td style="padding:0 10px 4px 0;">Date</td><td style="padding:0 10px 4px 0;">Status</td><td style="padding:0 10px 4px 0;">Guests</td><td>TS total</td></tr></thead><tbody>'+rows+'</tbody></table>':'')
         +(n>0?'<button class="pill primary" id="ts-import-confirm"><span class="dot"></span>IMPORT '+n+' EVENT'+(n===1?'':'S')+' →</button>':'<div style="color:var(--muted);">No events to import.</div>')
         +'</div>';
