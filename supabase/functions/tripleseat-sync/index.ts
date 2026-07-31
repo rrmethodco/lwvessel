@@ -292,6 +292,9 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
   ));
   const rental = toNum(firstDefined(pick(src, ["rental_fee"]), dig(src, "booking.total_rental_fee")));
   const fbMin = toNum(firstDefined(pick(src, ["food_and_beverage_min"]), dig(src, "booking.total_food_and_beverage_min")));
+  // Event Actual = summed revenue categories (food + beverage + rental + …) BEFORE
+  // tax / service charge / admin fee — i.e. revenue excluding tax & gratuity.
+  const actual = toNum(firstDefined(pick(src, ["actual_amount"]), dig(src, "booking.total_event_actual_amount"), dig(src, "booking.total_actual_amount")));
   const company = firstDefined(
     pick(src, ["account_name"]), dig(src, "account.name"),
     [dig(src, "contact.first_name"), dig(src, "contact.last_name")].filter(Boolean).join(" ") || undefined,
@@ -303,7 +306,7 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
     [dig(src, "owner.first_name"), dig(src, "owner.last_name")].filter(Boolean).join(" ") || undefined,
   );
   const evType = firstDefined(pick(src, ["event_type", "event_type_name", "type_name", "type"]), dig(src, "event_type.name"));
-  const market = firstDefined(pick(src, ["market_segment", "market_segment_name", "market"]), dig(src, "market_segment.name"));
+  const market = firstDefined(pick(src, ["market_segment", "market_segment_name", "market"]), dig(src, "market_segment.name"), dig(src, "booking.market_segment"));
   const leadSource = firstDefined(pick(src, ["lead_source", "lead_source_name", "source", "referral_source"]), dig(src, "lead_source.name"), dig(src, "booking.lead.lead_source.name"));
   const inq = firstDefined(pick(src, ["inquiry_date", "created_at", "created", "created_on"]), dig(src, "lead.created_at"));
 
@@ -326,6 +329,13 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
     rental: rental != null ? rental : 0,
   };
   if (fbMin != null) payload.fbMin = fbMin;
+  // Actual revenue (ex tax & gratuity) and "Event Actual + Unmet Minimum": when
+  // the actual falls short of the F&B minimum, the client is still billed the
+  // minimum, so the recognised revenue is the greater of the two.
+  const actualV = actual != null ? actual : 0;
+  const fbmV = fbMin != null ? fbMin : 0;
+  payload.tsActual = actualV;
+  payload.tsActRev = Math.max(actualV, fbmV);
   return { extId, payload };
 }
 
@@ -501,7 +511,7 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
       mapped.slice(0, 3).map((m, i) => ({
         run_id: `import-${venue}`,
         label: `event:${m.extId}`,
-        url: "/v1/events/{id}.json",
+        url: "/v1/events/search.json",
         status: 200,
         ok: true,
         shape: "event",
@@ -569,7 +579,7 @@ Deno.serve(async (req: Request) => {
   // ---- IMPORT mode: populate this venue's beo_events from Tripleseat ----
   if (mode === "import") {
     const commit = !!(body && body.commit) || url.searchParams.get("commit") === "true";
-    const maxEvents = Math.max(1, Math.min(1000, +(body?.maxEvents ?? url.searchParams.get("maxEvents") ?? 500) || 500));
+    const maxEvents = Math.max(1, Math.min(10000, +(body?.maxEvents ?? url.searchParams.get("maxEvents") ?? 5000) || 5000));
     const statuses = Array.isArray(body?.statuses) ? body.statuses
       : (url.searchParams.get("statuses") ? url.searchParams.get("statuses")!.split(",") : []);
     const since = (body?.since || url.searchParams.get("since") || null) as string | null;
