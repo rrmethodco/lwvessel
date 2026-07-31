@@ -205,6 +205,13 @@ function firstDefined(...vals: any[]): any {
   for (const v of vals) if (v !== null && v !== undefined && v !== "") return v;
   return undefined;
 }
+// Tripleseat wraps each collection item under a singular key
+// (e.g. { location: {...} }, { event: {...} }). Descend into that wrapper when
+// present so field access works on the real record.
+function itemOf(o: any, key: string): any {
+  if (o && typeof o === "object" && o[key] && typeof o[key] === "object" && !Array.isArray(o[key])) return o[key];
+  return o;
+}
 function toNum(v: any): number | null {
   if (v === null || v === undefined || v === "") return null;
   const n = typeof v === "number" ? v : parseFloat(String(v).replace(/[$,]/g, ""));
@@ -245,12 +252,17 @@ async function resolveLocation(token: string, wanted: string) {
   const r = await fetch(`${TS_BASE}/v1/locations.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
   const status = r.status;
   const j = await r.json().catch(() => null);
-  const arr = unwrap(j) || [];
+  const rawArr = unwrap(j) || [];
+  const arr = rawArr.map((l: any) => itemOf(l, "location"));
   const norm = (s: any) => String(s ?? "").trim().toLowerCase();
   const want = norm(wanted);
-  const all = arr.map((l: any) => ({ id: firstDefined(l.id, l.location_id), name: firstDefined(l.name, l.location_name, l.title) }));
+  const all = arr.map((l: any) => ({
+    id: firstDefined(l.id, l.location_id, l.uid),
+    name: firstDefined(l.name, l.location_name, l.title, l.display_name, l.label),
+  }));
   const hit = all.find((l: any) => norm(l.name) === want) || all.find((l: any) => want.length > 2 && norm(l.name).includes(want));
-  return { matched: hit || null, locations: all, status };
+  // Keep a raw first item so we can see the true field shape if matching fails.
+  return { matched: hit || null, locations: all, status, rawSample: rawArr[0] ?? null };
 }
 
 // Map one Tripleseat event (list row merged with detail) to a beo_events payload.
@@ -347,7 +359,8 @@ async function fetchLocationEvents(token: string, locId: any, locName: string, m
         return unwrap(j) || [];
       }),
     );
-    const all = [arr1, ...rest].flat();
+    // Unwrap the per-item { event: {...} } wrapper Tripleseat uses.
+    const all = [arr1, ...rest].flat().map((e) => itemOf(e, "event"));
     // Dedupe by event id — guards against Tripleseat ignoring the `page` param
     // and returning the same page repeatedly (which would also break the upsert).
     const seen = new Set<string>();
@@ -394,6 +407,7 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
     locationStatus: loc.status,
     matchedLocation: loc.matched,
     locationsAvailable: loc.locations,
+    rawLocationSample: loc.rawSample,
     commit: opts.commit,
   };
   if (!loc.matched || loc.matched.id == null) {
@@ -417,7 +431,7 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
       const r = await fetch(`${TS_BASE}/v1/events/${id}.json`, { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } });
       if (r.status >= 200 && r.status < 300) {
         const d = await r.json().catch(() => null);
-        const dd = (d && (d.event || d.result || d)) || {};
+        const dd = itemOf((d && (d.event || d.result || d)) || {}, "event");
         return { ...e, ...dd };
       }
     }
