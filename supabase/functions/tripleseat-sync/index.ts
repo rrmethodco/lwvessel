@@ -306,6 +306,16 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
     [dig(src, "owner.first_name"), dig(src, "owner.last_name")].filter(Boolean).join(" ") || undefined,
   );
   const evType = firstDefined(pick(src, ["event_type", "event_type_name", "type_name", "type"]), dig(src, "event_type.name"));
+  // Room(s): Tripleseat attaches a `rooms` array of {name} (an event can span
+  // several). Join the assigned room names so the app can show + filter by room.
+  const roomsArr = pick(src, ["rooms"]);
+  let room = "";
+  if (Array.isArray(roomsArr)) {
+    room = roomsArr
+      .map((r: any) => String(firstDefined(r?.name, r?.room_name, r?.title, "") || "").trim())
+      .filter(Boolean).join(", ");
+  }
+  if (!room) room = String(firstDefined(dig(src, "room.name"), pick(src, ["room_name", "room"]), "") || "").trim();
   const market = firstDefined(pick(src, ["market_segment", "market_segment_name", "market"]), dig(src, "market_segment.name"), dig(src, "booking.market_segment"));
   const leadSource = firstDefined(pick(src, ["lead_source", "lead_source_name", "source", "referral_source"]), dig(src, "lead_source.name"), dig(src, "booking.lead.lead_source.name"));
   const inq = firstDefined(pick(src, ["inquiry_date", "created_at", "created", "created_on"]), dig(src, "lead.created_at"));
@@ -319,6 +329,7 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
     guests: guests != null ? guests : 50,
     status: statusRaw ? String(statusRaw).trim().toUpperCase() : "",
     evType: evType ? String(evType) : "",
+    room: room || "",
     market: market ? String(market) : "",
     company: company ? String(company) : "",
     salesperson: salesperson ? String(salesperson) : "",

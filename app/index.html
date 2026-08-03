@@ -317,7 +317,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div id="ts-import-out" style="margin:6px 0;"></div>
   <div id="ts-sync-out" style="margin:6px 0;"></div>
   <div class="bstrip" id="ev-kpis"></div>
-  <div id="ev-grp-btn" style="display:flex;justify-content:flex-end;margin:10px 0 4px;"></div>
+  <div id="ev-grp-btn" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 4px;"></div>
   <div class="scroll"><table class="alloc evlist" id="ev-list"></table></div>
   <div class="emptybox" id="ev-empty" style="display:none;">No events yet.<br><b>＋ New Event</b> starts a fresh inquiry from the house defaults.</div>
 </section>
@@ -870,7 +870,7 @@ function blankEvent(){
     burden:R.burden,mgmtPct:R.mgmtPct,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
 }
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','tsActual','tsActRev','beoUploaded','approved','closePct'];
-const EV_STR=['tab','name','date','discLbl','evType','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
+const EV_STR=['tab','name','date','discLbl','evType','room','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized','Removed'];
 const beoRemoved=ev=>String(ev&&ev.beoStatus||'')==='Removed';   /* Removed = out of the pipeline; zeroes its total/revenue/EBITDA */
@@ -908,6 +908,7 @@ function sanEv(o){
 let BEOS=[];
 let ESORT={key:'date',dir:1};
 let EV_GROUP=1; /* group event list by month with sub-headers */
+let EV_ROOM='';  /* '' = all rooms; else only events assigned to this room */
 let BEOD=null;
 const BEOEDIT=true;              /* cells are always live — no edit mode */
 let BEOSNAP=null, SNAP_ID=null;  /* last-saved payload of the open event */
@@ -1377,17 +1378,21 @@ function buildEvents(){
     return;
   }
   t.style.display='';empty.style.display='none';
-  let totGrand=0,totRev=0,totEb=0,totGuests=0;
-  const rows=BEOS.map(ev=>{
+  const allRows=BEOS.map(ev=>{
     const C=beoCalcFor(ev);
     const rm=beoRemoved(ev);
     /* a Removed BEO contributes nothing to the pipeline */
     const E={grand:rm?0:C.grand,rev:rm?0:C.rev,ebitda:rm?0:C.ebitda,guests:rm?0:(+ev.guests||0)};
-    totGrand+=E.grand;totRev+=E.rev;totEb+=E.ebitda;totGuests+=E.guests;
     return {ev,C,E,rm};
   });
+  /* distinct rooms across the venue's events → drives the Room filter dropdown */
+  const roomsAvail=[...new Set(allRows.map(r=>String(r.ev.room||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  if(EV_ROOM&&!roomsAvail.includes(EV_ROOM))EV_ROOM='';   /* drop a stale filter (e.g. after venue switch) */
+  const rows=EV_ROOM?allRows.filter(r=>String(r.ev.room||'').trim()===EV_ROOM):allRows;
+  let totGrand=0,totRev=0,totEb=0,totGuests=0;
+  rows.forEach(({E})=>{totGrand+=E.grand;totRev+=E.rev;totEb+=E.ebitda;totGuests+=E.guests;});
   strip('ev-kpis',[
-    ['Events',String(BEOS.length),totGuests.toLocaleString()+' guests total'],
+    ['Events',String(rows.length)+(EV_ROOM?' / '+BEOS.length:''),totGuests.toLocaleString()+' guests total'+(EV_ROOM?' · '+beoEsc(EV_ROOM):'')],
     /* 'Estimated billings' (Est. Total) card hidden for now — see col-esttotal */
     ['Estimated revenue',bf0(totRev),'ex-tax · incl. cash-bar estimates'],
     ['Estimated EBITDA',bf0(totEb),totRev?fpc(totEb/totRev*100)+' blended margin':'—']]);
@@ -1396,6 +1401,7 @@ function buildEvents(){
     name:{get:r=>(r.ev.tab||r.ev.name||'').toLowerCase(),str:1},
     date:{get:r=>{const t=evDateTs(r.ev);return t===null?8.64e15:t;}},
     type:{get:r=>(r.ev.evType||'').toLowerCase(),str:1},
+    room:{get:r=>(r.ev.room||'').toLowerCase(),str:1},
     status:{get:r=>(r.ev.status||'').toLowerCase(),str:1},
     close:{get:r=>{const s=String(r.ev.status||'').trim().toUpperCase();if(s==='DEFINITE'||s==='CLOSED')return 100;return r.ev.closePct==null||r.ev.closePct===''?-1:+r.ev.closePct;}},
     guests:{get:r=>+r.ev.guests||0},
@@ -1409,11 +1415,13 @@ function buildEvents(){
     const sc=ESK[ESORT.key];
     rows.sort((a,b)=>{const av=sc.get(a),bv=sc.get(b);return sc.str?String(av).localeCompare(String(bv))*ESORT.dir:((av-bv)*ESORT.dir);});
   }
-  const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['status','Status','li',''],['close','Likelihood','li',''],['guests','Guests','',''],['grand','Est. Total','',''],['rev','Est. Revenue','',''],['actrev','Act. Revenue','',''],['ebitda','Est. EBITDA','',''],['margin','Est. Margin','',''],['beo','BEO status','li','min-width:140px;']];
+  const EH=[['name','Event','li','min-width:210px;'],['date','Event date','li','min-width:110px;'],['type','Type','li',''],['room','Room','li','min-width:120px;'],['status','Status','li',''],['close','Likelihood','li',''],['guests','Guests','',''],['grand','Est. Total','',''],['rev','Est. Revenue','',''],['actrev','Act. Revenue','',''],['ebitda','Est. EBITDA','',''],['margin','Est. Margin','',''],['beo','BEO status','li','min-width:140px;']];
   /* Act. Revenue = Tripleseat "Event Actual + Unmet Minimum" (ex tax & gratuity), stored on import. */
   const actRevOf=ev=>{const v=(ev.tsActRev!=null&&ev.tsActRev!=='')?+ev.tsActRev:((ev.tsActual!=null&&ev.tsActual!=='')?+ev.tsActual:null);return (v==null||isNaN(v))?null:v;};
   const earr=k=>ESORT.key===k?(ESORT.dir>0?' ▲':' ▼'):'';
   const grpBtn=`<button data-evgrp="1" title="Group events by month" style="appearance:none;border:1px solid var(--line-strong);background:${EV_GROUP?'var(--tint)':'#fff'};color:${EV_GROUP?'var(--accent-deep)':'var(--muted)'};border-radius:4px;padding:2px 9px;font-size:9px;font-weight:800;letter-spacing:.06em;cursor:pointer;font-family:inherit;">${EV_GROUP?'✓ MONTHLY':'GROUP BY MONTH'}</button>`;
+  /* Room filter: only shown once the venue has any room-tagged events */
+  const roomFilter=roomsAvail.length?`<label style="display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:800;letter-spacing:.06em;color:var(--muted);">ROOM<select id="ev-room-filt" title="Filter events by room" style="appearance:none;border:1px solid ${EV_ROOM?'var(--accent-deep)':'var(--line-strong)'};background:${EV_ROOM?'var(--tint)':'#fff'};color:${EV_ROOM?'var(--accent-deep)':'var(--ink)'};border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;max-width:220px;"><option value="">All rooms</option>${roomsAvail.map(r=>`<option value="${attEsc(r)}"${EV_ROOM===r?' selected':''}>${beoEsc(r)}</option>`).join('')}</select></label>`:'<span></span>';
   let h=`<tr>`+EH.map(([k,lbl,cls,st])=>`<th class="${cls}${k==='grand'?' col-esttotal':''}" data-es="${k}" style="cursor:pointer;user-select:none;${st}" title="Sort by ${lbl}">${lbl}${earr(k)}</th>`).join('')+`</tr>`;
   const bstOpts=ev=>['',...BEO_STATUS].map(o=>`<option value="${attEsc(o)}"${(ev.beoStatus||'')===o?' selected':''}>${o?beoEsc(o):'— set status —'}</option>`).join('');
   const rowHtml=({ev,C,E,rm})=>{
@@ -1428,6 +1436,7 @@ function buildEvents(){
     return `<tr class="evrow${rm?' ev-removed':''}" data-open="${ev._id}"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>
 <td class="li" style="white-space:nowrap;"><span style="font-weight:600;">${beoEsc(evShortDate(ev))}</span>${ev.startTime?`<span class="evsub">${beoEsc(ev.startTime+(ev.endTime?'–'+ev.endTime:''))}</span>`:''}</td>
 <td class="li">${ev.evType?`<span class="typechip">${beoEsc(ev.evType)}</span>`:'<span style="color:var(--muted);">—</span>'}</td>
+<td class="li">${ev.room?beoEsc(ev.room):'<span style="color:var(--muted);">—</span>'}</td>
 <td class="li">${statusChip(ev.status)}</td>
 <td class="li">${cpCell}</td>
 <td>${ev.guests}</td>
@@ -1440,7 +1449,7 @@ function buildEvents(){
   };
   const subRow=(g)=>{
     let sg=0,sr=0,se=0,su=0,sa=0;g.rows.forEach(({ev,E,rm})=>{sg+=E.grand;sr+=E.rev;se+=E.ebitda;su+=E.guests;if(!rm){const a=actRevOf(ev);if(a!=null)sa+=a;}});
-    return `<tr class="ev-subtotal"><td class="li" style="font-weight:800;">${beoEsc(g.label)} subtotal</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${su.toLocaleString()}</td><td class="col-esttotal" style="font-weight:800;">${bf2(sg)}</td><td style="font-weight:800;">${bf2(sr)}</td><td style="font-weight:800;">${bf2(sa)}</td><td style="font-weight:800;color:${se>=0?'var(--pos)':'var(--neg)'};">${bf2(se)}</td><td style="color:var(--muted);">${sr?fpc(se/sr*100):'—'}</td><td class="li"></td></tr>`;
+    return `<tr class="ev-subtotal"><td class="li" style="font-weight:800;">${beoEsc(g.label)} subtotal</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${su.toLocaleString()}</td><td class="col-esttotal" style="font-weight:800;">${bf2(sg)}</td><td style="font-weight:800;">${bf2(sr)}</td><td style="font-weight:800;">${bf2(sa)}</td><td style="font-weight:800;color:${se>=0?'var(--pos)':'var(--neg)'};">${bf2(se)}</td><td style="color:var(--muted);">${sr?fpc(se/sr*100):'—'}</td><td class="li"></td></tr>`;
   };
   if(EV_GROUP){
     const groups=new Map();
@@ -1455,12 +1464,12 @@ function buildEvents(){
     });
     /* grand total across every month */
     let aG=0,aR=0,aE=0,aU=0,aA=0;rows.forEach(({ev,E,rm})=>{aG+=E.grand;aR+=E.rev;aE+=E.ebitda;aU+=E.guests;if(!rm){const a=actRevOf(ev);if(a!=null)aA+=a;}});
-    h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td class="col-esttotal">${bf2(aG)}</td><td>${bf2(aR)}</td><td>${bf2(aA)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
+    h+=`<tr class="ev-grandtotal"><td class="li">All months — grand total</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td>${aU.toLocaleString()}</td><td class="col-esttotal">${bf2(aG)}</td><td>${bf2(aR)}</td><td>${bf2(aA)}</td><td style="color:${aE>=0?'var(--pos)':'var(--neg)'};">${bf2(aE)}</td><td>${aR?fpc(aE/aR*100):'—'}</td><td class="li"></td></tr>`;
   }else{
     rows.forEach(r=>h+=rowHtml(r));
   }
   t.innerHTML=h;
-  const gb=document.getElementById('ev-grp-btn');if(gb)gb.innerHTML=grpBtn;
+  const gb=document.getElementById('ev-grp-btn');if(gb)gb.innerHTML=roomFilter+grpBtn;
 }
 
 /* ---------------- estimated monthly P&L ---------------- */
@@ -2206,6 +2215,7 @@ document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-
 document.addEventListener('change',e=>{
   const mm=e.target.closest('#mp-month');
   if(mm){MSEL=mm.value;MP_SEL=null;buildMonthly();return;}
+  if(e.target.id==='ev-room-filt'){EV_ROOM=e.target.value;buildEvents();return;}
   if(!canEdit())return;   /* read-only (external) members: view & drill down only, no writes */
   const ur=e.target.closest('[data-usrole]');
   if(ur){const email=ur.dataset.usrole;sb.from('app_users').update({role:ur.value}).eq('email',email).then(({error})=>{const m=document.getElementById('usr-msg');if(m)m.textContent=error?('Failed — '+error.message):(email+' → '+(ur.value==='admin'?'Admin':'Standard user'));buildUsers();});return;}
@@ -2335,7 +2345,7 @@ document.addEventListener('click',e=>{
   const eg=e.target.closest('[data-evgrp]');
   if(eg){EV_GROUP=EV_GROUP?0:1;buildEvents();return;}
   const es=e.target.closest('[data-es]');
-  if(es){const k=es.dataset.es;if(ESORT.key===k)ESORT.dir*=-1;else{ESORT.key=k;ESORT.dir=(k==='name'||k==='type'||k==='status'||k==='approver')?1:-1;}buildEvents();return;}
+  if(es){const k=es.dataset.es;if(ESORT.key===k)ESORT.dir*=-1;else{ESORT.key=k;ESORT.dir=(k==='name'||k==='type'||k==='room'||k==='status'||k==='approver')?1:-1;}buildEvents();return;}
   if(e.target.closest('[data-beostatus]')||e.target.closest('[data-close]'))return; /* let the change handler own these */
   const mpback=e.target.closest('[data-mpback]');
   if(mpback){MP_SEL=null;buildMonthly();return;}
