@@ -264,7 +264,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="login-card">
     <div class="login-brand">Method Co <span>Events &middot; BEO Pricing</span></div>
     <h1>Sign <em>in</em></h1>
-    <p class="lp">Enter your approved email to sign in &mdash; no password, no link.</p>
+    <p class="lp">Enter your email to sign in. Method Co staff and guest reviewers go straight in; other accounts get a one&#8209;click verification link.</p>
     <input id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="you@methodco.com">
     <button id="login-send" class="pill primary"><span class="dot"></span>SIGN IN</button>
     <div id="login-msg"></div>
@@ -2908,12 +2908,19 @@ async function emailLogin(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){loginMsg.className='err';loginMsg.textContent='Enter a valid email address.';return;}
   loginMsg.textContent='Signing in…';btn.disabled=true;
   try{
-    // Email-only sign-in: the edge function checks the allowlist and returns a
-    // session for approved addresses (no email/link/code is sent).
+    // Ask the edge function whether this email gets email-only sign-in (external
+    // read-only members + @methodco.com staff) or must verify via a magic link.
     const {data,error}=await sb.functions.invoke('email-login',{body:{email}});
-    if(error||!data||!data.ok||!data.access_token){
-      const msg=(data&&data.error)||(error&&error.message)||'Sign-in failed — please try again.';
-      loginMsg.className='err';loginMsg.textContent=msg;btn.disabled=false;return;
+    if(error&&!data){loginMsg.className='err';loginMsg.textContent='Sign-in failed — '+(error.message||'please try again.');btn.disabled=false;return;}
+    if(data&&data.needsMagicLink){
+      // Not eligible for email-only — send a verification magic link instead.
+      const {error:me}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname}});
+      if(me){loginMsg.className='err';loginMsg.textContent='Could not send the link — '+me.message;btn.disabled=false;return;}
+      loginMsg.className='ok';loginMsg.textContent='This account needs verification — a magic link is on its way to '+email+'. Click it to sign in (it can take a minute).';
+      btn.disabled=false;return;
+    }
+    if(!data||!data.ok||!data.access_token){
+      loginMsg.className='err';loginMsg.textContent=(data&&data.error)||'Sign-in failed — please try again.';btn.disabled=false;return;
     }
     const {error:se}=await sb.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token});
     if(se){loginMsg.className='err';loginMsg.textContent='Could not start your session — '+se.message;btn.disabled=false;return;}
