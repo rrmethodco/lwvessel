@@ -264,9 +264,9 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="login-card">
     <div class="login-brand">Method Co <span>Events &middot; BEO Pricing</span></div>
     <h1>Sign <em>in</em></h1>
-    <p class="lp">Enter your Method Co email and we&rsquo;ll send you a one&#8209;click magic link &mdash; no password needed.</p>
+    <p class="lp">Enter your approved email to sign in &mdash; no password, no link.</p>
     <input id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="you@methodco.com">
-    <button id="login-send" class="pill primary"><span class="dot"></span>SEND MAGIC LINK</button>
+    <button id="login-send" class="pill primary"><span class="dot"></span>SIGN IN</button>
     <div id="login-msg"></div>
   </div>
 </div>
@@ -2901,17 +2901,29 @@ function showLogin(){
   LOGIN.style.display='flex';
   const em=document.getElementById('login-email');if(em)setTimeout(()=>em.focus(),60);
 }
-async function sendMagicLink(){
+async function emailLogin(){
+  const btn=document.getElementById('login-send');
   const email=(document.getElementById('login-email').value||'').trim().toLowerCase();
   loginMsg.className='';
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){loginMsg.className='err';loginMsg.textContent='Enter a valid email address.';return;}
-  loginMsg.textContent='Sending…';
-  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname}});
-  if(error){loginMsg.className='err';loginMsg.textContent='Could not send the link — '+error.message;return;}
-  loginMsg.className='ok';loginMsg.textContent='Check your inbox — a magic link is on its way to '+email+'. Click it to sign in (it can take a minute).';
+  loginMsg.textContent='Signing in…';btn.disabled=true;
+  try{
+    // Email-only sign-in: the edge function checks the allowlist and returns a
+    // session for approved addresses (no email/link/code is sent).
+    const {data,error}=await sb.functions.invoke('email-login',{body:{email}});
+    if(error||!data||!data.ok||!data.access_token){
+      const msg=(data&&data.error)||(error&&error.message)||'Sign-in failed — please try again.';
+      loginMsg.className='err';loginMsg.textContent=msg;btn.disabled=false;return;
+    }
+    const {error:se}=await sb.auth.setSession({access_token:data.access_token,refresh_token:data.refresh_token});
+    if(se){loginMsg.className='err';loginMsg.textContent='Could not start your session — '+se.message;btn.disabled=false;return;}
+    // onAuthStateChange → enterApp takes over from here.
+  }catch(e){
+    loginMsg.className='err';loginMsg.textContent='Sign-in failed — '+(e&&e.message||e);btn.disabled=false;
+  }
 }
-document.getElementById('login-send').addEventListener('click',sendMagicLink);
-document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')sendMagicLink();});
+document.getElementById('login-send').addEventListener('click',emailLogin);
+document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')emailLogin();});
 document.getElementById('chname').addEventListener('click',async()=>{try{await sb.auth.signOut();}catch(e){}location.reload();});
 function showNotAuthorized(email){
   document.getElementById('appwrap').style.display='none';
