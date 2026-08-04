@@ -268,6 +268,23 @@ async function resolveLocation(token: string, wanted: string) {
 // Map one Tripleseat event (list row merged with detail) to a beo_events payload.
 // Only high-confidence "envelope" fields are set; line items / COGS need the
 // venue menu and are left empty for a first import (revenue totals still show).
+// Compact, ASCENDING booking timeline [{d:'YYYY-MM-DD', s:'STATUS'}] from
+// Tripleseat's status_changes (returned newest-first as
+// {status, created_at, previous_status}). This is what lets the app reconstruct
+// an event's status "as of" any calendar date for the PACE / on-the-books report.
+function statusHistOf(src: any): { d: string; s: string }[] {
+  const raw = pick(src, ["status_changes", "status_history"]);
+  if (!Array.isArray(raw) || !raw.length) return [];
+  const out: { d: string; s: string }[] = [];
+  for (const c of raw) {
+    const d = toDatePart(firstDefined(c?.created_at, c?.changed_at, c?.date, c?.updated_at));
+    const s = String(firstDefined(c?.status, c?.to_status, c?.name) || "").trim().toUpperCase();
+    if (d && s) out.push({ d, s });
+  }
+  out.sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+  return out;
+}
+
 function mapEvent(src: any, venueName: string): { extId: string; payload: any } {
   const extId = String(firstDefined(dig(src, "id"), dig(src, "event_id"), dig(src, "uid")));
   const rawName = firstDefined(pick(src, ["name", "event_name", "title"]), `Event ${extId}`);
@@ -347,6 +364,13 @@ function mapEvent(src: any, venueName: string): { extId: string; payload: any } 
   const fbmV = fbMin != null ? fbMin : 0;
   payload.tsActual = actualV;
   payload.tsActRev = Math.max(actualV, fbmV);
+  // Booking-pace history: the full status timeline + the date the event first
+  // reached a booked status (Definite/Closed) — powers the PACE report's
+  // "revenue on the books as of <date>" reconstruction.
+  const statusHist = statusHistOf(src);
+  payload.statusHist = statusHist;
+  const bookedEntry = statusHist.find((h) => h.s === "DEFINITE" || h.s === "CLOSED");
+  payload.bookedDate = bookedEntry ? bookedEntry.d : "";
   return { extId, payload };
 }
 
@@ -533,36 +557,102 @@ async function runImport(token: string, venue: string, opts: { commit: boolean; 
     );
   } catch (_e) { /* best-effort debug persistence */ }
 
+  // ---- Incremental plan: only NEW events or ones whose STATUS CHANGED are
+  // written. Existing events with the same status are left untouched so manual
+  // edits survive re-imports; the one exception is a lightweight backfill that
+  // adds the pace history (statusHist/bookedDate) to older rows that predate it,
+  // without disturbing any other field.
+  const seenIds = new Set<string>();
+  const deduped = mapped.filter((m) =>
+    m.extId && m.extId !== "undefined" && m.extId !== "null" && !seenIds.has(m.extId) && seenIds.add(m.extId)
+  );
+
+  const existing = new Map<string, { payload: any; position: number | null }>();
+  let maxPos = -1;
+  {
+    const { data: exRows } = await svc.from("beo_events")
+      .select("ext_id, payload, position")
+      .eq("venue", venue).eq("source", "tripleseat");
+    for (const r of (exRows || [])) {
+      existing.set(String(r.ext_id), { payload: r.payload || {}, position: r.position });
+      if (typeof r.position === "number" && r.position > maxPos) maxPos = r.position;
+    }
+  }
+
+  const norm = (s: any) => String(s || "").trim().toUpperCase();
+  // Insert and update rows are upserted in SEPARATE batches: inserts carry
+  // created_by_email, updates deliberately omit it (so a status change never
+  // rewrites the original creator). Mixing them in one upsert would null the
+  // column on the updated rows.
+  const toInsert: any[] = [];
+  const toUpdate: any[] = [];
+  const toBackfill: { extId: string; payload: any }[] = [];
+  let nInsert = 0, nUpdate = 0, nSkip = 0, nBackfill = 0;
+  let nextPos = maxPos + 1;
+  for (const m of deduped) {
+    const prev = existing.get(m.extId);
+    if (!prev) {
+      nInsert++;
+      toInsert.push({
+        venue, ext_id: m.extId, source: "tripleseat", payload: m.payload,
+        position: nextPos++, created_by_email: gateEmail, updated_by_email: gateEmail,
+      });
+      continue;
+    }
+    if (norm(prev.payload.status) !== norm(m.payload.status)) {
+      nUpdate++;
+      toUpdate.push({
+        venue, ext_id: m.extId, source: "tripleseat", payload: m.payload,
+        position: (typeof prev.position === "number" ? prev.position : nextPos++),
+        updated_by_email: gateEmail,
+      });
+      continue;
+    }
+    // Status unchanged. Backfill pace history only if the stored row lacks it,
+    // preserving every other (possibly hand-edited) field.
+    const prevHist = prev.payload.statusHist;
+    if ((!Array.isArray(prevHist) || !prevHist.length) && Array.isArray(m.payload.statusHist) && m.payload.statusHist.length) {
+      nBackfill++;
+      toBackfill.push({
+        extId: m.extId,
+        payload: { ...prev.payload, statusHist: m.payload.statusHist, bookedDate: m.payload.bookedDate },
+      });
+    } else {
+      nSkip++;
+    }
+  }
+  result.plan = { new: nInsert, statusChanged: nUpdate, paceBackfill: nBackfill, unchanged: nSkip, existingAtVenue: existing.size };
+
   if (!opts.commit) {
-    result.note = "PREVIEW ONLY — nothing written. Re-run with commit:true to import.";
+    result.note = `PREVIEW ONLY — nothing written. Would insert ${nInsert} new, update ${nUpdate} status-changed${nBackfill ? `, backfill pace history on ${nBackfill}` : ""}, and skip ${nSkip} unchanged. Re-run with commit:true to apply.`;
     return result;
   }
 
-  // Upsert every mapped event (idempotent on venue+ext_id). Dedupe defensively
-  // and drop any row without a usable ext_id (would break the conflict target).
-  const seenIds = new Set<string>();
-  const rows = mapped
-    .filter((m) => m.extId && m.extId !== "undefined" && m.extId !== "null" && !seenIds.has(m.extId) && seenIds.add(m.extId))
-    .map((m, i) => ({
-      venue,
-      ext_id: m.extId,
-      source: "tripleseat",
-      payload: m.payload,
-      position: i,
-      created_by_email: gateEmail,
-      updated_by_email: gateEmail,
-    }));
-  let upserted = 0; const errors: string[] = [];
-  // Chunk to keep each request modest.
-  for (let i = 0; i < rows.length; i += 50) {
-    const chunk = rows.slice(i, i + 50);
-    const { error, count } = await svc.from("beo_events")
-      .upsert(chunk, { onConflict: "venue,ext_id", ignoreDuplicates: false, count: "exact" });
-    if (error) errors.push(error.message);
-    else upserted += (count ?? chunk.length);
+  let written = 0; const errors: string[] = [];
+  for (const batch of [toInsert, toUpdate]) {
+    for (let i = 0; i < batch.length; i += 50) {
+      const chunk = batch.slice(i, i + 50);
+      const { error, count } = await svc.from("beo_events")
+        .upsert(chunk, { onConflict: "venue,ext_id", ignoreDuplicates: false, count: "exact" });
+      if (error) errors.push(error.message);
+      else written += (count ?? chunk.length);
+    }
   }
-  result.imported = upserted;
+  // Pace-history backfill: update payload only, leave audit/position as-is.
+  let backfilled = 0;
+  for (const b of toBackfill) {
+    const { error } = await svc.from("beo_events")
+      .update({ payload: b.payload })
+      .eq("venue", venue).eq("ext_id", b.extId);
+    if (error) errors.push(error.message); else backfilled++;
+  }
+  result.imported = nInsert;
+  result.updated = nUpdate;
+  result.paceBackfilled = backfilled;
+  result.unchanged = nSkip;
+  result.written = written;
   if (errors.length) result.upsertErrors = errors;
+  result.note = `Imported ${nInsert} new, updated ${nUpdate} status-changed, backfilled pace history on ${backfilled}, left ${nSkip} unchanged.`;
   return result;
 }
 
