@@ -278,6 +278,7 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <nav>
     <button data-nav="events" id="nav-events">Events</button>
     <button data-nav="monthly" id="nav-monthly">Est. Monthly P&amp;L</button>
+    <button data-nav="pace" id="nav-pace">Pace</button>
     <button data-nav="catalog" id="nav-catalog">Menu Catalog</button>
     <button data-nav="historicals" id="nav-historicals">Historicals</button>
     <button data-nav="compshop" id="nav-admin" style="display:none;">Admin</button>
@@ -658,6 +659,28 @@ table.alloc th.cs-hi{background:#dce6f4;}
   <div class="scroll"><table class="alloc evlist" id="mp-events" style="max-width:1100px;"></table></div>
 </section>
 
+<!-- ================= PACE / ON THE BOOKS ================= -->
+<section id="view-pace" class="view">
+  <div class="pagehead">
+    <div>
+      <h1>Booking <em>pace</em></h1>
+      <div style="color:var(--muted);font-size:11px;margin-top:2px;">Revenue on the books &mdash; reconstructed from each event's Tripleseat status history</div>
+    </div>
+    <div class="controls" style="margin:0;align-items:center;">
+      <span class="ctl-label">Period</span>
+      <select id="pc-period" class="drvin txt" style="width:150px;"></select>
+      <span class="ctl-label" style="margin-left:10px;">As of</span>
+      <input id="pc-asof" type="date" class="drvin txt" style="width:150px;">
+    </div>
+  </div>
+  <div class="bstrip" id="pc-kpis"></div>
+  <div style="font-family:Georgia,serif;font-size:14px;color:var(--ink);margin:22px 0 8px;">Pace ladder &mdash; revenue on the books as of each lookback date</div>
+  <div class="scroll"><table class="alloc" id="pc-ladder" style="max-width:900px;"></table></div>
+  <div style="font-family:Georgia,serif;font-size:14px;color:var(--ink);margin:22px 0 8px;">Events in this period</div>
+  <div class="scroll"><table class="alloc evlist" id="pc-events" style="max-width:1100px;"></table></div>
+  <div id="pc-note" style="color:var(--muted);font-size:10.5px;margin-top:10px;max-width:1000px;"></div>
+</section>
+
 </main>
 </div>
 
@@ -867,7 +890,8 @@ function blankEvent(){
     food:[],bev:[],other:[],barFee:[],
     cashOn:0,cashDrinks:0,cashPrice:12,cashCogs:R.cashCogs,cashPpg:0,cashInGrand:1,feeFlat:0,
     labor:[{r:'Server',n:2,h:4,rate:35},{r:'Bartender',n:1,h:4,rate:35}],
-    burden:R.burden,mgmtPct:R.mgmtPct,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',act:{},contract:null};
+    burden:R.burden,mgmtPct:R.mgmtPct,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',
+    statusHist:[],bookedDate:'',act:{},contract:null};
 }
 const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','tsActual','tsActRev','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','room','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
@@ -903,6 +927,10 @@ function sanEv(o){
   if(Array.isArray(o.labor))b.labor=o.labor.map(l=>({r:String((l&&l.r)!=null?l.r:'Server'),n:+(l&&l.n)||0,h:+(l&&l.h)||0,rate:+(l&&l.rate)||0}));
   if(o.act&&typeof o.act==='object')ACTF.forEach(k=>{const v=parseFloat(o.act[k]);if(!isNaN(v))b.act[k]=v;});
   b.contract=(Number.isInteger(o.contract)&&o.contract>=0&&o.contract<BEO_DEFS.length)?o.contract:null;
+  // Booking-pace history (from the Tripleseat import) — preserved verbatim so
+  // in-app edits round-trip without wiping the timeline the Pace report reads.
+  if(Array.isArray(o.statusHist))b.statusHist=o.statusHist.filter(h=>h&&h.d&&h.s).map(h=>({d:String(h.d),s:String(h.s).toUpperCase()}));
+  if(o.bookedDate!=null)b.bookedDate=String(o.bookedDate);
   return b;
 }
 let BEOS=[];
@@ -952,6 +980,7 @@ function parseHash(){
   const p=h.split('/');
   if(p[0]==='event'&&p[1])return {view:'event',id:p[1]};
   if(p[0]==='monthly')return {view:'monthly',id:null};
+  if(p[0]==='pace')return {view:'pace',id:null};
   if(p[0]==='users')return {view:'users',id:null};
   if(p[0]==='catalog')return {view:'catalog',id:null};
   if(p[0]==='historicals')return {view:'historicals',id:null};
@@ -968,11 +997,11 @@ function renderRoute(){
   const ADMIN_VIEWS=['compshop','compshop2','activity','users','venues'];
   if(ADMIN_VIEWS.includes(ROUTE.view)&&!isAdmin()){goto('events');return;}
   if((ROUTE.view==='compshop'||ROUTE.view==='compshop2')&&!(VCFG&&VCFG.compShop)){goto('activity');return;}
-  ['events','event','monthly','catalog','historicals','compshop','compshop2','activity','users','venues'].forEach(v=>{
+  ['events','event','monthly','pace','catalog','historicals','compshop','compshop2','activity','users','venues'].forEach(v=>{
     const el=document.getElementById('view-'+v);
     if(el)el.classList.toggle('on',ROUTE.view===v);
   });
-  ['events','monthly','catalog','historicals'].forEach(v=>{
+  ['events','monthly','pace','catalog','historicals'].forEach(v=>{
     const b=document.getElementById('nav-'+v);
     if(b)b.classList.toggle('on',ROUTE.view===v||(v==='events'&&ROUTE.view==='event'));
   });
@@ -981,6 +1010,7 @@ function renderRoute(){
   document.querySelectorAll('.admin-sub button').forEach(b=>b.classList.toggle('on',b.dataset.nav===ROUTE.view));
   if(ROUTE.view==='events')buildEvents();
   else if(ROUTE.view==='monthly')buildMonthly();
+  else if(ROUTE.view==='pace')buildPace();
   else if(ROUTE.view==='event'){
     BEOD=BEOS.find(e=>e._id===ROUTE.id)||null;
     if(!BEOD){goto('events');return;}
@@ -1567,6 +1597,128 @@ function buildMonthly(){
   });
   eh+=`<tr class="total"><td class="li">Total — ${grp.evs.length} event${grp.evs.length!==1?'s':''}</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${A.guests.toLocaleString()}</td><td style="font-weight:800;">${bf2(A.rev)}</td><td style="font-weight:800;color:${A.ebitda>=0?'var(--pos)':'var(--neg)'};">${bf2(A.ebitda)}</td><td>${A.rev?fpc(A.ebitda/A.rev*100):'—'}</td></tr>`;
   evtbl.innerHTML=eh;
+}
+
+/* ---------------- Booking pace / on the books ---------------- */
+let PACE_PERIOD=null, PACE_ASOF=null;   /* period key (year, or 'all'); as-of date YYYY-MM-DD */
+const PACE_BOOKED=new Set(['DEFINITE','CLOSED']);
+
+/* Local today / date arithmetic as YYYY-MM-DD (all pace dates are calendar-only). */
+function paceISO(d){const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+function paceToday(){return paceISO(new Date());}
+function paceShift(iso,days){return paceISO(new Date(Date.parse(iso+'T12:00:00')+days*86400000));}
+function paceFmt(iso){return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function paceIsBooked(st){return PACE_BOOKED.has(String(st||'').trim().toUpperCase());}
+
+/* Revenue on the books = the Tripleseat contracted value (actual, or the F&B
+   minimum floor when actual is short), falling back to the estimated event
+   revenue for hand-built events that carry no Tripleseat totals. NOTE: est.
+   revenue alone is ~0 for freshly-imported events (line items not priced), so
+   the Tripleseat total is the right basis for a sales pace report. */
+function paceRevOf(ev){
+  const a=(ev.tsActRev!=null&&ev.tsActRev!=='')?+ev.tsActRev:((ev.tsActual!=null&&ev.tsActual!=='')?+ev.tsActual:null);
+  if(a!=null&&!isNaN(a)&&a>0.5)return a;
+  const t=(ev.tsTotal!=null&&ev.tsTotal!=='')?+ev.tsTotal:null;
+  if(t!=null&&!isNaN(t)&&t>0.5)return t;
+  const C=beoCalcFor(ev);return +C.rev||0;
+}
+
+/* Reconstruct an event's status as of a calendar date (YYYY-MM-DD).
+   Returns {status, hist}: status is '' when the event was not yet in the
+   pipeline as of that date; hist is true when a real Tripleseat timeline drove
+   the answer (vs. a date-based fallback). */
+function paceStatusAsOf(ev,asOf){
+  const h=Array.isArray(ev.statusHist)?ev.statusHist:[];
+  if(h.length){
+    let cur='';
+    for(const e of h){if(!e.d)continue;if(e.d<=asOf)cur=e.s;else break;}   /* ascending timeline */
+    return {status:cur,hist:true};
+  }
+  /* No timeline — infer from whatever dates we have. */
+  const now=String(ev.status||'').trim().toUpperCase();
+  const bd=ev.bookedDate||'';
+  if(bd)return asOf>=bd?{status:(now||'DEFINITE'),hist:false}
+    :(ev.inqDate&&asOf>=ev.inqDate?{status:'TENTATIVE',hist:false}:{status:'',hist:false});
+  if(ev.inqDate)return asOf>=ev.inqDate?{status:(now||'TENTATIVE'),hist:false}:{status:'',hist:false};
+  return {status:now,hist:false};   /* nothing to reconstruct from — hold at current status */
+}
+
+/* Non-removed, dated events in the chosen period (year key, or 'all'). */
+function paceEventsForPeriod(period){
+  return BEOS.filter(ev=>{
+    if(beoRemoved(ev))return false;
+    const t=evDateTs(ev);if(t===null)return false;
+    return period==='all'||String(new Date(t).getFullYear())===String(period);
+  });
+}
+
+/* Booked + pipeline totals for a set of events as of a date. */
+function paceSnapshot(evs,asOf){
+  let n=0,rev=0,pipeN=0,pipeRev=0;
+  for(const ev of evs){
+    const st=paceStatusAsOf(ev,asOf).status;
+    if(!st)continue;
+    const r=paceRevOf(ev);
+    if(paceIsBooked(st)){n++;rev+=r;}
+    else if(st==='TENTATIVE'||st==='PROSPECT'){pipeN++;pipeRev+=r;}
+  }
+  return {n,rev,pipeN,pipeRev};
+}
+
+function buildPace(){
+  const selP=document.getElementById('pc-period'), inA=document.getElementById('pc-asof');
+  if(!selP||!inA)return;
+  const today=paceToday();
+  const years=[...new Set(BEOS.filter(ev=>!beoRemoved(ev)).map(ev=>{const t=evDateTs(ev);return t===null?null:new Date(t).getFullYear();}).filter(v=>v!=null))].sort();
+  const opts=[['all','All dated']].concat(years.map(y=>[String(y),String(y)]));
+  if(!PACE_PERIOD||!opts.some(o=>o[0]===PACE_PERIOD))PACE_PERIOD=years.length?String(years[years.length-1]):'all';
+  selP.innerHTML=opts.map(o=>`<option value="${o[0]}"${o[0]===PACE_PERIOD?' selected':''}>${beoEsc(o[1])}</option>`).join('');
+  if(!PACE_ASOF)PACE_ASOF=today;
+  if(PACE_ASOF>today)PACE_ASOF=today;
+  inA.value=PACE_ASOF;inA.max=today;
+
+  const evs=paceEventsForPeriod(PACE_PERIOD);
+  const asOf=PACE_ASOF, asOfLbl=paceFmt(asOf), label=PACE_PERIOD==='all'?'all dated events':PACE_PERIOD;
+  const snapNow=paceSnapshot(evs,today), snapAsOf=paceSnapshot(evs,asOf);
+  const dRev=snapNow.rev-snapAsOf.rev, dN=snapNow.n-snapAsOf.n;
+
+  strip('pc-kpis',[
+    ['On the books · '+asOfLbl,bf0(snapAsOf.rev),snapAsOf.n+' booked event'+(snapAsOf.n!==1?'s':'')+' · '+label],
+    ['On the books · now',bf0(snapNow.rev),snapNow.n+' booked · '+label],
+    ['Booked since '+asOfLbl,(dN>=0?'+':'')+dN+' · '+(dRev>=0?'+':'−')+bf0(Math.abs(dRev)).slice(1),'new bookings added'],
+    ['Pipeline · '+asOfLbl,bf0(snapAsOf.pipeRev),snapAsOf.pipeN+' tentative / prospect'],
+  ]);
+
+  /* Pace ladder: booked revenue as of a series of lookbacks from today. */
+  const rungs=[['Today',today]];
+  for(const d of [30,60,90,180,365])rungs.push(['− '+d+' days',paceShift(today,-d)]);
+  if(!rungs.some(r=>r[1]===asOf))rungs.push(['As of '+asOfLbl,asOf]);
+  rungs.sort((a,b)=>a[1]<b[1]?1:-1);
+  let lh=`<tr><th class="li" style="min-width:150px;">As of</th><th style="min-width:100px;">Booked</th><th style="min-width:130px;">Revenue on books</th><th style="min-width:120px;">Pipeline (rev)</th><th style="min-width:80px;">% of now</th></tr>`;
+  for(const [lbl,d] of rungs){
+    const s=paceSnapshot(evs,d), pct=snapNow.rev>0?fpc(s.rev/snapNow.rev*100):'—';
+    lh+=`<tr${d===asOf?' class="total"':''}><td class="li"${d===today?' style="font-weight:700;"':''}>${beoEsc(lbl)}<span class="evsub">${beoEsc(d)}</span></td><td>${s.n}</td><td style="font-weight:700;">${bf2(s.rev)}</td><td style="color:var(--muted);">${bf2(s.pipeRev)}</td><td style="color:var(--muted);">${pct}</td></tr>`;
+  }
+  document.getElementById('pc-ladder').innerHTML=lh;
+
+  /* Events in the period, with as-of reconstruction. */
+  const rows=evs.map(ev=>({ev,as:paceStatusAsOf(ev,asOf)}));
+  rows.sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0)));
+  let anyNoHist=false;
+  let eh=`<tr><th class="li" style="min-width:220px;">Event</th><th class="li" style="min-width:110px;">Event date</th><th class="li">Status now</th><th class="li">As of ${beoEsc(asOfLbl)}</th><th class="li" style="min-width:100px;">Booked on</th><th>Revenue</th></tr>`;
+  for(const {ev,as} of rows){
+    const hasHist=Array.isArray(ev.statusHist)&&ev.statusHist.length;
+    if(!hasHist)anyNoHist=true;
+    const onBooks=paceIsBooked(as.status);
+    const asCell=as.status?statusChip(as.status):'<span style="color:var(--muted);">not yet</span>';
+    eh+=`<tr class="evrow"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td><td class="li" style="white-space:nowrap;">${beoEsc(evShortDate(ev))}</td><td class="li">${statusChip(ev.status)}</td><td class="li">${asCell}${hasHist?'':'<span class="evsub" style="color:#b98029;">no history</span>'}</td><td class="li" style="white-space:nowrap;color:var(--muted);">${ev.bookedDate?beoEsc(ev.bookedDate):'—'}</td><td style="font-weight:700;${onBooks?'':'color:var(--muted);'}">${bf2(paceRevOf(ev))}</td></tr>`;
+  }
+  eh+=`<tr class="total"><td class="li">On the books as of ${beoEsc(asOfLbl)} — ${snapAsOf.n} event${snapAsOf.n!==1?'s':''}</td><td class="li"></td><td class="li"></td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${bf2(snapAsOf.rev)}</td></tr>`;
+  document.getElementById('pc-events').innerHTML=eh;
+
+  document.getElementById('pc-note').innerHTML=
+    'Revenue is each event’s Tripleseat contracted value (actual, or the F&amp;B minimum when actual is short); hand-built events with no Tripleseat total fall back to estimated event revenue. “On the books” counts events at <b>Definite</b> or <b>Closed</b> as of the chosen date, reconstructed from the booking timeline captured on import.'+
+    (anyNoHist?' Events flagged <b>“no history”</b> predate pace tracking — their as-of status is inferred from the booked / inquiry date. Re-run the Tripleseat import to backfill their timeline.':'');
 }
 
 /* ---------------- event detail view ---------------- */
@@ -2215,6 +2367,8 @@ document.addEventListener('mousedown',e=>{const el=e.target.closest('input[data-
 document.addEventListener('change',e=>{
   const mm=e.target.closest('#mp-month');
   if(mm){MSEL=mm.value;MP_SEL=null;buildMonthly();return;}
+  if(e.target.id==='pc-period'){PACE_PERIOD=e.target.value;buildPace();return;}
+  if(e.target.id==='pc-asof'){PACE_ASOF=e.target.value||paceToday();buildPace();return;}
   if(e.target.id==='ev-room-filt'){EV_ROOM=e.target.value;buildEvents();return;}
   if(!canEdit())return;   /* read-only (external) members: view & drill down only, no writes */
   const ur=e.target.closest('[data-usrole]');
