@@ -15,12 +15,13 @@ function json(o: unknown, status = 200) {
 // ============================================================================
 //  EMAIL-ONLY LOGIN (no verification) — for eligible accounts only.
 //
-//  Eligible = external read-only members OR @methodco.com staff. For those,
-//  entering an approved email signs them straight in: this endpoint mints a
-//  real Supabase session (no email/link/code sent), so the app's row-level
-//  security (venue scoping + read-only external, keyed off the JWT email
-//  claim) keeps working unchanged. Every other approved account is bounced
-//  back with needsMagicLink so the client verifies them via a magic link.
+//  Eligible = external read-only members OR staff on a trusted domain
+//  (@methodco.com, @myroost.com — the property operator). For those, entering
+//  an approved email signs them straight in: this endpoint mints a real
+//  Supabase session (no email/link/code sent), so the app's row-level security
+//  (venue scoping + read-only external, keyed off the JWT email claim) keeps
+//  working unchanged. Every other approved account is bounced back with
+//  needsMagicLink so the client verifies them via a magic link.
 //
 //  SECURITY MODEL (accepted tradeoff): for eligible accounts the only barrier
 //  is allowlist membership — anyone who knows an eligible address, plus the
@@ -28,6 +29,8 @@ function json(o: unknown, status = 200) {
 //  There is no proof of inbox ownership for that group. That is the requested
 //  behaviour; non-eligible accounts fall back to verified magic-link sign-in.
 // ============================================================================
+// Trusted staff domains that get email-only sign-in (no verification).
+const TRUSTED_DOMAINS = /@(methodco|myroost)\.com$/i;
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
 
@@ -53,9 +56,10 @@ Deno.serve(async (req: Request) => {
   if (!row) return json({ ok: false, error: "This email isn't on the access list yet. Ask an admin to add you." }, 200);
 
   // Email-only sign-in (no verification) is limited to external read-only
-  // members and @methodco.com staff. Every other approved account must verify
-  // via a magic link — the client falls back to that when we say so here.
-  const emailOnlyOk = row.role === "external" || /@methodco\.com$/i.test(email);
+  // members and staff on a trusted domain (methodco.com / myroost.com). Every
+  // other approved account must verify via a magic link — the client falls
+  // back to that when we say so here.
+  const emailOnlyOk = row.role === "external" || TRUSTED_DOMAINS.test(email);
   if (!emailOnlyOk) return json({ ok: false, needsMagicLink: true, error: "magic link required" }, 200);
 
   // 2) Ensure the auth user exists — first-time external members won't yet, and
