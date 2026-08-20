@@ -36,6 +36,16 @@ const booked = cnt('DEFINITE') + cnt('CLOSED');
 const inPipe = cnt('PROSPECT') + cnt('TENTATIVE');
 const withEvent = L.filter(r => r.event_id).length;
 
+// ---- daily: new inquiries submitted yesterday + last-7-day trend ----
+const NOW = new Date();
+const ymd = d => d.toISOString().slice(0, 10);
+const dayLabel = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+const dayCount = key => L.filter(r => ymd(new Date(r.created_at)) === key).length;
+const yDate = new Date(NOW.getTime() - 864e5);
+const newYesterday = dayCount(ymd(yDate));
+const last7 = Array.from({ length: 7 }, (_, i) => { const d = new Date(NOW.getTime() - (i + 1) * 864e5); return { key: ymd(d), label: dayLabel(d), n: dayCount(ymd(d)) }; }).reverse();
+const wk = last7.reduce((a, d) => a + d.n, 0);
+
 // ---- response (submission -> disposition) ----
 const disposed = L.filter(r => r.resp_days != null);
 const respMedian = medianOf(disposed.map(r => r.resp_days));
@@ -114,11 +124,19 @@ td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .appx td{font-size:9px;padding:2px 5px}
 .appx th{font-size:7.5px}
 .foot{color:#8a97ab;font-size:9px;margin-top:6px}
+.kpi.hi{border-color:#b7c7de;background:#eef3fb;box-shadow:inset 3px 0 0 #3c5a86}
+.kpi.hi .v{color:#243b63}
+.spark{display:flex;gap:6px;align-items:flex-end;margin:2px 0 4px}
+.spark .col{flex:1;text-align:center}
+.spark .bar{background:#c7d4e8;border-radius:2px 2px 0 0;min-height:2px}
+.spark .bar.y{background:#3c5a86}
+.spark .cn{font-size:11px;font-weight:700;color:#243b63;margin-bottom:2px}
+.spark .dl{font-size:7.5px;color:#8a97ab;margin-top:2px;line-height:1.1}
 `;
 const stColor = { OPEN: ['#eef2f8', '#3c5a86', '#c9d2e0'], TURNED_DOWN: ['#fbeee7', '#b3541e', '#ecd0bd'], CONVERTED_NOEV: ['#eef1f5', '#68758c', '#d5dbe6'], PROSPECT: ['#eef2f8', '#3c5a86', '#c9d2e0'], TENTATIVE: ['#fbf3e7', '#b98029', '#ecd9bd'], DEFINITE: ['#e7f4ec', '#1c7c4d', '#bfe0cc'], CLOSED: ['#e7f4ec', '#146c41', '#bfe0cc'], LOST: ['#fbeee7', '#b3541e', '#ecd0bd'] };
 const stLabel = { OPEN: 'OPEN', TURNED_DOWN: 'TURNED DOWN', CONVERTED_NOEV: 'NO EVENT', PROSPECT: 'PROSPECT', TENTATIVE: 'TENTATIVE', DEFINITE: 'DEFINITE ✓', CLOSED: 'CLOSED ✓', LOST: 'LOST' };
 const chip = st => { const c = stColor[st] || stColor.OPEN; return `<span class="chip" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${stLabel[st] || st}</span>`; };
-const kpi = (l, v, cls, s) => `<div class="kpi"><div class="l">${l}</div><div class="v${cls ? ' ' + cls : ''}">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`;
+const kpi = (l, v, cls, s, box) => `<div class="kpi${box ? ' ' + box : ''}"><div class="l">${l}</div><div class="v${cls ? ' ' + cls : ''}">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`;
 const brand = sub => `<div class="brand"><div class="n">Wm. Mulherin's Sons<span>Method Co · Philadelphia, PA</span></div><div class="doc">${sub}</div></div>`;
 
 /* ---------- page 1: funnel + summary ---------- */
@@ -127,21 +145,26 @@ const funnelRows = stages.map(([k, lab, col]) => {
   const n = cnt(k);
   return `<div class="row"><span class="lab">${lab}</span><span class="tr"><span class="fill" style="width:${Math.max(n / fmax * 100, 2)}%;background:${col}">${n || ''}</span></span><span class="val">${pct(n, total)}</span></div>`;
 }).join('');
-let p1 = `<div class="page">${brand('Inquiry → BEO Lifecycle · Last 120 Days')}
-  <h1>Event Inquiry & BEO Lifecycle Report</h1>
-  <div class="meta">Inquiries submitted <b>${spanStart} – ${spanEnd}</b> · Source: Tripleseat leads + linked events · Generated ${mdY(new Date())}</div>
+const smax = Math.max(...last7.map(d => d.n), 1);
+const sparkH = 30;
+const sparkHtml = last7.map((d, i) => `<div class="col"><div class="cn">${d.n}</div><div class="bar${i === last7.length - 1 ? ' y' : ''}" style="height:${Math.round(d.n / smax * sparkH) + 2}px"></div><div class="dl">${d.label}</div></div>`).join('');
+let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
+  <h1>Daily Event Inquiry &amp; BEO Report</h1>
+  <div class="meta">As of <b>${mdY(NOW)}</b> · Rolling 120-day window (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
   <div class="kpis">
-    ${kpi('Total Inquiries', total, 'mut')}
+    ${kpi('New Inquiries — Yesterday', newYesterday, 'mut', dayLabel(yDate), 'hi')}
+    ${kpi('Total Inquiries (120d)', total, 'mut')}
     ${kpi('Converted — Booked', booked, 'pos', pct(booked, total) + ' · Definite + Closed')}
     ${kpi('In Pipeline', inPipe, 'mut', 'Prospect + Tentative')}
-    ${kpi('Lost', cnt('LOST'), 'neg', pct(cnt('LOST'), total))}
   </div>
   <div class="kpis">
-    ${kpi('Bookings Started', withEvent, '', 'became a booking record')}
     ${kpi('Median Response', respMedian + (respMedian === 1 ? ' day' : ' days'), 'mut', 'to first disposition')}
+    ${kpi('Lost', cnt('LOST'), 'neg', pct(cnt('LOST'), total))}
     ${kpi('Converted Value', money(confirmedVal), 'pos', 'Definite + Closed BEOs')}
     ${kpi('Open Pipeline Value', money(pipelineVal), 'mut', 'Prospect + Tentative')}
   </div>
+  <h2>New inquiries — last 7 days <span style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;font-weight:400;color:#8a97ab">(${wk} total)</span></h2>
+  <div class="spark">${sparkHtml}</div>
   <h2>Where every inquiry stands today</h2>
   <div class="funnel">${funnelRows}</div>
   <div class="note"><b>What counts as Converted:</b> an inquiry is <b>Converted</b> only when its event is actually <b>booked — Definite or Closed</b>. A Tripleseat lead flagged "converted" merely starts a booking record (Prospect) and does <b>not</b> count here until it firms up. Of ${total} inquiries, ${withEvent} became a booking record but only <b>${booked} converted to a booked event (${pct(booked, total)})</b>; ${inPipe} are still working in the pipeline (Prospect/Tentative — mostly recent Jul–Aug inquiries), ${cnt('CONVERTED_NOEV')} were marked converted in Tripleseat with no event on file, and ${cnt('LOST')} were lost. Booked and lost dates are reconstructed from each event's status-change history.</div>
