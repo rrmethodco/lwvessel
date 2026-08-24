@@ -1,5 +1,8 @@
 *.pdf
 *.html
+!*.template.html
 leads2.json
 chase.json
+deep.json
 node_modules/
+*.png
