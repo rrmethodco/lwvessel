@@ -130,6 +130,23 @@ table.data tbody tr:hover td{background:var(--surface-2)}
 .tlstep .by{font-size:12px;color:var(--ink-soft);margin-top:3px}
 .tlstep .gap{display:inline-block;margin-top:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent-2);background:var(--accent-soft);border-radius:5px;padding:1px 7px}
 .empty{padding:40px;text-align:center;color:var(--muted)}
+.sech{font-family:'Newsreader',Georgia,serif;font-size:21px;font-weight:600;margin:26px 0 5px}
+.seccap{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.insight{background:var(--accent-soft);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.insight h3{font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.insight ul{margin:0;padding:0;list-style:none}
+.insight li{padding-left:18px;position:relative;margin:6px 0;color:var(--ink-soft);font-size:13.5px}
+.insight li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+.insight b{color:var(--ink)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.atab{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:2px}
+.atab th{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:500;padding:5px 6px;border-bottom:1px solid var(--border)}
+.atab th:first-child{text-align:left}
+.atab td{padding:6px 6px;border-bottom:1px solid var(--border);color:var(--ink-soft);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.atab td:first-child{text-align:left;color:var(--ink);white-space:normal}
+.atab tr:last-child td{border-bottom:0}
+.mbar{display:inline-block;width:40px;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden;margin-left:7px;vertical-align:middle}
+.mbar>span{display:block;height:100%;background:var(--definite);border-radius:3px}
 footer{max-width:1280px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);font-size:11px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -157,6 +174,11 @@ footer{max-width:1280px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);f
     <div class="card"><h2>Who moves the pipeline</h2><div class="cap">Status changes attributed to each team member.</div><div class="bars" id="actors"></div></div>
     <div class="card"><h2>By lead source</h2><div class="cap">Inquiries and booked events by source.</div><div class="bars" id="sources"></div></div>
   </div>
+
+  <h2 class="sech">Analytics &amp; correlations</h2>
+  <div class="seccap">What drives a booking — computed across all year-to-date inquiries. "Booked %" = share of that group that reached Definite or Closed.</div>
+  <div class="insight" id="signals"></div>
+  <div class="agrid" id="agrid" style="margin-bottom:22px"></div>
 
   <div class="card" style="padding:14px 16px">
     <div class="filters">
@@ -265,6 +287,67 @@ function renderSources(){
   $('#sources').innerHTML=arr.map(([k,g])=>`<div class="brow"><span class="lab">${esc(k)}</span><span class="track"><span class="fill" style="width:${g.n/max*100}%;background:var(--accent-2)"></span></span><span class="val">${g.n}${g.b?` · ${g.b}✓`:''}</span></div>`).join('');
 }
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ================= Analytics & correlations ================= */
+const BOOKED=r=>['DEFINITE','CLOSED'].includes(r._stage);
+const LOSTr=r=>r._stage==='LOST'||r._stage==='TURNED_DOWN';
+const PERSONAL=/@(gmail|yahoo|hotmail|outlook|aol|icloud|me|comcast|verizon|live|msn|ymail|proton|mac)\./i;
+function domainType(email){ if(!email||!/@/.test(email)) return null; return PERSONAL.test(email)?'Personal (Gmail, etc.)':'Company domain'; }
+function categoryOf(r){ const s=(r.event_desc||'').toLowerCase(); if(!s) return 'Unspecified';
+  if(/rehearsal|wedding|bridal|groom|bachelor|nuptial|elopement|micro.?wedding|welcome (party|dinner|drinks)|pre.?wedding|post.?wedding|wharton wedding|wedding shower/.test(s)) return 'Wedding-related';
+  if(/engage|proposal/.test(s)) return 'Engagement';
+  if(/baby shower|baptism|christening/.test(s)) return 'Baby shower';
+  if(/graduat|grad |grad$|\bmba\b/.test(s)) return 'Graduation';
+  if(/birthday|bday|b-day|\d0th|21st|first birthday/.test(s)) return 'Birthday';
+  if(/business|corporate|company|team dinner|conference|board|client|network|staff|retreat|meeting|colleague|firm|sales dinner|pwc|pharma|insurance|educational|principals|exec|professor|podiatry|closing dinner|promotion|intern|regional manager/.test(s)) return 'Corporate / Business';
+  if(/anniversary|reunion|family|friends|gathering|dinner party|holiday|celebration|retirement/.test(s)) return 'Family / Social';
+  return 'Other';
+}
+function leadTimeDays(r){ if(!r.event_date||!r.created_at) return null; const d=Math.round((new Date(r.event_date+'T12:00:00Z')-new Date(r.created_at))/864e5); return d<0?null:d; }
+function stats(rows){ const g={n:0,booked:0,lost:0,vsum:0,vcount:0}; rows.forEach(r=>{ g.n++; if(BOOKED(r)){g.booked++; if(r.grand_total>0){g.vsum+=r.grand_total;g.vcount++;}} else if(LOSTr(r)) g.lost++; }); return g; }
+function bookRate(rows){ const s=stats(rows); return s.n?s.booked/s.n*100:0; }
+function buckets(keyFn,order){ const m=new Map(); DATA.forEach(r=>{const k=keyFn(r); if(k==null)return; if(!m.has(k))m.set(k,[]); m.get(k).push(r);}); const keys=order?order.filter(k=>m.has(k)):[...m.keys()]; return keys.map(k=>[k,stats(m.get(k))]); }
+function corrCard(title,cap,groups,opts){ opts=opts||{};
+  const body=groups.map(([label,g])=>{ const rate=g.n?g.booked/g.n*100:0; const av=g.vcount?money(g.vsum/g.vcount):'—';
+    return `<tr><td>${esc(label)}</td><td>${g.n}</td><td>${g.booked}</td><td>${rate.toFixed(0)}%<span class="mbar"><span style="width:${Math.max(rate,2)}%"></span></span></td>${opts.value?`<td>${av}</td>`:''}</tr>`;}).join('');
+  return `<div class="card"><h2>${title}</h2><div class="cap">${cap}</div>
+    <table class="atab"><thead><tr><th>${opts.dim||'Group'}</th><th>Inq</th><th>Book</th><th>Book %</th>${opts.value?'<th>Avg BEO</th>':''}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function renderAnalytics(){
+  const respB=buckets(r=>r.resp_days==null?null:(r.resp_days===0?'Same day':r.resp_days===1?'1 day':r.resp_days<=3?'2–3 days':'4+ days'),['Same day','1 day','2–3 days','4+ days']);
+  const sizeB=buckets(r=>r.guests==null?null:(r.guests<=10?'1–10':r.guests<=20?'11–20':r.guests<=40?'21–40':'41+'),['1–10','11–20','21–40','41+']);
+  const ltB=buckets(r=>{const d=leadTimeDays(r);return d==null?null:(d<=14?'≤ 2 weeks':d<=30?'2–4 weeks':d<=90?'1–3 months':'3+ months');},['≤ 2 weeks','2–4 weeks','1–3 months','3+ months']);
+  const typeB=buckets(r=>categoryOf(r),['Wedding-related','Rehearsal / Welcome','Engagement','Baby shower','Birthday','Graduation','Corporate / Business','Family / Social','Other','Unspecified']).filter(x=>x[1].n>0);
+  const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dowB=buckets(r=>{const d=new Date(r.created_at);return isNaN(d)?null:DOW[(d.getUTCDay()+6)%7];},DOW);
+  const partB=buckets(r=>{const d=new Date(r.created_at);if(isNaN(d))return null;const h=d.getUTCHours();return h<6?'Overnight (12–6a)':h<12?'Morning (6a–12p)':h<17?'Afternoon (12–5p)':'Evening (5p–12a)';},['Morning (6a–12p)','Afternoon (12–5p)','Evening (5p–12a)','Overnight (12–6a)']);
+  const domB=buckets(r=>domainType(r.email),['Company domain','Personal (Gmail, etc.)']);
+  const srcB=[...new Map(DATA.map(r=>[r.lead_source||'(none)',0])).keys()].map(k=>[k,stats(DATA.filter(r=>(r.lead_source||'(none)')===k))]).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
+
+  $('#agrid').innerHTML=[
+    corrCard('Does speed win?','Book rate by response time to first disposition.',respB,{dim:'Response time'}),
+    corrCard('Event type performance','Categorized from the guest’s inquiry description.',typeB,{dim:'Event type',value:true}),
+    corrCard('Party size','Book rate by guest count.',sizeB,{dim:'Guests',value:true}),
+    corrCard('Lead time to event','How far ahead the inquiry came in.',ltB,{dim:'Lead time'}),
+    corrCard('Corporate vs. consumer','By guest email domain.',domB,{dim:'Guest email',value:true}),
+    corrCard('When inquiries arrive · day','Submission day of week.',dowB,{dim:'Day'}),
+    corrCard('When inquiries arrive · time','Submission time of day (ET).',partB,{dim:'Daypart'}),
+    corrCard('Lead source','Book rate & value by source.',srcB,{dim:'Source',value:true})
+  ].join('');
+
+  // auto key-signals
+  const rateOf=(bs,label)=>{const f=bs.find(x=>x[0]===label);return f&&f[1].n?f[1].booked/f[1].n*100:null;};
+  const sig=[];
+  const sd=rateOf(respB,'Same day'), slow=rateOf(respB,'4+ days');
+  if(sd!=null&&slow!=null) sig.push(`<b>Speed matters:</b> same-day responses book at <b>${sd.toFixed(0)}%</b> vs <b>${slow.toFixed(0)}%</b> when it takes 4+ days.`);
+  const co=rateOf(domB,'Company domain'), pe=rateOf(domB,'Personal (Gmail, etc.)');
+  if(co!=null&&pe!=null) sig.push(`<b>Corporate leads convert ${co>=pe?'better':'worse'}:</b> company-domain ${co.toFixed(0)}% vs personal-email ${pe.toFixed(0)}%.`);
+  const small=rateOf(sizeB,'1–10'), big=rateOf(sizeB,'41+');
+  if(small!=null&&big!=null) sig.push(`<b>Party size:</b> intimate (1–10) books at <b>${small.toFixed(0)}%</b>, large (41+) at <b>${big.toFixed(0)}%</b>.`);
+  const typeRanked=typeB.filter(x=>x[1].n>=8).sort((a,b)=>b[1].booked/b[1].n-a[1].booked/a[1].n);
+  if(typeRanked.length) sig.push(`<b>Best-converting type:</b> ${esc(typeRanked[0][0])} at ${(typeRanked[0][1].booked/typeRanked[0][1].n*100).toFixed(0)}% (n=${typeRanked[0][1].n}); weakest: ${esc(typeRanked[typeRanked.length-1][0])} at ${(typeRanked[typeRanked.length-1][1].booked/typeRanked[typeRanked.length-1][1].n*100).toFixed(0)}%.`);
+  $('#signals').innerHTML='<h3>Key signals</h3><ul>'+sig.map(s=>`<li>${s}</li>`).join('')+'</ul>';
+}
 
 /* ---- filters + table ---- */
 const COLS=[
@@ -375,5 +458,5 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 $('#asof').textContent='YTD '+new Date().getFullYear()+' · as of '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
 $('#note').innerHTML='<b>What this tracks.</b> Every inquiry’s full lifecycle from the Tripleseat status-change history — each stage, the exact timestamp, and which team member made the move. Click any row to see its step-by-step process timeline. <b>Note:</b> Tripleseat’s API does not expose the actual guest email/message content, so this tracks the <i>process</i> steps and timing, not the words exchanged.';
 $('#foot').innerHTML='Wm. Mulherin’s Sons · Tripleseat location 17784 · Year-to-date '+new Date().getFullYear()+' (Jan 1 → today) · '+DATA.length+' inquiries. Stage timing in calendar days; conversions are date-stamped in Tripleseat (same-day = 0).';
-renderKpis();renderFunnel();renderTiming();renderActors();renderSources();initFilters();render();
+renderKpis();renderFunnel();renderTiming();renderActors();renderSources();renderAnalytics();initFilters();render();
 </script>
