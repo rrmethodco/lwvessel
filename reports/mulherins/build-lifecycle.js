@@ -150,10 +150,10 @@ const sparkH = 30;
 const sparkHtml = last7.map((d, i) => `<div class="col"><div class="cn">${d.n}</div><div class="bar${i === last7.length - 1 ? ' y' : ''}" style="height:${Math.round(d.n / smax * sparkH) + 2}px"></div><div class="dl">${d.label}</div></div>`).join('');
 let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
   <h1>Daily Event Inquiry &amp; BEO Report</h1>
-  <div class="meta">As of <b>${mdY(NOW)}</b> · Rolling 120-day window (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
+  <div class="meta">As of <b>${mdY(NOW)}</b> · Year-to-date ${NOW.getFullYear()} (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
   <div class="kpis">
     ${kpi('New Inquiries — Yesterday', newYesterday, 'mut', dayLabel(yDate), 'hi')}
-    ${kpi('Total Inquiries (120d)', total, 'mut')}
+    ${kpi('Total Inquiries (YTD)', total, 'mut')}
     ${kpi('Converted — Booked', booked, 'pos', pct(booked, total) + ' · Definite + Closed')}
     ${kpi('In Pipeline', inPipe, 'mut', 'Prospect + Tentative')}
   </div>

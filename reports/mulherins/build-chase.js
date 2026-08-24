@@ -91,7 +91,7 @@ const hotCards = hot.map(r => `<div class="hotcard"><div class="L"><span class="
 
 let p1 = `<div class="page">${brand('Stalled-Prospect Chase List · Live Pipeline')}
   <h1>Chase List — Un-booked Pipeline</h1>
-  <div class="meta">Inquiries from the last 120 days still open &amp; winnable · Generated ${mdY(TODAY)} · Prioritized by event date</div>
+  <div class="meta">Open &amp; winnable inquiries (year-to-date ${TODAY.getFullYear()}) · Generated ${mdY(TODAY)} · Prioritized by event date</div>
   <div class="kpis">
     ${kpi('Live to Chase', live.length + noDate.length, 'mut', 'not booked, still open')}
     ${kpi('🔴 Hot (≤21 days)', tierCount('HOT'), 'hot', 'event imminent')}

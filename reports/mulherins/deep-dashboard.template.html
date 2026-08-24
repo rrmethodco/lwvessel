@@ -372,8 +372,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 })();
 
 /* ---- boot ---- */
-$('#asof').textContent='As of '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+$('#asof').textContent='YTD '+new Date().getFullYear()+' · as of '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
 $('#note').innerHTML='<b>What this tracks.</b> Every inquiry’s full lifecycle from the Tripleseat status-change history — each stage, the exact timestamp, and which team member made the move. Click any row to see its step-by-step process timeline. <b>Note:</b> Tripleseat’s API does not expose the actual guest email/message content, so this tracks the <i>process</i> steps and timing, not the words exchanged.';
-$('#foot').innerHTML='Wm. Mulherin’s Sons · Tripleseat location 17784 · Rolling 120-day inquiry window · '+DATA.length+' inquiries. Stage timing in calendar days; conversions are date-stamped in Tripleseat (same-day = 0).';
+$('#foot').innerHTML='Wm. Mulherin’s Sons · Tripleseat location 17784 · Year-to-date '+new Date().getFullYear()+' (Jan 1 → today) · '+DATA.length+' inquiries. Stage timing in calendar days; conversions are date-stamped in Tripleseat (same-day = 0).';
 renderKpis();renderFunnel();renderTiming();renderActors();renderSources();initFilters();render();
 </script>
