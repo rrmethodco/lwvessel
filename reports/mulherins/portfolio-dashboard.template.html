@@ -390,6 +390,18 @@ function execVenue(M,P,rows){
   return execBlock('Executive summary · '+esc(name),esc(name)+' at a glance',[p1,p2],hl,tk);
 }
 
+/* ============ quick-win helpers ============ */
+const emailKey=r=>(r.email||'').trim().toLowerCase();
+function repeatStats(rows){ const c=new Map(); rows.forEach(r=>{const k=emailKey(r); if(k)c.set(k,(c.get(k)||0)+1);}); let rep=0; rows.forEach(r=>{const k=emailKey(r); if(k&&c.get(k)>1)rep++;}); return {rep,newc:rows.length-rep,accounts:c.size,repShare:rows.length?rep/rows.length:0}; }
+function topAccounts(rows,n){ const m=new Map(); rows.forEach(r=>{const k=emailKey(r); if(!k)return; const g=m.get(k)||{email:k,name:r.contact,company:r.company,inq:0,booked:0,val:0,venues:new Set()}; g.inq++; if(!g.name&&r.contact)g.name=r.contact; if(!g.company&&r.company)g.company=r.company; if(BOOKED(r)){g.booked++; if(r.grand_total>0)g.val+=r.grand_total;} g.venues.add(shortV(r.venue)); m.set(k,g);}); return [...m.values()].filter(g=>g.inq>1).sort((a,b)=>b.inq-a.inq||b.val-a.val).slice(0,n); }
+function paceByMonth(rows){ const m=new Map(); rows.forEach(r=>{const k=r.booking_created_at?ymKey(r.booking_created_at):null; if(!k)return; m.set(k,(m.get(k)||0)+1);}); return [...m.entries()].sort((a,b)=>a[0]<b[0]?-1:1); }
+function slaBuckets(rows){ const B=[['Same day',r=>r.resp_days===0],['1 day',r=>r.resp_days===1],['2–3 days',r=>r.resp_days===2||r.resp_days===3],['4–7 days',r=>r.resp_days>=4&&r.resp_days<=7],['8+ days',r=>r.resp_days>=8]]; return B.map(([lab,fn])=>[lab,rows.filter(r=>r.resp_days!=null&&fn(r)).length]); }
+function teamRows(rows){ const m=new Map(); rows.forEach(r=>{const k=r.booking_owner||r.booking_creator; if(!k)return; const g=m.get(k)||{name:k,n:0,booked:0,val:0}; g.n++; if(BOOKED(r)){g.booked++; if(r.grand_total>0)g.val+=r.grand_total;} m.set(k,g);}); return [...m.values()].sort((a,b)=>b.n-a.n); }
+function revComp(rows){ const b=rows.filter(BOOKED); const parts=[['Food','rev_food','var(--c2)'],['Beverage','rev_beverage','var(--c1)'],['Rental','rental_fee','var(--c3)'],['Service','rev_service','var(--c5)'],['Tax','rev_tax','var(--c8)']]; const sum=k=>b.reduce((a,r)=>a+(r[k]>0?r[k]:0),0); const vals=parts.map(([lab,k,c])=>[lab,sum(k),c]).filter(x=>x[1]>0); const tot=vals.reduce((a,x)=>a+x[1],0); const n=b.filter(r=>['rev_food','rev_beverage','rental_fee','rev_service','rev_tax'].some(k=>r[k]>0)).length; return {vals,tot,n}; }
+function roomRows(rows){ const m=new Map(); rows.filter(r=>r.room_name).forEach(r=>{const g=m.get(r.room_name)||{room:r.room_name,n:0,booked:0,val:0}; g.n++; if(BOOKED(r))g.booked++; if(r.grand_total>0)g.val+=r.grand_total; m.set(r.room_name,g);}); return [...m.values()].sort((a,b)=>b.n-a.n); }
+function simpleBars(el,arr,opt){opt=opt||{}; const max=Math.max(...arr.map(x=>x[1]),1); $(el).innerHTML=arr.map(([lab,n])=>`<div class="brow"><span class="lab">${esc(lab)}</span><span class="track"><span class="fill" style="width:${Math.max(n/max*100,1.5)}%;background:${opt.color||'var(--accent)'}"></span></span><span class="val">${opt.fmt?opt.fmt(n):n}</span></div>`).join('');}
+function anyDeep(rows){ return rows.some(r=>r.room_name||r.rev_food>0||r.rev_beverage>0||r.event_start_at||r.guest_guaranteed!=null); }
+
 /* ============ PORTFOLIO VIEW ============ */
 function renderPortfolio(){
   const base=monthRows();
@@ -427,6 +439,14 @@ function renderPortfolio(){
     <div class="card"><h2>Converted rate (lead-level)</h2><div class="cap">Share of inquiries that became a linked booking. Note: some venues auto-convert most inquiries — read alongside true booked %.</div><div class="bars" id="cv_conv"></div></div>
   </div>`;
 
+  // clients, retention & speed
+  h+=`<div class="sech">Clients, retention &amp; speed</div><div class="seccap">Repeat business, top accounts, and first-response speed across the portfolio.</div>
+  <div class="cols">
+    <div class="card"><h2>Repeat-inquiry rate by venue</h2><div class="cap">Share of inquiries from guests who've submitted more than once.</div><div class="bars" id="p_reprate"></div></div>
+    <div class="card"><h2>Response SLA</h2><div class="cap">Time to first disposition across the portfolio.</div><div class="bars" id="p_sla"></div></div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><h2>Top accounts</h2><div class="cap">Guests with the most inquiries across all venues (repeat only). Click-through: use the venue filter to drill in.</div><div class="tscroll"><table class="atab" id="p_accts"><thead><tr><th>Guest / Company</th><th>Venues</th><th>Inq</th><th>Booked</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>`;
+
   // seasonality heatmap (full-year context; only meaningful across months)
   if(state.month==='__YTD__')
     h+=`<div class="card" style="margin:0 0 18px"><h2>Seasonality — inquiries by month</h2><div class="cap">Volume per venue per submission month. Darker = busier (scaled within each venue's row).</div><div class="heat" id="cv_heat"></div></div>`;
@@ -442,6 +462,9 @@ function renderPortfolio(){
 
   paintScore(rowsV);
   paintCompareBars(rowsV);
+  simpleBars('#p_reprate', venueGroups(base).map(g=>[shortV(g.name), Math.round(repeatStats(g.rows).repShare*100)]).sort((a,b)=>b[1]-a[1]), {fmt:n=>n+'%',color:'var(--c5)'});
+  simpleBars('#p_sla', slaBuckets(base), {color:'var(--accent-2)'});
+  paintAccountsP(base,'#p_accts');
   if(state.month==='__YTD__') paintHeat();
   paintPooled(base,rowsV);
   initTable(true);
@@ -534,6 +557,32 @@ function paintPooled(base,rowsV){
   $('#p_signals').innerHTML='<h3>Portfolio signals</h3><ul>'+sig.map(s=>`<li>${s}</li>`).join('')+'</ul>';
 }
 
+/* ---- quick-win paints ---- */
+function paintRepeat(rows,el){ const s=repeatStats(rows); const max=Math.max(s.rep,s.newc,1);
+  $(el).innerHTML=`<div style="display:flex;gap:22px;margin-bottom:12px">
+    <div><div style="font-family:'Newsreader',serif;font-size:24px;font-weight:600;color:var(--ink);line-height:1">${(s.repShare*100).toFixed(0)}%</div><div class="cap" style="margin:2px 0 0">repeat inquiries</div></div>
+    <div><div style="font-family:'Newsreader',serif;font-size:24px;font-weight:600;color:var(--ink);line-height:1">${fmtN(s.accounts)}</div><div class="cap" style="margin:2px 0 0">distinct guests</div></div></div>
+  <div class="bars"><div class="brow"><span class="lab">Repeat guests</span><span class="track"><span class="fill" style="width:${s.rep/max*100}%;background:var(--definite)"></span></span><span class="val">${s.rep}</span></div>
+  <div class="brow"><span class="lab">First-time</span><span class="track"><span class="fill" style="width:${s.newc/max*100}%;background:var(--accent)"></span></span><span class="val">${s.newc}</span></div></div>`;
+}
+function paintTeam(rows,el){ const arr=teamRows(rows).slice(0,10); $(el+' tbody').innerHTML=arr.map(t=>`<tr><td>${esc(t.name)}</td><td>${t.n}</td><td>${t.booked}</td><td>${t.val?money1(t.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="na">No owner data.</td></tr>'; }
+function paintAccounts(rows,el){ const arr=topAccounts(rows,12); $(el+' tbody').innerHTML=arr.map(a=>`<tr><td><b>${esc(a.name||a.email)}</b>${a.company?`<div class="subt">${esc(a.company)}</div>`:''}</td><td>${a.inq}</td><td>${a.booked}</td><td>${a.val?money1(a.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="na">No repeat guests in this window.</td></tr>'; }
+function paintAccountsP(rows,el){ const arr=topAccounts(rows,15); $(el+' tbody').innerHTML=arr.map(a=>`<tr><td><b>${esc(a.name||a.email)}</b>${a.company?`<div class="subt">${esc(a.company)}</div>`:''}</td><td>${[...a.venues].map(esc).join(', ')}</td><td>${a.inq}</td><td>${a.booked}</td><td>${a.val?money1(a.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="5" class="na">—</td></tr>'; }
+function paintRevSpace(rows,el){
+  if(!anyDeep(rows)){ $(el).innerHTML=`<div class="cov" style="margin-top:6px"><span class="pill">BACKFILLING</span><span>Revenue composition (food / beverage / rental / service / tax), room utilization, event times and guaranteed-vs-actual guest counts are being pulled from Tripleseat now — this section fills in as the deep backfill completes.</span></div>`; return; }
+  const rc=revComp(rows); const rooms=roomRows(rows);
+  const gg=rows.filter(r=>r.guest_guaranteed>0&&r.guest_actual>0);
+  const attr=gg.length?avg(gg.map(r=>(r.guest_actual-r.guest_guaranteed)/r.guest_guaranteed*100)):null;
+  let h=`<div class="sech">Revenue &amp; space</div><div class="seccap">From enriched booked events — fills in as the deep backfill runs.</div><div class="cols">
+    <div class="card"><h2>Revenue composition</h2><div class="cap">Booked BEO revenue by category · total ${money1(rc.tot)} across ${rc.n} events.</div><div class="bars" id="rs_rev"></div></div>
+    <div class="card"><h2>Space utilization</h2><div class="cap">Events &amp; booked value by room.</div><div class="tscroll"><table class="atab" id="rs_rooms"><thead><tr><th>Space</th><th>Events</th><th>Booked</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
+  </div>`;
+  $(el).innerHTML=h;
+  const max=Math.max(...rc.vals.map(v=>v[1]),1);
+  $('#rs_rev').innerHTML=rc.vals.length?rc.vals.map(([lab,val,col])=>`<div class="brow"><span class="lab">${lab}</span><span class="track"><span class="fill" style="width:${Math.max(val/max*100,1.5)}%;background:${col}"></span></span><span class="val">${money1(val)}</span></div>`).join(''):'<div class="cap">No category breakdown captured yet.</div>';
+  $('#rs_rooms tbody').innerHTML=rooms.slice(0,12).map(r=>`<tr><td>${esc(r.room)}</td><td>${r.n}</td><td>${r.booked}</td><td>${r.val?money1(r.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="na">No room data yet.</td></tr>';
+}
+
 /* ============ VENUE VIEW ============ */
 function renderVenue(){
   const rows=rowsNow(); const M=metrics(rows);
@@ -561,6 +610,18 @@ function renderVenue(){
   </div>`;
   h+=`<div class="sech">Analytics &amp; correlations</div><div class="seccap">What drives a booking at ${esc(shortV(state.venue))}. Book % is over enriched events.</div>
     <div class="insight" id="v_signals"></div><div class="agrid" id="v_agrid" style="margin-bottom:20px"></div>`;
+  // clients, team & pace
+  h+=`<div class="sech">Clients, team &amp; pace</div><div class="seccap">Repeat business, who owns the pipeline, booking momentum, and first-response speed.</div>
+  <div class="cols">
+    <div class="card"><h2>Repeat vs. new clients</h2><div class="cap">Guests (by email) who submitted more than once.</div><div id="v_repeat"></div></div>
+    <div class="card"><h2>Response SLA</h2><div class="cap">Time to first disposition.</div><div class="bars" id="v_sla"></div></div>
+  </div>
+  <div class="cols">
+    <div class="card"><h2>Booking pace</h2><div class="cap">Bookings created per month — momentum.</div><div class="bars" id="v_pace"></div></div>
+    <div class="card"><h2>Team</h2><div class="cap">Pipeline owners &amp; creators.</div><div class="tscroll"><table class="atab" id="v_team"><thead><tr><th>Person</th><th>Events</th><th>Booked</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><h2>Top repeat accounts</h2><div class="cap">Guests with the most inquiries at this venue.</div><div class="tscroll"><table class="atab" id="v_accts"><thead><tr><th>Guest / Company</th><th>Inq</th><th>Booked</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
+  <div id="v_revspace"></div>`;
   h+=tableShell(false);
   $('#app').innerHTML=h;
   paintFunnel(rows,'#v_funnel');
@@ -568,6 +629,12 @@ function renderVenue(){
   paintSources(rows,'#v_src');
   paintMoM(rows,'#v_mom');
   paintVenueAnalytics(rows);
+  paintRepeat(rows,'#v_repeat');
+  simpleBars('#v_sla',slaBuckets(rows),{color:'var(--accent-2)'});
+  simpleBars('#v_pace',paceByMonth(rows).map(([k,n])=>[ymLab(k),n]),{color:'var(--definite)'});
+  paintTeam(rows,'#v_team');
+  paintAccounts(rows,'#v_accts');
+  paintRevSpace(rows,'#v_revspace');
   initTable(false);
 }
 function portfCmp(v,p,lowerBetter,unit){
