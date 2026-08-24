@@ -55,9 +55,16 @@ Mailbox → lead (not lead → mailbox):
     7 messages, full arc from follow-up → package selection → contract → signed + deposit paid.
   - Lead 54770469 (Ashlyn Bausman, Holiday dinner 2026-12-06): 1 inbound follow-up.
   - Lead 55310213 (Laura Bonadonna, Rehearsal Dinner 2027-10-22): 1 inbound follow-up.
-- Direct-mail leads (~17 further leads from the address sweep) are being ingested by the
-  same normalization contract; final counts recorded in `ts_comms` (query:
-  `select lead_id, count(*) from ts_comms group by 1`).
+- Direct-mail leads from the address sweep were then ingested under the same
+  normalization contract (36 further leads).
+- **Final backfill total: 52 messages across 39 leads** (46 inbound / 6 outbound) —
+  everything event-related this mailbox holds for the roster. Integrity checks: 0
+  guest-email↔lead mismatches, 0 boilerplate leaks in `body_text`, 0 duplicate
+  `message_id`s. The remaining 39 Tripleseat discussion threads in the mailbox were
+  name-matched against the Mulherin's roster and all belong to other Method venues.
+- The inbound/outbound skew is the coverage gap made visible: venue replies reach this
+  mailbox only when staff cc `hello@` (e.g. Tom Foy's replies on the Felipe Mercado
+  thread) or when the discussion notifies `hello@` (Evan Harkins thread).
 
 ## What this means for the two ingestion paths
 
