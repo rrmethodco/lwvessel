@@ -77,6 +77,7 @@ Prereqs in the environment: Node, `playwright-core` (global npm), Chromium at `/
    cd reports/mulherins
    node build-lifecycle.js   # -> mulherins-inquiry-lifecycle.html
    node build-chase.js       # -> mulherins-chase-list.html
+   node build-deep.js        # -> mulherins-deep-dashboard.html (needs deep.json from ts_report_json key='deep')
    ```
 
 3. **Render to PDF**:
