@@ -6,7 +6,11 @@ const fs = require('fs');
 const path = require('path');
 const dir = __dirname;
 const tpl = fs.readFileSync(path.join(dir, 'portfolio-dashboard.template.html'), 'utf8');
-const data = JSON.parse(fs.readFileSync(path.join(dir, 'deep_all.json'), 'utf8'));
+// Venues excluded from the portfolio dashboard (by Tripleseat location_id).
+// The Quoin (21825) and HIROKI (33578) — excluded per request.
+const EXCLUDE = new Set([21825, 33578]);
+const data = JSON.parse(fs.readFileSync(path.join(dir, 'deep_all.json'), 'utf8'))
+  .filter(r => !EXCLUDE.has(r.venue_id));
 const marker = '/*__DATA__*/[]';
 if (!tpl.includes(marker)) { console.error('DATA marker not found'); process.exit(1); }
 const out = tpl.replace(marker, JSON.stringify(data));
