@@ -56,6 +56,22 @@ main{max-width:1320px;margin:0 auto;padding:22px 24px 80px}
 .cov b{color:var(--ink)}
 .cov .pill{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:1px 7px;border-radius:20px;background:var(--tentative)22;color:var(--tentative);border:1px solid var(--tentative)55;white-space:nowrap}
 
+/* executive summary */
+.exec{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.exec .eh{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.exec .eh h2{font-size:18px}
+.exec .eh .tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--border);padding:2px 9px;border-radius:20px}
+.exec p{margin:0 0 12px;font-size:14.5px;line-height:1.62;color:var(--ink-soft)}
+.exec p b{color:var(--ink);font-weight:600}
+.exec .hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:4px}
+.exec .hlc{border-left:3px solid var(--accent);padding:2px 0 2px 12px}
+.exec .hlc .hv{font-family:'Newsreader',serif;font-size:22px;font-weight:600;line-height:1.05;color:var(--ink)}
+.exec .hlc .hv.pos{color:var(--pos)}.exec .hlc .hv.neg{color:var(--neg)}
+.exec .hlc .hl2{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+.exec ul.take{margin:6px 0 0;padding:0;list-style:none}
+.exec ul.take li{position:relative;padding-left:20px;margin:7px 0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.exec ul.take li::before{content:"\2192";position:absolute;left:0;color:var(--accent);font-weight:700}
+.exec ul.take b{color:var(--ink)}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px;margin-bottom:18px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px 15px;box-shadow:var(--shadow)}
 .kpi .l{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
@@ -173,6 +189,7 @@ footer{max-width:1320px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);f
     <div class="htitle"><h1>Method Co · Event Pipeline</h1><span class="sub" id="scope">Portfolio</span></div>
     <div class="hactions">
       <select class="vsel" id="venue" aria-label="Choose venue"></select>
+      <select class="vsel" id="month" aria-label="Choose month"></select>
       <span class="asof mono" id="asof"></span>
       <button class="toggle" id="tg" aria-label="Toggle theme"><svg id="tgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg><span id="tgt">Dark</span></button>
     </div>
@@ -238,8 +255,13 @@ const SHORT={'Wm. Mulherin’s Sons Restaurant & Hotel':"Mulherin's",'Wm. Mulher
 const shortV=n=>SHORT[n]||n;
 const vColor=(()=>{const m=new Map();VENUES.forEach((v,i)=>m.set(v.name,`var(--c${(i%8)+1})`));return n=>m.get(n)||'var(--neutral)';})();
 
-const state={venue:'__ALL__'};
-const rowsNow=()=> state.venue==='__ALL__' ? ALL : (VMAP.get(state.venue)||[]);
+const state={venue:'__ALL__',month:'__YTD__'};
+const MONTHS=[...new Set(ALL.map(r=>ymKey(r.created_at)).filter(Boolean))].sort();
+const inMonth=r=> state.month==='__YTD__' || ymKey(r.created_at)===state.month;
+const monthRows=()=> state.month==='__YTD__' ? ALL : ALL.filter(inMonth);
+const rowsNow=()=> { const b=monthRows(); return state.venue==='__ALL__' ? b : b.filter(r=>r.venue===state.venue); };
+const venueGroups=base=> VENUES.map(v=>({name:v.name, rows:base.filter(r=>r.venue===v.name)})).filter(g=>g.rows.length>0);
+const monthLabel=()=> state.month==='__YTD__' ? ('YTD '+new Date().getFullYear()) : ymLab(state.month);
 
 /* ---- shared stats ---- */
 const PERSONAL=/@(gmail|yahoo|hotmail|outlook|aol|icloud|me|comcast|verizon|live|msn|ymail|proton|mac)\./i;
@@ -300,12 +322,82 @@ function heatColor(t){ // t in 0..1 -> accent scale
   return `color-mix(in srgb, var(--accent) ${Math.round(8+t*70)}%, var(--surface))`;
 }
 
+/* ============ executive summaries ============ */
+function hlc(v,l,c){return `<div class="hlc"><div class="hv ${c||''}">${v}</div><div class="hl2">${l}</div></div>`;}
+function execBlock(tag,title,paras,highlights,takeaways){
+  return `<div class="exec"><div class="eh"><h2>${title}</h2><span class="tag">${tag}</span></div>
+    ${paras.map(p=>`<p>${p}</p>`).join('')}
+    ${highlights?`<div class="hl">${highlights.join('')}</div>`:''}
+    ${takeaways&&takeaways.length?`<ul class="take">${takeaways.map(t=>`<li>${t}</li>`).join('')}</ul>`:''}</div>`;
+}
+function bestType(rows,minN){ const B=pooledCards(rows).typeB.filter(x=>x[1].enr>=(minN||4)); if(!B.length)return null; B.sort((a,b)=>b[1].booked/b[1].enr-a[1].booked/a[1].enr); return {name:B[0][0],rate:B[0][1].booked/B[0][1].enr*100,n:B[0][1].enr}; }
+function topSource(rows){ const m=new Map(); rows.forEach(r=>{const k=r.lead_source||'(none)';m.set(k,(m.get(k)||0)+1);}); const a=[...m.entries()].sort((x,y)=>y[1]-x[1]); return a.length?{name:a[0][0],n:a[0][1]}:null; }
+function busiestMonth(rows){ const m=new Map(); rows.forEach(r=>{const k=ymKey(r.created_at);if(!k)return;m.set(k,(m.get(k)||0)+1);}); const a=[...m.entries()].sort((x,y)=>y[1]-x[1]); return a.length?{k:a[0][0],n:a[0][1]}:null; }
+
+function execPortfolio(M,rowsV,base){
+  const per=monthLabel();
+  const top=[...rowsV].sort((a,b)=>b.m.n-a.m.n)[0];
+  const fast=[...rowsV].filter(v=>v.m.respMed!=null).sort((a,b)=>a.m.respMed-b.m.respMed)[0];
+  const slow=[...rowsV].filter(v=>v.m.respMed!=null).sort((a,b)=>b.m.respMed-a.m.respMed)[0];
+  const topBook=[...rowsV].filter(v=>v.m.bookRate!=null&&v.m.enriched>=8).sort((a,b)=>b.m.bookRate-a.m.bookRate)[0];
+  const topVal=[...rowsV].filter(v=>v.m.bookedValue>0).sort((a,b)=>b.m.bookedValue-a.m.bookedValue)[0];
+  const bm=state.month==='__YTD__'?busiestMonth(base):null;
+  const bt=bestType(base,10);
+  const p1=`Across <b>${rowsV.length} venues</b>, Method Co. fielded <b>${fmtN(base.length)}</b> event inquiries ${per==='YTD '+new Date().getFullYear()?'year-to-date':'in '+per}. `+
+    (top?`<b>${esc(shortV(top.name))}</b> drives the most demand at <b>${pct0(top.m.n,base.length)}</b> of the total`:'')+
+    (top&&topVal&&topVal.name!==top.name?`, while <b>${esc(shortV(topVal.name))}</b> generates the most booked value`:'')+`.`;
+  const p2=`So far <b>${fmtN(M.booked)}</b> inquiries have booked (Definite or Closed) for <b>${money1(M.bookedValue)}</b> in BEO value — a <b>${M.bookRate==null?'—':(M.bookRate*100).toFixed(0)+'%'}</b> booking rate on enriched events (avg <b>${money1(M.avgBEO)}</b> per event). `+
+    (fast&&slow&&fast.name!==slow.name?`Response speed is the widest operational gap: <b>${esc(shortV(fast.name))}</b> answers in a median <b>${fast.m.respMed}d</b> versus <b>${esc(shortV(slow.name))}</b> at <b>${slow.m.respMed}d</b>.`:'')+
+    (bt?` ${esc(bt.name)} is the strongest-converting event type portfolio-wide at <b>${bt.rate.toFixed(0)}%</b>.`:'');
+  const hl=[
+    hlc(fmtN(base.length),'Inquiries · '+per,'acc'),
+    hlc(money1(M.bookedValue),'Booked BEO value','pos'),
+    hlc(M.respMed==null?'—':M.respMed+'d','Median response time'),
+    hlc((M.tdRate*100).toFixed(0)+'%','Turned down at lead stage','neg')
+  ];
+  const tk=[];
+  if(slow&&fast&&slow.m.respMed-fast.m.respMed>=1) tk.push(`<b>Close the response gap:</b> ${esc(shortV(slow.name))} (${slow.m.respMed}d median) is the clearest speed opportunity — same-day replies book materially better across the portfolio.`);
+  if(topBook) tk.push(`<b>Replicate the winner:</b> ${esc(shortV(topBook.name))} books <b>${(topBook.m.bookRate*100).toFixed(0)}%</b> of enriched inquiries — study its intake &amp; follow-up as the template.`);
+  if(bm) tk.push(`<b>Seasonal peak:</b> ${ymLab(bm.k)} was the busiest month (${fmtN(bm.n)} inquiries) — staff and pre-book capacity around it.`);
+  if(M.cover<0.6) tk.push(`<b>Data note:</b> booking &amp; BEO figures reflect the <b>${(M.cover*100).toFixed(0)}%</b> of linked events enriched so far; they will strengthen as the Tripleseat backfill completes.`);
+  return execBlock('Executive summary · Portfolio','Portfolio at a glance',[p1,p2],hl,tk);
+}
+function execVenue(M,P,rows){
+  const per=monthLabel(); const name=shortV(state.venue);
+  const src=topSource(rows); const bt=bestType(rows,4); const bm=state.month==='__YTD__'?busiestMonth(rows):null;
+  const respDelta=(M.respMed!=null&&P.respMed!=null)?M.respMed-P.respMed:null;
+  const tdDelta=M.tdRate-P.tdRate;
+  const p1=`<b>${esc(name)}</b> fielded <b>${fmtN(M.n)}</b> inquiries ${per==='YTD '+new Date().getFullYear()?'year-to-date':'in '+per} — <b>${pct0(M.n,P.n)}</b> of portfolio volume. `+
+    `<b>${fmtN(M.booked)}</b> ${M.booked===1?'has':'have'} booked for <b>${money1(M.bookedValue)}</b> in BEO value`+(M.bookRate!=null?` (a <b>${(M.bookRate*100).toFixed(0)}%</b> rate on enriched events, avg ${money1(M.avgBEO)})`:'')+`.`;
+  const p2=`It responds in a median <b>${M.respMed==null?'—':M.respMed+' days'}</b>`+
+    (respDelta!=null?` (${respDelta===0?'in line with':Math.abs(respDelta)+'d '+(respDelta<0?'faster than':'slower than')} the portfolio)`:'')+
+    ` and turns down <b>${(M.tdRate*100).toFixed(0)}%</b> of inquiries`+(Math.abs(tdDelta)>=0.02?` (${(Math.abs(tdDelta)*100).toFixed(0)}pp ${tdDelta>0?'above':'below'} portfolio)`:'')+`. `+
+    (src?`Most inquiries arrive via <b>${esc(src.name)}</b>. `:'')+
+    (bt?`${esc(bt.name)} is its best-converting type at <b>${bt.rate.toFixed(0)}%</b>.`:'');
+  const hl=[
+    hlc(fmtN(M.n),'Inquiries · '+per,'acc'),
+    hlc(money1(M.bookedValue),'Booked BEO value','pos'),
+    hlc(M.respMed==null?'—':M.respMed+'d',respDelta==null?'Median response':(respDelta<=0?'Response — faster':'Response — slower'),respDelta==null?'':(respDelta<=0?'pos':'neg')),
+    hlc(M.bookRate==null?'—':(M.bookRate*100).toFixed(0)+'%','Book rate (enriched)')
+  ];
+  const tk=[];
+  if(respDelta!=null&&respDelta>=1) tk.push(`<b>Speed up first response:</b> ${respDelta}d slower than the portfolio median — every day of delay lowers the booking rate.`);
+  else if(respDelta!=null&&respDelta<0) tk.push(`<b>Strength — responsiveness:</b> ${Math.abs(respDelta)}d faster than portfolio; keep protecting the first-reply SLA.`);
+  if(tdDelta>=0.05) tk.push(`<b>High turn-down (${(M.tdRate*100).toFixed(0)}%):</b> review whether declined inquiries are genuinely out of scope or recoverable with a menu/date alternative.`);
+  if(bm) tk.push(`<b>Peak month:</b> ${ymLab(bm.k)} led with ${fmtN(bm.n)} inquiries — align staffing and outreach accordingly.`);
+  if(M.cover<0.6) tk.push(`<b>Data note:</b> only <b>${(M.cover*100).toFixed(0)}%</b> of this venue's linked events are enriched yet, so booking &amp; BEO figures will firm up as the backfill runs.`);
+  if(!tk.length) tk.push(`<b>Steady performer:</b> metrics track close to the portfolio average across speed, disposition and mix.`);
+  return execBlock('Executive summary · '+esc(name),esc(name)+' at a glance',[p1,p2],hl,tk);
+}
+
 /* ============ PORTFOLIO VIEW ============ */
 function renderPortfolio(){
-  const M=metrics(ALL);
-  const bookedAll=ALL.filter(BOOKED);
+  const base=monthRows();
+  const M=metrics(base);
+  const rowsV=venueGroups(base).map(g=>({name:g.name, m:metrics(g.rows)}));
+  let h=execPortfolio(M,rowsV,base);
   const kpis=[
-    ['Inquiries (YTD)',fmtN(ALL.length),VENUES.length+' venues','acc'],
+    ['Inquiries',fmtN(base.length),monthLabel()+' · '+rowsV.length+' venues','acc'],
     ['Booked events',fmtN(M.booked),'Definite + Closed','pos'],
     ['Booked value',money1(M.bookedValue),'enriched events','pos'],
     ['Portfolio book rate',M.bookRate==null?'—':(M.bookRate*100).toFixed(0)+'%','of enriched',''],
@@ -314,11 +406,10 @@ function renderPortfolio(){
     ['Avg BEO',money1(M.avgBEO),'per booked event',''],
     ['Enrichment',(M.cover*100).toFixed(0)+'%','events with $/stage','']
   ];
-  let h=`<div class="kpis">${kpis.map(([l,v,s,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v ${c||''}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`).join('')}</div>`;
+  h+=`<div class="kpis">${kpis.map(([l,v,s,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v ${c||''}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`).join('')}</div>`;
 
   // venue comparison table
-  const rowsV=VENUES.map(v=>({name:v.name, m:metrics(v.rows)}));
-  h+=`<div class="card" style="margin-bottom:18px"><h2>Venue scorecard</h2><div class="cap">Every venue side by side. Click a venue to open its full dashboard. Lead-level columns (inquiries, response, turned-down, converted) are complete; booking &amp; BEO columns are computed over each venue's enriched events (coverage shown).</div>
+  h+=`<div class="card" style="margin-bottom:18px"><h2>Venue scorecard</h2><div class="cap">Every venue side by side${state.month==='__YTD__'?'':' for '+monthLabel()}. Click a venue to open its full dashboard. Lead-level columns (inquiries, response, turned-down, converted) are complete; booking &amp; BEO columns are computed over each venue's enriched events (coverage shown).</div>
     <div class="tscroll"><table class="atab" id="scoretab"><thead><tr>
       <th data-k="name">Venue</th><th data-k="n">Inq</th><th data-k="share">Share</th><th data-k="resp">Resp (med)</th>
       <th data-k="td">Turned&nbsp;down</th><th data-k="conv">Converted</th><th data-k="book">Booked&nbsp;% *</th><th data-k="avg">Avg&nbsp;BEO *</th><th data-k="val">Booked&nbsp;$ *</th><th data-k="cover">Cover</th>
@@ -336,11 +427,12 @@ function renderPortfolio(){
     <div class="card"><h2>Converted rate (lead-level)</h2><div class="cap">Share of inquiries that became a linked booking. Note: some venues auto-convert most inquiries — read alongside true booked %.</div><div class="bars" id="cv_conv"></div></div>
   </div>`;
 
-  // seasonality heatmap
-  h+=`<div class="card" style="margin:0 0 18px"><h2>Seasonality — inquiries by month</h2><div class="cap">Volume per venue per submission month. Darker = busier (scaled within each venue's row).</div><div class="heat" id="cv_heat"></div></div>`;
+  // seasonality heatmap (full-year context; only meaningful across months)
+  if(state.month==='__YTD__')
+    h+=`<div class="card" style="margin:0 0 18px"><h2>Seasonality — inquiries by month</h2><div class="cap">Volume per venue per submission month. Darker = busier (scaled within each venue's row).</div><div class="heat" id="cv_heat"></div></div>`;
 
   // pooled correlations
-  h+=`<div class="sech">Portfolio correlations</div><div class="seccap">What drives a booking across the whole portfolio — every venue's inquiries pooled. "Book %" is over enriched events.</div>
+  h+=`<div class="sech">Portfolio correlations</div><div class="seccap">What drives a booking across the whole portfolio${state.month==='__YTD__'?'':' in '+monthLabel()} — every venue's inquiries pooled. "Book %" is over enriched events.</div>
     <div class="insight" id="p_signals"></div>
     <div class="agrid" id="p_agrid" style="margin-bottom:22px"></div>`;
 
@@ -350,8 +442,8 @@ function renderPortfolio(){
 
   paintScore(rowsV);
   paintCompareBars(rowsV);
-  paintHeat();
-  paintPooled();
+  if(state.month==='__YTD__') paintHeat();
+  paintPooled(base,rowsV);
   initTable(true);
 }
 
@@ -413,9 +505,9 @@ function pooledCards(rows){
   const domB=buckets(rows,r=>domainType(r.email),['Company domain','Personal (Gmail, etc.)']);
   return {respB,sizeB,ltB,typeB,dowB,domB};
 }
-function paintPooled(){
-  const B=pooledCards(ALL);
-  const venueB=VENUES.map(v=>[shortV(v.name),stats(v.rows)]);
+function paintPooled(base,rowsV){
+  const B=pooledCards(base);
+  const venueB=venueGroups(base).map(g=>[shortV(g.name),stats(g.rows)]);
   $('#p_agrid').innerHTML=[
     corrCard('Booking by venue','Enriched book rate & average BEO per property.',venueB,{dim:'Venue',value:true,overEnriched:true}),
     corrCard('Does speed win?','Book rate by response time to first disposition.',B.respB,{dim:'Response time',overEnriched:true}),
@@ -427,28 +519,28 @@ function paintPooled(){
   ].join('');
   // signals
   const sig=[];
-  const rowsV=VENUES.map(v=>({name:v.name,m:metrics(v.rows)}));
   const fast=[...rowsV].filter(v=>v.m.respMed!=null).sort((a,b)=>a.m.respMed-b.m.respMed)[0];
   const slow=[...rowsV].filter(v=>v.m.respMed!=null).sort((a,b)=>b.m.respMed-a.m.respMed)[0];
-  if(fast&&slow) sig.push(`<b>Response speed varies widely:</b> ${esc(shortV(fast.name))} answers in a median <b>${fast.m.respMed}d</b> vs ${esc(shortV(slow.name))} at <b>${slow.m.respMed}d</b>.`);
+  if(fast&&slow&&fast.name!==slow.name) sig.push(`<b>Response speed varies widely:</b> ${esc(shortV(fast.name))} answers in a median <b>${fast.m.respMed}d</b> vs ${esc(shortV(slow.name))} at <b>${slow.m.respMed}d</b>.`);
   const bigTd=[...rowsV].sort((a,b)=>b.m.tdRate-a.m.tdRate)[0], lowTd=[...rowsV].sort((a,b)=>a.m.tdRate-b.m.tdRate)[0];
-  if(bigTd&&lowTd) sig.push(`<b>Turn-down spread:</b> ${esc(shortV(bigTd.name))} declines <b>${(bigTd.m.tdRate*100).toFixed(0)}%</b> of inquiries; ${esc(shortV(lowTd.name))} only ${(lowTd.m.tdRate*100).toFixed(0)}%.`);
+  if(bigTd&&lowTd&&bigTd.name!==lowTd.name) sig.push(`<b>Turn-down spread:</b> ${esc(shortV(bigTd.name))} declines <b>${(bigTd.m.tdRate*100).toFixed(0)}%</b> of inquiries; ${esc(shortV(lowTd.name))} only ${(lowTd.m.tdRate*100).toFixed(0)}%.`);
   const rateOf=(bs,label)=>{const f=bs.find(x=>x[0]===label);return f&&f[1].enr?f[1].booked/f[1].enr*100:null;};
   const sd=rateOf(B.respB,'Same day'), sl=rateOf(B.respB,'4+ days');
   if(sd!=null&&sl!=null) sig.push(`<b>Speed still wins portfolio-wide:</b> same-day responses book at <b>${sd.toFixed(0)}%</b> vs <b>${sl.toFixed(0)}%</b> at 4+ days (enriched).`);
   const co=rateOf(B.domB,'Company domain'), pe=rateOf(B.domB,'Personal (Gmail, etc.)');
   if(co!=null&&pe!=null) sig.push(`<b>Corporate leads:</b> company-domain inquiries book at ${co.toFixed(0)}% vs personal ${pe.toFixed(0)}% across the portfolio.`);
-  const busiest=[...VENUES].sort((a,b)=>b.n-a.n)[0];
-  sig.push(`<b>Volume concentration:</b> ${esc(shortV(busiest.name))} alone is <b>${pct0(busiest.n,ALL.length)}</b> of all portfolio inquiries.`);
+  const busiest=[...rowsV].sort((a,b)=>b.m.n-a.m.n)[0];
+  if(busiest) sig.push(`<b>Volume concentration:</b> ${esc(shortV(busiest.name))} alone is <b>${pct0(busiest.m.n,base.length)}</b> of portfolio inquiries${state.month==='__YTD__'?'':' in '+monthLabel()}.`);
   $('#p_signals').innerHTML='<h3>Portfolio signals</h3><ul>'+sig.map(s=>`<li>${s}</li>`).join('')+'</ul>';
 }
 
 /* ============ VENUE VIEW ============ */
 function renderVenue(){
   const rows=rowsNow(); const M=metrics(rows);
-  const P=metrics(ALL);
+  const base=monthRows(); const P=metrics(base);
+  let h=execVenue(M,P,rows);
   const kpis=[
-    ['Inquiries',fmtN(M.n),pct0(M.n,ALL.length)+' of portfolio','acc'],
+    ['Inquiries',fmtN(M.n),pct0(M.n,base.length)+' of portfolio · '+monthLabel(),'acc'],
     ['Booked',fmtN(M.booked),(M.bookRate==null?'—':(M.bookRate*100).toFixed(0)+'% of enriched'),'pos'],
     ['Booked value',money1(M.bookedValue),'Definite + Closed','pos'],
     ['Median response',(M.respMed==null?'—':M.respMed+'d'),portfCmp(M.respMed,P.respMed,true),''],
@@ -457,7 +549,7 @@ function renderVenue(){
     ['Avg BEO',money1(M.avgBEO),'per booked event',''],
     ['Enrichment',(M.cover*100).toFixed(0)+'%','events with $/stage','']
   ];
-  let h=`<div class="kpis">${kpis.map(([l,v,s,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v ${c||''}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`).join('')}</div>`;
+  h+=`<div class="kpis">${kpis.map(([l,v,s,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v ${c||''}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`).join('')}</div>`;
   h+=`<div class="cols">
     <div class="card"><h2>Pipeline funnel</h2><div class="cap">Where every inquiry stands today — current linked-event status.</div><div class="bars" id="v_funnel"></div></div>
     <div class="card"><h2>Stage timing</h2><div class="cap">Calendar days between milestones, from the status history.</div>
@@ -610,9 +702,11 @@ const st=document.createElement('style');st.textContent=`.mom{display:flex;flex-
 function selectVenue(name){ state.venue=name; $('#venue').value=name; render(); window.scrollTo({top:0,behavior:'smooth'}); }
 function render(){
   const portfolio = state.venue==='__ALL__';
-  $('#scope').textContent = portfolio ? 'Portfolio' : shortV(state.venue);
-  if(portfolio){ $('#note').innerHTML='<b>Portfolio view.</b> Every Method Co. venue’s event inquiries, year-to-date, side by side — with correlations pooled across all properties. Switch to a single venue for its full pipeline dashboard.'; renderPortfolio(); }
-  else { const M=metrics(rowsNow()); $('#note').innerHTML=`<b>${esc(state.venue)}.</b> Full inquiry → BEO lifecycle for this venue, year-to-date. Metrics compare against the portfolio average where useful.`; renderVenue(); }
+  const per = state.month==='__YTD__' ? 'Portfolio' : monthLabel();
+  $('#scope').textContent = (portfolio ? 'Portfolio' : shortV(state.venue)) + (state.month==='__YTD__'?'':' · '+monthLabel());
+  const win = state.month==='__YTD__' ? 'year-to-date' : monthLabel();
+  if(portfolio){ $('#note').innerHTML=`<b>Portfolio view.</b> Every Method Co. venue’s event inquiries (${win}) side by side — with correlations pooled across all properties. Use the venue selector for a single property, or the month filter to focus a period.`; renderPortfolio(); }
+  else { $('#note').innerHTML=`<b>${esc(state.venue)}.</b> Full inquiry → BEO lifecycle for this venue (${win}). Metrics compare against the portfolio average where useful.`; renderVenue(); }
   updateCoverage();
 }
 function updateCoverage(){
@@ -627,6 +721,9 @@ function boot(){
   const sel=$('#venue');
   sel.innerHTML=`<option value="__ALL__">◆ Portfolio — all venues</option>`+VENUES.map(v=>`<option value="${esc(v.name)}">${esc(shortV(v.name))} · ${v.n}</option>`).join('');
   sel.onchange=()=>{state.venue=sel.value;render();window.scrollTo({top:0,behavior:'smooth'});};
+  const msel=$('#month');
+  msel.innerHTML=`<option value="__YTD__">📅 YTD ${new Date().getFullYear()}</option>`+MONTHS.map(m=>`<option value="${m}">${ymLab(m)}</option>`).join('');
+  msel.onchange=()=>{state.month=msel.value;render();window.scrollTo({top:0,behavior:'smooth'});};
   const yr=new Date().getFullYear();
   $('#asof').textContent='YTD '+yr+' · '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
   $('#foot').innerHTML='Method Co. · Tripleseat event pipeline · Year-to-date '+yr+' (Jan 1 → today) · '+fmtN(ALL.length)+' inquiries across '+VENUES.length+' venues. Stage timing in calendar days. Booking &amp; BEO metrics reflect enriched events; coverage shown per view.';
