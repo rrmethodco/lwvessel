@@ -147,6 +147,24 @@ table.data tbody tr:hover td{background:var(--surface-2)}
 .atab tr:last-child td{border-bottom:0}
 .mbar{display:inline-block;width:40px;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden;margin-left:7px;vertical-align:middle}
 .mbar>span{display:block;height:100%;background:var(--definite);border-radius:3px}
+/* month-over-month two-tone bars */
+.mom{display:flex;flex-direction:column;gap:8px}
+.mrow{display:grid;grid-template-columns:58px 1fr 96px;align-items:center;gap:10px;font-size:12px}
+.mrow .mlab{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft)}
+.mrow .mtrack{position:relative;height:20px;background:var(--surface-3);border-radius:5px;overflow:hidden}
+.mrow .mtot{position:absolute;left:0;top:0;height:100%;background:var(--accent);opacity:.28}
+.mrow .mbk{position:absolute;left:0;top:0;height:100%;background:var(--definite);border-radius:5px;min-width:2px}
+.mrow .mval{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px}
+/* cohort maturation stacked bars */
+.cohorts{display:flex;flex-direction:column;gap:9px}
+.crow{display:grid;grid-template-columns:58px 1fr 108px;align-items:center;gap:11px;font-size:12px}
+.crow .clab{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);white-space:nowrap}
+.crow .cbar{display:flex;height:20px;border-radius:5px;overflow:hidden;background:var(--surface-3)}
+.crow .cseg{height:100%}
+.crow .cval{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px}
+.clegend{display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}
+.clegend span{display:inline-flex;align-items:center;gap:5px}
+.clegend i{width:9px;height:9px;border-radius:2px;display:inline-block}
 footer{max-width:1280px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);font-size:11px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -179,6 +197,17 @@ footer{max-width:1280px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);f
   <div class="seccap">What drives a booking — computed across all year-to-date inquiries. "Booked %" = share of that group that reached Definite or Closed.</div>
   <div class="insight" id="signals"></div>
   <div class="agrid" id="agrid" style="margin-bottom:22px"></div>
+
+  <h2 class="sech">Team performance &amp; trends</h2>
+  <div class="seccap">Who's converting, whether patience pays, and how each month's inquiry cohort has matured. Recent months are still young — their booked % keeps climbing as events reach Definite/Closed, so weight older cohorts more when judging conversion.</div>
+  <div class="card" style="margin-bottom:16px"><h2>Handler performance</h2><div class="cap" id="hcap">Every team member who worked an inquiry, from the status-change history. "Touched" = distinct inquiries they moved; "In booked" = how many of those reached Definite/Closed. (All linked events are owned by one account in Tripleseat, so this attributes work by who actually made each move.)</div>
+    <div class="tscroll"><table class="atab" id="owners"><thead><tr><th>Handler</th><th>Touched</th><th>Moves</th><th>In booked</th><th>Book %</th><th>Med. resp</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="cols">
+    <div class="card"><h2>Do longer sales cycles mean bigger deals?</h2><div class="cap" id="cvcap">Booked events bucketed by Prospect→Definite length.</div>
+      <table class="atab" id="cycleval"><thead><tr><th>Sales cycle</th><th>Booked</th><th>Avg BEO</th><th>Med. BEO</th></tr></thead><tbody></tbody></table></div>
+    <div class="card"><h2>Month-over-month conversion</h2><div class="cap">Inquiries by submission month (light bar) and how many have booked to date (green).</div><div class="mom" id="mom"></div></div>
+  </div>
+  <div class="card" style="margin-bottom:22px"><h2>Cohort maturation</h2><div class="cap">Each submission month's inquiries, split by where they stand today — read left to right: booked, in pipeline, lost, still open.</div><div class="cohorts" id="cohorts"></div></div>
 
   <div class="card" style="padding:14px 16px">
     <div class="filters">
@@ -346,7 +375,70 @@ function renderAnalytics(){
   if(small!=null&&big!=null) sig.push(`<b>Party size:</b> intimate (1–10) books at <b>${small.toFixed(0)}%</b>, large (41+) at <b>${big.toFixed(0)}%</b>.`);
   const typeRanked=typeB.filter(x=>x[1].n>=8).sort((a,b)=>b[1].booked/b[1].n-a[1].booked/a[1].n);
   if(typeRanked.length) sig.push(`<b>Best-converting type:</b> ${esc(typeRanked[0][0])} at ${(typeRanked[0][1].booked/typeRanked[0][1].n*100).toFixed(0)}% (n=${typeRanked[0][1].n}); weakest: ${esc(typeRanked[typeRanked.length-1][0])} at ${(typeRanked[typeRanked.length-1][1].booked/typeRanked[typeRanked.length-1][1].n*100).toFixed(0)}%.`);
+  // team signals — attribute by timeline actor (who moved each inquiry)
+  const hMap=new Map();
+  DATA.forEach(r=>{const handlers=new Set((r.timeline||[]).map(s=>(s.by||'').trim()).filter(Boolean));const isB=BOOKED(r);handlers.forEach(k=>{const g=hMap.get(k)||{n:0,b:0};g.n++;if(isB)g.b++;hMap.set(k,g);});});
+  const handlers=[...hMap.entries()].filter(x=>x[1].n>=8).sort((a,b)=>b[1].b/b[1].n-a[1].b/a[1].n);
+  if(handlers.length) sig.push(`<b>Top handler:</b> ${esc(handlers[0][0])} — ${(handlers[0][1].b/handlers[0][1].n*100).toFixed(0)}% of the ${handlers[0][1].n} inquiries they worked reached booked.`);
+  const bk=DATA.filter(r=>BOOKED(r)&&r.grand_total>0&&r.d_prospect_definite!=null);
+  const rcv=pearson(bk.map(r=>r.d_prospect_definite),bk.map(r=>r.grand_total));
+  if(rcv!=null) sig.push(`<b>Cycle vs. deal size:</b> correlation r = <b>${rcv.toFixed(2)}</b> — ${corrWord(rcv)}.`);
   $('#signals').innerHTML='<h3>Key signals</h3><ul>'+sig.map(s=>`<li>${s}</li>`).join('')+'</ul>';
+}
+
+/* ================= Team performance & trends ================= */
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function ymKey(s){const d=new Date(s);return isNaN(d)?null:d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}
+function ymLabel(k){const p=k.split('-');return MON[+p[1]-1]+" '"+p[0].slice(2);}
+function pearson(xs,ys){const n=xs.length;if(n<3)return null;const mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;let sxy=0,sxx=0,syy=0;for(let i=0;i<n;i++){const dx=xs[i]-mx,dy=ys[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxx&&syy?sxy/Math.sqrt(sxx*syy):null;}
+function corrWord(r){if(r==null)return'not enough data';const a=Math.abs(r);const dir=r>0?'longer cycles trend toward larger deals':'longer cycles trend toward smaller deals';if(a<0.15)return'essentially no relationship';return(a<0.35?'a weak signal that ':a<0.6?'a moderate signal that ':'a strong signal that ')+dir;}
+
+function renderOwners(){
+  // attribute work by who actually made each status change (timeline actor),
+  // since all linked events carry a single booking_owner account.
+  const m=new Map(); // handler -> {leads:Set, moves, booked, val, resps:[]}
+  DATA.forEach(r=>{
+    const handlers=new Set((r.timeline||[]).map(s=>(s.by||'').trim()).filter(Boolean));
+    const isB=BOOKED(r);
+    (r.timeline||[]).forEach(s=>{const k=(s.by||'').trim();if(!k)return;const g=m.get(k)||{leads:new Set(),moves:0,booked:0,val:0,resps:[]};g.moves++;m.set(k,g);});
+    handlers.forEach(k=>{const g=m.get(k);g.leads.add(r.lead_id);if(isB){g.booked++;if(r.grand_total>0)g.val+=r.grand_total;}if(r.resp_days!=null)g.resps.push(r.resp_days);});
+  });
+  const arr=[...m.entries()].map(([k,g])=>({k,touched:g.leads.size,moves:g.moves,booked:g.booked,val:g.val,resp:median(g.resps)}))
+    .sort((a,b)=>b.touched-a.touched);
+  $('#owners tbody').innerHTML=arr.map(o=>{const rate=o.touched?o.booked/o.touched*100:0;
+    return `<tr><td>${esc(o.k)}</td><td>${o.touched}</td><td>${o.moves}</td><td>${o.booked}</td><td>${rate.toFixed(0)}%<span class="mbar"><span style="width:${Math.max(rate,2)}%"></span></span></td><td>${o.resp==null?'—':o.resp+'d'}</td><td>${o.val?money(o.val):'—'}</td></tr>`;}).join('')
+    ||'<tr><td colspan="7" style="color:var(--muted)">No status-change history recorded.</td></tr>';
+}
+
+function renderCycleValue(){
+  const booked=DATA.filter(r=>BOOKED(r)&&r.grand_total>0&&r.d_prospect_definite!=null);
+  const B=[['Same / next day',0,1],['2–7 days',2,7],['8–30 days',8,30],['31–90 days',31,90],['90+ days',91,1e9]];
+  const rows=B.map(([lab,lo,hi])=>{const g=booked.filter(r=>r.d_prospect_definite>=lo&&r.d_prospect_definite<=hi);
+    return [lab,g.length,avg(g.map(r=>r.grand_total)),median(g.map(r=>r.grand_total))];}).filter(r=>r[1]>0);
+  $('#cycleval tbody').innerHTML=rows.map(([lab,n,av,md])=>`<tr><td>${lab}</td><td>${n}</td><td>${av==null?'—':money(av)}</td><td>${md==null?'—':money(md)}</td></tr>`).join('')
+    ||'<tr><td colspan="4" style="color:var(--muted)">No booked events with a recorded cycle yet.</td></tr>';
+  const r=pearson(booked.map(x=>x.d_prospect_definite),booked.map(x=>x.grand_total));
+  $('#cvcap').innerHTML=`Booked events bucketed by Prospect→Definite length. Correlation (cycle vs. $): <b>r = ${r==null?'—':r.toFixed(2)}</b> — ${corrWord(r)} (n=${booked.length}).`;
+}
+
+function renderMoM(){
+  const m=new Map();
+  DATA.forEach(r=>{const k=ymKey(r.created_at);if(!k)return;const g=m.get(k)||{n:0,b:0,v:0};g.n++;if(BOOKED(r)){g.b++;g.v+=r.grand_total||0;}m.set(k,g);});
+  const keys=[...m.keys()].sort();const max=Math.max(...keys.map(k=>m.get(k).n),1);
+  $('#mom').innerHTML=keys.map(k=>{const g=m.get(k);const rate=g.n?g.b/g.n*100:0;
+    return `<div class="mrow"><span class="mlab">${ymLabel(k)}</span><span class="mtrack"><span class="mtot" style="width:${g.n/max*100}%"></span><span class="mbk" style="width:${g.b/max*100}%"></span></span><span class="mval">${g.b}/${g.n} · ${rate.toFixed(0)}%</span></div>`;}).join('');
+}
+
+const COHORT_SEG=[['Booked','var(--definite)',r=>BOOKED(r)],['In pipeline','var(--tentative)',r=>['PROSPECT','TENTATIVE'].includes(r._stage)],['Lost','var(--lost)',r=>LOSTr(r)],['Open / other','var(--open)',r=>!BOOKED(r)&&!LOSTr(r)&&!['PROSPECT','TENTATIVE'].includes(r._stage)]];
+function renderCohorts(){
+  const m=new Map();
+  DATA.forEach(r=>{const k=ymKey(r.created_at);if(!k)return;if(!m.has(k))m.set(k,[]);m.get(k).push(r);});
+  const keys=[...m.keys()].sort();
+  $('#cohorts').innerHTML=keys.map(k=>{const rows=m.get(k);const n=rows.length;
+    const segs=COHORT_SEG.map(([lab,c,fn])=>{const cnt=rows.filter(fn).length;return cnt?`<span class="cseg" style="width:${cnt/n*100}%;background:${c}" title="${lab}: ${cnt}"></span>`:'';}).join('');
+    const b=rows.filter(BOOKED).length;
+    return `<div class="crow"><span class="clab">${ymLabel(k)}</span><span class="cbar">${segs}</span><span class="cval">${n} inq · ${(b/n*100).toFixed(0)}% bk</span></div>`;}).join('')
+    +`<div class="clegend">${COHORT_SEG.map(([lab,c])=>`<span><i style="background:${c}"></i>${lab}</span>`).join('')}</div>`;
 }
 
 /* ---- filters + table ---- */
@@ -458,5 +550,5 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 $('#asof').textContent='YTD '+new Date().getFullYear()+' · as of '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
 $('#note').innerHTML='<b>What this tracks.</b> Every inquiry’s full lifecycle from the Tripleseat status-change history — each stage, the exact timestamp, and which team member made the move. Click any row to see its step-by-step process timeline. <b>Note:</b> Tripleseat’s API does not expose the actual guest email/message content, so this tracks the <i>process</i> steps and timing, not the words exchanged.';
 $('#foot').innerHTML='Wm. Mulherin’s Sons · Tripleseat location 17784 · Year-to-date '+new Date().getFullYear()+' (Jan 1 → today) · '+DATA.length+' inquiries. Stage timing in calendar days; conversions are date-stamped in Tripleseat (same-day = 0).';
-renderKpis();renderFunnel();renderTiming();renderActors();renderSources();renderAnalytics();initFilters();render();
+renderKpis();renderFunnel();renderTiming();renderActors();renderSources();renderAnalytics();renderOwners();renderCycleValue();renderMoM();renderCohorts();initFilters();render();
 </script>
