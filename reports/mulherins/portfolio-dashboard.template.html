@@ -581,18 +581,27 @@ function paintTeam(rows,el){ const arr=teamRows(rows).slice(0,10); $(el+' tbody'
 function paintAccounts(rows,el){ const arr=topAccounts(rows,12); $(el+' tbody').innerHTML=arr.map(a=>`<tr><td><b>${esc(a.name||a.email)}</b>${a.company?`<div class="subt">${esc(a.company)}</div>`:''}</td><td>${a.inq}</td><td>${a.booked}</td><td>${a.val?money1(a.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="na">No repeat guests in this window.</td></tr>'; }
 function paintAccountsP(rows,el){ const arr=topAccounts(rows,15); $(el+' tbody').innerHTML=arr.map(a=>`<tr><td><b>${esc(a.name||a.email)}</b>${a.company?`<div class="subt">${esc(a.company)}</div>`:''}</td><td>${[...a.venues].map(esc).join(', ')}</td><td>${a.inq}</td><td>${a.booked}</td><td>${a.val?money1(a.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="5" class="na">—</td></tr>'; }
 function paintRevSpace(rows,el){
-  if(!anyDeep(rows)){ $(el).innerHTML=`<div class="cov" style="margin-top:6px"><span class="pill">BACKFILLING</span><span>Revenue composition (food / beverage / rental / service / tax), room utilization, event times and guaranteed-vs-actual guest counts are being pulled from Tripleseat now — this section fills in as the deep backfill completes.</span></div>`; return; }
-  const rc=revComp(rows); const rooms=roomRows(rows);
-  const gg=rows.filter(r=>r.guest_guaranteed>0&&r.guest_actual>0);
-  const attr=gg.length?avg(gg.map(r=>(r.guest_actual-r.guest_guaranteed)/r.guest_guaranteed*100)):null;
-  let h=`<div class="sech">Revenue &amp; space</div><div class="seccap">From enriched booked events — fills in as the deep backfill runs.</div><div class="cols">
-    <div class="card"><h2>Revenue composition</h2><div class="cap">Booked BEO revenue by category · total ${money1(rc.tot)} across ${rc.n} events.</div><div class="bars" id="rs_rev"></div></div>
-    <div class="card"><h2>Space utilization</h2><div class="cap">Events &amp; booked value by room.</div><div class="tscroll"><table class="atab" id="rs_rooms"><thead><tr><th>Space</th><th>Events</th><th>Booked</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
-  </div>`;
+  const anyRoom=rows.some(r=>r.room_name);
+  const gt=rows.map(r=>r.grand_total).filter(x=>x>0);
+  const fb=rows.map(r=>r.fb_min).filter(x=>x>0);
+  const rent=rows.map(r=>r.rental_fee).filter(x=>x>0);
+  const bookedVal=rows.filter(BOOKED).map(r=>r.grand_total).filter(x=>x>0);
+  if(!anyRoom && !gt.length){ $(el).innerHTML=`<div class="cov" style="margin-top:6px"><span class="pill">BACKFILLING</span><span>Room utilization, event times and BEO financials are being pulled from Tripleseat now — this section fills in as the deep backfill completes.</span></div>`; return; }
+  const rooms=roomRows(rows);
+  const gtSum=gt.reduce((a,b)=>a+b,0), rentSum=rent.reduce((a,b)=>a+b,0), fbSum=fb.reduce((a,b)=>a+b,0), bvSum=bookedVal.reduce((a,b)=>a+b,0);
+  const stat=(v,l)=>`<div style="border-left:3px solid var(--definite);padding:2px 0 2px 12px"><div style="font-family:'Newsreader',serif;font-size:22px;font-weight:600;line-height:1.05;color:var(--ink)">${v}</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35">${l}</div></div>`;
+  let h=`<div class="sech">Revenue &amp; space</div><div class="seccap">From enriched events. Tripleseat exposes BEO totals, rental &amp; F&amp;B minimums, room and event times — not a food/beverage line-item split. "BEO value on file" is the contracted total on any event with a built BEO (quoted or won); "won" is Definite/Closed only.</div>
+    <div class="card" style="margin-bottom:16px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:16px">
+      ${stat(money1(gtSum),'BEO value on file · '+gt.length+' events')}
+      ${stat(money1(bvSum),'Won BEO value · '+bookedVal.length+' Definite/Closed')}
+      ${stat(money1(fbSum),'F&B minimums · '+fb.length+' events')}
+      ${stat(money1(rentSum),'Rental revenue · '+rent.length+' events')}
+    </div></div>
+    <div class="card"><h2>Space utilization</h2><div class="cap">Every event's room/space from Tripleseat — how each room is used and what it contracts. ${rooms.length} spaces in use.</div>
+      <div class="tscroll"><table class="atab" id="rs_rooms"><thead><tr><th>Space</th><th>Events</th><th>Won</th><th>Win %</th><th>BEO $ on file</th></tr></thead><tbody></tbody></table></div></div>`;
   $(el).innerHTML=h;
-  const max=Math.max(...rc.vals.map(v=>v[1]),1);
-  $('#rs_rev').innerHTML=rc.vals.length?rc.vals.map(([lab,val,col])=>`<div class="brow"><span class="lab">${lab}</span><span class="track"><span class="fill" style="width:${Math.max(val/max*100,1.5)}%;background:${col}"></span></span><span class="val">${money1(val)}</span></div>`).join(''):'<div class="cap">No category breakdown captured yet.</div>';
-  $('#rs_rooms tbody').innerHTML=rooms.slice(0,12).map(r=>`<tr><td>${esc(r.room)}</td><td>${r.n}</td><td>${r.booked}</td><td>${r.val?money1(r.val):'<span class=na>—</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="na">No room data yet.</td></tr>';
+  $('#rs_rooms tbody').innerHTML=rooms.slice(0,16).map(r=>{const rate=r.n?r.booked/r.n*100:0;
+    return `<tr><td>${esc(r.room)}</td><td>${r.n}</td><td>${r.booked}</td><td>${rate.toFixed(0)}%<span class="mbar"><span style="width:${Math.max(rate,2)}%"></span></span></td><td>${r.val?money1(r.val):'<span class=na>—</span>'}</td></tr>`;}).join('')||'<tr><td colspan="5" class="na">No room data.</td></tr>';
 }
 
 /* ============ VENUE VIEW ============ */
