@@ -72,9 +72,28 @@ model problem — read the reasons before touching the prompt.
 
 ## Provenance and limits
 
-The corpus behind this package is almost entirely **first contact**. Operational
-questions — corkage, AV, cancellation terms, accessibility — barely appear because guests
-ask them later, inside Tripleseat threads and on the phone, which we don't capture. The
-answer bank in the playbook fills that gap from operator experience rather than data.
-Treat routing, tone and first-reply structure as evidence-backed; treat the post-booking
-answers as best practice to be verified against each venue's guide.
+This package draws on four sources. Which rule came from which matters: a rule grounded
+in our own data can be measured, a rule taken from practice has to be watched.
+
+| Source | What it gave us | Confidence |
+|---|---|---|
+| **Captured email** — 53 guest messages, 14 team replies (Mulherin's + Lowland) | The question-frequency ranking, every guest message in `examples.jsonl`, every line in "Lines that work," the 13% chase-up rate, the 26% asking for a person | Measured |
+| **Tripleseat pipeline** — 457 Mulherin's inquiries YTD | 38 inquiries with no disposition, 170 losses all tagged "Other," median first response of one day | Measured |
+| **Lowland's live agent** — running since 21 July 2026 | Two clean successes, one manager recovery, and the remediation that followed: renaming rooms so guests could tell them apart | Observed |
+| **Method Co. operating standards** | The 24-hour inquiry response SLA, standardised package pricing, dedicated event sales ownership, cross-sell to sister properties. Events should be 15–30% of a property's revenue mix; under 10% means the sales effort is underused | House standard |
+| **Event-sales and agent-design practice** | Qualifying questions, the day 2/5/12/20 follow-up cadence, price disclosure by segment, peak/shoulder/soft date tiering, the post-booking answer bank, and the lane/guardrail/eval structure | Judgment |
+
+**One convergence worth noting.** Our own web form promises a reply within 24 hours, the
+Method Co. standard sets the same SLA, and a real guest chased us quoting it back —
+*"I was told I would hear back within 24 hours. I have not heard back."* Three
+independent sources agreeing on one number is the strongest signal here, and it is the
+one the agent exists to hold.
+
+**Where the evidence runs out.** The corpus is almost entirely first contact.
+Operational questions — corkage, AV, cancellation terms, accessibility — barely appear
+because guests ask them later, inside Tripleseat threads and on the phone, which we
+don't capture. The same gap applies to the follow-up ladder: we hold almost no follow-up
+correspondence, so that cadence is practice rather than measurement. Treat routing, tone
+and first-reply structure as evidence-backed; treat the follow-up cadence and the
+post-booking answers as best practice to verify against each venue's guide — and revisit
+both once the agent starts generating its own record.

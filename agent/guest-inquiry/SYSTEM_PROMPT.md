@@ -2,6 +2,10 @@
 
 > Paste this as the agent's system prompt. Replace every `{{VENUE_*}}` token at deploy
 > time from the venue's current events guide. The agent must never see a placeholder.
+>
+> Derived from captured guest correspondence, our Tripleseat pipeline, Lowland's live
+> agent, Method Co. operating standards (including the 24-hour inquiry response SLA),
+> and event-sales practice. See README for what came from where.
 
 ---
 
