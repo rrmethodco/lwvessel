@@ -76,6 +76,7 @@ tr.total td{border-top:1px solid var(--line-strong);border-bottom:1px solid var(
   <button class="pill" id="vsbeo-reset"><span class="dot"></span>&#8635; RESET EVENT</button>
   <button class="pill" id="vsbeo-export"><span class="dot"></span>&#8595; EXPORT SCENARIOS</button>
   <button class="pill" id="vsbeo-import"><span class="dot"></span>&#8593; IMPORT SCENARIOS</button>
+  <button class="pill" id="vsbeo-live"><span class="dot"></span>&#8635; LOAD FROM TRIPLESEAT</button>
   <button class="pill" id="vsbeo-print"><span class="dot"></span>&#9113; PRINT CLIENT BEO</button>
   <span class="ctl-label" id="vsbeo-status" style="margin-left:10px;"></span>
 </div>
@@ -596,6 +597,132 @@ pill('vsbeo-print',()=>{
   }catch(e){}
 })();
 buildBEO();
+</script>
+
+<style>
+#tsl-scrim{position:fixed;inset:0;background:rgba(8,14,24,.62);display:none;z-index:9998}
+#tsl-scrim.on{display:block}
+#tsl{position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);display:none;
+  width:min(760px,94vw);max-height:86vh;overflow:auto;background:#0f1a2b;color:#e6edf7;
+  border:1px solid #21354f;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);padding:20px 22px}
+#tsl.on{display:block}
+#tsl h3{margin:0 0 4px;font-size:17px;font-weight:600}
+#tsl .sub{font-size:12px;color:#8fa3bd;margin-bottom:14px;line-height:1.5}
+#tsl .row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+#tsl select,#tsl input{background:#12203a;color:#e6edf7;border:1px solid #21354f;border-radius:8px;
+  padding:8px 10px;font:inherit;font-size:13px}
+#tsl table{width:100%;border-collapse:collapse;font-size:12.5px}
+#tsl th{text-align:left;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#7f95b1;
+  font-weight:600;padding:7px 8px;border-bottom:1px solid #21354f;position:sticky;top:0;background:#0f1a2b}
+#tsl td{padding:7px 8px;border-bottom:1px solid #182740;color:#c8d6e8}
+#tsl td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+#tsl tbody tr{cursor:pointer}
+#tsl tbody tr:hover td{background:#14263f}
+#tsl .st{font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1px solid}
+#tsl .btns{display:flex;gap:9px;justify-content:flex-end;margin-top:16px}
+#tsl button{border-radius:8px;cursor:pointer;font:inherit;font-size:12px;
+  padding:9px 16px;border:1px solid #2b62a8;background:#14345c;color:#e6edf7}
+#tsl button.ghost{background:transparent;border-color:#21354f;color:#9fb3cd}
+#tsl .msg{font-size:12.5px;color:#8fa3bd;padding:14px 2px}
+#tsl .msg.err{color:#e5a08b}
+</style>
+<div id="tsl-scrim"></div>
+<div id="tsl" role="dialog" aria-modal="true" aria-labelledby="tsl-h">
+  <h3 id="tsl-h">Load a booked event from Tripleseat</h3>
+  <div class="sub">Pulls the event header &mdash; date, guest count, F&amp;B minimum and rental &mdash; straight from the live Vessel pipeline. Menu lines, labour and margins stay yours to model. Guest contact details are never exposed here.</div>
+  <div class="row">
+    <select id="tsl-status">
+      <option value="DEFINITE,CLOSED">Booked (Definite + Closed)</option>
+      <option value="DEFINITE,CLOSED,TENTATIVE,PROSPECT">All live events</option>
+      <option value="PROSPECT,TENTATIVE">Pipeline only</option>
+    </select>
+    <input id="tsl-q" type="search" placeholder="Filter by title or room&hellip;" style="flex:1;min-width:170px">
+    <button class="ghost" id="tsl-reload" type="button">Refresh</button>
+  </div>
+  <div id="tsl-body"><div class="msg">Loading&hellip;</div></div>
+  <div class="btns"><button class="ghost" id="tsl-close" type="button">Cancel</button></div>
+</div>
+<script>
+(function(){
+  var URL_BASE='https://wcqqcfpiiovqposcvrel.supabase.co/rest/v1/vessel_beo_events';
+  var KEY='sb_publishable_5JB6emMB86VDQWU9w9-0nA_sm4OuR4w';
+  var rows=[], loaded=false;
+  var $=function(i){return document.getElementById(i);};
+  function money(n){return n==null?'—':'$'+Math.round(n).toLocaleString('en-US');}
+  function stColor(s){
+    if(s==='DEFINITE') return ['#123726','#5cba86'];
+    if(s==='CLOSED')   return ['#0f3021','#4fae7c'];
+    if(s==='TENTATIVE')return ['#3a2c12','#d79a4e'];
+    return ['#16283f','#7aa0d6'];
+  }
+  function open(){ $('tsl').classList.add('on'); $('tsl-scrim').classList.add('on'); if(!loaded) load(); }
+  function close(){ $('tsl').classList.remove('on'); $('tsl-scrim').classList.remove('on'); }
+  function load(){
+    $('tsl-body').innerHTML='<div class="msg">Loading&hellip;</div>';
+    var sts=$('tsl-status').value.split(',');
+    var q=URL_BASE+'?select=*&order=event_date.desc&event_status=in.('+sts.join(',')+')';
+    fetch(q,{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(function(d){ rows=d||[]; loaded=true; render(); })
+      .catch(function(e){
+        $('tsl-body').innerHTML='<div class="msg err">Could not reach the live pipeline ('+e.message+
+          '). You can still build the event by hand.</div>';
+      });
+  }
+  function render(){
+    var term=($('tsl-q').value||'').toLowerCase();
+    var list=rows.filter(function(r){
+      if(!term) return true;
+      return ((r.title||'')+' '+(r.room_name||'')).toLowerCase().indexOf(term)>-1;
+    });
+    if(!list.length){ $('tsl-body').innerHTML='<div class="msg">No events match.</div>'; return; }
+    var h='<table><thead><tr><th>Event</th><th>Date</th><th>Room</th>'+
+      '<th style="text-align:right">Guests</th><th style="text-align:right">F&amp;B min</th>'+
+      '<th style="text-align:right">Rental</th><th style="text-align:right">BEO total</th></tr></thead><tbody>';
+    list.forEach(function(r,i){
+      var c=stColor(r.event_status);
+      h+='<tr data-i="'+i+'"><td><span class="st" style="background:'+c[0]+';color:'+c[1]+';border-color:'+c[1]+'55">'+
+        (r.event_status||'')+'</span> '+esc(r.title||'Event')+'</td>'+
+        '<td class="n">'+(r.event_date||'—')+'</td><td>'+esc(r.room_name||'—')+'</td>'+
+        '<td class="n">'+(r.guests==null?'—':r.guests)+'</td>'+
+        '<td class="n">'+money(r.fb_min)+'</td><td class="n">'+money(r.rental_fee)+'</td>'+
+        '<td class="n">'+money(r.grand_total)+'</td></tr>';
+    });
+    $('tsl-body').innerHTML=h+'</tbody></table>';
+    $('tsl-body').querySelectorAll('tr[data-i]').forEach(function(tr){
+      tr.addEventListener('click',function(){ pick(list[+tr.dataset.i]); });
+    });
+  }
+  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function pick(r){
+    // Map the Tripleseat header onto a fresh calculator event. Everything the API
+    // does not carry — menu lines, labour, margins — keeps the model defaults so the
+    // operator still builds the P&L.
+    var e=sanEv({});
+    e.name=(r.title||'Event')+(r.event_date?(' — '+r.event_date):'');
+    e.tab=(r.title||'Event').slice(0,22);
+    e.date=r.event_date||'';
+    if(r.guests!=null)     e.guests=+r.guests;
+    if(r.fb_min!=null)     e.fbMin=+r.fb_min;
+    if(r.rental_fee!=null) e.rental=+r.rental_fee;
+    e.tsRef={id:r.id,event_id:r.event_id,status:r.event_status,beo_total:r.grand_total,room:r.room_name};
+    if(typeof beoGuardEdit==='function' && beoGuardEdit()){ close(); return; }
+    BEOS.push(e); BEOSEL=BEOS.length-1; BEOD=BEOS[BEOSEL];
+    var dv=document.getElementById('vsbeo-changes'); if(dv) dv.style.display='none';
+    beoSave('Loaded "'+(r.title||'Event')+'" from Tripleseat — date, guests, F&B minimum and rental are live; menu, labour and margins are yours to model.');
+    buildBEO();
+    close();
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=$('vsbeo-live'); if(b) b.addEventListener('click',open);
+    $('tsl-close').addEventListener('click',close);
+    $('tsl-scrim').addEventListener('click',close);
+    $('tsl-reload').addEventListener('click',function(){loaded=false;load();});
+    $('tsl-status').addEventListener('change',function(){loaded=false;load();});
+    $('tsl-q').addEventListener('input',render);
+    document.addEventListener('keydown',function(ev){ if(ev.key==='Escape') close(); });
+  });
+})();
 </script>
 </body>
 </html>
