@@ -33,26 +33,20 @@ end $$;
 
 drop function if exists scan_catchup();
 
--- Pick the location that still has unfinished scan pages, ranked by how many of its
--- linked leads are still missing a status. A location whose cursors are all done is
--- skipped so the catch-up does not burn ticks re-confirming finished work.
+-- Backfill catch-up is Anthology-only (loc 22266). Lowland and Nickel keep their
+-- own nightly scans; they should not queue behind or slow down this backfill.
 create function scan_catchup()
 returns text language plpgsql security definer as $$
-declare v text;
 begin
-  select t.loc into v
-  from (values ('22266'),('26166'),('31924')) t(loc)
-  where exists (
+  if exists (
     select 1 from (values ('DEFINITE'),('CLOSED')) s(st)
     where not exists (
       select 1 from ts_scan_cursor c
-      where c.loc = t.loc and c.status = s.st and c.done
+      where c.loc = '22266' and c.status = s.st and c.done
     )
-  )
-  order by (select count(*) from ts_lead_report r
-            where r.location_id = t.loc::bigint and r.event_id is not null and r.event_status is null) desc
-  limit 1;
-  if v is null then return 'all locations complete'; end if;
-  perform refresh_scan_loc(v,'DEFINITE,CLOSED','2025-01-01');
-  return 'scanning ' || v;
+  ) then
+    perform refresh_scan_loc('22266','DEFINITE,CLOSED','2025-01-01');
+    return 'scanning anthology';
+  end if;
+  return 'anthology complete';
 end $$;
