@@ -110,7 +110,7 @@ const byCreator = groupCount('booking_creator', evRows);
 // ---- lead source ----
 function grpStatus(key) {
   const m = new Map();
-  for (const r of L) { const k = r[key] || '(none)'; const g = m.get(k) || { n: 0, booked: 0, lost: 0, pipe: 0, open: 0 }; g.n++; if (['DEFINITE', 'CLOSED'].includes(r._stage)) g.booked++; else if (r._stage === 'LOST') g.lost++; else if (['PROSPECT', 'TENTATIVE'].includes(r._stage)) g.pipe++; else if (r._stage === 'OPEN') g.open++; m.set(k, g); }
+  for (const r of L) { const k = r[key] || '(none)'; const g = m.get(k) || { n: 0, booked: 0, lost: 0, pipe: 0, open: 0, noev: 0, td: 0 }; g.n++; if (['DEFINITE', 'CLOSED'].includes(r._stage)) g.booked++; else if (r._stage === 'LOST') g.lost++; else if (['PROSPECT', 'TENTATIVE'].includes(r._stage)) g.pipe++; else if (r._stage === 'OPEN') g.open++; else if (r._stage === 'CONVERTED_NOEV') g.noev++; else if (r._stage === 'TURNED_DOWN') g.td++; m.set(k, g); }
   return [...m.entries()].sort((a, b) => b[1].n - a[1].n);
 }
 const bySource = grpStatus('lead_source');
@@ -222,34 +222,16 @@ let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
   <div class="spark">${sparkHtml}</div>
   <h2>Where every inquiry stands today</h2>
   <div class="funnel">${funnelRows}</div>
-  <div class="note"><b>What counts as Converted:</b> an inquiry is <b>Converted</b> only when its event is actually <b>booked — Definite or Closed</b>. A Tripleseat lead flagged "converted" merely starts a booking record (Prospect) and does <b>not</b> count here until it firms up. Of ${total} inquiries, ${withEvent} became a booking record but only <b>${booked} converted to a booked event (${pct(booked, total)})</b>; ${inPipe} are still working in the pipeline (Prospect/Tentative — mostly recent Jul–Aug inquiries), ${cnt('CONVERTED_NOEV')} were marked converted in Tripleseat with no event on file, and ${cnt('LOST')} were lost. Booked and lost dates are reconstructed from each event's status-change history.</div>
+  <div class="note"><b>What counts as Converted:</b> an inquiry is <b>Converted</b> only when its event is actually <b>booked — Definite or Closed</b>. A Tripleseat lead flagged "converted" merely starts a booking record (Prospect) and does <b>not</b> count here until it firms up. ${withEvent === 0
+    ? `None of the ${total} inquiries in this window has a booking record at all, so none has reached a booked event. <b>${cnt('CONVERTED_NOEV')} were marked converted in Tripleseat with no event behind them</b>, ${cnt('OPEN')} have had no response, and none were lost.`
+    : `Of ${total} inquiries, ${withEvent} became a booking record but only <b>${booked} converted to a booked event (${pct(booked, total)})</b>; ${inPipe} are still working in the pipeline (Prospect/Tentative), ${cnt('CONVERTED_NOEV')} were marked converted in Tripleseat with no event on file, and ${cnt('LOST')} were lost.`} Booked and lost dates are reconstructed from each event's status-change history.</div>
 
-  ${HAS_RESP ? `<h2>Did the guest ever hear back?</h2>
-  <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Response status</th><th>Inquiries</th><th>Share</th><th>Covers</th><th>Speed / wait</th></tr></thead><tbody>
-    <tr><td class="l"><span class="chip" style="background:#e6f0e9;color:#1c7c4d">ANSWERED</span></td>
-        <td class="r">${answered.length}</td><td class="r">${pct(answered.length, total)}</td>
-        <td class="r">${coversOf(answered).toLocaleString()}</td>
-        <td class="r">median ${hoursTxt(medRespHrs)} to reply</td></tr>
-    <tr><td class="l"><span class="chip" style="background:#f6ede2;color:#8a5a1e">TURNED DOWN</span></td>
-        <td class="r">${turnedDown.length}</td><td class="r">${pct(turnedDown.length, total)}</td>
-        <td class="r">${coversOf(turnedDown).toLocaleString()}</td><td class="r">—</td></tr>
-    <tr><td class="l"><span class="chip" style="background:#fbe9e2;color:#b3541e">NO REPLY</span></td>
-        <td class="r">${noReply.length}</td><td class="r">${pct(noReply.length, total)}</td>
-        <td class="r">${coversOf(noReply).toLocaleString()}</td>
-        <td class="r">avg ${avgWait == null ? '—' : avgWait.toFixed(0) + 'd'} waiting, longest ${maxWait ?? '—'}d</td></tr>
-  </tbody></table>
-  <div class="note warn"><b>${noReply.length} of ${total} inquiries have had no response of any kind</b>
-  — no conversion and no turn-down recorded — representing <b>${coversOf(noReply).toLocaleString()} covers</b>.
-  Only <b>${ownedCount} of ${total}</b> carry an assigned owner. The ${answered.length} that were answered
-  were answered quickly (median ${hoursTxt(medRespHrs)}), so the constraint is inquiries being picked up,
-  not how fast they are handled once someone does. Response is read from Tripleseat's own
-  <i>converted_at</i> / <i>turned_down_at</i> stamps; replies made by phone or email and never logged
-  will not appear here.</div>` : ''}
+
 
 </div>`;
 
 /* ---------- page 2: ownership, source, value, open aging ---------- */
-const srcRows = bySource.map(([k, g]) => `<tr><td class="l">${esc(k)}</td><td class="r">${g.n}</td><td class="r">${g.booked}</td><td class="r">${g.pipe}</td><td class="r">${g.lost}</td><td class="r">${g.open}</td><td class="r">${pct(g.booked, g.n)}</td></tr>`).join('');
+const srcRows = bySource.map(([k, g]) => `<tr><td class="l">${esc(k)}</td><td class="r">${g.n}</td><td class="r">${g.booked}</td><td class="r">${g.pipe}</td><td class="r">${g.noev}</td><td class="r">${g.lost + g.td}</td><td class="r">${g.open}</td><td class="r">${pct(g.booked, g.n)}</td></tr>`).join('');
 const ownRows = byOwner.map(([k, n]) => `<tr><td class="l">${esc(k)}</td><td class="r">${n}</td><td class="r">${pct(n, evRows.length)}</td></tr>`).join('');
 const creRows = byCreator.map(([k, n]) => `<tr><td class="l">${esc(k)}</td><td class="r">${n}</td><td class="r">${pct(n, evRows.length)}</td></tr>`).join('');
 const openAge = [['0–7 days', 0], ['8–14 days', 0], ['15–30 days', 0], ['30+ days', 0]];
@@ -266,29 +248,61 @@ const speedBlock = `  <h2>Response &amp; handling speed</h2>
   </tbody></table>
   <div class="foot">Same-day disposition on ${sameDay} of ${disposed.length} decided inquiries (${pct(sameDay, disposed.length)}). "Response" is measured in calendar days; conversions are stamped by date in Tripleseat, so same-day = 0 (see methodology).</div>`;
 
-let p2 = `<div class="page">${brand('Inquiry → BEO Lifecycle · Breakdowns')}
+const pResp = HAS_RESP ? `<div class="page">${brand('Inquiry → BEO Lifecycle · Response')}
+  <h2 style="margin-top:12px">Did the guest ever hear back?</h2>
+  <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Response status</th><th>Inquiries</th><th>Share</th><th>Covers</th><th>Speed / wait</th></tr></thead><tbody>
+    <tr><td class="l"><span class="chip" style="background:#e6f0e9;color:#1c7c4d">ANSWERED</span></td>
+        <td class="r">${answered.length}</td><td class="r">${pct(answered.length, total)}</td>
+        <td class="r">${coversOf(answered).toLocaleString()}</td>
+        <td class="r">median ${hoursTxt(medRespHrs)} to reply</td></tr>
+    <tr><td class="l"><span class="chip" style="background:#f6ede2;color:#8a5a1e">TURNED DOWN</span></td>
+        <td class="r">${turnedDown.length}</td><td class="r">${pct(turnedDown.length, total)}</td>
+        <td class="r">${coversOf(turnedDown).toLocaleString()}</td><td class="r">—</td></tr>
+    <tr><td class="l"><span class="chip" style="background:#fbe9e2;color:#b3541e">NO REPLY</span></td>
+        <td class="r">${noReply.length}</td><td class="r">${pct(noReply.length, total)}</td>
+        <td class="r">${coversOf(noReply).toLocaleString()}</td>
+        <td class="r">avg ${avgWait == null ? '—' : avgWait.toFixed(0) + 'd'} waiting, longest ${maxWait ?? '—'}d</td></tr>
+  </tbody></table>
+  <div class="foot">Measured to the exact timestamp. The <i>median response</i> tile above and the handling-speed table use Tripleseat's calendar-day stamps, so the same figure reads as ${dz(respMedian)} there.</div>
+  <div class="note warn"><b>${noReply.length} of ${total} inquiries have had no response of any kind</b>
+  — no conversion and no turn-down recorded — representing <b>${coversOf(noReply).toLocaleString()} covers</b>.
+  Only <b>${ownedCount} of ${total}</b> carry an assigned owner. The ${answered.length} that were answered
+  were answered quickly (median ${hoursTxt(medRespHrs)}), so the constraint is inquiries being picked up,
+  not how fast they are handled once someone does. Response is read from Tripleseat's own
+  <i>converted_at</i> / <i>turned_down_at</i> stamps; replies made by phone or email and never logged
+  will not appear here.</div>
   ${speedBlock}
-  <h2>Booking ownership (from the linked event)</h2>
+</div>` : '';
+
+let p2 = `<div class="page">${brand('Inquiry → BEO Lifecycle · Breakdowns')}
+  ${HAS_RESP ? '' : speedBlock}
+${evRows.length ? `  <h2>Booking ownership (from the linked event)</h2>
   <div style="display:flex;gap:24px">
     <div style="flex:1"><div style="font-size:10px;color:#5a6b86;margin-bottom:3px">Owner (assigned)</div>
     <table class="tbl"><thead><tr><th class="l">Owner</th><th>Bookings</th><th>Share</th></tr></thead><tbody>${ownRows}</tbody></table></div>
     <div style="flex:1"><div style="font-size:10px;color:#5a6b86;margin-bottom:3px">Created by</div>
     <table class="tbl"><thead><tr><th class="l">Creator</th><th>Bookings</th><th>Share</th></tr></thead><tbody>${creRows}</tbody></table></div>
   </div>
-  <div class="note">Leads themselves arrive unowned in Tripleseat, but every built <b>booking</b> is owned — here <b>100% by ${esc(byOwner[0]?.[0]||'—')}</b> (AGM) and created by <b>${esc(byCreator[0]?.[0]||'—')}</b> (GM). So booking ownership is consistent; the gap is only at the raw lead stage, where the web form doesn't assign an owner until a booking is built.</div>
+  <div class="note">Leads themselves arrive unowned in Tripleseat, but every built <b>booking</b> is owned — here <b>100% by ${esc(byOwner[0]?.[0]||'—')}</b> (AGM) and created by <b>${esc(byCreator[0]?.[0]||'—')}</b> (GM). So booking ownership is consistent; the gap is only at the raw lead stage, where the web form doesn't assign an owner until a booking is built.</div>` : `  <h2>Booking ownership (from the linked event)</h2>
+  <div class="note warn">No bookings were built in this window, so there is no booking ownership to report. Leads arrive unowned in Tripleseat: ${ownedCount} of ${total} inquiries here carry an assigned owner.</div>`}
 
   <h2>Pipeline value by stage (BEO grand total)</h2>
   <table class="tbl" style="max-width:520px"><thead><tr><th class="l">Stage</th><th>Bookings</th><th>Priced</th><th>Total BEO value</th></tr></thead><tbody>
   ${valStages.map(([k, n, v, p]) => `<tr><td class="l">${chip(k)}</td><td class="r">${n}</td><td class="r">${p}</td><td class="r">${money(v)}</td></tr>`).join('')}
   <tr class="grand"><td class="l">All built bookings</td><td class="r">${evRows.length}</td><td class="r">${evRows.filter(r=>r.grand_total>0).length}</td><td class="r">${money(sumVal(r=>r.event_id))}</td></tr>
   </tbody></table>
-  <div class="foot">Most Prospects and Lost bookings are unpriced ($0) — a BEO grand total is only built once the event firms up.</div>
+  <div class="foot">${evRows.length ? 'Most Prospects and Lost bookings are unpriced ($0) — a BEO grand total is only built once the event firms up.' : 'No bookings exist in this window, so there is no BEO value to report — not $0 of booked business, but no priced records at all.'}</div>
 
   <h2>By lead source</h2>
-  <table class="tbl"><thead><tr><th class="l">Lead source</th><th>Inquiries</th><th>Converted</th><th>Pipeline</th><th>Lost</th><th>Open</th><th>Convert rate</th></tr></thead><tbody>${srcRows}
-  <tr class="grand"><td class="l">Total</td><td class="r">${total}</td><td class="r">${booked}</td><td class="r">${inPipe}</td><td class="r">${cnt('LOST')}</td><td class="r">${cnt('OPEN')}</td><td class="r">${pct(booked, total)}</td></tr></tbody></table>
+  <table class="tbl"><thead><tr><th class="l">Lead source</th><th>Inquiries</th><th>Booked</th><th>Pipeline</th><th>Conv. no event</th><th>Lost / turned down</th><th>Open</th><th>Convert rate</th></tr></thead><tbody>${srcRows}
+  <tr class="grand"><td class="l">Total</td><td class="r">${total}</td><td class="r">${booked}</td><td class="r">${inPipe}</td><td class="r">${cnt('CONVERTED_NOEV')}</td><td class="r">${cnt('LOST') + cnt('TURNED_DOWN')}</td><td class="r">${cnt('OPEN')}</td><td class="r">${pct(booked, total)}</td></tr></tbody></table>
+  <div class="foot">Columns are mutually exclusive and sum to the inquiry count. "Conv. no event" is a lead marked converted in Tripleseat with no event record behind it — it is neither booked nor lost.</div>
 
-  <h2>Open inquiry aging (${cnt('OPEN')} with no response yet)</h2>
+
+</div>`;
+
+const pAge = `<div class="page">${brand('Inquiry → BEO Lifecycle · Open Inquiry Aging')}
+  <h2 style="margin-top:12px">Open inquiry aging (${cnt('OPEN')} with no response yet)</h2>
   <table class="tbl" style="max-width:340px"><thead><tr><th class="l">Age since submission</th><th>Open</th></tr></thead><tbody>
   ${openAge.map(a => `<tr><td class="l">${a[0]}</td><td class="r">${a[1]}</td></tr>`).join('')}</tbody></table>
 </div>`;
@@ -333,7 +347,10 @@ if (HAS_RESP) {
   let pageRows = 0, buf = '';
   const flushPage = () => { if (buf) { appx += `<div class="page">${brand('Inquiry → BEO Lifecycle · Every Inquiry')}${buf}</div>`; buf = ''; pageRows = 0; } };
   for (const [label, pred, col] of BANDS) {
-    const rows = L.filter(r => r._r && pred(r));
+    // Soonest event first — this is the order the team works them in.
+    const rows = L.filter(r => r._r && pred(r))
+      .sort((a, b) => (a._r.event_date || '9999').localeCompare(b._r.event_date || '9999')
+                   || new Date(a.created_at) - new Date(b.created_at));
     if (!rows.length) continue;
     for (let i = 0; i < rows.length; i += PER) {
       const chunk = rows.slice(i, i + PER);
@@ -363,7 +380,7 @@ if (HAS_RESP) {
   }
 }
 
-const html = `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>${p1}${p2}${appx}</body></html>`;
+const html = `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>${p1}${pResp}${p2}${pAge}${appx}</body></html>`;
 fs.writeFileSync(path.join(DIR, OUT_HTML), html);
 console.log('total', total, '| booking built', withEvent, '| confirmed', booked, '| pipeline', inPipe, '| lost', cnt('LOST'));
 console.log('confirmed value', money(confirmedVal), '| pipeline value', money(pipelineVal));
