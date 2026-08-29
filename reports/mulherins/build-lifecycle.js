@@ -4,10 +4,18 @@ const DIR = __dirname;
 // The report presents itself as year-to-date, but the source table's prune floor was
 // widened to 2025-01-01 for the Anthology backfill, so leads2.json now carries ~20
 // months. Window to the current calendar year so the figures match the YTD header.
+//   node build-lifecycle.js            -> year to date (the daily report)
+//   node build-lifecycle.js --days 30  -> rolling 30-day window
+const DAYS = (() => { const i = process.argv.indexOf('--days'); return i > -1 ? parseInt(process.argv[i + 1], 10) : null; })();
 const YEAR = new Date().getUTCFullYear();
 const ALL = JSON.parse(fs.readFileSync(path.join(DIR, 'leads2.json'), 'utf8'));
-const L = ALL.filter(r => r.created_at && new Date(r.created_at).getUTCFullYear() === YEAR);
-if (L.length !== ALL.length) console.log(`lifecycle: ${L.length} of ${ALL.length} inquiries are YTD ${YEAR}`);
+const CUTOFF = DAYS ? new Date(Date.now() - DAYS * 86400000) : null;
+const L = DAYS
+  ? ALL.filter(r => r.created_at && new Date(r.created_at) >= CUTOFF)
+  : ALL.filter(r => r.created_at && new Date(r.created_at).getUTCFullYear() === YEAR);
+const WINDOW_LABEL = DAYS ? `Last ${DAYS} days` : `Year-to-date ${YEAR}`;
+const OUT_HTML = DAYS ? `mulherins-inquiry-lifecycle-${DAYS}d.html` : 'mulherins-inquiry-lifecycle.html';
+console.log(`lifecycle: ${L.length} of ${ALL.length} inquiries in window (${WINDOW_LABEL})`);
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const pct = (n, d) => d ? (n / d * 100).toFixed(1) + '%' : '—';
@@ -17,6 +25,9 @@ const money = n => n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US
 const days = (a, b) => { if (!a || !b) return null; const d = (new Date(b) - new Date(a)) / 86400000; return isNaN(d) ? null : Math.max(0, Math.round(d)); };
 const medianOf = arr => { const a = arr.filter(x => x != null).sort((x, y) => x - y); if (!a.length) return null; return a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2; };
 const avgOf = arr => { const a = arr.filter(x => x != null); return a.length ? a.reduce((x, y) => x + y, 0) / a.length : null; };
+// Windows with no booked/lost events leave these cohorts empty; render a dash.
+const dz = v => (v == null || Number.isNaN(v)) ? '—' : `${v}d`;
+const dz1 = v => (v == null || Number.isNaN(v)) ? '—' : `${v.toFixed(1)}d`;
 
 // ---- current stage per inquiry (single taxonomy) ----
 function stageOf(r) {
@@ -127,6 +138,7 @@ td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .funnel .val{width:96px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
 .chip{display:inline-block;border-radius:3px;padding:1px 6px;font-size:7.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap}
 .note{border-left:3px solid #3c5a86;background:#eef2f8;padding:8px 12px;margin:10px 0 0;font-size:10px;color:#33415a;border-radius:0 4px 4px 0}
+.note.warn{border-left-color:#b3541e;background:#fbf0ea;color:#6d3618}
 .appx td{font-size:9px;padding:2px 5px}
 .appx th{font-size:7.5px}
 .foot{color:#8a97ab;font-size:9px;margin-top:6px}
@@ -155,11 +167,17 @@ const smax = Math.max(...last7.map(d => d.n), 1);
 const sparkH = 30;
 const sparkHtml = last7.map((d, i) => `<div class="col"><div class="cn">${d.n}</div><div class="bar${i === last7.length - 1 ? ' y' : ''}" style="height:${Math.round(d.n / smax * sparkH) + 2}px"></div><div class="dl">${d.label}</div></div>`).join('');
 let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
-  <h1>Daily Event Inquiry &amp; BEO Report</h1>
-  <div class="meta">As of <b>${mdY(NOW)}</b> · Year-to-date ${NOW.getFullYear()} (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
+  <h1>${DAYS ? `Event Inquiry &amp; BEO Report — Last ${DAYS} Days` : 'Daily Event Inquiry &amp; BEO Report'}</h1>
+  <div class="meta">As of <b>${mdY(NOW)}</b> · ${WINDOW_LABEL} (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
+  ${withEvent === 0 && total > 0 ? `<div class="note warn"><b>No bookings were built in this window.</b>
+  All ${total} inquiries are sitting at the lead stage with no linked event in Tripleseat, so every
+  downstream lifecycle figure below — pipeline, confirmed, lost, and all stage-to-stage timings —
+  is legitimately zero rather than missing. The last Mulherin's booking of any kind was created on
+  24 July 2026. Every other Method Co. venue has been booking normally through this week, so this is
+  specific to this venue and not a reporting fault.</div>` : ''}
   <div class="kpis">
     ${kpi('New Inquiries — Yesterday', newYesterday, 'mut', dayLabel(yDate), 'hi')}
-    ${kpi('Total Inquiries (YTD)', total, 'mut')}
+    ${kpi(DAYS ? `Total Inquiries (${DAYS}d)` : 'Total Inquiries (YTD)', total, 'mut')}
     ${kpi('Converted — Booked', booked, 'pos', pct(booked, total) + ' · Definite + Closed')}
     ${kpi('In Pipeline', inPipe, 'mut', 'Prospect + Tentative')}
   </div>
@@ -177,11 +195,11 @@ let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
 
   <h2>Response &amp; handling speed</h2>
   <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Metric</th><th>Median</th><th>Average</th><th>Basis</th></tr></thead><tbody>
-  <tr><td class="l">Inquiry → first disposition (converted/turned down)</td><td class="r">${respMedian}d</td><td class="r">${respAvg?.toFixed(1)}d</td><td class="r">${disposed.length} decided</td></tr>
-  <tr><td class="l">Inquiry → booking built (first staff action)</td><td class="r">${faMedian}d</td><td class="r">${faAvg?.toFixed(1)}d</td><td class="r">${firstAct.length} bookings</td></tr>
-  <tr><td class="l">Prospect → Definite (sales cycle to book)</td><td class="r">${medianOf(prToDef)}d</td><td class="r">${avgOf(prToDef)?.toFixed(1)}d</td><td class="r">${prToDef.length} booked</td></tr>
-  <tr><td class="l">Definite → Closed</td><td class="r">${medianOf(defToClose) ?? '—'}d</td><td class="r">${avgOf(defToClose)?.toFixed(1) ?? '—'}d</td><td class="r">${defToClose.length} closed</td></tr>
-  <tr><td class="l">Prospect → Lost (time before giving up)</td><td class="r">${medianOf(prToLost)}d</td><td class="r">${avgOf(prToLost)?.toFixed(1)}d</td><td class="r">${prToLost.length} lost</td></tr>
+  <tr><td class="l">Inquiry → first disposition (converted/turned down)</td><td class="r">${dz(respMedian)}</td><td class="r">${dz1(respAvg)}</td><td class="r">${disposed.length} decided</td></tr>
+  <tr><td class="l">Inquiry → booking built (first staff action)</td><td class="r">${dz(faMedian)}</td><td class="r">${dz1(faAvg)}</td><td class="r">${firstAct.length} bookings</td></tr>
+  <tr><td class="l">Prospect → Definite (sales cycle to book)</td><td class="r">${dz(medianOf(prToDef))}</td><td class="r">${dz1(avgOf(prToDef))}</td><td class="r">${prToDef.length} booked</td></tr>
+  <tr><td class="l">Definite → Closed</td><td class="r">${dz(medianOf(defToClose))}</td><td class="r">${dz1(avgOf(defToClose))}</td><td class="r">${defToClose.length} closed</td></tr>
+  <tr><td class="l">Prospect → Lost (time before giving up)</td><td class="r">${dz(medianOf(prToLost))}</td><td class="r">${dz1(avgOf(prToLost))}</td><td class="r">${prToLost.length} lost</td></tr>
   </tbody></table>
   <div class="foot">Same-day disposition on ${sameDay} of ${disposed.length} decided inquiries (${pct(sameDay, disposed.length)}). "Response" is measured in calendar days; conversions are stamped by date in Tripleseat, so same-day = 0 (see methodology).</div>
 </div>`;
@@ -240,7 +258,7 @@ for (let i = 0; i < rowsSorted.length; i += PER) {
 }
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>${p1}${p2}${appx}</body></html>`;
-fs.writeFileSync(path.join(DIR, 'mulherins-inquiry-lifecycle.html'), html);
+fs.writeFileSync(path.join(DIR, OUT_HTML), html);
 console.log('total', total, '| booking built', withEvent, '| confirmed', booked, '| pipeline', inPipe, '| lost', cnt('LOST'));
 console.log('confirmed value', money(confirmedVal), '| pipeline value', money(pipelineVal));
 console.log('first-action median', faMedian, 'prospect->definite median', medianOf(prToDef), 'appendix pages', Math.ceil(rowsSorted.length / PER));
