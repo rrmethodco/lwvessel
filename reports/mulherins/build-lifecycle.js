@@ -169,12 +169,18 @@ const sparkHtml = last7.map((d, i) => `<div class="col"><div class="cn">${d.n}</
 let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
   <h1>${DAYS ? `Event Inquiry &amp; BEO Report — Last ${DAYS} Days` : 'Daily Event Inquiry &amp; BEO Report'}</h1>
   <div class="meta">As of <b>${mdY(NOW)}</b> · ${WINDOW_LABEL} (${spanStart} – ${spanEnd}) · Source: Tripleseat leads + linked events</div>
-  ${withEvent === 0 && total > 0 ? `<div class="note warn"><b>No bookings were built in this window.</b>
-  All ${total} inquiries are sitting at the lead stage with no linked event in Tripleseat, so every
-  downstream lifecycle figure below — pipeline, confirmed, lost, and all stage-to-stage timings —
-  is legitimately zero rather than missing. The last Mulherin's booking of any kind was created on
-  24 July 2026. Every other Method Co. venue has been booking normally through this week, so this is
-  specific to this venue and not a reporting fault.</div>` : ''}
+  ${withEvent === 0 && total > 0 ? `<div class="note warn"><b>No linked events exist for this window.</b>
+  All ${total} inquiries sit at the lead stage with no event attached in Tripleseat, so every
+  downstream figure below — pipeline, confirmed, lost, and all stage-to-stage timings — is
+  legitimately zero rather than missing. Verified three ways: the leads list, the lead detail
+  endpoint (both <i>event_id</i> and <i>booking_id</i> null), and the events search. The newest
+  Mulherin's booking on record was created <b>24 July 2026</b>; July shows 27 created, August none.
+  The other actively booking venues are unaffected (Anthology 229 in August, Nickel 58, Lowland 57,
+  Vessel 19). <b>One caveat before acting on this:</b> ten of these leads were marked converted
+  during August — four within half an hour on 9 Aug, two more on 22 Aug — which is real staff
+  activity in Tripleseat. So this is either bookings that the API is not exposing for this venue,
+  or leads converted without the booking being completed. The API cannot tell the two apart; opening
+  one of the ten in Tripleseat will.</div>` : ''}
   <div class="kpis">
     ${kpi('New Inquiries — Yesterday', newYesterday, 'mut', dayLabel(yDate), 'hi')}
     ${kpi(DAYS ? `Total Inquiries (${DAYS}d)` : 'Total Inquiries (YTD)', total, 'mut')}
