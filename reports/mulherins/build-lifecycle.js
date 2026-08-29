@@ -9,12 +9,26 @@ const DIR = __dirname;
 const DAYS = (() => { const i = process.argv.indexOf('--days'); return i > -1 ? parseInt(process.argv[i + 1], 10) : null; })();
 const YEAR = new Date().getUTCFullYear();
 const ALL = JSON.parse(fs.readFileSync(path.join(DIR, 'leads2.json'), 'utf8'));
-const CUTOFF = DAYS ? new Date(Date.now() - DAYS * 86400000) : null;
+// Cut at UTC midnight so the window matches the SQL side (current_date - N days)
+// rather than drifting by the time of day the report happens to run.
+const CUTOFF = DAYS ? new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime() - DAYS * 86400000 : null;
 const L = DAYS
-  ? ALL.filter(r => r.created_at && new Date(r.created_at) >= CUTOFF)
+  ? ALL.filter(r => r.created_at && new Date(r.created_at).getTime() >= CUTOFF)
   : ALL.filter(r => r.created_at && new Date(r.created_at).getUTCFullYear() === YEAR);
 const WINDOW_LABEL = DAYS ? `Last ${DAYS} days` : `Year-to-date ${YEAR}`;
+// In windowed mode, fold in the response-status dataset (recap30.json) so this one
+// document answers both questions: where each inquiry sits in the BEO lifecycle, and
+// whether the guest was ever answered. Keyed by lead_id; absent file degrades gracefully.
+let RESP = new Map();
+try {
+  const rp = path.join(DIR, 'recap30.json');
+  if (DAYS && fs.existsSync(rp)) {
+    for (const r of JSON.parse(fs.readFileSync(rp, 'utf8'))) RESP.set(r.lead_id, r);
+  }
+} catch (e) { console.warn('response data not merged:', e.message); }
 const OUT_HTML = DAYS ? `mulherins-inquiry-lifecycle-${DAYS}d.html` : 'mulherins-inquiry-lifecycle.html';
+L.forEach(r => { const x = RESP.get(r.lead_id); if (x) r._r = x; });
+const HAS_RESP = L.some(r => r._r);
 console.log(`lifecycle: ${L.length} of ${ALL.length} inquiries in window (${WINDOW_LABEL})`);
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -100,6 +114,17 @@ function grpStatus(key) {
   return [...m.entries()].sort((a, b) => b[1].n - a[1].n);
 }
 const bySource = grpStatus('lead_source');
+
+// ---- response status (windowed mode) ----
+const answered   = L.filter(r => r._r && r._r.response_status === 'RESPONDED');
+const turnedDown = L.filter(r => r._r && r._r.response_status === 'TURNED_DOWN');
+const noReply    = L.filter(r => r._r && r._r.response_status === 'NO_RESPONSE');
+const coversOf   = a => a.reduce((n, r) => n + (r.guest_count || 0), 0);
+const medRespHrs = medianOf(answered.map(r => r._r.response_hours));
+const waiting    = noReply.map(r => r._r.days_open);
+const avgWait    = avgOf(waiting), maxWait = waiting.length ? Math.max(...waiting) : null;
+const ownedCount = L.filter(r => r._r && r._r.owner).length;
+const hoursTxt   = h => h == null ? '—' : (h < 48 ? `${Math.round(h)}h` : `${Math.round(h / 24)}d`);
 
 const dates = L.map(r => new Date(r.created_at)).sort((a, b) => a - b);
 const spanStart = mdY(dates[0]), spanEnd = mdY(dates[dates.length - 1]);
@@ -199,15 +224,28 @@ let p1 = `<div class="page">${brand('Daily Inquiry → BEO Report')}
   <div class="funnel">${funnelRows}</div>
   <div class="note"><b>What counts as Converted:</b> an inquiry is <b>Converted</b> only when its event is actually <b>booked — Definite or Closed</b>. A Tripleseat lead flagged "converted" merely starts a booking record (Prospect) and does <b>not</b> count here until it firms up. Of ${total} inquiries, ${withEvent} became a booking record but only <b>${booked} converted to a booked event (${pct(booked, total)})</b>; ${inPipe} are still working in the pipeline (Prospect/Tentative — mostly recent Jul–Aug inquiries), ${cnt('CONVERTED_NOEV')} were marked converted in Tripleseat with no event on file, and ${cnt('LOST')} were lost. Booked and lost dates are reconstructed from each event's status-change history.</div>
 
-  <h2>Response &amp; handling speed</h2>
-  <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Metric</th><th>Median</th><th>Average</th><th>Basis</th></tr></thead><tbody>
-  <tr><td class="l">Inquiry → first disposition (converted/turned down)</td><td class="r">${dz(respMedian)}</td><td class="r">${dz1(respAvg)}</td><td class="r">${disposed.length} decided</td></tr>
-  <tr><td class="l">Inquiry → booking built (first staff action)</td><td class="r">${dz(faMedian)}</td><td class="r">${dz1(faAvg)}</td><td class="r">${firstAct.length} bookings</td></tr>
-  <tr><td class="l">Prospect → Definite (sales cycle to book)</td><td class="r">${dz(medianOf(prToDef))}</td><td class="r">${dz1(avgOf(prToDef))}</td><td class="r">${prToDef.length} booked</td></tr>
-  <tr><td class="l">Definite → Closed</td><td class="r">${dz(medianOf(defToClose))}</td><td class="r">${dz1(avgOf(defToClose))}</td><td class="r">${defToClose.length} closed</td></tr>
-  <tr><td class="l">Prospect → Lost (time before giving up)</td><td class="r">${dz(medianOf(prToLost))}</td><td class="r">${dz1(avgOf(prToLost))}</td><td class="r">${prToLost.length} lost</td></tr>
+  ${HAS_RESP ? `<h2>Did the guest ever hear back?</h2>
+  <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Response status</th><th>Inquiries</th><th>Share</th><th>Covers</th><th>Speed / wait</th></tr></thead><tbody>
+    <tr><td class="l"><span class="chip" style="background:#e6f0e9;color:#1c7c4d">ANSWERED</span></td>
+        <td class="r">${answered.length}</td><td class="r">${pct(answered.length, total)}</td>
+        <td class="r">${coversOf(answered).toLocaleString()}</td>
+        <td class="r">median ${hoursTxt(medRespHrs)} to reply</td></tr>
+    <tr><td class="l"><span class="chip" style="background:#f6ede2;color:#8a5a1e">TURNED DOWN</span></td>
+        <td class="r">${turnedDown.length}</td><td class="r">${pct(turnedDown.length, total)}</td>
+        <td class="r">${coversOf(turnedDown).toLocaleString()}</td><td class="r">—</td></tr>
+    <tr><td class="l"><span class="chip" style="background:#fbe9e2;color:#b3541e">NO REPLY</span></td>
+        <td class="r">${noReply.length}</td><td class="r">${pct(noReply.length, total)}</td>
+        <td class="r">${coversOf(noReply).toLocaleString()}</td>
+        <td class="r">avg ${avgWait == null ? '—' : avgWait.toFixed(0) + 'd'} waiting, longest ${maxWait ?? '—'}d</td></tr>
   </tbody></table>
-  <div class="foot">Same-day disposition on ${sameDay} of ${disposed.length} decided inquiries (${pct(sameDay, disposed.length)}). "Response" is measured in calendar days; conversions are stamped by date in Tripleseat, so same-day = 0 (see methodology).</div>
+  <div class="note warn"><b>${noReply.length} of ${total} inquiries have had no response of any kind</b>
+  — no conversion and no turn-down recorded — representing <b>${coversOf(noReply).toLocaleString()} covers</b>.
+  Only <b>${ownedCount} of ${total}</b> carry an assigned owner. The ${answered.length} that were answered
+  were answered quickly (median ${hoursTxt(medRespHrs)}), so the constraint is inquiries being picked up,
+  not how fast they are handled once someone does. Response is read from Tripleseat's own
+  <i>converted_at</i> / <i>turned_down_at</i> stamps; replies made by phone or email and never logged
+  will not appear here.</div>` : ''}
+
 </div>`;
 
 /* ---------- page 2: ownership, source, value, open aging ---------- */
@@ -218,7 +256,18 @@ const openAge = [['0–7 days', 0], ['8–14 days', 0], ['15–30 days', 0], ['3
 L.filter(r => r._stage === 'OPEN').forEach(r => { const a = r.age_days; if (a <= 7) openAge[0][1]++; else if (a <= 14) openAge[1][1]++; else if (a <= 30) openAge[2][1]++; else openAge[3][1]++; });
 // value by stage
 const valStages = ['PROSPECT', 'TENTATIVE', 'DEFINITE', 'CLOSED'].map(k => { const rs = L.filter(r => r._stage === k); return [k, rs.length, rs.reduce((a, r) => a + (r.grand_total || 0), 0), rs.filter(r => r.grand_total > 0).length]; });
+const speedBlock = `  <h2>Response &amp; handling speed</h2>
+  <table class="tbl" style="max-width:560px"><thead><tr><th class="l">Metric</th><th>Median</th><th>Average</th><th>Basis</th></tr></thead><tbody>
+  <tr><td class="l">Inquiry → first disposition (converted/turned down)</td><td class="r">${dz(respMedian)}</td><td class="r">${dz1(respAvg)}</td><td class="r">${disposed.length} decided</td></tr>
+  <tr><td class="l">Inquiry → booking built (first staff action)</td><td class="r">${dz(faMedian)}</td><td class="r">${dz1(faAvg)}</td><td class="r">${firstAct.length} bookings</td></tr>
+  <tr><td class="l">Prospect → Definite (sales cycle to book)</td><td class="r">${dz(medianOf(prToDef))}</td><td class="r">${dz1(avgOf(prToDef))}</td><td class="r">${prToDef.length} booked</td></tr>
+  <tr><td class="l">Definite → Closed</td><td class="r">${dz(medianOf(defToClose))}</td><td class="r">${dz1(avgOf(defToClose))}</td><td class="r">${defToClose.length} closed</td></tr>
+  <tr><td class="l">Prospect → Lost (time before giving up)</td><td class="r">${dz(medianOf(prToLost))}</td><td class="r">${dz1(avgOf(prToLost))}</td><td class="r">${prToLost.length} lost</td></tr>
+  </tbody></table>
+  <div class="foot">Same-day disposition on ${sameDay} of ${disposed.length} decided inquiries (${pct(sameDay, disposed.length)}). "Response" is measured in calendar days; conversions are stamped by date in Tripleseat, so same-day = 0 (see methodology).</div>`;
+
 let p2 = `<div class="page">${brand('Inquiry → BEO Lifecycle · Breakdowns')}
+  ${speedBlock}
   <h2>Booking ownership (from the linked event)</h2>
   <div style="display:flex;gap:24px">
     <div style="flex:1"><div style="font-size:10px;color:#5a6b86;margin-bottom:3px">Owner (assigned)</div>
@@ -244,23 +293,74 @@ let p2 = `<div class="page">${brand('Inquiry → BEO Lifecycle · Breakdowns')}
   ${openAge.map(a => `<tr><td class="l">${a[0]}</td><td class="r">${a[1]}</td></tr>`).join('')}</tbody></table>
 </div>`;
 
-/* ---------- appendix: every inquiry with lifecycle ---------- */
+/* ---------- appendix: every inquiry ---------- */
+// In windowed mode the appendix is grouped by how close the event is and leads with
+// response status, since that is the actionable dimension; the year-to-date report
+// keeps its original lifecycle-milestone listing.
 const rowsSorted = [...L].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 const PER = 32;
 let appx = '';
-for (let i = 0; i < rowsSorted.length; i += PER) {
-  const chunk = rowsSorted.slice(i, i + PER);
-  const body = chunk.map(r => {
+
+if (HAS_RESP) {
+  const BANDS = [
+    ['Event date already passed', r => r._r.event_date && r._r.days_to_event < 0, '#b3541e'],
+    ['Event within 21 days',      r => r._r.days_to_event != null && r._r.days_to_event >= 0 && r._r.days_to_event <= 21, '#b3541e'],
+    ['Event beyond 21 days',      r => r._r.days_to_event != null && r._r.days_to_event > 21, '#3c5a86'],
+    ['No event date given',       r => r._r.event_date == null, '#8a5a1e'],
+  ];
+  const respChip = r => {
+    const x = r._r;
+    if (x.response_status === 'TURNED_DOWN') return `<span class="chip" style="background:#f6ede2;color:#8a5a1e">TURNED DOWN</span>`;
+    if (x.response_status === 'RESPONDED')   return `<span class="chip" style="background:#e6f0e9;color:#1c7c4d">ANSWERED ${esc(hoursTxt(x.response_hours))}</span>`;
+    return `<span class="chip" style="background:#fbe9e2;color:#b3541e">NO REPLY ${x.days_open}d</span>`;
+  };
+  const line = r => {
+    const x = r._r;
     const who = [r.contact, r.company].filter(Boolean).join(' · ');
-    const resp = r.resp_days == null ? '—' : (r.resp_days === 0 ? '0d' : r.resp_days + 'd');
-    const milestone = r.closed_at ? 'Cls ' + md(r.closed_at) : r.definite_at ? 'Def ' + md(r.definite_at) : r.lost_at ? 'Lost ' + md(r.lost_at) : r.tentative_at ? 'Tent ' + md(r.tentative_at) : r.prospect_at ? 'Prosp ' + md(r.prospect_at) : '—';
-    return `<tr><td class="r">${md(r.created_at)}</td><td class="l">${esc((who || '—').slice(0, 34))}</td><td class="r">${r.event_date ? md(r.event_date) : '—'}</td><td class="r">${r.guest_count ?? '—'}</td><td class="l">${esc((r.event_type_ev || r.lead_source || '—').slice(0, 13))}</td><td class="l">${chip(r._stage)}</td><td class="r">${resp}</td><td class="l">${milestone}</td><td class="l">${esc((r.booking_owner || '—').slice(0, 13))}</td><td class="r">${r.grand_total ? money(r.grand_total) : '—'}</td></tr>`;
-  }).join('');
-  appx += `<div class="page">${brand('Inquiry → BEO Lifecycle · All Inquiries')}
-    <h2 style="margin-top:12px">Every inquiry (${i + 1}–${Math.min(i + PER, rowsSorted.length)} of ${rowsSorted.length})</h2>
-    <table class="tbl appx"><thead><tr><th class="r">Submitted</th><th class="l">Contact / Company</th><th class="r">Event date</th><th>Gst</th><th class="l">Type</th><th class="l">Stage</th><th class="r">Resp</th><th class="l">Milestone</th><th class="l">Owner</th><th class="r">BEO $</th></tr></thead><tbody>${body}</tbody></table>
-    <div class="foot">Stage = current linked-event status (or lead disposition). Resp = days to first disposition. Milestone = latest lifecycle step reached, with date. BEO $ = event grand total where built.</div>
-  </div>`;
+    const when = x.event_date
+      ? `${md(x.event_date)} <span style="color:#8a97ab">(${x.days_to_event < 0 ? Math.abs(x.days_to_event) + 'd ago' : 'in ' + x.days_to_event + 'd'})</span>`
+      : '<span style="color:#8a97ab">not given</span>';
+    return `<tr><td class="r">${md(r.created_at)}</td><td class="l">${esc((who || '—').slice(0, 34))}</td>` +
+      `<td class="l">${esc((x.event_desc || '—').slice(0, 24))}</td><td class="r">${when}</td>` +
+      `<td class="r">${r.guest_count ?? '—'}</td><td class="l">${respChip(r)}</td>` +
+      `<td class="l">${esc((x.owner || '—').slice(0, 12))}</td>` +
+      `<td class="l">${r.event_id ? chip(r._stage) : '<span style="color:#8a97ab">none</span>'}</td></tr>`;
+  };
+  const head = `<thead><tr><th class="l">Inquired</th><th class="l">Guest</th><th class="l">Occasion</th>` +
+    `<th>Event date</th><th>Party</th><th class="l">Response</th><th class="l">Owner</th><th class="l">BEO</th></tr></thead>`;
+
+  // Lay the bands out across pages without letting any page overflow.
+  let pageRows = 0, buf = '';
+  const flushPage = () => { if (buf) { appx += `<div class="page">${brand('Inquiry → BEO Lifecycle · Every Inquiry')}${buf}</div>`; buf = ''; pageRows = 0; } };
+  for (const [label, pred, col] of BANDS) {
+    const rows = L.filter(r => r._r && pred(r));
+    if (!rows.length) continue;
+    for (let i = 0; i < rows.length; i += PER) {
+      const chunk = rows.slice(i, i + PER);
+      if (pageRows && pageRows + chunk.length > PER) flushPage();
+      const nr = chunk.filter(r => r._r.response_status === 'NO_RESPONSE').length;
+      const part = rows.length > PER ? ` (${i + 1}–${i + chunk.length} of ${rows.length})` : '';
+      buf += `<h2 style="margin-top:${pageRows ? 14 : 12}px;color:${col}">${esc(label)}${part}` +
+        `<span style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:400;color:#8a97ab"> — ${chunk.length} inquiries, ${chunk.reduce((n, r) => n + (r.guest_count || 0), 0)} covers, ${nr} with no reply</span></h2>` +
+        `<table class="tbl appx">${head}<tbody>${chunk.map(line).join('')}</tbody></table>`;
+      pageRows += chunk.length;
+    }
+  }
+  flushPage();
+} else {
+  for (let i = 0; i < rowsSorted.length; i += PER) {
+    const chunk = rowsSorted.slice(i, i + PER);
+    const body = chunk.map(r => {
+      const who = [r.contact, r.company].filter(Boolean).join(' · ');
+      const resp = r.resp_days == null ? '—' : (r.resp_days === 0 ? '0d' : r.resp_days + 'd');
+      const milestone = r.closed_at ? 'Cls ' + md(r.closed_at) : r.definite_at ? 'Def ' + md(r.definite_at) : r.lost_at ? 'Lost ' + md(r.lost_at) : r.tentative_at ? 'Tent ' + md(r.tentative_at) : r.prospect_at ? 'Prosp ' + md(r.prospect_at) : '—';
+      return `<tr><td class="r">${md(r.created_at)}</td><td class="l">${esc((who || '—').slice(0, 34))}</td><td class="r">${r.event_date ? md(r.event_date) : '—'}</td><td class="r">${r.guest_count ?? '—'}</td><td class="l">${esc((r.event_type_ev || r.lead_source || '—').slice(0, 13))}</td><td class="l">${chip(r._stage)}</td><td class="r">${resp}</td><td class="l">${milestone}</td><td class="l">${esc((r.booking_owner || '—').slice(0, 13))}</td><td class="r">${r.grand_total ? money(r.grand_total) : '—'}</td></tr>`;
+    }).join('');
+    appx += `<div class="page">${brand('Inquiry → BEO Lifecycle · All Inquiries')}
+      <h2 style="margin-top:12px">Every inquiry (${i + 1}–${Math.min(i + PER, rowsSorted.length)} of ${rowsSorted.length})</h2>
+      <table class="tbl appx"><thead><tr><th class="l">Inquired</th><th class="l">Guest</th><th>Event date</th><th>Guests</th><th class="l">Type</th><th class="l">Stage</th><th>Resp</th><th class="l">Milestone</th><th class="l">Owner</th><th>BEO value</th></tr></thead><tbody>${body}</tbody></table>
+    </div>`;
+  }
 }
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>${p1}${p2}${appx}</body></html>`;
