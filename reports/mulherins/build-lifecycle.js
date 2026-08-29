@@ -1,7 +1,13 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const DIR = __dirname;
-const L = JSON.parse(fs.readFileSync(path.join(DIR, 'leads2.json'), 'utf8'));
+// The report presents itself as year-to-date, but the source table's prune floor was
+// widened to 2025-01-01 for the Anthology backfill, so leads2.json now carries ~20
+// months. Window to the current calendar year so the figures match the YTD header.
+const YEAR = new Date().getUTCFullYear();
+const ALL = JSON.parse(fs.readFileSync(path.join(DIR, 'leads2.json'), 'utf8'));
+const L = ALL.filter(r => r.created_at && new Date(r.created_at).getUTCFullYear() === YEAR);
+if (L.length !== ALL.length) console.log(`lifecycle: ${L.length} of ${ALL.length} inquiries are YTD ${YEAR}`);
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const pct = (n, d) => d ? (n / d * 100).toFixed(1) + '%' : '—';
