@@ -6,7 +6,7 @@
 **Export snapshot:** bookings created up to **13 Aug 2026** — anything sold after that date is not included
 **Prepared:** 31 Aug 2026
 **Unit of analysis:** the **booking**, not the event row (see §7)
-**Revenue basis:** **Event Grand Total less sales tax, liquor tax and gratuity** (see §2)
+**Revenue basis:** three layers — Grand Total, **Net** (less tax & gratuity), **Base** (also less service charge & admin fee). See §2.
 
 ---
 
@@ -17,9 +17,12 @@
 | Bookings | **215** |
 | Underlying event rows | 365 |
 | Covers | **14,795** |
-| **Net revenue (full)** | **$4,363,202** |
-| Attributed to Anthology (80/20 rule) | **$3,947,769** |
-| Attributed to other outlets | **$415,432** |
+| Event Grand Total | $4,549,983 |
+| **Net revenue** (less tax & gratuity) | **$4,363,202** |
+| **Base revenue** (also less service charge & admin fee) | **$3,586,907** |
+| Net attributed to Anthology (80/20 rule) | **$3,947,769** |
+| Base attributed to Anthology | **$3,246,885** |
+| Attributed to other outlets (net) | **$415,432** |
 | Event dates covered | 6 Jan 2026 – 23 Dec 2026 |
 
 ---
@@ -33,18 +36,28 @@ rows to the dollar:
 Event Grand Total = Event Actual + Sales Tax + Gratuity + Admin Fee + Service Charge
 ```
 
-The reporting basis used throughout this file:
+This file reports **three layers**, so service charge and admin fee can be included or
+excluded as needed:
 
-| | Amount |
-|---|---|
-| Event Grand Total | $4,549,983 |
-| less Sales Tax | ($181,981) |
-| less Gratuity | ($4,801) |
-| **= Net revenue** | **$4,363,202** |
+| Layer | Amount | What it is |
+|---|---:|---|
+| **Event Grand Total** | $4,549,983 | everything invoiced to the guest |
+| less Sales Tax | ($181,981) | remitted to the state |
+| less Gratuity | ($4,801) | to staff; recorded on only 2 of 365 rows |
+| **= NET REVENUE** | **$4,363,202** | what the business retains, incl. service charge |
+| less Service Charge | ($618,280) | 17.2% of base — house revenue, not a tip |
+| less Admin Fee | ($158,014) | 4.4% of base |
+| **= BASE REVENUE** | **$3,586,907** | food, beverage, rental and labour only |
 
-**Service charge ($618,280) and admin fee ($158,014) are retained** as house revenue.
-Liquor tax is zero for this location. Gratuity is recorded on only 2 of 365 rows —
-service charge is the operative uplift here, not gratuity.
+Liquor tax is zero for this location.
+
+**Which to use.** *Net* is the right figure for what the venue takes in. *Base* is the
+right figure for comparing menu and package pricing across venues, or against per-cover
+benchmarks, since service charge and admin fee are policy rather than product.
+
+Base revenue reconciles to Tripleseat's `Event Actual` ($3,565,452) within **$21,455** —
+the gap sits in 15 rows carrying discounts, where the component fields do not sum exactly
+to the grand total.
 
 ### Multi-outlet attribution (the 80/20 rule)
 
@@ -68,17 +81,30 @@ this matters.
 All figures net of tax and gratuity. "Full net" is the whole booking; "Anthology" applies
 the 80/20 split.
 
-| Segment | Bookings | Definite | Closed | Covers | Full net | Anthology | To other | Avg/booking | Median | $/cover |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| **Wedding** | 81 | 42 | 39 | 10,042 | $3,284,846 | $2,878,749 | $406,096 | $42,113 | $44,212 | $327 |
-| **Corporate** | 54 | 22 | 32 | 3,304 | $767,896 | $767,896 | $0 | $16,338 | $12,630 | $232 |
-| **Social** | 71 | 18 | 53 | 1,129 | $245,646 | $243,332 | $2,314 | $4,163 | $525 | $218 |
-| FOC | 2 | 1 | 1 | 140 | $35,886 | $28,864 | $7,022 | $35,886 | — | $256 |
-| Education | 1 | 0 | 1 | 155 | $24,469 | $24,469 | $0 | $24,469 | — | $158 |
-| Sports | 1 | 0 | 1 | 9 | $3,409 | $3,409 | $0 | $3,409 | — | $379 |
-| Photography | 2 | 0 | 2 | 0 | $1,050 | $1,050 | $0 | $525 | — | — |
-| Internal | 3 | 2 | 1 | 16 | $0 | $0 | $0 | — | — | — |
-| **Total** | **215** | **85** | **130** | **14,795** | **$4,363,202** | **$3,947,769** | **$415,432** | | | |
+| Segment | Bookings | Def | Closed | Covers | Grand total | **Net** | Svc charge | Admin fee | **Base** | Net/cvr | Base/cvr |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| **Wedding** | 81 | 42 | 39 | 10,042 | $3,434,782 | **$3,284,846** | $478,755 | $121,524 | **$2,684,568** | $327 | $267 |
+| **Corporate** | 54 | 22 | 32 | 3,304 | $793,590 | **$767,896** | $98,715 | $24,854 | **$644,328** | $232 | $195 |
+| **Social** | 71 | 18 | 53 | 1,129 | $255,108 | **$245,646** | $31,559 | $9,249 | **$204,838** | $218 | $181 |
+| FOC | 2 | 1 | 1 | 140 | $37,452 | $35,886 | $5,218 | $1,329 | $29,339 | $256 | $210 |
+| Education | 1 | 0 | 1 | 155 | $24,469 | $24,469 | $3,619 | $905 | $19,945 | $158 | $129 |
+| Sports | 1 | 0 | 1 | 9 | $3,533 | $3,409 | $415 | $104 | $2,890 | $379 | $321 |
+| Photography | 2 | 0 | 2 | 0 | $1,050 | $1,050 | $0 | $50 | $1,000 | — | — |
+| Internal | 3 | 2 | 1 | 16 | $0 | $0 | $0 | $0 | $0 | — | — |
+| **Total** | **215** | **85** | **130** | **14,795** | **$4,549,983** | **$4,363,202** | **$618,280** | **$158,014** | **$3,586,907** | **$295** | **$242** |
+
+### Attributed to Anthology after the 80/20 split
+
+| Segment | Grand total | Net | Base |
+|---|---:|---:|---:|
+| Wedding | $3,009,419 | $2,878,750 | $2,352,155 |
+| Corporate | $793,590 | $767,896 | $644,328 |
+| Social | $252,693 | $243,332 | $202,947 |
+| FOC, Education, Sports, Photography | $59,168 | $57,791 | $47,455 |
+| **All segments** | **$4,114,870** | **$3,947,769** | **$3,246,885** |
+
+*Internal bookings carry no revenue. Columns are rounded to the dollar and may differ
+from totals by $1–2.*
 
 **Weddings are 38% of bookings, 68% of covers and 75% of revenue.**
 
@@ -92,16 +118,18 @@ the 80/20 split.
 
 ### Full wedding price (what the guest pays, across all spaces used)
 
-| | Amount |
-|---|---|
-| Average | **$42,113** |
-| Median | **$44,212** |
-| Range | $20,215 – $68,901 |
-| Total | $3,284,846 |
-| Per cover | $327 |
+| | Net (incl. svc charge & admin) | Base (excl. both) |
+|---|---:|---:|
+| **Average per booking** | **$42,113** | **$34,418** |
+| **Median** | **$44,212** | **$35,820** |
+| Range | $20,215 – $68,901 | $16,807 – $56,345 |
+| Total | $3,284,846 | $2,684,568 |
+| Per cover | $327 | $267 |
 
-Anthology's attributed share after the 80/20 split is **$2,878,749** ($287/cover);
-**$406,096** goes to Kamper's and Bar Rotunda.
+Service charge and admin fee add **$600,279** to the wedding book — 22% on top of base.
+
+Anthology's attributed share after the 80/20 split is **$2,878,750 net / $2,352,155
+base**; **$406,096** of net goes to Kamper's and Bar Rotunda.
 
 ### With and without a second outlet
 
@@ -131,8 +159,16 @@ roughly $327 a head, not a premium-per-guest one.
 
 ## 5. Corporate
 
-**54 bookings — 22 Definite, 32 Closed. $767,896 net, $16,338 average, $12,630 median,
-$232 per cover.** 47 of 54 carry priced revenue; largest single booking $91,448.
+**54 bookings — 22 Definite, 32 Closed.**
+
+| | Net | Base |
+|---|---:|---:|
+| Total | $767,896 | $644,328 |
+| Average per booking | $16,338 | $13,709 |
+| Median | $12,630 | $10,585 |
+| Per cover | $232 | $195 |
+
+47 of 54 carry priced revenue; largest single booking $91,448 net.
 
 **No corporate booking shares space with another outlet** — corporate figures are pure
 Anthology, with no 80/20 adjustment.
@@ -148,13 +184,13 @@ Day Event ($8,635), Team Wellness Center ($4,135) — $50,242 in total.
 The headline social figures are distorted. **42 of 71 social bookings are photography
 sessions** at a flat $525, tagged Social because nobody retagged them.
 
-| | Bookings | Net | Avg | Median | Covers | $/cover |
-|---|---:|---:|---:|---:|---:|---:|
-| **Real social events** | **29** | **$223,333** | **$13,137** | **$7,875** | 1,116 | $200 |
-| Photography sessions | 42 | $22,312 | $531 | $525 | 13 | — |
-| Tasting only | 1 | $0 | — | — | 55 | — |
+| | Bookings | Net | Net avg | Net median | Base avg | Base median | Covers |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **Real social events** | **29** | **$223,333** | **$13,137** | **$7,875** | **$10,799** | **$6,300** | 1,116 |
+| Photography sessions | 42 | $22,312 | $531 | $525 | — | — | 13 |
+| Tasting only | 1 | $0 | — | — | — | — | 55 |
 
-**Use 29 bookings / $223,333 / $13,137 average as the real social number.** The
+**Use 29 bookings / $223,333 net / $13,137 average as the real social number.** The
 untreated segment average of $4,163 is a third of the truth because 60% of the count is
 $525 photo sessions.
 
@@ -294,5 +330,8 @@ photography sessions.
 5. **Social is contaminated by photography sessions** — see §6 before using that segment.
 6. **The 80/20 split is applied uniformly** to any event row using another outlet's room.
    If the actual commercial split varies by event, these attributions will differ.
-7. **Service charge and admin fee are treated as house revenue.** If either is
-   distributed to staff, net revenue overstates what the venue retains.
+7. **Service charge and admin fee are shown both ways.** The *Net* layer treats them as
+   house revenue; the *Base* layer strips them. If any part of the service charge is
+   distributed to staff, use Base plus the retained portion rather than Net.
+8. **Base reconciles to `Event Actual` within $21,455** (0.6%), a gap arising in 15
+   discounted rows whose component fields do not sum exactly to the grand total.
