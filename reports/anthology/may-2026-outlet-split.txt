@@ -1,0 +1,43 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+05-01 Kylie Brandon & Jarrett Janicki Wedding       anthology    34,244   41,591   31,863    9,728      0  23.4%  bar pkg 1h/5h = 2,226 to Kamper's
+05-02 Theresa Lowery & Owen Kelly Wedding           anthology    38,954   47,927   36,799   11,128      0  23.2%  bar pkg 1h/5h = 2,632 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+05-03 Boston's Communion Dinner (cancellation)      anthology     2,865    3,456    3,456        0      0   0.0%  invoice -500 vs actual
+05-04 Brunch                                        anthology     1,140    1,140    1,140        0      0   0.0%  no invoice lines
+05-04 Rachel's Network Day 1                        anthology     9,454   11,568   11,568        0      0   0.0%  
+05-05 Murad - Photo Session                         anthology       500      525      525        0      0   0.0%  no invoice lines
+05-05 Rachel's Network Day 2                        anthology    15,502   19,128   19,128        0      0   0.0%  
+05-06 PS: Shivon Jarbo                              anthology       500      525      525        0      0   0.0%  no invoice lines
+05-06 Rachel's Network Day 3                        anthology    13,126   16,158   16,158        0      0   0.0%  
+05-07 Migaldi - Photoshoot                          anthology       500      525      525        0      0   0.0%  no invoice lines
+05-07 PS: Candace Mullins                           anthology       500      525      525        0      0   0.0%  no invoice lines
+05-07 Yappy Hour - Bedrock                          rotunda s     4,146    4,353        0        0  4,353 100.0%  
+05-08 Ceremony: Olivia Lake & Tommy Simon Wedding   anthology     3,500    3,500    3,500        0      0   0.0%  no invoice lines
+05-08 Cocktail Reception: Olivia Lake & Tommy Simon kampers s     5,334    6,418        0    6,418      0 100.0%  
+05-08 Olivia Lake & Tommy Simon Wedding             anthology    20,454   25,136   25,136        0      0   0.0%  
+05-09 Jason Lee & Bianca Lazarte Wedding            anthology    39,175   47,575   36,563   11,012      0  23.1%  bar pkg 1h/5h = 2,568 to Kamper's
+05-12 Roth Capital Partners                         kampers s     5,300    5,540        0    5,540      0 100.0%  
+05-13 Ardoq Business Meeting                        anthology     2,525    3,031    3,031        0      0   0.0%  invoice -500 vs actual
+05-13 Bashi - Photoshoot                            anthology       500      525      525        0      0   0.0%  no invoice lines
+05-13 Buzz Solutions - Business Happy Hour          rotunda s       325      341        0        0    341 100.0%  
+05-13 Novick - Photo Session                        anthology       500      525      525        0      0   0.0%  no invoice lines
+05-14 Lia Jacques & Christian Kazoleas              anthology    16,807   20,215   17,844        0  2,372  11.7%  
+05-15 Leah Blatnikoff & Cameron Judge Wedding       anthology    30,379   36,648   28,610    8,038      0  21.9%  bar pkg 1h/5h = 2,154 to Kamper's
+05-15 Rob Marzonie Welcome Reception                rotunda s     2,805    3,506        0        0  3,506 100.0%  
+05-16 Kayla Buchholz & Jack Flynn Wedding           anthology    37,783   46,479   36,212   10,266      0  22.1%  bar pkg 1h/5h = 2,706 to Kamper's
+05-16 Residential Rental: Ryan Spencer              anthology       843    1,054    1,054        0      0   0.0%  no invoice lines
+05-16 TERRACE CLUB: Kayla Buchholz & Jack Flynn Wed anthology     1,000    1,038    1,038        0      0   0.0%  no invoice lines
+05-18 Jameel - PS                                   anthology       500      525      525        0      0   0.0%  no invoice lines
+05-20 Henry Ford Health Interviews Day #2           anthology     2,430    2,799    2,799        0      0   0.0%  invoice -500 vs actual
+05-20 The City Institute Event                      kampers s       518      648        0      648      0 100.0%  
+05-21 PS - Nicole Koppel                            anthology       500      525      525        0      0   0.0%  no invoice lines
+05-22 Emily Buck & Patrick Hopps Wedding            anthology    37,901   46,455   37,029    9,426      0  20.3%  bar pkg 1h/5h = 2,439 to Kamper's
+05-23 COCKTAIL HOUR: Julia Malewicz & Josh Nelson   kampers s     8,196    9,796        0    9,796      0 100.0%  
+05-23 Julia Malewicz & Josh Nelson Wedding          anthology    29,084   35,757   35,757        0      0   0.0%  
+05-23 Sana Photoshoot                               anthology       500      525      525        0      0   0.0%  no invoice lines
+05-28 PS: Destiny Khmoro                            anthology       500      525      525        0      0   0.0%  no invoice lines
+05-29 Sarah Miller & Dominic Seipenko Wedding       anthology    33,647   41,105   32,622    8,483      0  20.6%  bar pkg 1h/5h = 2,261 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+05-29 TERRACE CLUB: Sarah Miller & Dominic Seipenko anthology     1,200    1,438    1,438        0      0   0.0%  no invoice lines
+05-30 Alania Pierson and Brendan Teodorescu Wedding anthology    36,855   45,618   36,317    9,301      0  20.4%  bar pkg 1h/5h = 2,158 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+05-31 COCKTAIL HOUR: Nataliia Yarosh & Maksym Nykin kampers s     6,463    7,828        0    7,828      0 100.0%  
+05-31 Nataliia Yarosh & Maksym Nykin Wedding        anthology    19,909   24,584   24,584        0      0   0.0%  
+      TOTAL                                                     466,864  567,078  448,894  107,612 10,572  20.8%

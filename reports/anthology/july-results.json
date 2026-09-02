@@ -54,7 +54,8 @@
    "Kamper's|FOOD": 4089.0,
    "Anthology|FOOD": 15435.0,
    "Anthology|BEVERAGE": 14086.2,
-   "Kamper's|BEVERAGE": 3217.8,
+   "Kamper's|RENTAL": 500.0,
+   "Kamper's|BEVERAGE": 2717.8,
    "Anthology|RENTAL": 0.0
   },
   "alloc": {
@@ -408,7 +409,8 @@
    "Kamper's|FOOD": 4959.0,
    "Anthology|FOOD": 18828.0,
    "Anthology|BEVERAGE": 15407.6,
-   "Kamper's|BEVERAGE": 4659.4,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 3659.4,
    "Anthology|RENTAL": 0.0
   },
   "alloc": {

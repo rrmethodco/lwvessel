@@ -42,20 +42,25 @@ function isHeader(qty, price, total, desc) {
   return ROOM_HDR.test(t);
 }
 
-// Booking-level totals block at the foot of the invoice (Subtotal / Sales Tax / Service Charge /
-// Admin Fee / Room Rental / Grand Total) and the SCHEDULE OF EVENTS table, whose Areas column is
-// the only place the document names every room an event uses.
+// BILLING block at the foot of the invoice: category totals (Food, Alcoholic Beverage, Room Rental,
+// Valet Parking, Labor ...) followed by Sales Tax / Service Charge (or Gratuity at Kamper's and
+// Bar Rotunda) / Subtotal / Admin Fee / Grand Total. Line order varies by document layout, so every
+// "label [pct%] $amount" pair is captured into `billing` and the named fields are read from it.
+// The SCHEDULE OF EVENTS table's Areas column is the only place the document names every room.
 function parseMeta(html) {
-  const tail = strip(html.slice(Math.max(0, html.lastIndexOf("Subtotal") - 200)));
-  const grab = (re) => { const m = tail.match(re); return m ? money(m[1]) : null; };
+  const bi = html.lastIndexOf("BILLING");
+  let tail = strip(bi >= 0 ? html.slice(bi) : html.slice(-8000));
+  tail = tail.replace(/^BILLING\s+Description\s+Percent\s+Total\s*/i, "");
+  const gt = tail.match(/Grand Total\s*-?\$?-?[\d,]+\.\d{2}/i); if (gt) tail = tail.slice(0, gt.index + gt[0].length);
+  const billing = {};
+  const pairRe = /([A-Za-z][A-Za-z&' \-\/]*?[A-Za-z])\s*(?:[\d.]+%\s*)?-?\$?(-?[\d,]+\.\d{2})/g; let m;
+  while ((m = pairRe.exec(tail))) { const k = m[1].trim(); if (!(k in billing)) billing[k] = money(m[2]); }
+  const g = (...keys) => { for (const k of keys) if (k in billing) return billing[k]; return null; };
   const meta = {
-    subtotal: grab(/Subtotal\s*\$?([\d,]+\.\d{2})/i),
-    sales_tax: grab(/Sales Tax\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
-    service_charge: grab(/Service Charge\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
-    admin_fee: grab(/Admin(?:istrative)? Fee\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
-    gratuity: grab(/Gratuity\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
-    room_rental: grab(/Room Rental\s*\$?([\d,]+\.\d{2})/i),
-    grand_total: grab(/Grand Total\s*\$?([\d,]+\.\d{2})/i),
+    billing,
+    subtotal: g("Subtotal"), sales_tax: g("Sales Tax"), service_charge: g("Service Charge"),
+    admin_fee: g("Admin Fee", "Administrative Fee"), gratuity: g("Gratuity"),
+    room_rental: g("Room Rental", "Rental Fee"), grand_total: g("Grand Total"),
     schedule: [],
   };
   const si = html.indexOf("SCHEDULE OF EVENTS");

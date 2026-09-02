@@ -36,3 +36,4 @@ create table if not exists ts_invoice_meta (
   parsed_at      timestamptz
 );
 alter table ts_invoice_meta enable row level security;
+alter table ts_invoice_meta add column if not exists billing jsonb;

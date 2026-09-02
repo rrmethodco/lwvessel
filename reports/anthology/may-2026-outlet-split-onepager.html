@@ -1,0 +1,75 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Anthology &amp; Kamper's — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0C1526;--surface:#101E36;--surface-2:#0E1A2E;--border:#1E3050;--border-soft:#172741;
+--divider:#15243D;--text:#E2EAF6;--text-2:#8A9AB0;--text-3:#6B849E;--accent:#4187D4;
+--accent-soft:rgba(65,135,212,.14);--slate:#6D84AD;--up:#5A8F6B;--up-soft:rgba(90,143,107,.16);
+--down:#B4533C;--down-soft:rgba(180,83,60,.14);--serif:'Cormorant Garamond',Georgia,serif;
+--ui:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+@page{size:Letter;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:8.5in;min-height:11in;padding:.6in .65in .5in;background:var(--bg);position:relative;page-break-after:always;overflow:hidden}
+.page:last-child{page-break-after:auto}
+.page::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(720px 400px at 78% -12%,rgba(65,135,212,.07),transparent 70%)}
+.page>*{position:relative}
+.eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+h1{font-family:var(--serif);font-weight:300;font-size:43px;line-height:1.05;margin:0 0 13px;letter-spacing:-.015em}
+h1 em,h2 em{font-style:italic;color:var(--slate)}
+h2{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 9px;letter-spacing:-.01em}
+h3{font-family:var(--ui);font-size:12px;font-weight:600;margin:0 0 6px}
+p{font-size:12.2px;line-height:1.56;color:var(--text-2);margin:0 0 11px;max-width:66ch}
+p strong{color:var(--text);font-weight:600} p em{font-style:italic;color:var(--slate)}
+.lede{font-size:14px;color:var(--text);max-width:60ch;line-height:1.55}
+.hint{font-size:11.4px;line-height:1.5;color:var(--text-2);margin:0 0 14px;max-width:70ch}
+.meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:0 0 16px}
+.cards.three{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--border);border-radius:11px;padding:14px 15px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.card .label{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.card .value{font-family:var(--serif);font-weight:300;font-size:30px;line-height:1;letter-spacing:-.015em}
+.card .value small{font-family:var(--ui);font-size:11px;color:var(--text-3);margin-left:2px}
+.card .sub{font-size:10px;color:var(--text-3);margin-top:6px;line-height:1.35}
+.card.bad .value{color:#d98a72}.card.good .value{color:#7fb18d}
+.panel{border:1px solid var(--border);border-radius:11px;padding:16px 18px;margin-bottom:13px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.panel.flag{border-color:#5d3a2d;background:linear-gradient(180deg,rgba(180,83,60,.10),var(--surface-2))}
+.panel.ok{border-color:#3c6b4f;background:linear-gradient(180deg,rgba(90,143,107,.10),var(--surface-2))}
+table{width:100%;border-collapse:collapse;font-size:11.4px;margin-bottom:10px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--divider)}
+th:first-child,td:first-child{text-align:left}
+th{font-family:var(--ui);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+td{font-family:var(--mono);color:var(--text);font-variant-numeric:tabular-nums}
+td:first-child{font-family:var(--ui)}
+tr.tot td{border-top:1px solid var(--border);border-bottom:none;font-weight:500}
+td.neg{color:#d98a72}td.pos{color:#7fb18d}td.mute{color:var(--text-3)}
+.chip{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:5px;display:inline-block}
+.chip.s3{background:var(--down-soft);color:#e6a08c;border:1px solid var(--down)}
+.chip.s2{background:rgba(197,164,110,.14);color:#d8c19e;border:1px solid #8a7a55}
+.chip.s1{background:var(--accent-soft);color:#8fb4dd;border:1px solid var(--accent)}
+.chip.ok{background:var(--up-soft);color:#8fc4a1;border:1px solid var(--up)}
+.foot{position:absolute;left:.65in;right:.65in;bottom:.32in;display:flex;justify-content:space-between;font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border-soft);padding-top:8px}
+.rec{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--divider)}
+.rec:last-child{border-bottom:none}
+.rec .num{font-family:var(--serif);font-size:25px;font-weight:300;color:var(--slate);width:24px;flex:none;line-height:1}
+.rec p{margin:0;font-size:11.4px;line-height:1.5}
+.rec .why{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;color:var(--accent);margin-top:5px;text-transform:uppercase}
+svg{width:100%;height:auto;display:block}
+
+td.tst{color:var(--text-3)} th.tst{color:#4f6a8a} .cards{margin-bottom:14px} table{font-size:10.4px} th,td{padding:5px 5px;white-space:nowrap} th{font-size:8px;letter-spacing:.05em}
+.note{font-size:10.6px;line-height:1.5;color:var(--text-2);margin:0 0 8px;max-width:none} .note strong{color:var(--text)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+</style></head><body>
+<div class="page">
+<p class="eyebrow">Anthology Events at Book Tower · Revenue split · May 2026</p>
+<h1>May revenue, <em>by outlet</em></h1>
+<div class="cards">
+<div class="card"><div class="label">Anthology · net</div><div class="value">$448,894</div><div class="sub">Toast report not yet provided</div></div>
+<div class="card"><div class="label">Anthology · base (no svc / admin)</div><div class="value">$368,527</div><div class="sub">Svc $65,032 + admin $15,335 on top</div></div>
+<div class="card"><div class="label">Kamper's · event net</div><div class="value">$107,612</div><div class="sub">Toast report not yet provided</div></div>
+<div class="card"><div class="label">Kamper's share · shared weddings</div><div class="value">21.9%</div><div class="sub">vs the 20% convention · 8 weddings</div></div>
+</div>
+<table><thead><tr><th></th><th>Anthology</th><th class="tst">Toast</th><th>Kamper's</th><th class="tst">Toast</th><th>Bar Rotunda</th><th>Total</th></tr></thead>
+<tbody><tr><td>Food</td><td class="">202,530</td><td class="tst mute">—</td><td class="">35,886</td><td class="tst mute">—</td><td class="mute">—</td><td class="">238,416</td></tr><tr><td>Beverage</td><td class="">151,814</td><td class="tst mute">—</td><td class="">19,143</td><td class="tst mute">—</td><td class="mute">—</td><td class="">170,956</td></tr><tr><td>Rental &amp; fees</td><td class="">14,183</td><td class="tst mute">—</td><td class="">8,250</td><td class="tst mute">—</td><td class="mute">—</td><td class="">22,433</td></tr><tr><td>Standalone rooftop / Rotunda events</td><td class="">0</td><td class="tst mute">—</td><td class="">25,811</td><td class="tst mute">—</td><td class="">7,276</td><td class="">33,086</td></tr><tr class=tot><td>Base revenue (Event Actual)</td><td class="">368,527</td><td class="tst mute">—</td><td class="">89,089</td><td class="tst mute">—</td><td class="">9,248</td><td class="">466,864</td></tr><tr><td>Service charge</td><td class="">65,032</td><td class="tst mute">—</td><td class="">14,731</td><td class="tst mute">—</td><td class="">894</td><td class="">80,657</td></tr><tr><td>Admin fee</td><td class="">15,335</td><td class="tst mute">—</td><td class="">3,792</td><td class="tst mute">—</td><td class="">430</td><td class="">19,557</td></tr><tr class=tot><td>Net revenue</td><td class="">448,894</td><td class="tst mute">—</td><td class="">107,612</td><td class="tst mute">—</td><td class="">10,572</td><td class="">567,078</td></tr></tbody></table>
+<p class="note" style="margin-top:-2px">Toast columns are blank: the May Sales Summaries for Anthology Events and Kamper's were not provided. Total is all Book Tower events (Le Suprême / HIROKI-SAN excluded). † Kamper's A/R reports service charge and gratuity as one figure. Bar Rotunda has no POS report to compare.: Anthology Events POS net sales, and Kamper's A/R TripleSeat payments. Total is all Book Tower events (Le Suprême / HIROKI-SAN excluded). * Toast keys bar packages across Liquor / Wine / Beer and rings ceremony, deposit and valet lines as Misc. Guest Fees, so beverage and fees only reconcile as a pair. † Kamper's A/R reports service charge and gratuity as one figure. Bar Rotunda has no POS report to compare.</p>
+<div class="cols"><div><p class="note"><strong>What was done.</strong> Tripleseat exposes no line items through its API, so every May event's invoice document was pulled and parsed. Each line follows the BEO's room header (KAMPER'S, Kampers Rooftop Lounge, Bar Rotunda, Conservatory), a line that names Kamper's or Bar Rotunda goes to that outlet regardless, and standalone rooftop and Rotunda events stay 100% with their outlet. Service charge and admin fee come from each invoice's BILLING block and follow each outlet's share of base. Sales tax and gratuity are excluded throughout. Le Suprême and HIROKI-SAN private dining rows are their own book and are excluded.</p><p class="note"><strong>Anthology's May is $448,894 net, $368,527 before service charge and admin fee.</strong> Kamper's event revenue is $107,612, of which $30,230 is standalone rooftop events (three wedding cocktail hours booked as their own events, Roth Capital, The City Institute) and the rest is its share of the weddings it hosted a cocktail hour for. Bar Rotunda carries $10,572: Yappy Hour, the Marzonie reception, Buzz Solutions, and the cocktail hour of the Jacques &amp; Kazoleas wedding. The May Toast Sales Summaries for Anthology Events and Kamper's were not provided, so this page has no POS tie-out; send them and the Toast columns fill in.</p></div><div><p class="note"><strong>Kamper's takes more than 20% of a shared wedding.</strong> It carries the canapés, its $1,000/hour reception fee and the cocktail hour of the five-hour bar package. Across the nine May weddings that shared a room with Kamper's or Bar Rotunda the outlet share runs 20–23%, averaging 21.3%; Jacques &amp; Kazoleas is the low point at 12% because its cocktail hour ran at Bar Rotunda with the bar package kept upstairs. Where the cocktail hour was booked as its own event (Lake, Malewicz, Yarosh) Kamper's share is carried in the standalone line instead.</p><p class="note"><strong>BEO fixes at source.</strong> Lowery (5/02), Miller (5/29) and Pierson (5/30) bill a Kamper's cocktail hour but leave the canapé block unlabelled, the same omission Toast confirmed on Hannigan and Joseph; the cocktail-hour rule moves those canapés to Kamper's here. Roth Capital (5/12) and Buzz Solutions (5/13) carry "Corporate Events" as their area on the invoice although they ran on the rooftop and at Bar Rotunda. Rachel's Network Day 1 (5/04) lists Kampers Rooftop Bar among its rooms with no Kamper's lines at all; it stays with Anthology until Toast says otherwise.</p></div></div>
+<div class="foot"><span>Anthology Events at Book Tower · May 2026 outlet split</span><span>Sources: Tripleseat invoice documents &amp; export · Toast Sales Summary (Anthology Events, Kamper's)</span></div>
+</div></body></html>

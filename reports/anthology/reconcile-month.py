@@ -21,6 +21,16 @@ if '--no-overrides' not in sys.argv:
         if o: l['outlet']=o; l['override']=True
 by=collections.defaultdict(list)
 for l in lines: by[int(l['event_id'])].append(l)
+# Cocktail-hour rule: when a BEO bills a Kamper's cocktail reception (its $1,000/hour line) but the
+# coordinator left the canape block without a room header, the canapes were served at Kamper's.
+# Confirmed against Toast for Megan Hannigan (8/22) and Jordan Joseph (7/18); applied generally.
+for eid, ls in by.items():
+    has_kamp_hour=any(re.search(r'kamper|rooftop',(l.get('description') or ''),re.I) and re.search(r'cocktail|reception|rental',(l.get('description') or ''),re.I) for l in ls)
+    if not has_kamp_hour: continue
+    for l in ls:
+        d=l.get('description') or ''
+        if l['section']=='FOOD' and l['outlet']=='Anthology' and not l.get('outlet_header') and re.search(r'canap',d,re.I) and re.search(r'1 hour|hour service',d,re.I) and l.get('total'):
+            l['outlet']=K; l['rule']='cocktail-hour canapes'
 rows=[]
 for e in json.load(open(ev_f)):
     rooms=e['rooms']; has_k=bool(KAMP_ROOM.search(rooms)); has_r=bool(ROT_ROOM.search(rooms)); has_a=bool(ANTH_ROOM.search(rooms))
@@ -46,11 +56,12 @@ for e in json.load(open(ev_f)):
         if pkg and pkg[0] and kam_h and pkg[2]==A: pro=pkg[1]*kam_h/pkg[0]
         if PRORATE and pro: base[A]-=pro; base[K]+=pro; note.append(f"bar pkg {kam_h:g}h/{pkg[0]:g}h = {pro:,.0f} to Kamper's")
         if any(l.get('override') for l in ls): note.append('BEO header omission corrected')
+        if any(l.get('rule') for l in ls): note.append('canapes to Kamper\'s (cocktail-hour rule)')
     cat=collections.defaultdict(float)
     for l in ls:
         if l.get('total') is None: continue
         desc=l.get('description') or ''
-        sec='RENTAL' if re.search(r'hour.*cocktail reception at kamper',desc,re.I) else (l['section'] if l['section'] in ('FOOD','BEVERAGE') else 'RENTAL')
+        sec='RENTAL' if re.search(r'hour.*cocktail reception at kamper|kamper.*rental|rental.*kamper|cocktail hour: kamper',desc,re.I) else (l['section'] if l['section'] in ('FOOD','BEVERAGE') else 'RENTAL')
         cat[f"{l['outlet']}|{sec}"]+=float(l['total'])
     if kind=='kampers standalone': cat={f"{K}|UNITEMISED":e['actual']}
     elif kind=='rotunda standalone': cat={f"{R}|UNITEMISED":e['actual']}
