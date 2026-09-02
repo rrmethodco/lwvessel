@@ -1,0 +1,26 @@
+{
+ "month": "July 2026",
+ "results": "july-results.json",
+ "html": "july-2026-outlet-split-onepager.html",
+ "toast_anth": {
+  "food": 143591.83,
+  "bev": 97328.98,
+  "fees": 41601.729999999996,
+  "svc": 41002.92,
+  "adm": 10060.83,
+  "net": 333586.29
+ },
+ "toast_kamp": {
+  "base": 104692.48999999999,
+  "svcgrat": 18411.27,
+  "adm": 4519.08,
+  "net": 123103.76,
+  "rental": 11500.0
+ },
+ "narrative": [
+  "<p class=\"note\"><strong>What was done.</strong> Tripleseat exposes no line items through its API, so every July event's invoice document was pulled and parsed. Each line follows the BEO's room header (KAMPERS, Kamper's Rooftop, Conservatory, Linden Room), a line that names Kamper's or Bar Rotunda goes to that outlet regardless, and standalone rooftop events (Ford Pro, Consortium cocktail reception, Steel Dynamics) stay 100% with Kamper's. Service charge and admin fee come from each invoice's totals block and follow each outlet's share of base. Sales tax and gratuity are excluded throughout. Le Supr\u00eame and HIROKI-SAN private dining rows are their own book and are excluded.</p>",
+  "<p class=\"note\"><strong>Anthology's July is $355,487 net, $293,266 before service charge and admin fee.</strong> Toast shows $333,586, $21,901 less, and the gap is three weddings that were still Definite rather than Closed when this was run: Lovell 7/11 (+$5,486 vs Toast), Beckett 7/17 (\u2212$3,550) and Joseph 7/18 (+$14,942 after its canap\u00e9s move to Kamper's), plus the Bedrock Graystone Lane event ($4,504) that was not rung on the Anthology POS. Every other event day ties within $700; those days sum to $230,897 on Tripleseat against $230,377 on Toast.</p>",
+  "<p class=\"note\"><strong>Kamper's takes more than 20% of a shared wedding.</strong> It carries the canap\u00e9s, its $1,000/hour reception fee and the cocktail hour of the five-hour bar package. Across 8 July weddings the actual share runs 20\u201331%, averaging 22.4%: the convention understates Kamper's by $8,893 for the month. Kamper's July event revenue of $122,038 sits within $1,065 of its A/R TripleSeat postings.</p>",
+  "<p class=\"note\"><strong>Two BEO fixes at source.</strong> Jordan Joseph (7/18) has no Kamper's header on the BEO, so the canap\u00e9s served in the Kamper's cocktail hour would have fallen to Anthology; they are moved here, and Kamper's A/R ties once they are. Giordana Sobel (7/04) bills the rooftop as a \"1 hour rental\" rather than a cocktail reception, which the parser now recognises. Closing Lovell, Beckett and Joseph in Tripleseat and posting their final A/R will bring Anthology's Toast figure in line with this report.</p>"
+ ]
+}

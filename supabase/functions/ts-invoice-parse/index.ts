@@ -42,6 +42,34 @@ function isHeader(qty, price, total, desc) {
   return ROOM_HDR.test(t);
 }
 
+// Booking-level totals block at the foot of the invoice (Subtotal / Sales Tax / Service Charge /
+// Admin Fee / Room Rental / Grand Total) and the SCHEDULE OF EVENTS table, whose Areas column is
+// the only place the document names every room an event uses.
+function parseMeta(html) {
+  const tail = strip(html.slice(Math.max(0, html.lastIndexOf("Subtotal") - 200)));
+  const grab = (re) => { const m = tail.match(re); return m ? money(m[1]) : null; };
+  const meta = {
+    subtotal: grab(/Subtotal\s*\$?([\d,]+\.\d{2})/i),
+    sales_tax: grab(/Sales Tax\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
+    service_charge: grab(/Service Charge\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
+    admin_fee: grab(/Admin(?:istrative)? Fee\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
+    gratuity: grab(/Gratuity\s*[\d.]*%?\s*\$?([\d,]+\.\d{2})/i),
+    room_rental: grab(/Room Rental\s*\$?([\d,]+\.\d{2})/i),
+    grand_total: grab(/Grand Total\s*\$?([\d,]+\.\d{2})/i),
+    schedule: [],
+  };
+  const si = html.indexOf("SCHEDULE OF EVENTS");
+  if (si >= 0) {
+    const block = html.slice(si, si + 20000);
+    const rowRe = /<tr[^>]*>([\s\S]*?)<\/tr>/g; let r;
+    while ((r = rowRe.exec(block))) {
+      const cells = [...r[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(m => strip(m[1]));
+      if (cells.length >= 5 && /\d+\/\d+\/\d{4}/.test(cells[1] || "")) meta.schedule.push({ name: cells[0], date: cells[1], time: cells[2], areas: cells[4], type: cells[5] || null, guests: money(cells[6]) });
+    }
+  }
+  return meta;
+}
+
 function parse(html) {
   const lines = [];
   const secRe = /color:\s*#ffffff;?"?>\s*([A-Z &]+?)\s*(?:<br\s*\/?>)?\s*<\/span>/gi;
@@ -80,11 +108,13 @@ Deno.serve(async (req) => {
   const out = [];
   for (const row of data || []) {
     const lines = parse(row.html);
+    const meta = parseMeta(row.html);
+    await supa.from("ts_invoice_meta").upsert({ event_id: row.event_id, ...meta, parsed_at: new Date().toISOString() });
     await supa.from("ts_invoice_lines").delete().eq("event_id", row.event_id);
     const rows = lines.map((l, i) => ({ event_id: row.event_id, line_no: i + 1, ...l }));
     if (rows.length) { const { error: e2 } = await supa.from("ts_invoice_lines").insert(rows); if (e2) { out.push({ event_id: row.event_id, error: e2.message }); continue; } }
     const by = {}; for (const l of lines) if (l.total != null) by[l.outlet] = (by[l.outlet] || 0) + l.total;
-    out.push({ event_id: row.event_id, lines: lines.length, byOutlet: by, headers: [...new Set(lines.map(l => l.outlet_header).filter(Boolean))] });
+    out.push({ event_id: row.event_id, lines: lines.length, byOutlet: by, headers: [...new Set(lines.map(l => l.outlet_header).filter(Boolean))], subtotal: meta.subtotal, svc: meta.service_charge, adm: meta.admin_fee, areas: meta.schedule.map(x => x.areas) });
   }
   return json({ parsed: out.length, events: out });
 });

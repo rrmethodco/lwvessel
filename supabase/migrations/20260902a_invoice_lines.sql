@@ -22,3 +22,17 @@ create table if not exists ts_invoice_lines (
 );
 alter table ts_invoice_html  enable row level security;
 alter table ts_invoice_lines enable row level security;
+-- Booking-level totals and the SCHEDULE OF EVENTS rows (Areas = every room the event uses).
+create table if not exists ts_invoice_meta (
+  event_id       bigint primary key,
+  subtotal       numeric,
+  sales_tax      numeric,
+  service_charge numeric,
+  admin_fee      numeric,
+  gratuity       numeric,
+  room_rental    numeric,
+  grand_total    numeric,
+  schedule       jsonb,
+  parsed_at      timestamptz
+);
+alter table ts_invoice_meta enable row level security;
