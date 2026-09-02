@@ -4,25 +4,37 @@
   {
    "label": "Jan",
    "results": "jan-results.json",
-   "toast_anth": null,
+   "toast_anth": {
+    "net": 189129,
+    "partial": true
+   },
    "toast_kamp": null
   },
   {
    "label": "Feb",
    "results": "feb-results.json",
-   "toast_anth": null,
+   "toast_anth": {
+    "net": 98516,
+    "partial": true
+   },
    "toast_kamp": null
   },
   {
    "label": "Mar",
    "results": "mar-results.json",
-   "toast_anth": null,
+   "toast_anth": {
+    "net": 85319,
+    "partial": true
+   },
    "toast_kamp": null
   },
   {
    "label": "Apr",
    "results": "apr-results.json",
-   "toast_anth": null,
+   "toast_anth": {
+    "net": 283573,
+    "partial": true
+   },
    "toast_kamp": null
   },
   {
@@ -47,7 +59,10 @@
   {
    "label": "Jun",
    "results": "jun-results.json",
-   "toast_anth": null,
+   "toast_anth": {
+    "net": 432373,
+    "partial": true
+   },
    "toast_kamp": null
   },
   {
@@ -94,5 +109,9 @@
   "<p class=\"note\"><strong>Anthology: $2,286,192 net, $1,885,602 before service charge and admin fee.</strong> The year opens slowly, under $95,000 a month in February and March on corporate meetings and one wedding, then steps up in April and runs $355,000\u2013$449,000 a month from May. July dips against June and August because three weddings (Lovell, Beckett, Joseph) were still Definite when this ran and their final billing had not posted. Where Toast exists the Anthology figure ties within 3.3% and the combined Book Tower figure within $500 in May and $1,600 in August.</p>",
   "<p class=\"note\"><strong>Kamper's: $579,438 in event revenue, $380,087 of it from 37 shared weddings.</strong> On the BEOs Kamper's share of a shared wedding averages 22.8% and rises through the year, 21\u201323% in spring to 27.3% in August; the 80/20 convention would have given it $332,839, $47,248 less. Where Toast can be checked the true share is a little higher again, because coordinators leave canap\u00e9 blocks without a Kamper's header (eight BEOs so far). Standalone rooftop events add $199,352, with June the biggest month at $63,653 (Colab AI, Identity PR, DT Midstream).</p>",
   "<p class=\"note\"><strong>Bar Rotunda: $76,239.</strong> It hosts the cocktail hour when the rooftop is unavailable or the wedding chooses it (Nimri in January, Horlacher and Agnello in April, Jacques in May), plus Bedrock residential events and small receptions; April alone is $33,035. No Rotunda POS report has been provided, so its figure is Tripleseat only. Two BEO habits would make every month cleaner: a room header on every Kamper's or Rotunda block, and a room area that names the rooftop when it is used rather than \"Corporate Events\".</p>"
- ]
+ ],
+ "toast_kamp_total": {
+  "net": 612932.2999999999,
+  "count": 63
+ }
 }

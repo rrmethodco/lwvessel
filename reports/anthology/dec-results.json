@@ -1,0 +1,427 @@
+[
+ {
+  "eid": 52664685,
+  "name": "Erin Raftery and Greyson Giltner Wedding Reception",
+  "date": "2026-12-04",
+  "kind": "anthology",
+  "n": 26,
+  "actual": 25680.0,
+  "svc": 5136.0,
+  "adm": 1284.0,
+  "net": 32100.0,
+  "guests": 120,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 5616.0,
+   "Anthology": 20064.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 7020.0,
+   "Anthology": 25080.0
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 3480.0,
+   "Anthology|FOOD": 11520.0,
+   "Anthology|BEVERAGE": 8544.0,
+   "Bar Rotunda|BEVERAGE": 2136.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 5616.0,
+    "svc": 1123.2,
+    "adm": 280.8,
+    "net": 7020.0
+   },
+   "Anthology": {
+    "base": 20064.0,
+    "svc": 4012.8,
+    "adm": 1003.2,
+    "net": 25080.0
+   }
+  },
+  "note": "shared wedding (ballroom header on BEO); bar pkg 1h/5h = 2,136 to Bar Rotunda"
+ },
+ {
+  "eid": 51233505,
+  "name": "Kate Van Pelt & Daniel Michelin Wedding",
+  "date": "2026-12-05",
+  "kind": "anthology",
+  "n": 17,
+  "actual": 36250.0,
+  "svc": 6750.0,
+  "adm": 1687.5,
+  "net": 44687.5,
+  "guests": 125,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Bar Rotunda": 10675.0,
+   "Anthology": 25575.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 13159.698275862069,
+   "Anthology": 31527.80172413793
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 8000.0,
+   "Anthology|FOOD": 12375.0,
+   "Anthology|BEVERAGE": 13200.0,
+   "Bar Rotunda|BEVERAGE": 2675.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 10675.0,
+    "svc": 1987.7586206896553,
+    "adm": 496.93965517241384,
+    "net": 13159.698275862069
+   },
+   "Anthology": {
+    "base": 25575.0,
+    "svc": 4762.241379310345,
+    "adm": 1190.5603448275863,
+    "net": 31527.80172413793
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,675 to Bar Rotunda"
+ },
+ {
+  "eid": 56972300,
+  "name": "Cocktail Hour:Emily Barta & Tyler Hart Wedding",
+  "date": "2026-12-06",
+  "kind": "rotunda standalone",
+  "n": 9,
+  "actual": 8140.0,
+  "svc": 1428.0,
+  "adm": 357.0,
+  "net": 9925.0,
+  "guests": 100,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 8140.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 9925.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 8140.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 8140.0,
+    "svc": 1428.0,
+    "adm": 357.0,
+    "net": 9925.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56451736,
+  "name": "Emily Barta & Tyler Hart Wedding",
+  "date": "2026-12-06",
+  "kind": "anthology",
+  "n": 21,
+  "actual": 24724.0,
+  "svc": 4544.8,
+  "adm": 1136.2,
+  "net": 30405.0,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 24724.0
+  },
+  "netsplit": {
+   "Anthology": 30405.0
+  },
+  "cat": {
+   "Anthology|FOOD": 14260.0,
+   "Anthology|BEVERAGE": 10464.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 24724.0,
+    "svc": 4544.8,
+    "adm": 1136.2,
+    "net": 30405.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53400671,
+  "name": "Megan Kowalski and Mitch Alters Wedding",
+  "date": "2026-12-10",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 19620.0,
+  "svc": 3424.0,
+  "adm": 856.0,
+  "net": 23900.0,
+  "guests": 70,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 3744.0,
+   "Anthology": 15876.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 4560.733944954129,
+   "Anthology": 19339.26605504587
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 2320.0,
+   "Anthology|FOOD": 7680.0,
+   "Anthology|BEVERAGE": 8196.0,
+   "Bar Rotunda|BEVERAGE": 1424.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 3744.0,
+    "svc": 653.3871559633028,
+    "adm": 163.3467889908257,
+    "net": 4560.733944954129
+   },
+   "Anthology": {
+    "base": 15876.0,
+    "svc": 2770.6128440366974,
+    "adm": 692.6532110091744,
+    "net": 19339.26605504587
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,424 to Bar Rotunda"
+ },
+ {
+  "eid": 55294246,
+  "name": "Claire Mulier and Alden Tischler Wedding",
+  "date": "2026-12-12",
+  "kind": "anthology",
+  "n": 22,
+  "actual": 34800.0,
+  "svc": 6100.0,
+  "adm": 1565.0,
+  "net": 42465.0,
+  "guests": 125,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 10380.0,
+   "Anthology": 24420.0
+  },
+  "netsplit": {
+   "Kamper's": 12666.284482758621,
+   "Anthology": 29798.71551724138
+  },
+  "cat": {
+   "Kamper's|FOOD": 7200.0,
+   "Anthology|FOOD": 12600.0,
+   "Anthology|BEVERAGE": 11820.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2180.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 10380.0,
+    "svc": 1819.4827586206895,
+    "adm": 466.801724137931,
+    "net": 12666.284482758621
+   },
+   "Anthology": {
+    "base": 24420.0,
+    "svc": 4280.517241379311,
+    "adm": 1098.198275862069,
+    "net": 29798.71551724138
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,180 to Kamper's"
+ },
+ {
+  "eid": 61284473,
+  "name": "Ceremony: Lauren Delfin and Trevor McDougall Wedding",
+  "date": "2026-12-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 2500.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 2500.0,
+  "guests": 100,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 2500.0
+  },
+  "netsplit": {
+   "Anthology": 2500.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 2500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 2500.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 2500.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 61284486,
+  "name": "Cocktail Hour: Lauren Delfin and Trevor McDougall Wedding",
+  "date": "2026-12-18",
+  "kind": "rotunda standalone",
+  "n": 0,
+  "actual": 4740.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 4740.0,
+  "guests": 100,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 4740.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 4740.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 4740.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 4740.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 4740.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 60816437,
+  "name": "Corporate Retreat - Welcome Dinner",
+  "date": "2026-12-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 19988.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 19988.0,
+  "guests": 98,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 19988.0
+  },
+  "netsplit": {
+   "Anthology": 19988.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 19988.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 19988.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 19988.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 61109390,
+  "name": "Lauren Delfin and Trevor McDougall Wedding",
+  "date": "2026-12-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 17560.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 17560.0,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 17560.0
+  },
+  "netsplit": {
+   "Anthology": 17560.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 17560.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 17560.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 17560.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52898611,
+  "name": "Alix Blair and Evan Cocktail Hour",
+  "date": "2026-12-31",
+  "kind": "rotunda standalone",
+  "n": 2,
+  "actual": 6552.0,
+  "svc": 1310.4,
+  "adm": 327.6,
+  "net": 8190.0,
+  "guests": 140,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 6552.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 8190.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 6552.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 6552.0,
+    "svc": 1310.4,
+    "adm": 327.6,
+    "net": 8190.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 52441423,
+  "name": "Alix Blair and Evan Wendell Wedding",
+  "date": "2026-12-31",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 26998.0,
+  "svc": 5129.6,
+  "adm": 1282.4,
+  "net": 33410.0,
+  "guests": 140,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 26998.0
+  },
+  "netsplit": {
+   "Anthology": 33410.0
+  },
+  "cat": {
+   "Anthology|FOOD": 15680.0,
+   "Anthology|BEVERAGE": 11318.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 26998.0,
+    "svc": 5129.6,
+    "adm": 1282.4,
+    "net": 33410.0
+   }
+  },
+  "note": ""
+ }
+]

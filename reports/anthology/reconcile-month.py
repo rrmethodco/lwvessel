@@ -42,6 +42,10 @@ for e in json.load(open(ev_f)):
     if OTHER_OUTLET.search(rooms) and not has_a: continue
     kind='kampers standalone' if has_k and not has_a else 'rotunda standalone' if has_r and not has_a else 'anthology'
     ls=by.get(e['eid'],[]); base=collections.Counter(); note=[]; pro=0.0; kam_h=0.0; pkg=None
+    # Tripleseat lists the cocktail-hour room first on some weddings and the invoice schedule omits the
+    # areas; a BEO carrying a ballroom room header is a shared wedding, not a standalone rooftop event.
+    if kind!='anthology' and not re.search(r'cocktail|reception:|welcome|rehearsal',e['name'],re.I) and any(re.search(r'conservatory|13th|linden|green room|ballroom|event space',l.get('outlet_header') or '',re.I) for l in ls):
+        kind='anthology'; note.append('shared wedding (ballroom header on BEO)')
     net_total=e['actual']+e['svc']+e['adm']
     if kind=='kampers standalone': base[K]=e['actual']
     elif kind=='rotunda standalone': base[R]=e['actual']
@@ -52,14 +56,21 @@ for e in json.load(open(ev_f)):
         if not ls: note.append('no invoice lines')
         elif abs(inv-e['actual'])>1: note.append(f'invoice {inv-e["actual"]:+,.0f} vs actual')
         base[A]=e['actual']-base[K]-base[R]
+        kam_o=K
         for l in ls:
             desc=l.get('description') or ''
             if re.search(r'kamper|rooftop|rotunda',desc,re.I) and re.search(r'cocktail|reception|rental',desc,re.I):
                 hm=re.search(r'(\d+(?:\.\d+)?)\s*-?\s*hour',desc,re.I); kam_h=max(kam_h,float(hm.group(1)) if hm else 1.0)
+                if re.search(r'rotunda',desc,re.I) and not re.search(r'kamper|rooftop',desc,re.I): kam_o=R
             if re.search(r'bar package',desc,re.I) and l.get('total') is not None:
                 hm=re.search(r'(\d+(?:\.\d+)?)\s*hour',desc,re.I); pkg=(float(hm.group(1)) if hm else None,float(l['total']),l['outlet'])
+        # No cocktail-hour line but the BEO carries a Kamper's / Rotunda header: the package covers the
+        # cocktail hour only when it is a 5-hour (or longer) package; a 4-hour package is the reception alone.
+        if not kam_h and pkg and pkg[0] and pkg[0]>=5:
+            if any((l.get('outlet_header') or '').lower().find('rotunda')>=0 for l in ls): kam_h=1.0; kam_o=R
+            elif any(re.search(r'kamper|rooftop',l.get('outlet_header') or '',re.I) for l in ls): kam_h=1.0
         if pkg and pkg[0] and kam_h and pkg[2]==A: pro=pkg[1]*kam_h/pkg[0]
-        if PRORATE and pro: base[A]-=pro; base[K]+=pro; note.append(f"bar pkg {kam_h:g}h/{pkg[0]:g}h = {pro:,.0f} to Kamper's")
+        if PRORATE and pro: base[A]-=pro; base[kam_o]+=pro; note.append(f"bar pkg {kam_h:g}h/{pkg[0]:g}h = {pro:,.0f} to {kam_o}")
         if any(l.get('override') for l in ls): note.append('BEO header omission corrected')
         if any(l.get('rule') for l in ls): note.append('canapes to Kamper\'s (cocktail-hour rule)')
     cat=collections.defaultdict(float)
@@ -71,7 +82,7 @@ for e in json.load(open(ev_f)):
     if kind=='kampers standalone': cat={f"{K}|UNITEMISED":e['actual']}
     elif kind=='rotunda standalone': cat={f"{R}|UNITEMISED":e['actual']}
     else:
-        if PRORATE and pro: cat[f"{A}|BEVERAGE"]-=pro; cat[f"{K}|BEVERAGE"]+=pro
+        if PRORATE and pro: cat[f"{A}|BEVERAGE"]-=pro; cat[f"{kam_o}|BEVERAGE"]+=pro
         cat[f"{A}|RENTAL"]+=base[A]-sum(v for k2,v in cat.items() if k2.startswith(A))
     alloc={}
     for o,v in base.items():

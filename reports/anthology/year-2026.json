@@ -1,0 +1,147 @@
+{
+ "html": "anthology-2026-by-outlet.html",
+ "months": [
+  {
+   "label": "Jan",
+   "results": "jan-results.json",
+   "toast_anth": {
+    "net": 189129,
+    "partial": true
+   },
+   "toast_kamp": null
+  },
+  {
+   "label": "Feb",
+   "results": "feb-results.json",
+   "toast_anth": {
+    "net": 98516,
+    "partial": true
+   },
+   "toast_kamp": null
+  },
+  {
+   "label": "Mar",
+   "results": "mar-results.json",
+   "toast_anth": {
+    "net": 85319,
+    "partial": true
+   },
+   "toast_kamp": null
+  },
+  {
+   "label": "Apr",
+   "results": "apr-results.json",
+   "toast_anth": {
+    "net": 283573,
+    "partial": true
+   },
+   "toast_kamp": null
+  },
+  {
+   "label": "May",
+   "results": "may-results.json",
+   "toast_anth": {
+    "food": 196508.49,
+    "bev": 118112.90000000002,
+    "fees": 47753.92999999999,
+    "svc": 54157.52,
+    "adm": 18044.71,
+    "net": 434577.55
+   },
+   "toast_kamp": {
+    "base": 103938.76000000001,
+    "svcgrat": 18430.02,
+    "adm": 4038.64,
+    "net": 122368.78000000001,
+    "rental": 7750.0
+   }
+  },
+  {
+   "label": "Jun",
+   "results": "jun-results.json",
+   "toast_anth": {
+    "net": 432373,
+    "partial": true
+   },
+   "toast_kamp": null
+  },
+  {
+   "label": "Jul",
+   "results": "july-results.json",
+   "toast_anth": {
+    "food": 143591.83,
+    "bev": 97328.98,
+    "fees": 41601.729999999996,
+    "svc": 41002.92,
+    "adm": 10060.83,
+    "net": 333586.29
+   },
+   "toast_kamp": {
+    "base": 104692.48999999999,
+    "svcgrat": 18411.27,
+    "adm": 4519.08,
+    "net": 123103.76,
+    "rental": 11500.0
+   }
+  },
+  {
+   "label": "Aug",
+   "results": "split-results.json",
+   "toast_anth": {
+    "food": 183147.0,
+    "bev": 103088.9,
+    "fees": 46820.0,
+    "svc": 59038.12,
+    "adm": 14807.01,
+    "net": 406900.03
+   },
+   "toast_kamp": {
+    "base": 98788.25,
+    "svcgrat": 17119.83,
+    "adm": 4181.16,
+    "net": 115908.08,
+    "rental": 9000.0
+   }
+  },
+  {
+   "label": "Sep",
+   "results": "sep-results.json",
+   "toast_anth": null,
+   "toast_kamp": null,
+   "forecast": true
+  },
+  {
+   "label": "Oct",
+   "results": "oct-results.json",
+   "toast_anth": null,
+   "toast_kamp": null,
+   "forecast": true
+  },
+  {
+   "label": "Nov",
+   "results": "nov-results.json",
+   "toast_anth": null,
+   "toast_kamp": null,
+   "forecast": true
+  },
+  {
+   "label": "Dec",
+   "results": "dec-results.json",
+   "toast_anth": null,
+   "toast_kamp": null,
+   "forecast": true
+  }
+ ],
+ "narrative": [
+  "<p class=\"note\"><strong>Actuals, January to August.</strong> Anthology closed the eight months at $2,281,696 net ($1,881,927 before service charge and admin fee), within $17,722 (0.8%) of the $2,263,974 on its Toast POS for the same period. Kamper's carried $579,439 of event revenue against $612,932 of A/R TripleSeat postings on its POS, a 5.5% shortfall that is the same story every month: coordinators leave the canap\u00e9 block without a Kamper's header, so the BEO understates the rooftop. Bar Rotunda carried $80,736. The months are seasonal in the way the wedding calendar is: under $95,000 in February and March, then $355,000\u2013$449,000 a month from May, with July soft because three weddings had not closed when the data was pulled.</p>",
+  "<p class=\"note\"><strong>Forecast, September to December.</strong> Definite and Closed business on the books adds $1,364,514 for Anthology, $299,004 for Kamper's and $82,240 for Bar Rotunda, $1,745,883 in all, split by the same invoice rules at each event's Tripleseat actual. September and October are each as large as May and June (24 weddings across the two months); November and December fall away as the wedding season ends, and December's Rotunda figure is large because two December weddings and two cocktail hours book the Rotunda rather than the rooftop. That puts the full year at <strong>$3,646,210 net for Anthology</strong> ($3,009,949 base), $878,443 for Kamper's and $162,976 for Bar Rotunda, $4,687,753 across the Book Tower book, before any new bookings for the last four months.</p>",
+  "<p class=\"note\"><strong>Kamper's takes more than 20% of a shared wedding.</strong> Across the 37 weddings that shared a room with Kamper's from January to August its share averaged 22.8% on the BEOs, and the 24 booked for September to December run 24.9%; the 80/20 convention would give Kamper's $540,070 across the 61 weddings against the $637,899 the BEOs carry, and Toast says the true figure is higher still. The share rises through the year as canap\u00e9 menus and cocktail-hour packages get richer: 21\u201323% in spring, 27% in August, 25% in the autumn book.</p>",
+  "<p class=\"note\"><strong>What the forecast rests on.</strong> Every event's figure is its Tripleseat event actual, which for a Definite event is the current BEO estimate; final guest counts, consumption bars and extensions move it. Eleven of the 80 September\u2013December events have no invoice document yet (Delfin 12/18 is the largest, $40,000 across three events) and sit 100% with the outlet Tripleseat names for them. Cancellations are not modelled.</p>",
+  "<p class=\"note\"><strong>Toast coverage.</strong> The Anthology column is the Anthology Events POS net sales for each month from its eight-month Sales Summary. Kamper's monthly A/R is only available where a monthly report was provided (May, July, August); its eight-month report gives the 63-payment total. No Bar Rotunda POS report has been provided, so its figures are Tripleseat only. Combined, the Book Tower book ties within $440 in May and $1,600 in August.</p>",
+  "<p class=\"note\"><strong>Two BEO habits would make every month cleaner.</strong> A room header on every Kamper's or Bar Rotunda block (eleven BEOs so far have canap\u00e9s with no header, five of them confirmed by Toast as rung at Kamper's), and a room area that names the rooftop or Rotunda when it is used rather than \"Corporate Events\". Both are one-line fixes at booking and would let the split come straight off the BEO with no rules at all.</p>"
+ ],
+ "toast_kamp_total": {
+  "net": 612932.2999999999,
+  "count": 63
+ }
+}

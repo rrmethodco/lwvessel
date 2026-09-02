@@ -712,34 +712,35 @@
   "guests": 68,
   "rooms": "13th Floor - Event Space and Bar Rotunda",
   "base": {
-   "Bar Rotunda": 1972.0,
-   "Anthology": 14835.0
+   "Bar Rotunda": 3057.8,
+   "Anthology": 13749.2
   },
   "netsplit": {
-   "Bar Rotunda": 2371.923993574106,
-   "Anthology": 17843.556006425897
+   "Bar Rotunda": 3677.9255514964007,
+   "Anthology": 16537.5544485036
   },
   "cat": {
    "Bar Rotunda|FOOD": 1972.0,
    "Anthology|FOOD": 6626.0,
-   "Anthology|BEVERAGE": 8209.0,
+   "Anthology|BEVERAGE": 7123.2,
+   "Bar Rotunda|BEVERAGE": 1085.8,
    "Anthology|RENTAL": 0.0
   },
   "alloc": {
    "Bar Rotunda": {
-    "base": 1972.0,
-    "svc": 333.26999464508833,
-    "adm": 66.65399892901767,
-    "net": 2371.923993574106
+    "base": 3057.8,
+    "svc": 516.7712929136669,
+    "adm": 103.3542585827334,
+    "net": 3677.9255514964007
    },
    "Anthology": {
-    "base": 14835.0,
-    "svc": 2507.1300053549116,
-    "adm": 501.42600107098235,
-    "net": 17843.556006425897
+    "base": 13749.2,
+    "svc": 2323.628707086333,
+    "adm": 464.7257414172667,
+    "net": 16537.5544485036
    }
   },
-  "note": ""
+  "note": "bar pkg 1h/5h = 1,086 to Bar Rotunda"
  },
  {
   "eid": 44077221,

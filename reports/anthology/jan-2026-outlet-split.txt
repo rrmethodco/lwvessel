@@ -5,7 +5,7 @@ date  event                                         kind         actual      net
 01-16 Auto Hauler Event                             anthology    22,350   27,105   27,105        0      0   0.0%  
 01-16 Pre Dinner - Spotify                          rotunda s       632      664        0        0    664 100.0%  
 01-17 Morning YOGA Class: Stephanie Nimri and Danie anthology       500      500      500        0      0   0.0%  no invoice lines
-01-17 Stephanie Nimri and Daniele Sherwood Wedding  anthology    37,772   46,538   37,020        0  9,518  20.5%  
+01-17 Stephanie Nimri and Daniele Sherwood Wedding  anthology    37,772   46,538   33,830        0 12,708  27.3%  bar pkg 1h/5h = 2,589 to Bar Rotunda
 01-22 PS: Elaine Donnelly                           anthology       500      525      525        0      0   0.0%  no invoice lines
 01-22 Pop, Fizz, Clink: A Residential Happy Hour to rotunda s     3,620    3,801        0        0  3,801 100.0%  
 01-23 Boston Consulting Group                       kampers s     6,108    7,539        0    7,539      0 100.0%  
@@ -13,4 +13,4 @@ date  event                                         kind         actual      net
 01-29 PS: Maggie Tanton                             anthology       500      525      525        0      0   0.0%  no invoice lines
 01-31 Zausmer Dinner                                anthology    11,143   13,795   13,795        0      0   0.0%  
 01-31 Zausmer Meeting                               anthology     3,551    4,176    4,176        0      0   0.0%  
-      TOTAL                                                     181,041  219,488  188,832   16,673 13,982  14.0%
+      TOTAL                                                     181,041  219,488  185,642   16,673 17,173  15.4%

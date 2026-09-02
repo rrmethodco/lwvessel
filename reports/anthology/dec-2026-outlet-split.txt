@@ -1,0 +1,14 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+12-04 Erin Raftery and Greyson Giltner Wedding Rece anthology    25,680   32,100   25,080        0  7,020  21.9%  shared wedding (ballroom header on BEO); bar pkg 1h/5h = 2,136 to Bar Rotunda
+12-05 Kate Van Pelt & Daniel Michelin Wedding       anthology    36,250   44,688   31,528        0 13,160  29.4%  bar pkg 1h/5h = 2,675 to Bar Rotunda
+12-06 Cocktail Hour:Emily Barta & Tyler Hart Weddin rotunda s     8,140    9,925        0        0  9,925 100.0%  
+12-06 Emily Barta & Tyler Hart Wedding              anthology    24,724   30,405   30,405        0      0   0.0%  
+12-10 Megan Kowalski and Mitch Alters Wedding       anthology    19,620   23,900   19,339        0  4,561  19.1%  bar pkg 1h/5h = 1,424 to Bar Rotunda
+12-12 Claire Mulier and Alden Tischler Wedding      anthology    34,800   42,465   29,799   12,666      0  29.8%  bar pkg 1h/5h = 2,180 to Kamper's
+12-18 Ceremony: Lauren Delfin and Trevor McDougall  anthology     2,500    2,500    2,500        0      0   0.0%  no invoice lines
+12-18 Cocktail Hour: Lauren Delfin and Trevor McDou rotunda s     4,740    4,740        0        0  4,740 100.0%  
+12-18 Corporate Retreat - Welcome Dinner            anthology    19,988   19,988   19,988        0      0   0.0%  no invoice lines
+12-18 Lauren Delfin and Trevor McDougall Wedding    anthology    17,560   17,560   17,560        0      0   0.0%  no invoice lines
+12-31 Alix Blair and Evan Cocktail Hour             rotunda s     6,552    8,190        0        0  8,190 100.0%  
+12-31 Alix Blair and Evan Wendell Wedding           anthology    26,998   33,410   33,410        0      0   0.0%  
+      TOTAL                                                     227,552  269,870  209,609   12,666 47,595  22.3%
