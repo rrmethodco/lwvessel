@@ -1,0 +1,14 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+03-04 International Women's Day Event               anthology     7,099    8,635    8,635        0      0   0.0%  invoice -500 vs actual
+03-05 PS; Bassam George                             anthology       500      525      525        0      0   0.0%  no invoice lines
+03-05 Terrace Club : Harvey & Austin Davis Wedding  anthology       500      525      525        0      0   0.0%  no invoice lines
+03-06 ACG Detroit | 2026 Inspire & Ignite Luncheon  anthology    14,503   17,023   17,023        0      0   0.0%  invoice -1,000 vs actual
+03-06 Cocktail Hour: Private Dining Dinner          rotunda s       310      326        0        0    326 100.0%  
+03-11 Detroit Piston's Meeting                      anthology     2,890    3,409    3,409        0      0   0.0%  invoice -500 vs actual
+03-12 Bedrock Residential Event -313 Day            rotunda s     6,753    7,091        0        0  7,091 100.0%  
+03-13 Bridal Shower                                 anthology     7,107    8,430    8,430        0      0   0.0%  invoice -1,500 vs actual
+03-22 Baptism                                       anthology    13,450   15,910   15,910        0      0   0.0%  invoice -1,500 vs actual
+03-26 Detroit Lions Off site business meeting       anthology     3,161    3,864    3,864        0      0   0.0%  
+03-27 Kim Henry & Conrad Hawk Wedding               anthology    18,774   22,842   22,842        0      0   0.0%  
+03-27 Kim Henry & Conrad Hawk Wedding Cocktail Hour kampers s     5,457    6,571        0    6,571      0 100.0%  
+      TOTAL                                                      80,504   95,151   81,163    6,571  7,416  14.7%

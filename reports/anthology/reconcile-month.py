@@ -21,6 +21,11 @@ if '--no-overrides' not in sys.argv:
         if o: l['outlet']=o; l['override']=True
 by=collections.defaultdict(list)
 for l in lines: by[int(l['event_id'])].append(l)
+# A bar package "served in Kampers & Conservatory" is the reception bar, not a Kamper's line:
+# keep it with Anthology and let the cocktail-hour proration carry Kamper's hour.
+for l in lines:
+    d=l.get('description') or ''
+    if l['outlet']==K and re.search(r'bar package',d,re.I) and re.search(r'conservatory|13th|linden|ballroom|event space',d,re.I): l['outlet']=A
 # Cocktail-hour rule: when a BEO bills a Kamper's cocktail reception (its $1,000/hour line) but the
 # coordinator left the canape block without a room header, the canapes were served at Kamper's.
 # Confirmed against Toast for Megan Hannigan (8/22) and Jordan Joseph (7/18); applied generally.

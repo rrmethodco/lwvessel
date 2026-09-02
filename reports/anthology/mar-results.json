@@ -1,0 +1,388 @@
+[
+ {
+  "eid": 55853921,
+  "name": "International Women's Day Event",
+  "date": "2026-03-04",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 7099.0,
+  "svc": 1228.8,
+  "adm": 307.2,
+  "net": 8635.0,
+  "guests": 32,
+  "rooms": "Green Room and Linden Room",
+  "base": {
+   "Anthology": 7099.0
+  },
+  "netsplit": {
+   "Anthology": 8635.0
+  },
+  "cat": {
+   "Anthology|FOOD": 4416.0,
+   "Anthology|BEVERAGE": 2183.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 7099.0,
+    "svc": 1228.8,
+    "adm": 307.2,
+    "net": 8635.0
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 57334216,
+  "name": "PS; Bassam George",
+  "date": "2026-03-05",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 61610188,
+  "name": "Terrace Club : Harvey & Austin Davis Wedding",
+  "date": "2026-03-05",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52193217,
+  "name": "ACG Detroit | 2026 Inspire & Ignite Luncheon",
+  "date": "2026-03-06",
+  "kind": "anthology",
+  "n": 19,
+  "actual": 14503.0,
+  "svc": 2100.0,
+  "adm": 420.0,
+  "net": 17023.0,
+  "guests": 107,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 14503.0
+  },
+  "netsplit": {
+   "Anthology": 17023.0
+  },
+  "cat": {
+   "Anthology|FOOD": 8880.0,
+   "Anthology|BEVERAGE": 4623.0,
+   "Anthology|RENTAL": 1000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 14503.0,
+    "svc": 2100.0,
+    "adm": 420.0,
+    "net": 17023.0
+   }
+  },
+  "note": "invoice -1,000 vs actual"
+ },
+ {
+  "eid": 57116184,
+  "name": "Cocktail Hour: Private Dining Dinner",
+  "date": "2026-03-06",
+  "kind": "rotunda standalone",
+  "n": 1,
+  "actual": 310.0,
+  "svc": 0.0,
+  "adm": 15.5,
+  "net": 325.5,
+  "guests": 11,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 310.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 325.5
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 310.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 310.0,
+    "svc": 0.0,
+    "adm": 15.5,
+    "net": 325.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57225464,
+  "name": "Detroit Piston's Meeting",
+  "date": "2026-03-11",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 2890.0,
+  "svc": 415.0,
+  "adm": 103.75,
+  "net": 3408.75,
+  "guests": 9,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 2890.0
+  },
+  "netsplit": {
+   "Anthology": 3408.75
+  },
+  "cat": {
+   "Anthology|FOOD": 2075.0,
+   "Anthology|BEVERAGE": 315.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 2890.0,
+    "svc": 415.0,
+    "adm": 103.75,
+    "net": 3408.75
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 57154374,
+  "name": "Bedrock Residential Event -313 Day",
+  "date": "2026-03-12",
+  "kind": "rotunda standalone",
+  "n": 3,
+  "actual": 6753.0,
+  "svc": 0.0,
+  "adm": 337.65,
+  "net": 7090.65,
+  "guests": 100,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 6753.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 7090.65
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 6753.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 6753.0,
+    "svc": 0.0,
+    "adm": 337.65,
+    "net": 7090.65
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 51437594,
+  "name": "Bridal Shower",
+  "date": "2026-03-13",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 7107.34,
+  "svc": 1058.47,
+  "adm": 264.62,
+  "net": 8430.43,
+  "guests": 28,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 7107.34
+  },
+  "netsplit": {
+   "Anthology": 8430.43
+  },
+  "cat": {
+   "Anthology|FOOD": 3248.0,
+   "Anthology|BEVERAGE": 2359.34,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 7107.34,
+    "svc": 1058.47,
+    "adm": 264.62,
+    "net": 8430.43
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 56150793,
+  "name": "Baptism",
+  "date": "2026-03-22",
+  "kind": "anthology",
+  "n": 18,
+  "actual": 13450.12,
+  "svc": 1968.02,
+  "adm": 492.01,
+  "net": 15910.150000000001,
+  "guests": 116,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 13450.12
+  },
+  "netsplit": {
+   "Anthology": 15910.150000000001
+  },
+  "cat": {
+   "Anthology|FOOD": 7998.0,
+   "Anthology|BEVERAGE": 3952.12,
+   "Anthology|RENTAL": 1500.0000000000018
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 13450.12,
+    "svc": 1968.02,
+    "adm": 492.01,
+    "net": 15910.150000000001
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 52986361,
+  "name": "Detroit Lions Off site business meeting",
+  "date": "2026-03-26",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 3161.0,
+  "svc": 562.2,
+  "adm": 140.55,
+  "net": 3863.75,
+  "guests": 20,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 3161.0
+  },
+  "netsplit": {
+   "Anthology": 3863.75
+  },
+  "cat": {
+   "Anthology|FOOD": 2136.0,
+   "Anthology|BEVERAGE": 1025.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3161.0,
+    "svc": 562.2,
+    "adm": 140.55,
+    "net": 3863.75
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 52440616,
+  "name": "Kim Henry & Conrad Hawk Wedding",
+  "date": "2026-03-27",
+  "kind": "anthology",
+  "n": 34,
+  "actual": 18773.8,
+  "svc": 3254.76,
+  "adm": 813.69,
+  "net": 22842.249999999996,
+  "guests": 89,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 18773.8
+  },
+  "netsplit": {
+   "Anthology": 22842.249999999996
+  },
+  "cat": {
+   "Anthology|FOOD": 9531.0,
+   "Anthology|BEVERAGE": 9242.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 18773.8,
+    "svc": 3254.76,
+    "adm": 813.69,
+    "net": 22842.249999999996
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56269046,
+  "name": "Kim Henry & Conrad Hawk Wedding Cocktail Hour",
+  "date": "2026-03-27",
+  "kind": "kampers standalone",
+  "n": 3,
+  "actual": 5457.2,
+  "svc": 891.44,
+  "adm": 222.86,
+  "net": 6571.499999999999,
+  "guests": 89,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 5457.2
+  },
+  "netsplit": {
+   "Kamper's": 6571.499999999999
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 5457.2
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 5457.2,
+    "svc": 891.44,
+    "adm": 222.86,
+    "net": 6571.499999999999
+   }
+  },
+  "note": ""
+ }
+]

@@ -1,0 +1,468 @@
+[
+ {
+  "eid": 54269878,
+  "name": "Marketplace Homes",
+  "date": "2026-01-09",
+  "kind": "anthology",
+  "n": 50,
+  "actual": 17563.0,
+  "svc": 3407.6,
+  "adm": 851.9,
+  "net": 21822.5,
+  "guests": 95,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 17563.0
+  },
+  "netsplit": {
+   "Anthology": 21822.5
+  },
+  "cat": {
+   "Anthology|FOOD": 10975.0,
+   "Anthology|BEVERAGE": 6588.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 17563.0,
+    "svc": 3407.6,
+    "adm": 851.9,
+    "net": 21822.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 52751180,
+  "name": "Detroit Pistons Gala",
+  "date": "2026-01-13",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 75802.0,
+  "svc": 12517.0,
+  "adm": 3129.25,
+  "net": 91448.25,
+  "guests": 220,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 7571.666666666667,
+   "Anthology": 68230.33333333333
+  },
+  "netsplit": {
+   "Kamper's": 9134.530305928605,
+   "Anthology": 82313.71969407139
+  },
+  "cat": {
+   "Kamper's|FOOD": 1645.0,
+   "Anthology|FOOD": 36520.0,
+   "Anthology|BEVERAGE": 31710.333333333332,
+   "Kamper's|RENTAL": 500.0,
+   "Kamper's|BEVERAGE": 5426.666666666667,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7571.666666666667,
+    "svc": 1250.2909114095494,
+    "adm": 312.57272785238735,
+    "net": 9134.530305928605
+   },
+   "Anthology": {
+    "base": 68230.33333333333,
+    "svc": 11266.709088590449,
+    "adm": 2816.6772721476123,
+    "net": 82313.71969407139
+   }
+  },
+  "note": "bar pkg 1h/4.5h = 5,427 to Kamper's"
+ },
+ {
+  "eid": 55033391,
+  "name": "PS: Vania Narra",
+  "date": "2026-01-15",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52772781,
+  "name": "Auto Hauler Event",
+  "date": "2026-01-16",
+  "kind": "anthology",
+  "n": 26,
+  "actual": 22350.0,
+  "svc": 3804.0,
+  "adm": 951.0,
+  "net": 27105.0,
+  "guests": 75,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 22350.0
+  },
+  "netsplit": {
+   "Anthology": 27105.0
+  },
+  "cat": {
+   "Anthology|FOOD": 11895.0,
+   "Anthology|BEVERAGE": 10455.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 22350.0,
+    "svc": 3804.0,
+    "adm": 951.0,
+    "net": 27105.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 55543518,
+  "name": "Pre Dinner - Spotify",
+  "date": "2026-01-16",
+  "kind": "rotunda standalone",
+  "n": 5,
+  "actual": 632.0,
+  "svc": 0.0,
+  "adm": 31.6,
+  "net": 663.6,
+  "guests": 12,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 632.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 663.6
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 632.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 632.0,
+    "svc": 0.0,
+    "adm": 31.6,
+    "net": 663.6
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 52201294,
+  "name": "Morning YOGA Class: Stephanie Nimri and Daniel Sherwood Wedding",
+  "date": "2026-01-17",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 500.0,
+  "guests": 27,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 500.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 500.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 49593953,
+  "name": "Stephanie Nimri and Daniele Sherwood Wedding",
+  "date": "2026-01-17",
+  "kind": "anthology",
+  "n": 35,
+  "actual": 37772.0,
+  "svc": 7012.4,
+  "adm": 1753.1,
+  "net": 46537.5,
+  "guests": 133,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 7725.0,
+   "Anthology": 30047.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 9517.690021709202,
+   "Anthology": 37019.809978290796
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 7725.0,
+   "Anthology|FOOD": 13965.0,
+   "Anthology|BEVERAGE": 16082.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 7725.0,
+    "svc": 1434.152017367362,
+    "adm": 358.5380043418405,
+    "net": 9517.690021709202
+   },
+   "Anthology": {
+    "base": 30047.0,
+    "svc": 5578.247982632637,
+    "adm": 1394.5619956581593,
+    "net": 37019.809978290796
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 55875957,
+  "name": "PS: Elaine Donnelly",
+  "date": "2026-01-22",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 56062246,
+  "name": "Pop, Fizz, Clink: A Residential Happy Hour to toast the New Year",
+  "date": "2026-01-22",
+  "kind": "rotunda standalone",
+  "n": 6,
+  "actual": 3620.0,
+  "svc": 0.0,
+  "adm": 181.0,
+  "net": 3801.0,
+  "guests": 60,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 3620.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 3801.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 3620.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 3620.0,
+    "svc": 0.0,
+    "adm": 181.0,
+    "net": 3801.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 49460021,
+  "name": "Boston Consulting Group",
+  "date": "2026-01-23",
+  "kind": "kampers standalone",
+  "n": 15,
+  "actual": 6108.0,
+  "svc": 1144.6,
+  "adm": 286.15,
+  "net": 7538.75,
+  "guests": 50,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 6108.0
+  },
+  "netsplit": {
+   "Kamper's": 7538.75
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 6108.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6108.0,
+    "svc": 1144.6,
+    "adm": 286.15,
+    "net": 7538.75
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56036135,
+  "name": "PS: Lena Nishanian",
+  "date": "2026-01-26",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 55809150,
+  "name": "PS: Maggie Tanton",
+  "date": "2026-01-29",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 53134906,
+  "name": "Zausmer Dinner",
+  "date": "2026-01-31",
+  "kind": "anthology",
+  "n": 16,
+  "actual": 11143.0,
+  "svc": 2121.6,
+  "adm": 530.4,
+  "net": 13795.0,
+  "guests": 48,
+  "rooms": "Conservatory Ballroom",
+  "base": {
+   "Anthology": 11143.0
+  },
+  "netsplit": {
+   "Anthology": 13795.0
+  },
+  "cat": {
+   "Anthology|FOOD": 7680.0,
+   "Anthology|BEVERAGE": 3463.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 11143.0,
+    "svc": 2121.6,
+    "adm": 530.4,
+    "net": 13795.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53134824,
+  "name": "Zausmer Meeting",
+  "date": "2026-01-31",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 3551.0,
+  "svc": 500.0,
+  "adm": 125.0,
+  "net": 4176.0,
+  "guests": 31,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 3551.0
+  },
+  "netsplit": {
+   "Anthology": 4176.0
+  },
+  "cat": {
+   "Anthology|FOOD": 1054.0,
+   "Anthology|BEVERAGE": 2497.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3551.0,
+    "svc": 500.0,
+    "adm": 125.0,
+    "net": 4176.0
+   }
+  },
+  "note": ""
+ }
+]

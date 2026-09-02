@@ -1,0 +1,29 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+04-01 Meeting #1                                    anthology       500      525      525        0      0   0.0%  no invoice lines
+04-02 Paula Arida Photoshoot                        anthology       500      525      525        0      0   0.0%  no invoice lines
+04-03 Opening Day Group: Kaitlin Wood               kampers s     2,397    2,961        0    2,961      0 100.0%  
+04-10 COCKTAIL HOUR: Sydney Horlacher & Ryan Zeiter rotunda s     7,981    9,976        0        0  9,976 100.0%  
+04-10 Sydney Horlacher & Ryan Zeiter Wedding        anthology    29,413   35,957   35,957        0      0   0.0%  
+04-11 Janine Kjolhede and Tyler McMullin Wedding    anthology    43,907   54,509   37,312   17,197      0  31.5%  bar pkg 1h/5h = 2,848 to Kamper's
+04-11 Terrace Club Rental : Janine Kjolhede and Tyl anthology     1,634    1,980    1,980        0      0   0.0%  
+04-12 Christine Alix - Baby Shower                  anthology    14,274   16,999   16,999        0      0   0.0%  invoice -1,500 vs actual
+04-13 Isho - Business Meeting                       anthology     1,850    1,925    1,925        0      0   0.0%  no invoice lines
+04-13 Lamdal Retreat Day 1                          anthology     1,732    2,040    2,040        0      0   0.0%  invoice -500 vs actual
+04-14 Lamdal Retreat Day 2                          anthology     1,358    1,572    1,572        0      0   0.0%  invoice -500 vs actual
+04-15 Lamdal Retreat Day 3                          anthology     1,732    2,040    2,040        0      0   0.0%  invoice -500 vs actual
+04-15 Plan A Dinner Event                           anthology    20,478   25,222   25,222        0      0   0.0%  invoice -1,500 vs actual
+04-15 Plan A Kamper's                               kampers s     4,080    4,850        0    4,850      0 100.0%  
+04-16 PS - Khoury                                   anthology       500      525      525        0      0   0.0%  no invoice lines
+04-17 Erin Badge and Ryan Bamford Wedding           anthology    27,882   34,132   26,284    7,848      0  23.0%  bar pkg 1h/5h = 2,047 to Kamper's
+04-18 Alaina Agnello & Jacob Lothamer  Wedding Rece anthology    31,065   38,286   38,286        0      0   0.0%  
+04-18 Ceremony: Alaina Agnello & Jacob Lothamer Wed anthology     2,000    2,000    2,000        0      0   0.0%  no invoice lines
+04-18 Cocktail Hour: Alaina Agnello & Jacob Lothame rotunda s    10,945   13,681        0        0 13,681 100.0%  
+04-18 Terrace Club: Alaina Agnello and Jacob Lotham anthology     1,750    1,825    1,825        0      0   0.0%  no invoice lines
+04-22 Business Meeting for Stout                    anthology     7,557    8,251    8,251        0      0   0.0%  
+04-24 Noelle McDonald and Mark Sobodos Wedding      anthology    28,589   35,111   31,502    3,609      0  10.3%  bar pkg 1h/5h = 2,439 to Kamper's
+04-24 Terrace Club Rental: Noelle McDonald and Mark anthology       750      775      775        0      0   0.0%  no invoice lines
+04-25 Haley Notarantonio & Derek Engebretson Weddin anthology    38,233   46,929   36,510   10,419      0  22.2%  bar pkg 1h/5h = 3,167 to Kamper's
+04-25 Terrace Club Rental: Haley Notarantonio & Der anthology     1,500    1,812    1,812        0      0   0.0%  no invoice lines
+04-25 Wedding Welcome Event                         rotunda s     7,502    9,378        0        0  9,378 100.0%  
+04-29 Meeting #2                                    anthology       500      525      525        0      0   0.0%  no invoice lines
+      TOTAL                                                     290,609  354,312  274,393   46,884 33,035  22.6%

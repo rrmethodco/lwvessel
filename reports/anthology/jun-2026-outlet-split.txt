@@ -1,0 +1,45 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+06-01 International Academy Prom                    anthology    19,945   24,469   24,469        0      0   0.0%  invoice -1,500 vs actual
+06-02 Colab AI - Happy Hour                         kampers s    11,980   14,725        0   14,725      0 100.0%  
+06-02 Kasmikha Engagement Pictures                  anthology       500      525      525        0      0   0.0%  no invoice lines
+06-03 Identity PR Reception                         kampers s    15,340   15,940        0   15,940      0 100.0%  
+06-03 Meeting #3                                    anthology       500      525      525        0      0   0.0%  no invoice lines
+06-03 PS: Yahaira David                             anthology       500      525      525        0      0   0.0%  no invoice lines
+06-05 Kaley Willaert & Shane Eberle Wedding         anthology    28,140   34,140   24,281    9,859      0  28.9%  bar pkg 1h/5h = 1,819 to Kamper's
+06-06 Amy Wilson & Kevin Hodges Wedding             anthology    38,583   47,026   36,972   10,054      0  21.4%  bar pkg 1h/5h = 2,761 to Kamper's
+06-07 CEREMONY: Chloe Reed & Jacob Sauter Wedding   anthology     2,000    2,000    2,000        0      0   0.0%  no invoice lines
+06-07 COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedd kampers s     7,035    7,035        0    7,035      0 100.0%  
+06-07 Chloe Reed & Jacob Sauter Wedding             anthology    23,242   28,537   28,537        0      0   0.0%  
+06-07 TERRACE CLUB: Chloe Reed & Jacob Sauter Weddi anthology     1,750    2,125    2,125        0      0   0.0%  no invoice lines
+06-09 Benacquista - Photo Session                   anthology       500      525      525        0      0   0.0%  no invoice lines
+06-10 Team Wellness Center - Meeting & Dinner       anthology     3,433    4,135    4,135        0      0   0.0%  invoice -500 vs actual
+06-11 Fravel Photoshoot                             anthology       500      525      525        0      0   0.0%  no invoice lines
+06-11 HFHS Dinner - Resident Graduation             anthology    32,236   38,684   38,684        0      0   0.0%  invoice -1,500 vs actual
+06-11 Quosto - Photoshoot                           anthology       500      525      525        0      0   0.0%  no invoice lines
+06-12 Gabrielle Broche & Brandon Eklund Cocktail Ho kampers s     6,638    8,048        0    8,048      0 100.0%  
+06-12 Gabrielle Broche & Brandon Eklund Wedding     anthology    22,837   28,105   28,105        0      0   0.0%  
+06-13 Elizabeth DiMauro & Chris Corbin Reception    anthology    41,238   50,689   40,353   10,336      0  20.4%  bar pkg 1h/5h = 3,146 to Kamper's
+06-13 TERRACE CLUB: Elizabeth DiMauro & Chris Corbi anthology     2,050    2,500    2,500        0      0   0.0%  no invoice lines
+06-15 Spurlock - REINDUSTRIALIZE                    anthology       750      788      788        0      0   0.0%  no invoice lines
+06-16 DT Midstream Kampers Reception                kampers s     7,680    9,412        0    9,412      0 100.0%  
+06-16 DT Midstream Meeting Day #1                   anthology    17,206   19,096   19,096        0      0   0.0%  invoice -750 vs actual
+06-17 640 Oxford Breakfast Event                    kampers s     3,100    3,192        0    3,192      0 100.0%  
+06-17 DT Midstream Meeting Day #2                   anthology     8,660   10,550   10,550        0      0   0.0%  invoice -750 vs actual
+06-18 Carlisle - Photoshoot                         anthology       500      525      525        0      0   0.0%  no invoice lines
+06-18 Donna Davila & Brian Falther Wedding          anthology    25,471   30,797   24,059    6,738      0  21.9%  bar pkg 1h/5h = 1,744 to Kamper's
+06-19 Josh Kirsch & Teng Alele Wedding              anthology    30,553   37,562   28,169    9,393      0  25.0%  bar pkg 1h/5h = 1,856 to Kamper's
+06-20 Delaney Obrien & Brandon Goocher Wedding      anthology    40,849   49,824   39,528   10,296      0  20.7%  bar pkg 1h/5h = 2,830 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+06-20 TERRACE CLUB: Delaney Obrien & Brandon Gooche anthology     1,384    1,668    1,668        0      0   0.0%  
+06-21 Brunch                                        anthology     5,438    5,697    5,697        0      0   0.0%  invoice -250 vs actual
+06-22 Photo Session - FM Visuals                    anthology       500      525      525        0      0   0.0%  no invoice lines
+06-23 Tenant Experience Resident Event              anthology       599      629      629        0      0   0.0%  
+06-24 Angelina - Photoshoot                         anthology       500      525      525        0      0   0.0%  no invoice lines
+06-24 Hleis Photoshoot                              anthology       500      525      525        0      0   0.0%  no invoice lines
+06-25 Project for Public Spaces VIP Happy Hour      kampers s     4,050    5,300        0    5,300      0 100.0%  
+06-26 Business Center Reservation                   anthology       500      525      525        0      0   0.0%  
+06-26 Lauren Guziak & Steve Ording Wedding          anthology    32,421   39,476   30,357    9,119      0  23.1%  bar pkg 1h/5h = 2,525 to Kamper's
+06-26 TERRACE CLUB: Lauren Guziak and Steve Ording  anthology     1,500    1,812    1,812        0      0   0.0%  no invoice lines
+06-27 Nicolette Orlando & Nick Ozog Wedding         anthology    37,672   46,129   32,573   13,556      0  29.4%  bar pkg 1h/5h = 2,568 to Kamper's
+06-27 Terrace Club                                  anthology     1,750    2,125    2,125        0      0   0.0%  no invoice lines
+06-27 Zen Bei Butoku Kai-International - Bar Rotund rotunda s     1,000    1,050        0        0  1,050 100.0%  
+      TOTAL                                                     482,030  579,042  434,989  143,003  1,050  24.9%

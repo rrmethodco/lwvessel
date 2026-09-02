@@ -1,0 +1,98 @@
+{
+ "html": "anthology-2026-jan-aug-by-outlet.html",
+ "months": [
+  {
+   "label": "Jan",
+   "results": "jan-results.json",
+   "toast_anth": null,
+   "toast_kamp": null
+  },
+  {
+   "label": "Feb",
+   "results": "feb-results.json",
+   "toast_anth": null,
+   "toast_kamp": null
+  },
+  {
+   "label": "Mar",
+   "results": "mar-results.json",
+   "toast_anth": null,
+   "toast_kamp": null
+  },
+  {
+   "label": "Apr",
+   "results": "apr-results.json",
+   "toast_anth": null,
+   "toast_kamp": null
+  },
+  {
+   "label": "May",
+   "results": "may-results.json",
+   "toast_anth": {
+    "food": 196508.49,
+    "bev": 118112.90000000002,
+    "fees": 47753.92999999999,
+    "svc": 54157.52,
+    "adm": 18044.71,
+    "net": 434577.55
+   },
+   "toast_kamp": {
+    "base": 103938.76000000001,
+    "svcgrat": 18430.02,
+    "adm": 4038.64,
+    "net": 122368.78000000001,
+    "rental": 7750.0
+   }
+  },
+  {
+   "label": "Jun",
+   "results": "jun-results.json",
+   "toast_anth": null,
+   "toast_kamp": null
+  },
+  {
+   "label": "Jul",
+   "results": "july-results.json",
+   "toast_anth": {
+    "food": 143591.83,
+    "bev": 97328.98,
+    "fees": 41601.729999999996,
+    "svc": 41002.92,
+    "adm": 10060.83,
+    "net": 333586.29
+   },
+   "toast_kamp": {
+    "base": 104692.48999999999,
+    "svcgrat": 18411.27,
+    "adm": 4519.08,
+    "net": 123103.76,
+    "rental": 11500.0
+   }
+  },
+  {
+   "label": "Aug",
+   "results": "split-results.json",
+   "toast_anth": {
+    "food": 183147.0,
+    "bev": 103088.9,
+    "fees": 46820.0,
+    "svc": 59038.12,
+    "adm": 14807.01,
+    "net": 406900.03
+   },
+   "toast_kamp": {
+    "base": 98788.25,
+    "svcgrat": 17119.83,
+    "adm": 4181.16,
+    "net": 115908.08,
+    "rental": 9000.0
+   }
+  }
+ ],
+ "narrative": [
+  "<p class=\"note\"><strong>What this is.</strong> Every 2026 Anthology-book event from January through August, split to the outlet that served it from the Tripleseat invoice line items: Anthology keeps the ballroom, Kamper's keeps the cocktail hours it hosted (canap\u00e9s, its $1,000/hour fee and the cocktail hour of the bar package) plus its standalone rooftop events, Bar Rotunda likewise. Net is grand total less sales tax and gratuity; service charge and admin fee are shown so revenue can be read without them. Toast tie-outs exist only for the months whose POS reports were provided (May, July, August); the other five months rest on the BEOs alone.</p>",
+  "<p class=\"note\"><strong>Anthology: $2,286,192 net, $1,885,602 before service charge and admin fee.</strong> The year opens slowly, under $95,000 a month in February and March on corporate meetings and one wedding, then steps up in April and runs $355,000\u2013$449,000 a month from May. July dips against June and August because three weddings (Lovell, Beckett, Joseph) were still Definite when this ran and their final billing had not posted. Where Toast exists the Anthology figure ties within 3.3% and the combined Book Tower figure within $500 in May and $1,600 in August.</p>",
+  "<p class=\"note\"><strong>Kamper's: $579,438 in event revenue, $380,087 of it from 37 shared weddings.</strong> On the BEOs Kamper's share of a shared wedding averages 22.8% and rises through the year, 21\u201323% in spring to 27.3% in August; the 80/20 convention would have given it $332,839, $47,248 less. Where Toast can be checked the true share is a little higher again, because coordinators leave canap\u00e9 blocks without a Kamper's header (eight BEOs so far). Standalone rooftop events add $199,352, with June the biggest month at $63,653 (Colab AI, Identity PR, DT Midstream).</p>",
+  "<p class=\"note\"><strong>Bar Rotunda: $76,239.</strong> It hosts the cocktail hour when the rooftop is unavailable or the wedding chooses it (Nimri in January, Horlacher and Agnello in April, Jacques in May), plus Bedrock residential events and small receptions; April alone is $33,035. No Rotunda POS report has been provided, so its figure is Tripleseat only. Two BEO habits would make every month cleaner: a room header on every Kamper's or Rotunda block, and a room area that names the rooftop when it is used rather than \"Corporate Events\".</p>"
+ ]
+}

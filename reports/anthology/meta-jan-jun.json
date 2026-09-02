@@ -1,0 +1,5868 @@
+[
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58472625,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/18/2026",
+"name": "Jameel - PS",
+"time": "12:00 pm &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 800,
+"Subtotal": 1930,
+"Admin Fee": 73.75,
+"Sales Tax": 88.5,
+"Grand Total": 2887.25,
+"Room Rental": 500,
+"Valet Parking": 455,
+"Service Charge": 295,
+"Non-Alcoholic Beverage": 675
+},
+"event_id": 57562444,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/20/2026",
+"name": "Henry Ford Health Interviews Day #2",
+"time": "6:00 am &ndash; 1:00 pm",
+"type": null,
+"areas": "Green Room and Linden Room",
+"guests": 13
+}
+],
+"subtotal": 1930,
+"admin_fee": 73.75,
+"sales_tax": 88.5,
+"grand_total": 2887.25,
+"room_rental": 500,
+"service_charge": 295
+},
+{
+"billing": {
+"Food": 180,
+"Subtotal": 518,
+"Admin Fee": 25.9,
+"Sales Tax": 31.08,
+"Grand Total": 678.58,
+"Service Charge": 103.6,
+"Alcoholic Beverage": 338
+},
+"event_id": 59785398,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/20/2026",
+"name": "The City Institute Event",
+"time": "4:00 pm &ndash; 4:30 pm",
+"type": null,
+"areas": "Kampers Rooftop Bar",
+"guests": 13
+}
+],
+"subtotal": 518,
+"admin_fee": 25.9,
+"sales_tax": 31.08,
+"grand_total": 678.58,
+"room_rental": null,
+"service_charge": 103.6
+},
+{
+"billing": {
+"Met": 0,
+"Food": 18986,
+"Labor": 350,
+"Total": 25000,
+"Subtotal": 42253.64,
+"Admin Fee": 1324.56,
+"Sales Tax": 1986.84,
+"F&B Minimum": 25000,
+"Grand Total": 43578.2,
+"Room Rental": 3500,
+"Valet Parking": 280,
+"Service Charge": 6022.8,
+"Alcoholic Beverage": 11128
+},
+"event_id": 42281012,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Kylie Brandon & Jarrett Janicki Wedding Ceremony & Reception",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "4/30/2026",
+"name": "CEREMONY REHEARSAL: Kylie Brandon & Jarrett Janicki Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": 20
+},
+{
+"date": "5/1/2026",
+"name": "Kylie Brandon & Jarrett Janicki Wedding Ceremony & Reception",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Cocktail Reception",
+"guests": 104
+}
+],
+"subtotal": 42253.64,
+"admin_fee": 1324.56,
+"sales_tax": 1986.84,
+"grand_total": 43578.2,
+"room_rental": 3500,
+"service_charge": 6022.8
+},
+{
+"billing": {
+"Food": 22731,
+"Subtotal": 38953.75,
+"Admin Fee": 1794.6,
+"Sales Tax": 2153.52,
+"Grand Total": 50080.27,
+"Room Rental": 2000,
+"Valet Parking": 1061.75,
+"Service Charge": 7178.4,
+"Alcoholic Beverage": 13161
+},
+"event_id": 43061703,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Theresa Lowery & Owen Kelly Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "5/2/2026",
+"name": "Theresa Lowery & Owen Kelly Wedding",
+"time": "6:00 pm &ndash; 12:00 am",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 123
+}
+],
+"subtotal": 38953.75,
+"admin_fee": 1794.6,
+"sales_tax": 2153.52,
+"grand_total": 50080.27,
+"room_rental": 2000,
+"service_charge": 7178.4
+},
+{
+"billing": {
+"Food": 2365,
+"Subtotal": 2365,
+"Admin Fee": 118.25,
+"Sales Tax": 141.9,
+"Grand Total": 3598.15,
+"Room Rental": 500,
+"Service Charge": 473
+},
+"event_id": 55205186,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/3/2026",
+"name": "Cancelation - Boston's Communion Dinner: Boston's Communion Dinner",
+"time": "5:00 pm &ndash; 9:00 pm",
+"type": "Dinner",
+"areas": "Green Room and Linden Room",
+"guests": 30
+}
+],
+"subtotal": 2365,
+"admin_fee": 118.25,
+"sales_tax": 141.9,
+"grand_total": 3598.15,
+"room_rental": 500,
+"service_charge": 473
+},
+{
+"billing": {
+"Food": 6017,
+"Subtotal": 8454,
+"Admin Fee": 422.7,
+"Sales Tax": 507.24,
+"Grand Total": 12074.74,
+"Room Rental": 1000,
+"Service Charge": 1690.8,
+"Alcoholic Beverage": 1925,
+"Non-Alcoholic Beverage": 512
+},
+"event_id": 59446346,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/4/2026",
+"name": "+Rachel's Network Day 1",
+"time": "11:00 am &ndash; 9:00 pm",
+"type": "Meeting",
+"areas": "Conservatory Ballroom, Linden Room, and Kampers Rooftop Bar",
+"guests": 35
+},
+{
+"date": "5/5/2026",
+"name": "+Rachel's Network Day 2",
+"time": "8:00 am &ndash; 9:30 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+},
+{
+"date": "5/6/2026",
+"name": "+Rachel's Network Day 3",
+"time": "7:00 am &ndash; 9:00 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+}
+],
+"subtotal": 8454,
+"admin_fee": 422.7,
+"sales_tax": 507.24,
+"grand_total": 12074.74,
+"room_rental": 1000,
+"service_charge": 1690.8
+},
+{
+"billing": {
+"Subtotal": 1000,
+"Admin Fee": 37.5,
+"Sales Tax": 0,
+"Grand Total": 1037.5,
+"Room Rental": 1000,
+"Service Charge": 0
+},
+"event_id": 54716636,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Kayla Buchholz & Jack Flynn Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "Wedding Reception",
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/16/2026",
+"name": "TERRACE CLUB: Kayla Buchholz & Jack Flynn Wedding",
+"time": "10:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "5/16/2026",
+"name": "Kayla Buchholz & Jack Flynn Wedding",
+"time": "4:30 pm &ndash; 11:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 160
+}
+],
+"subtotal": 1000,
+"admin_fee": 37.5,
+"sales_tax": 0,
+"grand_total": 1037.5,
+"room_rental": 1000,
+"service_charge": 0
+},
+{
+"billing": {},
+"event_id": 56936680,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/28/2026",
+"name": "PS: Destiny Khmoro",
+"time": "Thursday",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 10781,
+"Admin Fee": 725.1,
+"Sales Tax": 870.12,
+"Grand Total": 19997.62,
+"Room Rental": 1000,
+"Service Charge": 2900.4,
+"Alcoholic Beverage": 2419,
+"Non-Alcoholic Beverage": 1302,
+"Food and Beverage Subtotal": 15502
+},
+"event_id": 59702577,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/4/2026",
+"name": "+Rachel's Network Day 1",
+"time": "11:00 am &ndash; 9:00 pm",
+"type": "Meeting",
+"areas": "Conservatory Ballroom, Linden Room, and Kampers Rooftop Bar",
+"guests": 35
+},
+{
+"date": "5/5/2026",
+"name": "+Rachel's Network Day 2",
+"time": "8:00 am &ndash; 9:30 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+},
+{
+"date": "5/6/2026",
+"name": "+Rachel's Network Day 3",
+"time": "7:00 am &ndash; 9:00 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+}
+],
+"subtotal": null,
+"admin_fee": 725.1,
+"sales_tax": 870.12,
+"grand_total": 19997.62,
+"room_rental": 1000,
+"service_charge": 2900.4
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59445715,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/5/2026",
+"name": "Murad - Photo Session",
+"time": "1:00 pm &ndash; 2:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": 2
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 8956,
+"Admin Fee": 606.3,
+"Sales Tax": 727.56,
+"Grand Total": 16885.06,
+"Room Rental": 1000,
+"Service Charge": 2425.2,
+"Alcoholic Beverage": 2242,
+"Non-Alcoholic Beverage": 928,
+"Food and Beverage Subtotal": 13126
+},
+"event_id": 59702666,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/4/2026",
+"name": "+Rachel's Network Day 1",
+"time": "11:00 am &ndash; 9:00 pm",
+"type": "Meeting",
+"areas": "Conservatory Ballroom, Linden Room, and Kampers Rooftop Bar",
+"guests": 35
+},
+{
+"date": "5/5/2026",
+"name": "+Rachel's Network Day 2",
+"time": "8:00 am &ndash; 9:30 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+},
+{
+"date": "5/6/2026",
+"name": "+Rachel's Network Day 3",
+"time": "7:00 am &ndash; 9:00 pm",
+"type": null,
+"areas": "13th Floor - Event Space",
+"guests": 40
+}
+],
+"subtotal": null,
+"admin_fee": 606.3,
+"sales_tax": 727.56,
+"grand_total": 16885.06,
+"room_rental": 1000,
+"service_charge": 2425.2
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 57717853,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/6/2026",
+"name": "PS: Shivon Jarbo",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59022147,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/7/2026",
+"name": "Migaldi - Photoshoot",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 56590220,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/7/2026",
+"name": "PS: Candace Mullins",
+"time": "1:00 pm &ndash; 2:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 2200,
+"Gratuity": 829.14,
+"Subtotal": 4974.84,
+"Admin Fee": 207.29,
+"Sales Tax": 248.74,
+"Rental Fee": 0,
+"Grand Total": 5430.87,
+"F&B Minimum Total": 0,
+"Alcoholic Beverage": 1945.7
+},
+"event_id": 57154382,
+"gratuity": 829.14,
+"schedule": [
+{
+"date": "5/7/2026",
+"name": "YAPPY HOUR-BEDROCK",
+"time": "5:00 pm &ndash; 7:00 pm",
+"type": "100",
+"areas": "",
+"guests": null
+}
+],
+"subtotal": 4974.84,
+"admin_fee": 207.29,
+"sales_tax": 248.74,
+"grand_total": 5430.87,
+"room_rental": 0,
+"service_charge": null
+},
+{
+"billing": {
+"Subtotal": 3500,
+"Admin Fee": 0,
+"Sales Tax": 0,
+"Grand Total": 3500,
+"Room Rental": 3500,
+"Service Charge": 0
+},
+"event_id": 59169906,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/22/2025",
+"name": "PS: Olivia Lake & Tommy Simon Wedding",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": null,
+"areas": "Photography",
+"guests": null
+},
+{
+"date": "1/22/2026",
+"name": "TASTING: Olivia Lake & Tommy Simon Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "5/8/2026",
+"name": "Ceremony: Olivia Lake & Tommy Simon Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Conservatory Ballroom",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Cocktail Reception: Olivia Lake & Tommy Simon",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Olivia Lake & Tommy Simon Wedding",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 86
+}
+],
+"subtotal": 3500,
+"admin_fee": 0,
+"sales_tax": 0,
+"grand_total": 3500,
+"room_rental": 3500,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 2494,
+"Subtotal": 5334.4,
+"Admin Fee": 216.72,
+"Sales Tax": 260.06,
+"Grand Total": 6678.06,
+"Room Rental": 1000,
+"Service Charge": 866.88,
+"Alcoholic Beverage": 1840.4
+},
+"event_id": 52756713,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/22/2025",
+"name": "PS: Olivia Lake & Tommy Simon Wedding",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": null,
+"areas": "Photography",
+"guests": null
+},
+{
+"date": "1/22/2026",
+"name": "TASTING: Olivia Lake & Tommy Simon Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "5/8/2026",
+"name": "Ceremony: Olivia Lake & Tommy Simon Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Conservatory Ballroom",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Cocktail Reception: Olivia Lake & Tommy Simon",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Olivia Lake & Tommy Simon Wedding",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 86
+}
+],
+"subtotal": 5334.4,
+"admin_fee": 216.72,
+"sales_tax": 260.06,
+"grand_total": 6678.06,
+"room_rental": 1000,
+"service_charge": 866.88
+},
+{
+"billing": {
+"Food": 11481,
+"Subtotal": 20453.8,
+"Admin Fee": 780.35,
+"Sales Tax": 1170.53,
+"Grand Total": 26306.44,
+"Valet Parking": 945,
+"Service Charge": 3901.76,
+"Alcoholic Beverage": 7952.8,
+"Non-Alcoholic Beverage": 75
+},
+"event_id": 45356801,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/22/2025",
+"name": "PS: Olivia Lake & Tommy Simon Wedding",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": null,
+"areas": "Photography",
+"guests": null
+},
+{
+"date": "1/22/2026",
+"name": "TASTING: Olivia Lake & Tommy Simon Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "5/8/2026",
+"name": "Ceremony: Olivia Lake & Tommy Simon Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Conservatory Ballroom",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Cocktail Reception: Olivia Lake & Tommy Simon",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 86
+},
+{
+"date": "5/8/2026",
+"name": "Olivia Lake & Tommy Simon Wedding",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 86
+}
+],
+"subtotal": 20453.8,
+"admin_fee": 780.35,
+"sales_tax": 1170.53,
+"grand_total": 26306.44,
+"room_rental": null,
+"service_charge": 3901.76
+},
+{
+"billing": {
+"Met": 115,
+"Food": 22045,
+"Total": 34885,
+"Subtotal": 39175,
+"Admin Fee": 1400,
+"Sales Tax": 2100,
+"F&B Minimum": 35000,
+"Grand Total": 49790,
+"Room Rental": 3000,
+"Valet Parking": 1290,
+"Service Charge": 7000,
+"Alcoholic Beverage": 12840
+},
+"event_id": 43978875,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Jason Lee & Bianca Lazarte Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "5/9/2026",
+"name": "Jason Lee & Bianca Lazarte Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 125
+}
+],
+"subtotal": 39175,
+"admin_fee": 1400,
+"sales_tax": 2100,
+"grand_total": 49790,
+"room_rental": 3000,
+"service_charge": 7000
+},
+{
+"billing": {
+"Food": 1750,
+"Gratuity": 960,
+"Subtotal": 4800,
+"Admin Fee": 240,
+"Sales Tax": 288,
+"Rental Fee": 500,
+"Grand Total": 6788,
+"Alcoholic Beverage": 3050
+},
+"event_id": 58739220,
+"gratuity": 960,
+"schedule": [
+{
+"date": "5/12/2026",
+"name": "Roth Capital Partners",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "50",
+"areas": "Corporate Events",
+"guests": null
+}
+],
+"subtotal": 4800,
+"admin_fee": 240,
+"sales_tax": 288,
+"grand_total": 6788,
+"room_rental": 500,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 2025,
+"Subtotal": 2146.5,
+"Admin Fee": 101.25,
+"Sales Tax": 121.5,
+"Grand Total": 3152.75,
+"Service Charge": 405
+},
+"event_id": 56757351,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/13/2026",
+"name": "Ardoq Business Meeting",
+"time": "9:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Linden Room",
+"guests": 20
+},
+{
+"date": "5/13/2026",
+"name": "Ardoq Dinner",
+"time": "7:30 pm &ndash; 10:30 pm",
+"type": "Dinner",
+"areas": "Le Supr\u00eame Private Dining Room",
+"guests": 20
+}
+],
+"subtotal": 2146.5,
+"admin_fee": 101.25,
+"sales_tax": 121.5,
+"grand_total": 3152.75,
+"room_rental": null,
+"service_charge": 405
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58513303,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/13/2026",
+"name": "Bashi - Photoshoot",
+"time": "1:00 pm &ndash; 2:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 325,
+"Gratuity": 65,
+"Subtotal": 325,
+"Admin Fee": 16.25,
+"Sales Tax": 19.5,
+"Rental Fee": 0,
+"Grand Total": 425.75
+},
+"event_id": 58765869,
+"gratuity": 65,
+"schedule": [
+{
+"date": "5/13/2026",
+"name": "Buzz Solutions - Business Happy Hour",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "20",
+"areas": "Corporate Events",
+"guests": null
+}
+],
+"subtotal": 325,
+"admin_fee": 16.25,
+"sales_tax": 19.5,
+"grand_total": 425.75,
+"room_rental": 0,
+"service_charge": null
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59237989,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/13/2026",
+"name": "Novick - Photo Session",
+"time": "10:00 am &ndash; 11:00 am",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": 3
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 8773,
+"Subtotal": 16807,
+"Admin Fee": 568.08,
+"Sales Tax": 852.12,
+"Grand Total": 21067.6,
+"Room Rental": 2500,
+"Valet Parking": 105,
+"Service Charge": 2840.4,
+"Alcoholic Beverage": 5429
+},
+"event_id": 42548502,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/12/2026",
+"name": "TASTING: Lia Jacques & Christian Kazoleas",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/14/2026",
+"name": "Lia Jacques & Christian Kazoleas",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Bar Rotunda",
+"guests": 68
+}
+],
+"subtotal": 16807,
+"admin_fee": 568.08,
+"sales_tax": 852.12,
+"grand_total": 21067.6,
+"room_rental": 2500,
+"service_charge": 2840.4
+},
+{
+"billing": {
+"Food": 15350,
+"Subtotal": 30379,
+"Admin Fee": 1044.76,
+"Sales Tax": 1567.14,
+"Grand Total": 38214.7,
+"Room Rental": 3000,
+"Valet Parking": 1260,
+"Service Charge": 5223.8,
+"Alcoholic Beverage": 10769
+},
+"event_id": 44077221,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/12/2026",
+"name": "TASTING: Leah Blatnikof & Cameron Judge Weddingf",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/15/2026",
+"name": "Leah Blatnikoff & Cameron Judge Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 122
+}
+],
+"subtotal": 30379,
+"admin_fee": 1044.76,
+"sales_tax": 1567.14,
+"grand_total": 38214.7,
+"room_rental": 3000,
+"service_charge": 5223.8
+},
+{
+"billing": {
+"Food": 1000,
+"Subtotal": 2805,
+"Admin Fee": 140.25,
+"Sales Tax": 168.3,
+"Grand Total": 3674.55,
+"Room Rental": 0,
+"Service Charge": 561,
+"Alcoholic Beverage": 1805
+},
+"event_id": 58040440,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/15/2026",
+"name": "Rob Marzonie Welcome Reception",
+"time": "8:00 pm &ndash; 10:00 pm",
+"type": null,
+"areas": "Bar Rotunda",
+"guests": 50
+}
+],
+"subtotal": 2805,
+"admin_fee": 140.25,
+"sales_tax": 168.3,
+"grand_total": 3674.55,
+"room_rental": 0,
+"service_charge": 561
+},
+{
+"billing": {
+"Food": 20495,
+"Subtotal": 37783,
+"Admin Fee": 1739.15,
+"Sales Tax": 2086.98,
+"Grand Total": 48565.73,
+"Room Rental": 3000,
+"Service Charge": 6956.6,
+"Alcoholic Beverage": 14288
+},
+"event_id": 47205158,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Kayla Buchholz & Jack Flynn Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "Wedding Reception",
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/16/2026",
+"name": "TERRACE CLUB: Kayla Buchholz & Jack Flynn Wedding",
+"time": "10:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "5/16/2026",
+"name": "Kayla Buchholz & Jack Flynn Wedding",
+"time": "4:30 pm &ndash; 11:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 160
+}
+],
+"subtotal": 37783,
+"admin_fee": 1739.15,
+"sales_tax": 2086.98,
+"grand_total": 48565.73,
+"room_rental": 3000,
+"service_charge": 6956.6
+},
+{
+"billing": {
+"Subtotal": 843,
+"Admin Fee": 42.15,
+"Sales Tax": 0,
+"Grand Total": 1053.75,
+"Room Rental": 843,
+"Service Charge": 168.6
+},
+"event_id": 54605848,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/16/2026",
+"name": "Residential Rental: Ryan Spencer",
+"time": "6:00 pm &ndash; 10:30 pm",
+"type": "Social",
+"areas": "Terrace Club",
+"guests": 50
+}
+],
+"subtotal": 843,
+"admin_fee": 42.15,
+"sales_tax": 0,
+"grand_total": 1053.75,
+"room_rental": 843,
+"service_charge": 168.6
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58407419,
+"gratuity": null,
+"schedule": [
+{
+"date": "5/21/2026",
+"name": "PS - Nicole Koppel",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": null,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 21201,
+"Misc": 225,
+"Subtotal": 37901,
+"Admin Fee": 1710.8,
+"Sales Tax": 2052.96,
+"Grand Total": 48507.96,
+"Room Rental": 3460,
+"Service Charge": 6843.2,
+"Alcoholic Beverage": 13015
+},
+"event_id": 46455813,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Emily Buck & Patrick Hopps Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "5/21/2026",
+"name": "CEREMONY REHEARSAL: Emily Buck and Patrick Hopps",
+"time": "4:00 pm &ndash; 5:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "5/22/2026",
+"name": "Emily Buck & Patrick Hopps Wedding",
+"time": "5:00 pm &ndash; 10:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 138
+}
+],
+"subtotal": 37901,
+"admin_fee": 1710.8,
+"sales_tax": 2052.96,
+"grand_total": 48507.96,
+"room_rental": 3460,
+"service_charge": 6843.2
+},
+{
+"billing": {
+"Food": 4588,
+"Subtotal": 8195.6,
+"Admin Fee": 359.78,
+"Sales Tax": 431.74,
+"Grand Total": 10227.84,
+"Room Rental": 1000,
+"Service Charge": 1240.72,
+"Alcoholic Beverage": 2607.6
+},
+"event_id": 52757266,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Julia Malewicz & Josh Nelson Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/23/2026",
+"name": "COCKTAIL HOUR: Julia Malewicz & Josh Nelson Cocktail Reception",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 125
+},
+{
+"date": "5/23/2026",
+"name": "Julia Malewicz & Josh Nelson Wedding",
+"time": "7:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 125
+}
+],
+"subtotal": 8195.6,
+"admin_fee": 359.78,
+"sales_tax": 431.74,
+"grand_total": 10227.84,
+"room_rental": 1000,
+"service_charge": 1240.72
+},
+{
+"billing": {
+"Food": 15900.2,
+"Subtotal": 29084.4,
+"Admin Fee": 1112.18,
+"Sales Tax": 1668.26,
+"Grand Total": 37425.72,
+"Room Rental": 1000,
+"Valet Parking": 280,
+"Service Charge": 5560.88,
+"Alcoholic Beverage": 11879.2,
+"Non-Alcoholic Beverage": 25
+},
+"event_id": 38858185,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Julia Malewicz & Josh Nelson Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/23/2026",
+"name": "COCKTAIL HOUR: Julia Malewicz & Josh Nelson Cocktail Reception",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 125
+},
+{
+"date": "5/23/2026",
+"name": "Julia Malewicz & Josh Nelson Wedding",
+"time": "7:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 125
+}
+],
+"subtotal": 29084.4,
+"admin_fee": 1112.18,
+"sales_tax": 1668.26,
+"grand_total": 37425.72,
+"room_rental": 1000,
+"service_charge": 5560.88
+},
+{
+"billing": {
+"Food": 18029,
+"Subtotal": 33647,
+"Admin Fee": 1491.6,
+"Sales Tax": 1789.92,
+"Grand Total": 42894.92,
+"Room Rental": 3500,
+"Valet Parking": 315,
+"Service Charge": 5966.4,
+"Alcoholic Beverage": 11803
+},
+"event_id": 47157838,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Sarah Miller & Dominic Seipenko Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/29/2026",
+"name": "TERRACE CLUB:",
+"time": "9:30 am &ndash; 2:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "5/29/2026",
+"name": "Sarah Miller & Dominic Seipenko Wedding",
+"time": "5:00 pm &ndash; 11:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 127
+},
+{
+"date": "5/30/2026",
+"name": "Morning After Breakfast: Sarah Miller & Dominic Seipenko Wedding",
+"time": "9:30 am &ndash; 11:30 am",
+"type": null,
+"areas": "Le Supr\u00eame Private Dining Room",
+"guests": 22
+}
+],
+"subtotal": 33647,
+"admin_fee": 1491.6,
+"sales_tax": 1789.92,
+"grand_total": 42894.92,
+"room_rental": 3500,
+"service_charge": 5966.4
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1200,
+"Admin Fee": 47.5,
+"Sales Tax": 0,
+"Grand Total": 1437.5,
+"Room Rental": 950,
+"Service Charge": 190
+},
+"event_id": 57629468,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Sarah Miller & Dominic Seipenko Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "5/29/2026",
+"name": "TERRACE CLUB:",
+"time": "9:30 am &ndash; 2:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "5/29/2026",
+"name": "Sarah Miller & Dominic Seipenko Wedding",
+"time": "5:00 pm &ndash; 11:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 127
+},
+{
+"date": "5/30/2026",
+"name": "Morning After Breakfast: Sarah Miller & Dominic Seipenko Wedding",
+"time": "9:30 am &ndash; 11:30 am",
+"type": null,
+"areas": "Le Supr\u00eame Private Dining Room",
+"guests": 22
+}
+],
+"subtotal": 1200,
+"admin_fee": 47.5,
+"sales_tax": 0,
+"grand_total": 1437.5,
+"room_rental": 950,
+"service_charge": 190
+},
+{
+"billing": {
+"Met": 0,
+"Food": 23566,
+"Total": 35000,
+"Subtotal": 36855,
+"Admin Fee": 1752.5,
+"Sales Tax": 2103,
+"F&B Minimum": 35000,
+"Grand Total": 47720.5,
+"Room Rental": 1000,
+"Valet Parking": 805,
+"Service Charge": 7010,
+"Alcoholic Beverage": 11484
+},
+"event_id": 48845286,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Alania Pierson and Brendan Teodorescu Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "5/30/2026",
+"name": "Alania Pierson and Brendan Teodorescu Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 98
+}
+],
+"subtotal": 36855,
+"admin_fee": 1752.5,
+"sales_tax": 2103,
+"grand_total": 47720.5,
+"room_rental": 1000,
+"service_charge": 7010
+},
+{
+"billing": {
+"Food": 3772,
+"Subtotal": 6462.6,
+"Admin Fee": 273.13,
+"Sales Tax": 327.76,
+"Grand Total": 8156.01,
+"Room Rental": 1000,
+"Service Charge": 1092.52,
+"Alcoholic Beverage": 1690.6
+},
+"event_id": 52334069,
+"gratuity": null,
+"schedule": [
+{
+"date": "9/22/2025",
+"name": "PS: Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": null,
+"areas": "Photography",
+"guests": null
+},
+{
+"date": "1/6/2026",
+"name": "TASTING: Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "5/31/2026",
+"name": "COCKTAIL HOUR: Nataliia Yarosh & Maksym",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 82
+},
+{
+"date": "5/31/2026",
+"name": "Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 82
+}
+],
+"subtotal": 6462.6,
+"admin_fee": 273.13,
+"sales_tax": 327.76,
+"grand_total": 8156.01,
+"room_rental": 1000,
+"service_charge": 1092.52
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 56036135,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/26/2026",
+"name": "PS: Lena Nishanian",
+"time": "12:00 pm &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 11862,
+"Subtotal": 21031.36,
+"Admin Fee": 934.97,
+"Sales Tax": 1121.96,
+"Grand Total": 25706.21,
+"Room Rental": 1000,
+"Valet Parking": 210,
+"Service Charge": 3739.88,
+"Alcoholic Beverage": 6762.4,
+"Non-Alcoholic Beverage": 75
+},
+"event_id": 49461196,
+"gratuity": null,
+"schedule": [
+{
+"date": "9/22/2025",
+"name": "PS: Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": null,
+"areas": "Photography",
+"guests": null
+},
+{
+"date": "1/6/2026",
+"name": "TASTING: Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "5/31/2026",
+"name": "COCKTAIL HOUR: Nataliia Yarosh & Maksym",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 82
+},
+{
+"date": "5/31/2026",
+"name": "Nataliia Yarosh & Maksym Nykin Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 82
+}
+],
+"subtotal": 21031.36,
+"admin_fee": 934.97,
+"sales_tax": 1121.96,
+"grand_total": 25706.21,
+"room_rental": 1000,
+"service_charge": 3739.88
+},
+{
+"billing": {
+"Food": 10450,
+"Labor": 525,
+"Subtotal": 17563,
+"Admin Fee": 851.9,
+"Sales Tax": 1022.28,
+"Grand Total": 22844.78,
+"Service Charge": 3407.6,
+"Alcoholic Beverage": 6236,
+"Non-Alcoholic Beverage": 352
+},
+"event_id": 54269878,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/9/2026",
+"name": "Marketplace Homes",
+"time": "6:00 pm &ndash; 10:00 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 95
+}
+],
+"subtotal": 17563,
+"admin_fee": 851.9,
+"sales_tax": 1022.28,
+"grand_total": 22844.78,
+"room_rental": null,
+"service_charge": 3407.6
+},
+{
+"billing": {
+"Met": 0,
+"Food": 38165,
+"Labor": 880,
+"Total": 12000,
+"Subtotal": 66365,
+"Admin Fee": 3129.25,
+"Sales Tax": 3755.1,
+"F&B Minimum": 12000,
+"Grand Total": 95203.35,
+"Room Rental": 1000,
+"Audio/Visual": 7557,
+"Valet Parking": 3780,
+"Service Charge": 12517,
+"Alcoholic Beverage": 24420
+},
+"event_id": 52751180,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/22/2025",
+"name": "TASTING: Detroit Pistons Gala",
+"time": "2:00 pm &ndash; 4:00 pm",
+"type": "Internal",
+"areas": "13th Floor - Event Space and Tastings",
+"guests": 4
+},
+{
+"date": "1/13/2026",
+"name": "Detroit Pistons Premium Cocktail Hour",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Corporate Events",
+"areas": "Kampers Rooftop Bar",
+"guests": 75
+},
+{
+"date": "1/13/2026",
+"name": "Detroit Pistons Gala",
+"time": "6:00 pm &ndash; 9:30 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 220
+}
+],
+"subtotal": 66365,
+"admin_fee": 3129.25,
+"sales_tax": 3755.1,
+"grand_total": 95203.35,
+"room_rental": 1000,
+"service_charge": 12517
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 55033391,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/15/2026",
+"name": "PS: Vania Narra",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 11370,
+"Labor": 525,
+"Subtotal": 22350,
+"Admin Fee": 951,
+"Sales Tax": 1141.2,
+"Grand Total": 28246.2,
+"Room Rental": 1000,
+"Audio/Visual": 1000,
+"Valet Parking": 805,
+"Service Charge": 3804,
+"Alcoholic Beverage": 7650
+},
+"event_id": 52772781,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/15/2026",
+"name": "STEM LOAD-IN",
+"time": "10:00 am &ndash; 3:00 pm",
+"type": "Internal",
+"areas": "13th Floor - Event Space",
+"guests": 0
+},
+{
+"date": "1/16/2026",
+"name": "Auto Hauler Event",
+"time": "7:00 pm &ndash; 12:00 am",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 75
+}
+],
+"subtotal": 22350,
+"admin_fee": 951,
+"sales_tax": 1141.2,
+"grand_total": 28246.2,
+"room_rental": 1000,
+"service_charge": 3804
+},
+{
+"billing": {
+"Food": 240,
+"Gratuity": 126.4,
+"Subtotal": 632,
+"Admin Fee": 31.6,
+"Sales Tax": 37.92,
+"Grand Total": 827.92,
+"Alcoholic Beverage": 392
+},
+"event_id": 55543518,
+"gratuity": 126.4,
+"schedule": [
+{
+"date": "1/16/2026",
+"name": "Pre Dinner - Spotify",
+"time": "5:00 pm &ndash; 6:30 pm",
+"type": "12",
+"areas": "",
+"guests": null
+}
+],
+"subtotal": 632,
+"admin_fee": 31.6,
+"sales_tax": 37.92,
+"grand_total": 827.92,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 0,
+"Sales Tax": 0,
+"Grand Total": 500,
+"Room Rental": 500,
+"Service Charge": 0
+},
+"event_id": 52201294,
+"gratuity": null,
+"schedule": [
+{
+"date": "10/15/2025",
+"name": "TASTING: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "5:30 pm &ndash; 6:30 pm",
+"type": null,
+"areas": "Conservatory Ballroom",
+"guests": 5
+},
+{
+"date": "1/15/2026",
+"name": "CEREMONY REHEARSAL: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "1/17/2026",
+"name": "Morning YOGA Class: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "8:30 am &ndash; 9:30 am",
+"type": null,
+"areas": "Linden Room",
+"guests": 27
+},
+{
+"date": "1/17/2026",
+"name": "Stephanie Nimri and Daniele Sherwood Wedding",
+"time": "5:30 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Bar Rotunda",
+"guests": 133
+}
+],
+"subtotal": 500,
+"admin_fee": 0,
+"sales_tax": 0,
+"grand_total": 500,
+"room_rental": 500,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 21765,
+"Total": 35000,
+"Subtotal": 37772,
+"Admin Fee": 1753.1,
+"Sales Tax": 2103.72,
+"F&B Minimum": 35000,
+"Grand Total": 48641.22,
+"Room Rental": 2500,
+"Valet Parking": 210,
+"Service Charge": 7012.4,
+"Alcoholic Beverage": 12947,
+"Non-Alcoholic Beverage": 350
+},
+"event_id": 49593953,
+"gratuity": null,
+"schedule": [
+{
+"date": "10/15/2025",
+"name": "TASTING: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "5:30 pm &ndash; 6:30 pm",
+"type": null,
+"areas": "Conservatory Ballroom",
+"guests": 5
+},
+{
+"date": "1/15/2026",
+"name": "CEREMONY REHEARSAL: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "1/17/2026",
+"name": "Morning YOGA Class: Stephanie Nimri and Daniel Sherwood Wedding",
+"time": "8:30 am &ndash; 9:30 am",
+"type": null,
+"areas": "Linden Room",
+"guests": 27
+},
+{
+"date": "1/17/2026",
+"name": "Stephanie Nimri and Daniele Sherwood Wedding",
+"time": "5:30 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Bar Rotunda",
+"guests": 133
+}
+],
+"subtotal": 37772,
+"admin_fee": 1753.1,
+"sales_tax": 2103.72,
+"grand_total": 48641.22,
+"room_rental": 2500,
+"service_charge": 7012.4
+},
+{
+"billing": {
+"Met": 0,
+"Food": 2100,
+"Gratuity": 724,
+"Subtotal": 3620,
+"Admin Fee": 181,
+"Sales Tax": 217.2,
+"Rental Fee": 0,
+"Grand Total": 4742.2,
+"F&B Minimum Total": 0,
+"Alcoholic Beverage": 1520
+},
+"event_id": 56062246,
+"gratuity": 724,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "Pop, Fizz, Clink: A Residential Happy Hour to toast the New Year",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "60",
+"areas": "Cocktail Hour/Reception",
+"guests": null
+}
+],
+"subtotal": 3620,
+"admin_fee": 181,
+"sales_tax": 217.2,
+"grand_total": 4742.2,
+"room_rental": 0,
+"service_charge": null
+},
+{
+"billing": {},
+"event_id": 55875957,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "PS: Elaine Donnelly",
+"time": "Thursday",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 4400,
+"Subtotal": 6108,
+"Admin Fee": 286.15,
+"Sales Tax": 343.38,
+"Grand Total": 7882.13,
+"Valet Parking": 385,
+"Service Charge": 1144.6,
+"Alcoholic Beverage": 1323
+},
+"event_id": 49460021,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/23/2026",
+"name": "Boston Consulting Group",
+"time": "9:00 pm &ndash; 11:45 pm",
+"type": "Corporate Events",
+"areas": "Kampers Rooftop Bar",
+"guests": 50
+}
+],
+"subtotal": 6108,
+"admin_fee": 286.15,
+"sales_tax": 343.38,
+"grand_total": 7882.13,
+"room_rental": null,
+"service_charge": 1144.6
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 55809150,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/29/2026",
+"name": "PS: Maggie Tanton",
+"time": "10:00 am &ndash; 11:00 am",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 7680,
+"Total": 7000,
+"Subtotal": 11143,
+"Admin Fee": 530.4,
+"Sales Tax": 636.48,
+"F&B Minimum": 7000,
+"Grand Total": 14431.48,
+"Room Rental": 500,
+"Valet Parking": 35,
+"Service Charge": 2121.6,
+"Alcoholic Beverage": 2928
+},
+"event_id": 53134906,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/31/2026",
+"name": "Zausmer Meeting",
+"time": "9:30 am &ndash; 4:30 pm",
+"type": "Corporate Events",
+"areas": "Linden Room",
+"guests": 31
+},
+{
+"date": "1/31/2026",
+"name": "Zausmer Dinner",
+"time": "5:30 pm &ndash; 9:00 pm",
+"type": "Dinner",
+"areas": "Conservatory Ballroom",
+"guests": 48
+}
+],
+"subtotal": 11143,
+"admin_fee": 530.4,
+"sales_tax": 636.48,
+"grand_total": 14431.48,
+"room_rental": 500,
+"service_charge": 2121.6
+},
+{
+"billing": {
+"Met": 609,
+"Food": 1054,
+"Total": 1891,
+"Subtotal": 3551,
+"Admin Fee": 125,
+"Sales Tax": 150,
+"F&B Minimum": 2500,
+"Grand Total": 4935,
+"Room Rental": 0,
+"Audio/Visual": 745,
+"Valet Parking": 915,
+"Service Charge": 500,
+"Non-Alcoholic Beverage": 837
+},
+"event_id": 53134824,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/31/2026",
+"name": "Zausmer Meeting",
+"time": "9:30 am &ndash; 4:30 pm",
+"type": "Corporate Events",
+"areas": "Linden Room",
+"guests": 31
+},
+{
+"date": "1/31/2026",
+"name": "Zausmer Dinner",
+"time": "5:30 pm &ndash; 9:00 pm",
+"type": "Dinner",
+"areas": "Conservatory Ballroom",
+"guests": 48
+}
+],
+"subtotal": 3551,
+"admin_fee": 125,
+"sales_tax": 150,
+"grand_total": 4935,
+"room_rental": 0,
+"service_charge": 500
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 56435522,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/2/2026",
+"name": "PS: Kim Dante",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 6320,
+"Subtotal": 7118,
+"Admin Fee": 355.9,
+"Grand Total": 8897.5,
+"Room Rental": 0,
+"F&B Minimum Total": 0,
+"Alcoholic Beverage": 798,
+"Sales Tax Service Charge": 1423.6
+},
+"event_id": 55094599,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/5/2026",
+"name": "Rachel Lachover- Hillel Day School Alumni Event",
+"time": "5:30 pm &ndash; 8:30 pm",
+"type": "Corporate Events",
+"areas": "Bar Rotunda",
+"guests": 70
+}
+],
+"subtotal": 7118,
+"admin_fee": 355.9,
+"sales_tax": null,
+"grand_total": 8897.5,
+"room_rental": 0,
+"service_charge": null
+},
+{
+"billing": {
+"Met": 0,
+"Food": 2984.06,
+"Total": 2500,
+"Discount": 500,
+"Subtotal": 3984.06,
+"Admin Fee": 146.5,
+"Sales Tax": 175.8,
+"F&B Minimum": 2500,
+"Grand Total": 4392.36,
+"Room Rental": 1000,
+"Service Charge": 586
+},
+"event_id": 54574983,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Allie Quigley & Kyle Pennington Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "2/7/2026",
+"name": "Allie Quigley & Kyle Pennington Wedding",
+"time": "5:00 pm &ndash; 10:30 pm",
+"type": null,
+"areas": "Conservatory Ballroom and Linden Room",
+"guests": 32
+}
+],
+"subtotal": 3984.06,
+"admin_fee": 146.5,
+"sales_tax": 175.8,
+"grand_total": 4392.36,
+"room_rental": 1000,
+"service_charge": 586
+},
+{
+"billing": {
+"Food": 3360,
+"Subtotal": 5250,
+"Admin Fee": 262.5,
+"Sales Tax": 315,
+"Grand Total": 11772.5,
+"Room Rental": 1000,
+"Audio/Visual": 3895,
+"Service Charge": 1050,
+"Non-Alcoholic Beverage": 1890
+},
+"event_id": 56085758,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/10/2026",
+"name": "Lithia Automotive Regional Service Meeting",
+"time": "10:00 am &ndash; 4:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+},
+{
+"date": "2/11/2026",
+"name": "Lithia Automotive Meeting Day 2",
+"time": "8:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 80
+}
+],
+"subtotal": 5250,
+"admin_fee": 262.5,
+"sales_tax": 315,
+"grand_total": 11772.5,
+"room_rental": 1000,
+"service_charge": 1050
+},
+{
+"billing": {
+"Food": 6400,
+"Subtotal": 9560,
+"Admin Fee": 428,
+"Sales Tax": 513.6,
+"Grand Total": 12213.6,
+"Room Rental": 1000,
+"Service Charge": 1712,
+"Non-Alcoholic Beverage": 2160
+},
+"event_id": 56085926,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/10/2026",
+"name": "Lithia Automotive Regional Service Meeting",
+"time": "10:00 am &ndash; 4:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+},
+{
+"date": "2/11/2026",
+"name": "Lithia Automotive Meeting Day 2",
+"time": "8:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 80
+}
+],
+"subtotal": 9560,
+"admin_fee": 428,
+"sales_tax": 513.6,
+"grand_total": 12213.6,
+"room_rental": 1000,
+"service_charge": 1712
+},
+{
+"billing": {
+"Met": 0,
+"Food": 2001,
+"Total": 5500,
+"Subtotal": 10070.3,
+"Admin Fee": 320.25,
+"Sales Tax": 384.3,
+"F&B Minimum": 5500,
+"Grand Total": 10390.55,
+"Room Rental": 1500,
+"Audio/Visual": 500,
+"Service Charge": 1281,
+"Alcoholic Beverage": 4404
+},
+"event_id": 50649485,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/14/2026",
+"name": "Welcome Event Jennifer Dailey & Tom Myler",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "Welcome Party",
+"areas": "Kampers Rooftop Bar",
+"guests": 68
+},
+{
+"date": "2/15/2026",
+"name": "PS: Jennifer Dailey & Tom Myler",
+"time": "11:30 am &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": 3
+}
+],
+"subtotal": 10070.3,
+"admin_fee": 320.25,
+"sales_tax": 384.3,
+"grand_total": 10390.55,
+"room_rental": 1500,
+"service_charge": 1281
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 750,
+"Admin Fee": 37.5,
+"Sales Tax": 0,
+"Grand Total": 787.5,
+"Photography": 750,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 50978727,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/14/2026",
+"name": "Welcome Event Jennifer Dailey & Tom Myler",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "Welcome Party",
+"areas": "Kampers Rooftop Bar",
+"guests": 68
+},
+{
+"date": "2/15/2026",
+"name": "PS: Jennifer Dailey & Tom Myler",
+"time": "11:30 am &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": 3
+}
+],
+"subtotal": 750,
+"admin_fee": 37.5,
+"sales_tax": 0,
+"grand_total": 787.5,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 56979224,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/17/2026",
+"name": "PS: Vignesh Sastri and Greeshma Chapalamadugu",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 564,
+"Food": 3880,
+"Total": 6436,
+"Subtotal": 12191,
+"Admin Fee": 350,
+"Sales Tax": 420,
+"F&B Minimum": 7000,
+"Grand Total": 12755,
+"Room Rental": 500,
+"Audio/Visual": 2175,
+"Valet Parking": 910,
+"Service Charge": 1400,
+"Alcoholic Beverage": 216,
+"Non-Alcoholic Beverage": 2340
+},
+"event_id": 51652764,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/19/2026",
+"name": "TechChange Corporate workshop",
+"time": "9:00 am &ndash; 6:00 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 60
+}
+],
+"subtotal": 12191,
+"admin_fee": 350,
+"sales_tax": 420,
+"grand_total": 12755,
+"room_rental": 500,
+"service_charge": 1400
+},
+{
+"billing": {
+"Met": 0,
+"Food": 11360,
+"Total": 10000,
+"Subtotal": 21324,
+"Admin Fee": 891.2,
+"Sales Tax": 1069.44,
+"F&B Minimum": 10000,
+"Grand Total": 26849.44,
+"Room Rental": 3500,
+"Service Charge": 3564.8,
+"Alcoholic Beverage": 6164,
+"Non-Alcoholic Beverage": 300
+},
+"event_id": 55892886,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Samantha Champion and Ergun Kocak Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "2/21/2026",
+"name": "Samantha Champion and Ergun Kocak Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 79
+}
+],
+"subtotal": 21324,
+"admin_fee": 891.2,
+"sales_tax": 1069.44,
+"grand_total": 26849.44,
+"room_rental": 3500,
+"service_charge": 3564.8
+},
+{
+"billing": {
+"Food": 2006.4,
+"Subtotal": 4606.4,
+"Admin Fee": 180.32,
+"Sales Tax": 216.38,
+"Grand Total": 5724.38,
+"Room Rental": 1000,
+"Service Charge": 721.28,
+"Alcoholic Beverage": 1600
+},
+"event_id": 56129431,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/24/2026",
+"name": "GM Event: Lin - Hua Wu",
+"time": "4:30 pm &ndash; 7:30 pm",
+"type": "Social",
+"areas": "Terrace Club",
+"guests": 32
+}
+],
+"subtotal": 4606.4,
+"admin_fee": 180.32,
+"sales_tax": 216.38,
+"grand_total": 5724.38,
+"room_rental": 1000,
+"service_charge": 721.28
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 56613897,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/24/2026",
+"name": "PS: Rachel Anderson",
+"time": "12:00 pm &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 3680,
+"Subtotal": 4892,
+"Admin Fee": 219.6,
+"Grand Total": 5990,
+"Room Rental": 500,
+"Service Charge": 878.4,
+"Alcoholic Beverage": 712
+},
+"event_id": 55892957,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/26/2026",
+"name": "Couples Learning Event for EO Detroit Entrepreneurs Organization",
+"time": "3:30 pm &ndash; 9:00 pm",
+"type": "Corporate Events",
+"areas": "Linden Room",
+"guests": 40
+}
+],
+"subtotal": 4892,
+"admin_fee": 219.6,
+"sales_tax": null,
+"grand_total": 5990,
+"room_rental": 500,
+"service_charge": 878.4
+},
+{
+"billing": {
+"Food": 1365,
+"Subtotal": 5899.8,
+"Admin Fee": 266.5,
+"Sales Tax": 319.8,
+"Grand Total": 8732.3,
+"Room Rental": 1500,
+"Audio/Visual": 250,
+"Service Charge": 1066,
+"Alcoholic Beverage": 3965
+},
+"event_id": 56471527,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/26/2026",
+"name": "Networking reception",
+"time": "5:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 65
+}
+],
+"subtotal": 5899.8,
+"admin_fee": 266.5,
+"sales_tax": 319.8,
+"grand_total": 8732.3,
+"room_rental": 1500,
+"service_charge": 1066
+},
+{
+"billing": {
+"Met": 0,
+"Food": 6300,
+"Subtotal": 6300,
+"Admin Fee": 315,
+"Sales Tax": 378,
+"Grand Total": 8253,
+"Room Rental": 0,
+"Service Charge": 1260,
+"F&B Minimum Total": 0
+},
+"event_id": 48795781,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/27/2026",
+"name": "AE Collab with Dinner with Will",
+"time": "6:00 pm &ndash; 10:00 pm",
+"type": "Dinner",
+"areas": "13th Floor - Event Space",
+"guests": 80
+}
+],
+"subtotal": 6300,
+"admin_fee": 315,
+"sales_tax": 378,
+"grand_total": 8253,
+"room_rental": 0,
+"service_charge": 1260
+},
+{
+"billing": {
+"Met": 0,
+"Food": 7260,
+"Total": 7500,
+"Subtotal": 9690,
+"Admin Fee": 409.5,
+"Sales Tax": 491.4,
+"F&B Minimum": 7500,
+"Grand Total": 12228.9,
+"Room Rental": 1000,
+"Audio/Visual": 500,
+"Service Charge": 1638,
+"Alcoholic Beverage": 930
+},
+"event_id": 53919316,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/28/2026",
+"name": "100th Anniversary Event",
+"time": "5:00 pm &ndash; 10:00 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 44
+}
+],
+"subtotal": 9690,
+"admin_fee": 409.5,
+"sales_tax": 491.4,
+"grand_total": 12228.9,
+"room_rental": 1000,
+"service_charge": 1638
+},
+{
+"billing": {
+"Met": 0,
+"Food": 475,
+"Subtotal": 503.5,
+"Admin Fee": 0,
+"Sales Tax": 28.5,
+"Grand Total": 503.5,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 57154319,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/28/2026",
+"name": "Book Tower 100 Year Cookies For Residents",
+"time": "12:30 pm &ndash; 1:00 pm",
+"type": null,
+"areas": "The Study",
+"guests": 100
+}
+],
+"subtotal": 503.5,
+"admin_fee": 0,
+"sales_tax": 28.5,
+"grand_total": 503.5,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 4416,
+"Subtotal": 6599,
+"Admin Fee": 307.2,
+"Sales Tax": 368.64,
+"Grand Total": 9003.64,
+"Room Rental": 500,
+"Valet Parking": 455,
+"Service Charge": 1228.8,
+"Alcoholic Beverage": 1728
+},
+"event_id": 55853921,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/4/2026",
+"name": "International Women's Day Event",
+"time": "4:00 pm &ndash; 7:00 pm",
+"type": "Corporate Events",
+"areas": "Green Room and Linden Room",
+"guests": 32
+}
+],
+"subtotal": 6599,
+"admin_fee": 307.2,
+"sales_tax": 368.64,
+"grand_total": 9003.64,
+"room_rental": 500,
+"service_charge": 1228.8
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 57334216,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/5/2026",
+"name": "PS; Bassam George",
+"time": "1:30 pm &ndash; 2:30 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 8880,
+"Total": 6500,
+"Subtotal": 10500,
+"Admin Fee": 420,
+"Sales Tax": 630,
+"F&B Minimum": 6500,
+"Grand Total": 17653,
+"Room Rental": 1000,
+"Audio/Visual": 3003,
+"Service Charge": 2100,
+"Alcoholic Beverage": 1620
+},
+"event_id": 52193217,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/6/2026",
+"name": "ACG Detroit | 2026 Inspire & Ignite Luncheon",
+"time": "11:00 am &ndash; 1:30 pm",
+"type": "Lunch",
+"areas": "13th Floor - Event Space",
+"guests": 107
+}
+],
+"subtotal": 10500,
+"admin_fee": 420,
+"sales_tax": 630,
+"grand_total": 17653,
+"room_rental": 1000,
+"service_charge": 2100
+},
+{
+"billing": {
+"Gratuity": 62,
+"Subtotal": 310,
+"Admin Fee": 15.5,
+"Sales Tax": 18.6,
+"Grand Total": 406.1,
+"Alcoholic Beverage": 310
+},
+"event_id": 57116184,
+"gratuity": 62,
+"schedule": [
+{
+"date": "3/6/2026",
+"name": "Cocktail Hour: Private Dining Dinner",
+"time": "3:00 pm &ndash; 4:00 pm",
+"type": "11",
+"areas": "",
+"guests": null
+}
+],
+"subtotal": 310,
+"admin_fee": 15.5,
+"sales_tax": 18.6,
+"grand_total": 406.1,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 2075,
+"Subtotal": 2075,
+"Admin Fee": 103.75,
+"Sales Tax": 124.5,
+"Grand Total": 3533.25,
+"Room Rental": 500,
+"Valet Parking": 315,
+"Service Charge": 415
+},
+"event_id": 57225464,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/11/2026",
+"name": "Detroit Piston's Meeting",
+"time": "8:30 am &ndash; 2:00 pm",
+"type": "Meeting",
+"areas": "Linden Room",
+"guests": 9
+}
+],
+"subtotal": 2075,
+"admin_fee": 103.75,
+"sales_tax": 124.5,
+"grand_total": 3533.25,
+"room_rental": 500,
+"service_charge": 415
+},
+{
+"billing": {
+"Met": 0,
+"Food": 4600,
+"Gratuity": 1350.6,
+"Subtotal": 6753,
+"Admin Fee": 337.65,
+"Sales Tax": 405.18,
+"Rental Fee": 0,
+"Grand Total": 8846.43,
+"F&B Minimum Total": 0,
+"Alcoholic Beverage": 2153
+},
+"event_id": 57154374,
+"gratuity": 1350.6,
+"schedule": [
+{
+"date": "3/12/2026",
+"name": "Bedrock Residential Event -313 Day",
+"time": "5:00 pm &ndash; 9:00 pm",
+"type": "100",
+"areas": "Social",
+"guests": 100
+}
+],
+"subtotal": 6753,
+"admin_fee": 337.65,
+"sales_tax": 405.18,
+"grand_total": 8846.43,
+"room_rental": 0,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 3584.34,
+"Subtotal": 5607.34,
+"Admin Fee": 264.62,
+"Sales Tax": 317.54,
+"Grand Total": 8747.97,
+"Room Rental": 1500,
+"Valet Parking": 315,
+"Service Charge": 1058.47,
+"Alcoholic Beverage": 1708
+},
+"event_id": 51437594,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/13/2026",
+"name": "Bridal Shower",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "Shower",
+"areas": "Linden Room",
+"guests": 28
+}
+],
+"subtotal": 5607.34,
+"admin_fee": 264.62,
+"sales_tax": 317.54,
+"grand_total": 8747.97,
+"room_rental": 1500,
+"service_charge": 1058.47
+},
+{
+"billing": {
+"Food": 7998,
+"Subtotal": 11950.12,
+"Admin Fee": 492.01,
+"Sales Tax": 590.41,
+"Grand Total": 16500.56,
+"Room Rental": 500,
+"Valet Parking": 1610,
+"Service Charge": 1968.02,
+"Alcoholic Beverage": 1592.12,
+"Non-Alcoholic Beverage": 250
+},
+"event_id": 56150793,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/22/2026",
+"name": "Baptism",
+"time": "1:30 pm &ndash; 4:30 pm",
+"type": "Social",
+"areas": "13th Floor - Event Space",
+"guests": 116
+}
+],
+"subtotal": 11950.12,
+"admin_fee": 492.01,
+"sales_tax": 590.41,
+"grand_total": 16500.56,
+"room_rental": 500,
+"service_charge": 1968.02
+},
+{
+"billing": {
+"Food": 2136,
+"Subtotal": 3161,
+"Admin Fee": 140.55,
+"Sales Tax": 168.66,
+"Grand Total": 4032.41,
+"Room Rental": 0,
+"Valet Parking": 350,
+"Service Charge": 562.2,
+"Non-Alcoholic Beverage": 675
+},
+"event_id": 52986361,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/26/2026",
+"name": "Detroit Lions Off site business meeting",
+"time": "8:00 am &ndash; 2:00 pm",
+"type": "Meeting",
+"areas": "Linden Room",
+"guests": 20
+}
+],
+"subtotal": 3161,
+"admin_fee": 140.55,
+"sales_tax": 168.66,
+"grand_total": 4032.41,
+"room_rental": 0,
+"service_charge": 562.2
+},
+{
+"billing": {
+"Food": 9581,
+"Subtotal": 16273.8,
+"Admin Fee": 813.69,
+"Sales Tax": 976.43,
+"Grand Total": 23818.68,
+"Room Rental": 2500,
+"Service Charge": 3254.76,
+"Alcoholic Beverage": 6692.8
+},
+"event_id": 52440616,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Kim Henry & Conrad Hawk Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "3/27/2026",
+"name": "Kim Henry & Conrad Hawk Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 89
+},
+{
+"date": "3/27/2026",
+"name": "Kim Henry & Conrad Hawk Wedding Cocktail Hour",
+"time": "7:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 89
+}
+],
+"subtotal": 16273.8,
+"admin_fee": 813.69,
+"sales_tax": 976.43,
+"grand_total": 23818.68,
+"room_rental": 2500,
+"service_charge": 3254.76
+},
+{
+"billing": {
+"Food": 2784,
+"Subtotal": 5457.2,
+"Admin Fee": 222.86,
+"Sales Tax": 267.43,
+"Grand Total": 6838.93,
+"Room Rental": 1000,
+"Service Charge": 891.44,
+"Alcoholic Beverage": 1673.2
+},
+"event_id": 56269046,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "TASTING: Kim Henry & Conrad Hawk Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "3/27/2026",
+"name": "Kim Henry & Conrad Hawk Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 89
+},
+{
+"date": "3/27/2026",
+"name": "Kim Henry & Conrad Hawk Wedding Cocktail Hour",
+"time": "7:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 89
+}
+],
+"subtotal": 5457.2,
+"admin_fee": 222.86,
+"sales_tax": 267.43,
+"grand_total": 6838.93,
+"room_rental": 1000,
+"service_charge": 891.44
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Room Rental": 500,
+"Service Charge": 0
+},
+"event_id": 56730231,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/1/2026",
+"name": "Meeting #1",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+},
+{
+"date": "4/29/2026",
+"name": "Meeting #2",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+},
+{
+"date": "6/3/2026",
+"name": "Meeting #3",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 500,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 58285501,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/2/2026",
+"name": "Paula Arida Photoshoot",
+"time": "1:00 pm &ndash; 2:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 1585,
+"Total": 1500,
+"Subtotal": 2397,
+"Admin Fee": 112.85,
+"Sales Tax": 135.42,
+"F&B Minimum": 1500,
+"Grand Total": 3096.67,
+"Room Rental": 0,
+"Valet Parking": 140,
+"Service Charge": 451.4,
+"Alcoholic Beverage": 672
+},
+"event_id": 58167114,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/3/2026",
+"name": "Opening Day Group: Kaitlin Wood",
+"time": "10:00 am &ndash; 12:00 pm",
+"type": "Corporate Events",
+"areas": "Kamper's Section A",
+"guests": 16
+}
+],
+"subtotal": 2397,
+"admin_fee": 112.85,
+"sales_tax": 135.42,
+"grand_total": 3096.67,
+"room_rental": 0,
+"service_charge": 451.4
+},
+{
+"billing": {
+"Food": 4955,
+"Subtotal": 7981,
+"Admin Fee": 399.05,
+"Sales Tax": 478.86,
+"Grand Total": 10455.11,
+"Service Charge": 1596.2,
+"Alcoholic Beverage": 3026
+},
+"event_id": 56677582,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "13th Floor - Event Space and Tastings",
+"guests": 2
+},
+{
+"date": "4/10/2026",
+"name": "Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Bar Rotunda",
+"guests": 170
+},
+{
+"date": "4/10/2026",
+"name": "COCKTAIL HOUR: Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding",
+"areas": "Bar Rotunda",
+"guests": 170
+}
+],
+"subtotal": 7981,
+"admin_fee": 399.05,
+"sales_tax": 478.86,
+"grand_total": 10455.11,
+"room_rental": null,
+"service_charge": 1596.2
+},
+{
+"billing": {
+"Food": 14145,
+"Subtotal": 26912.8,
+"Admin Fee": 1308.89,
+"Sales Tax": 1570.67,
+"Grand Total": 37527.92,
+"Room Rental": 2500,
+"Valet Parking": 735,
+"Service Charge": 5235.56,
+"Alcoholic Beverage": 12032.8
+},
+"event_id": 43137166,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "13th Floor - Event Space and Tastings",
+"guests": 2
+},
+{
+"date": "4/10/2026",
+"name": "Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Bar Rotunda",
+"guests": 170
+},
+{
+"date": "4/10/2026",
+"name": "COCKTAIL HOUR: Sydney Horlacher & Ryan Zeiter Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding",
+"areas": "Bar Rotunda",
+"guests": 170
+}
+],
+"subtotal": 26912.8,
+"admin_fee": 1308.89,
+"sales_tax": 1570.67,
+"grand_total": 37527.92,
+"room_rental": 2500,
+"service_charge": 5235.56
+},
+{
+"billing": {
+"Food": 28167,
+"Subtotal": 43907,
+"Admin Fee": 2120.35,
+"Sales Tax": 2544.42,
+"Grand Total": 57053.17,
+"Room Rental": 1500,
+"Service Charge": 8481.4,
+"Alcoholic Beverage": 14240
+},
+"event_id": 50849996,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Janine Kjolhede and Tyler McMullin Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "4/11/2026",
+"name": "Terrace Club Rental : Janine Kjolhede and Tyler McMullin Wedding",
+"time": "9:00 am &ndash; 2:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/11/2026",
+"name": "Janine Kjolhede and Tyler McMullin Wedding",
+"time": "6:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 165
+}
+],
+"subtotal": 43907,
+"admin_fee": 2120.35,
+"sales_tax": 2544.42,
+"grand_total": 57053.17,
+"room_rental": 1500,
+"service_charge": 8481.4
+},
+{
+"billing": {
+"Food": 384,
+"Labor": 250,
+"Subtotal": 1634,
+"Admin Fee": 69.2,
+"Sales Tax": 23.04,
+"Grand Total": 2003.04,
+"Room Rental": 1000,
+"Service Charge": 276.8
+},
+"event_id": 56586623,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Janine Kjolhede and Tyler McMullin Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "4/11/2026",
+"name": "Terrace Club Rental : Janine Kjolhede and Tyler McMullin Wedding",
+"time": "9:00 am &ndash; 2:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/11/2026",
+"name": "Janine Kjolhede and Tyler McMullin Wedding",
+"time": "6:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 165
+}
+],
+"subtotal": 1634,
+"admin_fee": 69.2,
+"sales_tax": 23.04,
+"grand_total": 2003.04,
+"room_rental": 1000,
+"service_charge": 276.8
+},
+{
+"billing": {
+"Food": 8226,
+"Subtotal": 13427.94,
+"Admin Fee": 544.95,
+"Sales Tax": 653.94,
+"Grand Total": 17652.69,
+"Room Rental": 500,
+"Audio/Visual": 745,
+"Valet Parking": 630,
+"Service Charge": 2179.8,
+"Alcoholic Beverage": 2450,
+"Non-Alcoholic Beverage": 223
+},
+"event_id": 56613517,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/12/2026",
+"name": "Christine Alix - Baby Shower",
+"time": "12:00 pm &ndash; 4:00 pm",
+"type": "Shower",
+"areas": "13th Floor - Event Space",
+"guests": 65
+}
+],
+"subtotal": 13427.94,
+"admin_fee": 544.95,
+"sales_tax": 653.94,
+"grand_total": 17652.69,
+"room_rental": 500,
+"service_charge": 2179.8
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 1850,
+"Admin Fee": 75,
+"Sales Tax": 0,
+"Grand Total": 1925,
+"Room Rental": 1750,
+"Audio/Visual": 100,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58637514,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/13/2026",
+"name": "Isho - Business Meeting",
+"time": "9:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Terrace Club",
+"guests": 5
+}
+],
+"subtotal": 1850,
+"admin_fee": 75,
+"sales_tax": 0,
+"grand_total": 1925,
+"room_rental": 1750,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 935,
+"Subtotal": 1232,
+"Admin Fee": 61.6,
+"Sales Tax": 73.92,
+"Grand Total": 2113.92,
+"Room Rental": 500,
+"Service Charge": 246.4,
+"Non-Alcoholic Beverage": 297
+},
+"event_id": 58242537,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/13/2026",
+"name": "Lamdal Retreat Day 1",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/14/2026",
+"name": "Lamdal Retreat Day 2",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/15/2026",
+"name": "Lamdal Retreat Day 3",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+}
+],
+"subtotal": 1232,
+"admin_fee": 61.6,
+"sales_tax": 73.92,
+"grand_total": 2113.92,
+"room_rental": 500,
+"service_charge": 246.4
+},
+{
+"billing": {
+"Met": 0,
+"Food": 561,
+"Total": 500,
+"Subtotal": 858,
+"Admin Fee": 42.9,
+"Sales Tax": 51.48,
+"F&B Minimum": 500,
+"Grand Total": 1623.98,
+"Room Rental": 500,
+"Service Charge": 171.6,
+"Non-Alcoholic Beverage": 297
+},
+"event_id": 58242703,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/13/2026",
+"name": "Lamdal Retreat Day 1",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/14/2026",
+"name": "Lamdal Retreat Day 2",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/15/2026",
+"name": "Lamdal Retreat Day 3",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+}
+],
+"subtotal": 858,
+"admin_fee": 42.9,
+"sales_tax": 51.48,
+"grand_total": 1623.98,
+"room_rental": 500,
+"service_charge": 171.6
+},
+{
+"billing": {
+"Met": 0,
+"Food": 935,
+"Total": 500,
+"Subtotal": 1232,
+"Admin Fee": 61.6,
+"Sales Tax": 73.92,
+"F&B Minimum": 500,
+"Grand Total": 2113.92,
+"Room Rental": 500,
+"Service Charge": 246.4,
+"Non-Alcoholic Beverage": 297
+},
+"event_id": 58242718,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/13/2026",
+"name": "Lamdal Retreat Day 1",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/14/2026",
+"name": "Lamdal Retreat Day 2",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+},
+{
+"date": "4/15/2026",
+"name": "Lamdal Retreat Day 3",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room and Linden Room",
+"guests": 11
+}
+],
+"subtotal": 1232,
+"admin_fee": 61.6,
+"sales_tax": 73.92,
+"grand_total": 2113.92,
+"room_rental": 500,
+"service_charge": 246.4
+},
+{
+"billing": {
+"Food": 15724,
+"Subtotal": 18978,
+"Admin Fee": 948.9,
+"Sales Tax": 1138.68,
+"Grand Total": 26361.18,
+"Room Rental": 1500,
+"Service Charge": 3795.6,
+"Alcoholic Beverage": 3254
+},
+"event_id": 51283518,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/15/2026",
+"name": "Plan A Dinner Event",
+"time": "7:00 pm &ndash; 9:30 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 150
+},
+{
+"date": "4/15/2026",
+"name": "Plan A Kamper's",
+"time": "9:00 pm &ndash; 11:00 pm",
+"type": "Corporate Events",
+"areas": "Kampers Rooftop Bar",
+"guests": 65
+}
+],
+"subtotal": 18978,
+"admin_fee": 948.9,
+"sales_tax": 1138.68,
+"grand_total": 26361.18,
+"room_rental": 1500,
+"service_charge": 3795.6
+},
+{
+"billing": {
+"Food": 1080,
+"Subtotal": 4080,
+"Admin Fee": 154,
+"Sales Tax": 184.8,
+"Grand Total": 5034.8,
+"Room Rental": 1000,
+"Service Charge": 616,
+"Alcoholic Beverage": 2000
+},
+"event_id": 54083290,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/15/2026",
+"name": "Plan A Dinner Event",
+"time": "7:00 pm &ndash; 9:30 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 150
+},
+{
+"date": "4/15/2026",
+"name": "Plan A Kamper's",
+"time": "9:00 pm &ndash; 11:00 pm",
+"type": "Corporate Events",
+"areas": "Kampers Rooftop Bar",
+"guests": 65
+}
+],
+"subtotal": 4080,
+"admin_fee": 154,
+"sales_tax": 184.8,
+"grand_total": 5034.8,
+"room_rental": 1000,
+"service_charge": 616
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58511090,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/16/2026",
+"name": "PS - Khoury",
+"time": "1:30 pm &ndash; 2:30 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 618,
+"Food": 13432,
+"Total": 24382,
+"Subtotal": 27882,
+"Admin Fee": 1250,
+"Sales Tax": 1500,
+"F&B Minimum": 25000,
+"Grand Total": 36250,
+"Room Rental": 3500,
+"Service Charge": 5000,
+"Alcoholic Beverage": 10925,
+"Non-Alcoholic Beverage": 25
+},
+"event_id": 49724641,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Erin Badge and Ryan Bamford Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "4/16/2026",
+"name": "CEREMONY REHEARSAL:Erin Badge & Ryan Bamford Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "4/17/2026",
+"name": "Erin Badge and Ryan Bamford Wedding",
+"time": "5:30 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 116
+}
+],
+"subtotal": 27882,
+"admin_fee": 1250,
+"sales_tax": 1500,
+"grand_total": 36250,
+"room_rental": 3500,
+"service_charge": 5000
+},
+{
+"billing": {
+"Food": 18378,
+"Subtotal": 31065.3,
+"Admin Fee": 1203.41,
+"Sales Tax": 1805.12,
+"Grand Total": 40090.89,
+"Valet Parking": 980,
+"Service Charge": 6017.06,
+"Alcoholic Beverage": 11607.3,
+"Non-Alcoholic Beverage": 100
+},
+"event_id": 44857255,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Jacob Lothamer & Alaina Agnello Wedding",
+"time": "6:00 pm &ndash; 9:30 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "4/18/2026",
+"name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+"time": "8:00 am &ndash; 4:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "4/18/2026",
+"name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": 150
+},
+{
+"date": "4/18/2026",
+"name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Bar Rotunda",
+"guests": 166
+},
+{
+"date": "4/18/2026",
+"name": "Alaina Agnello & Jacob Lothamer Wedding Reception",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 166
+}
+],
+"subtotal": 31065.3,
+"admin_fee": 1203.41,
+"sales_tax": 1805.12,
+"grand_total": 40090.89,
+"room_rental": null,
+"service_charge": 6017.06
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 2000,
+"Admin Fee": 0,
+"Sales Tax": 0,
+"Grand Total": 2000,
+"Room Rental": 2000,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58338912,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Jacob Lothamer & Alaina Agnello Wedding",
+"time": "6:00 pm &ndash; 9:30 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "4/18/2026",
+"name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+"time": "8:00 am &ndash; 4:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "4/18/2026",
+"name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": 150
+},
+{
+"date": "4/18/2026",
+"name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Bar Rotunda",
+"guests": 166
+},
+{
+"date": "4/18/2026",
+"name": "Alaina Agnello & Jacob Lothamer Wedding Reception",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 166
+}
+],
+"subtotal": 2000,
+"admin_fee": 0,
+"sales_tax": 0,
+"grand_total": 2000,
+"room_rental": 2000,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 8134,
+"Subtotal": 10944.7,
+"Admin Fee": 547.24,
+"Sales Tax": 656.68,
+"Grand Total": 14337.56,
+"Service Charge": 2188.94,
+"Alcoholic Beverage": 2810.7
+},
+"event_id": 52756570,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Jacob Lothamer & Alaina Agnello Wedding",
+"time": "6:00 pm &ndash; 9:30 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "4/18/2026",
+"name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+"time": "8:00 am &ndash; 4:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "4/18/2026",
+"name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": 150
+},
+{
+"date": "4/18/2026",
+"name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Bar Rotunda",
+"guests": 166
+},
+{
+"date": "4/18/2026",
+"name": "Alaina Agnello & Jacob Lothamer Wedding Reception",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 166
+}
+],
+"subtotal": 10944.7,
+"admin_fee": 547.24,
+"sales_tax": 656.68,
+"grand_total": 14337.56,
+"room_rental": null,
+"service_charge": 2188.94
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1750,
+"Admin Fee": 75,
+"Sales Tax": 0,
+"Grand Total": 1825,
+"Room Rental": 1500,
+"Service Charge": 0
+},
+"event_id": 58338330,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Jacob Lothamer & Alaina Agnello Wedding",
+"time": "6:00 pm &ndash; 9:30 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "4/18/2026",
+"name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+"time": "8:00 am &ndash; 4:00 pm",
+"type": "Wedding",
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "4/18/2026",
+"name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": 150
+},
+{
+"date": "4/18/2026",
+"name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Bar Rotunda",
+"guests": 166
+},
+{
+"date": "4/18/2026",
+"name": "Alaina Agnello & Jacob Lothamer Wedding Reception",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 166
+}
+],
+"subtotal": 1750,
+"admin_fee": 75,
+"sales_tax": 0,
+"grand_total": 1825,
+"room_rental": 1500,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 1775,
+"Subtotal": 7723.5,
+"Admin Fee": 138.75,
+"Sales Tax": 166.5,
+"Grand Total": 8417.25,
+"Room Rental": 1000,
+"Audio/Visual": 3782,
+"Service Charge": 555,
+"Non-Alcoholic Beverage": 1000
+},
+"event_id": 58736897,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/22/2026",
+"name": "Business Meeting for Stout",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "Green Room, Linden Room, and Entertainment Suite",
+"guests": 20
+}
+],
+"subtotal": 7723.5,
+"admin_fee": 138.75,
+"sales_tax": 166.5,
+"grand_total": 8417.25,
+"room_rental": 1000,
+"service_charge": 555
+},
+{
+"billing": {
+"Food": 13821,
+"Subtotal": 28589,
+"Admin Fee": 1304.45,
+"Sales Tax": 1565.34,
+"Grand Total": 36676.59,
+"Room Rental": 2500,
+"Service Charge": 5217.8,
+"Alcoholic Beverage": 12193,
+"Non-Alcoholic Beverage": 75
+},
+"event_id": 53965807,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Noelle McDonald and Mark Sobodos",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "4/23/2026",
+"name": "CEREMONY REHEARSAL: Noelle McDonald and Mark Sobodos Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "4/24/2026",
+"name": "Terrace Club Rental: Noelle McDonald and Mark Sobodos",
+"time": "10:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/24/2026",
+"name": "Noelle McDonald and Mark Sobodos Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Cocktail Reception",
+"guests": 140
+}
+],
+"subtotal": 28589,
+"admin_fee": 1304.45,
+"sales_tax": 1565.34,
+"grand_total": 36676.59,
+"room_rental": 2500,
+"service_charge": 5217.8
+},
+{
+"billing": {
+"Met": 0,
+"Food": 18144,
+"Total": 25000,
+"Subtotal": 29553,
+"Admin Fee": 1401.9,
+"Sales Tax": 1682.28,
+"F&B Minimum": 25000,
+"Grand Total": 39244.78,
+"Room Rental": 1000,
+"Audio/Visual": 500,
+"Valet Parking": 1015,
+"Service Charge": 5607.6,
+"Alcoholic Beverage": 9894
+},
+"event_id": 50199964,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/5/2026",
+"name": "TASTING: Josh Kirsch & Teng Alele Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "6/19/2026",
+"name": "Josh Kirsch & Teng Alele Wedding",
+"time": "6:00 pm &ndash; 11:59 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 104
+},
+{
+"date": "6/19/2026",
+"name": "Josh Kirsch & Teng Alele Cocktail Hour",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": "Wedding",
+"areas": "Kampers Rooftop Bar",
+"guests": 104
+}
+],
+"subtotal": 29553,
+"admin_fee": 1401.9,
+"sales_tax": 1682.28,
+"grand_total": 39244.78,
+"room_rental": 1000,
+"service_charge": 5607.6
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 750,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 775,
+"Room Rental": 500,
+"Service Charge": 0
+},
+"event_id": 54253036,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Noelle McDonald and Mark Sobodos",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "4/23/2026",
+"name": "CEREMONY REHEARSAL: Noelle McDonald and Mark Sobodos Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "4/24/2026",
+"name": "Terrace Club Rental: Noelle McDonald and Mark Sobodos",
+"time": "10:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/24/2026",
+"name": "Noelle McDonald and Mark Sobodos Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Cocktail Reception",
+"guests": 140
+}
+],
+"subtotal": 750,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 775,
+"room_rental": 500,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 19509,
+"Subtotal": 38233,
+"Admin Fee": 1449.32,
+"Sales Tax": 2173.98,
+"Grand Total": 49102.9,
+"Room Rental": 2000,
+"Service Charge": 7246.6,
+"Alcoholic Beverage": 16724
+},
+"event_id": 43355873,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "Tasting: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "4/25/2026",
+"name": "Terrace Club Rental: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "7:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/25/2026",
+"name": "Haley Notarantonio & Derek Engebretson Wedding",
+"time": "5:30 pm &ndash; 11:59 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 149
+},
+{
+"date": "4/26/2026",
+"name": "Morning After Breakfast: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "9:30 am &ndash; 11:30 am",
+"type": null,
+"areas": "Le Supr\u00eame Section C",
+"guests": 37
+}
+],
+"subtotal": 38233,
+"admin_fee": 1449.32,
+"sales_tax": 2173.98,
+"grand_total": 49102.9,
+"room_rental": 2000,
+"service_charge": 7246.6
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1500,
+"Admin Fee": 62.5,
+"Sales Tax": 0,
+"Grand Total": 1812.5,
+"Room Rental": 1250,
+"Service Charge": 250
+},
+"event_id": 50642419,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/6/2026",
+"name": "Tasting: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "4/25/2026",
+"name": "Terrace Club Rental: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "7:00 am &ndash; 2:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "4/25/2026",
+"name": "Haley Notarantonio & Derek Engebretson Wedding",
+"time": "5:30 pm &ndash; 11:59 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 149
+},
+{
+"date": "4/26/2026",
+"name": "Morning After Breakfast: Haley Notarantonio & Derek Engebreston Wedding",
+"time": "9:30 am &ndash; 11:30 am",
+"type": null,
+"areas": "Le Supr\u00eame Section C",
+"guests": 37
+}
+],
+"subtotal": 1500,
+"admin_fee": 62.5,
+"sales_tax": 0,
+"grand_total": 1812.5,
+"room_rental": 1250,
+"service_charge": 250
+},
+{
+"billing": {
+"Food": 3570,
+"Subtotal": 7502,
+"Admin Fee": 375.1,
+"Sales Tax": 450.12,
+"Grand Total": 9827.62,
+"Service Charge": 1500.4,
+"Alcoholic Beverage": 3932
+},
+"event_id": 51260194,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/24/2026",
+"name": "Rehearsal Dinner",
+"time": "5:00 pm &ndash; 8:00 pm",
+"type": "Private Dining",
+"areas": "Le Supr\u00eame Private Dining Room",
+"guests": 21
+},
+{
+"date": "4/25/2026",
+"name": "Wedding Welcome Event",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "Welcome Party",
+"areas": "Bar Rotunda",
+"guests": 85
+}
+],
+"subtotal": 7502,
+"admin_fee": 375.1,
+"sales_tax": 450.12,
+"grand_total": 9827.62,
+"room_rental": null,
+"service_charge": 1500.4
+},
+{
+"billing": {},
+"event_id": 57098765,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/29/2026",
+"name": "Meeting #2",
+"time": "Wednesday",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 12670,
+"Labor": 350,
+"Subtotal": 18095,
+"Admin Fee": 904.75,
+"Grand Total": 24468.75,
+"Room Rental": 1500,
+"Service Charge": 3619,
+"Non-Alcoholic Beverage": 5425
+},
+"event_id": 52110112,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/1/2026",
+"name": "International Academy Prom",
+"time": "7:00 pm &ndash; 10:00 pm",
+"type": "Social",
+"areas": "13th Floor - Event Space",
+"guests": 155
+}
+],
+"subtotal": 18095,
+"admin_fee": 904.75,
+"sales_tax": null,
+"grand_total": 24468.75,
+"room_rental": 1500,
+"service_charge": 3619
+},
+{
+"billing": {
+"Food": 5400,
+"Subtotal": 10980,
+"Admin Fee": 549,
+"Sales Tax": 658.8,
+"Grand Total": 15383.8,
+"Room Rental": 1000,
+"Service Charge": 2196,
+"Alcoholic Beverage": 5580
+},
+"event_id": 59093609,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/2/2026",
+"name": "Colab AI - Happy Hour",
+"time": "6:00 pm &ndash; 10:00 pm",
+"type": "Corporate Events",
+"areas": "Kampers Rooftop Bar",
+"guests": 60
+}
+],
+"subtotal": 10980,
+"admin_fee": 549,
+"sales_tax": 658.8,
+"grand_total": 15383.8,
+"room_rental": 1000,
+"service_charge": 2196
+},
+{
+"billing": {
+"Food": 4768,
+"Labor": 175,
+"Gratuity": 2400,
+"Subtotal": 15840,
+"Admin Fee": 600,
+"Sales Tax": 720,
+"Rental Fee": 2500,
+"Grand Total": 19060,
+"Valet Parking": 665,
+"Alcoholic Beverage": 7232
+},
+"event_id": 59257152,
+"gratuity": 2400,
+"schedule": [
+{
+"date": "6/3/2026",
+"name": "Identity PR Reception",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "32",
+"areas": "Rooftop Event",
+"guests": null
+}
+],
+"subtotal": 15840,
+"admin_fee": 600,
+"sales_tax": 720,
+"grand_total": 19060,
+"room_rental": 2500,
+"service_charge": null
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 57098781,
+"gratuity": null,
+"schedule": [
+{
+"date": "4/1/2026",
+"name": "Meeting #1",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+},
+{
+"date": "4/29/2026",
+"name": "Meeting #2",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+},
+{
+"date": "6/3/2026",
+"name": "Meeting #3",
+"time": "8:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {},
+"event_id": 57325321,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/3/2026",
+"name": "PS: Yahaira David",
+"time": "Wednesday",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 15345,
+"Subtotal": 28140,
+"Admin Fee": 1000,
+"Sales Tax": 1500,
+"Grand Total": 35640,
+"Room Rental": 3000,
+"Valet Parking": 140,
+"Service Charge": 5000,
+"Alcoholic Beverage": 9605,
+"Non-Alcoholic Beverage": 50
+},
+"event_id": 45505097,
+"gratuity": null,
+"schedule": [
+{
+"date": "12/17/2025",
+"name": "TASTING: Kaley Willaert & Shane Eberle Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "Internal",
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "6/4/2026",
+"name": "CEREMONY REHEARSAL:Kaley Willaert & Shane Eberle Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "6/5/2026",
+"name": "Kaley Willaert & Shane Eberle Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 87
+},
+{
+"date": "6/5/2026",
+"name": "Kaley Willaert & Shane Eberle Cocktail Hour",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Kampers Rooftop Bar",
+"guests": 87
+}
+],
+"subtotal": 28140,
+"admin_fee": 1000,
+"sales_tax": 1500,
+"grand_total": 35640,
+"room_rental": 3000,
+"service_charge": 5000
+},
+{
+"billing": {
+"Met": 0,
+"Food": 21210,
+"Total": 35000,
+"Subtotal": 40743.78,
+"Admin Fee": 1440.52,
+"Sales Tax": 2160.78,
+"F&B Minimum": 35000,
+"Grand Total": 49186.9,
+"Room Rental": 3500,
+"Valet Parking": 70,
+"Service Charge": 7002.6,
+"Alcoholic Beverage": 13803
+},
+"event_id": 42213260,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/24/2026",
+"name": "TASTING: Amy Wilson & Kevin Hodges Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "3/11/2026",
+"name": "MOCK TABLE SET-UP: Amy Wilson and Kevin Hodges Wedding",
+"time": "3:00 pm &ndash; 5:00 pm",
+"type": null,
+"areas": "Conservatory Ballroom",
+"guests": null
+},
+{
+"date": "6/6/2026",
+"name": "Terrace Club Rental:Amy Wilson & Kevin Hodges Wedding",
+"time": "8:00 am &ndash; 4:00 pm",
+"type": "Social",
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/6/2026",
+"name": "Amy Wilson & Kevin Hodges Wedding",
+"time": "5:00 pm &ndash; 11:30 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 136
+}
+],
+"subtotal": 40743.78,
+"admin_fee": 1440.52,
+"sales_tax": 2160.78,
+"grand_total": 49186.9,
+"room_rental": 3500,
+"service_charge": 7002.6
+},
+{
+"billing": {},
+"event_id": 59772144,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/7/2026",
+"name": "CEREMONY: Chloe Reed & Jacob Sauter Wedding",
+"time": "Sunday",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": null
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Food": 13162,
+"Misc": 75,
+"Subtotal": 23242,
+"Admin Fee": 882.48,
+"Sales Tax": 1323.72,
+"Grand Total": 29860.6,
+"Room Rental": 1000,
+"Valet Parking": 105,
+"Service Charge": 4412.4,
+"Alcoholic Beverage": 8900
+},
+"event_id": 45269250,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Chloe Reed & Jacob Sauter Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "6/7/2026",
+"name": "TERRACE CLUB: Chloe Reed & Jacob Sauter Wedding",
+"time": "7:30 am &ndash; 3:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/7/2026",
+"name": "CEREMONY: Chloe Reed & Jacob Sauter Wedding",
+"time": "4:00 pm &ndash; 5:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "6/7/2026",
+"name": "COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 132
+},
+{
+"date": "6/7/2026",
+"name": "Chloe Reed & Jacob Sauter Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 132
+}
+],
+"subtotal": 23242,
+"admin_fee": 882.48,
+"sales_tax": 1323.72,
+"grand_total": 29860.6,
+"room_rental": 1000,
+"service_charge": 4412.4
+},
+{
+"billing": {},
+"event_id": 52757639,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/7/2026",
+"name": "COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedding",
+"time": "Sunday",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 132
+}
+],
+"subtotal": null,
+"admin_fee": null,
+"sales_tax": null,
+"grand_total": null,
+"room_rental": null,
+"service_charge": null
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1750,
+"Admin Fee": 75,
+"Sales Tax": 0,
+"Grand Total": 2125,
+"Room Rental": 1500,
+"Service Charge": 300
+},
+"event_id": 57626992,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Chloe Reed & Jacob Sauter Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "6/7/2026",
+"name": "TERRACE CLUB: Chloe Reed & Jacob Sauter Wedding",
+"time": "7:30 am &ndash; 3:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/7/2026",
+"name": "CEREMONY: Chloe Reed & Jacob Sauter Wedding",
+"time": "4:00 pm &ndash; 5:00 pm",
+"type": "Wedding Ceremony",
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "6/7/2026",
+"name": "COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedding",
+"time": "5:00 pm &ndash; 6:00 pm",
+"type": "Wedding Cocktail Hour",
+"areas": "Kampers Rooftop Bar",
+"guests": 132
+},
+{
+"date": "6/7/2026",
+"name": "Chloe Reed & Jacob Sauter Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space",
+"guests": 132
+}
+],
+"subtotal": 1750,
+"admin_fee": 75,
+"sales_tax": 0,
+"grand_total": 2125,
+"room_rental": 1500,
+"service_charge": 300
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59327698,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/9/2026",
+"name": "Benacquista - Photo Session",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 2808,
+"Subtotal": 2933,
+"Admin Fee": 140.4,
+"Sales Tax": 168.48,
+"Grand Total": 4303.48,
+"Room Rental": 500,
+"Audio/Visual": 125,
+"Service Charge": 561.6
+},
+"event_id": 59122129,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/10/2026",
+"name": "Team Wellness Center - Meeting & Dinner",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": "Corporate Events",
+"areas": "Linden Room",
+"guests": 26
+}
+],
+"subtotal": 2933,
+"admin_fee": 140.4,
+"sales_tax": 168.48,
+"grand_total": 4303.48,
+"room_rental": 500,
+"service_charge": 561.6
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59974145,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/11/2026",
+"name": "Fravel Photoshoot",
+"time": "12:30 pm &ndash; 1:30 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 17694,
+"Subtotal": 30736,
+"Admin Fee": 1289.7,
+"Grand Total": 38684.5,
+"Room Rental": 1500,
+"Audio/Visual": 4137,
+"Valet Parking": 805,
+"Service Charge": 5158.8,
+"Alcoholic Beverage": 8100
+},
+"event_id": 53782154,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/11/2026",
+"name": "HFHS Dinner - Resident Graduation",
+"time": "6:00 pm &ndash; 10:00 pm",
+"type": "Corporate Events",
+"areas": "13th Floor - Event Space",
+"guests": 108
+}
+],
+"subtotal": 30736,
+"admin_fee": 1289.7,
+"sales_tax": null,
+"grand_total": 38684.5,
+"room_rental": 1500,
+"service_charge": 5158.8
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 59559106,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/11/2026",
+"name": "Quosto - Photoshoot",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 3538,
+"Subtotal": 6638.4,
+"Admin Fee": 281.92,
+"Sales Tax": 338.3,
+"Grand Total": 8386.3,
+"Service Charge": 1127.68,
+"Alcoholic Beverage": 2100.4,
+"PM - COCKTAIL HOUR ENDS Description Percent Total Room Rental": 1000,
+"yr Scotch Hennessy VS Cognac Corazon Tequila Corazon Reposado": 17.8
+},
+"event_id": 52757769,
+"gratuity": null,
+"schedule": [],
+"subtotal": 6638.4,
+"admin_fee": 281.92,
+"sales_tax": 338.3,
+"grand_total": 8386.3,
+"room_rental": null,
+"service_charge": 1127.68
+},
+{
+"billing": {
+"Food": 13550,
+"Subtotal": 22836.6,
+"Admin Fee": 878.06,
+"Sales Tax": 1317.1,
+"Grand Total": 29422.08,
+"Room Rental": 500,
+"Valet Parking": 385,
+"Service Charge": 4390.32,
+"Alcoholic Beverage": 8401.6
+},
+"event_id": 43061287,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING:Gabrielle Broche & Brandon Eklund Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 3
+},
+{
+"date": "6/12/2026",
+"name": "Gabrielle Broche & Brandon Eklund Cocktail Hour",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Kampers Rooftop Bar",
+"guests": 124
+},
+{
+"date": "6/12/2026",
+"name": "Gabrielle Broche & Brandon Eklund Wedding",
+"time": "7:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 124
+}
+],
+"subtotal": 22836.6,
+"admin_fee": 878.06,
+"sales_tax": 1317.1,
+"grand_total": 29422.08,
+"room_rental": 500,
+"service_charge": 4390.32
+},
+{
+"billing": {
+"Met": 0,
+"Food": 23649,
+"Misc": 150,
+"Total": 35000,
+"Subtotal": 51476.28,
+"Admin Fee": 1575.12,
+"Sales Tax": 2362.68,
+"F&B Minimum": 35000,
+"Grand Total": 53051.4,
+"Room Rental": 1500,
+"Valet Parking": 210,
+"Service Charge": 7875.6,
+"Alcoholic Beverage": 15729
+},
+"event_id": 45636634,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Elizabeth DiMauro & Chris Corbin Reception",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "6/13/2026",
+"name": "TERRACE CLUB: Elizabeth DiMauro & Chris Corbin Wedding Reception",
+"time": "10:00 am &ndash; 6:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/13/2026",
+"name": "Elizabeth DiMauro & Chris Corbin Reception",
+"time": "6:00 pm &ndash; 11:30 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 149
+}
+],
+"subtotal": 51476.28,
+"admin_fee": 1575.12,
+"sales_tax": 2362.68,
+"grand_total": 53051.4,
+"room_rental": 1500,
+"service_charge": 7875.6
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 2050,
+"Admin Fee": 90,
+"Sales Tax": 0,
+"Grand Total": 2500,
+"Room Rental": 1800,
+"Service Charge": 360
+},
+"event_id": 55083142,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Elizabeth DiMauro & Chris Corbin Reception",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 6
+},
+{
+"date": "6/13/2026",
+"name": "TERRACE CLUB: Elizabeth DiMauro & Chris Corbin Wedding Reception",
+"time": "10:00 am &ndash; 6:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/13/2026",
+"name": "Elizabeth DiMauro & Chris Corbin Reception",
+"time": "6:00 pm &ndash; 11:30 pm",
+"type": "Wedding Reception",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 149
+}
+],
+"subtotal": 2050,
+"admin_fee": 90,
+"sales_tax": 0,
+"grand_total": 2500,
+"room_rental": 1800,
+"service_charge": 360
+},
+{
+"billing": {
+"Subtotal": 0,
+"Admin Fee": 37.5,
+"Sales Tax": 0,
+"Grand Total": 787.5,
+"Room Rental": 750,
+"Service Charge": 0
+},
+"event_id": 60299176,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/15/2026",
+"name": "Spurlock - REINDUSTRIALIZE",
+"time": "8:00 am &ndash; 6:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+},
+{
+"date": "6/16/2026",
+"name": "Day 2 Business Center",
+"time": "8:00 am &ndash; 12:00 pm",
+"type": null,
+"areas": "Business Center",
+"guests": null
+}
+],
+"subtotal": 0,
+"admin_fee": 37.5,
+"sales_tax": 0,
+"grand_total": 787.5,
+"room_rental": 750,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 3360,
+"Total": 5000,
+"Subtotal": 6930,
+"Admin Fee": 346.5,
+"Sales Tax": 415.8,
+"F&B Minimum": 5000,
+"Grand Total": 9828.3,
+"Room Rental": 750,
+"Service Charge": 1386,
+"Alcoholic Beverage": 3570
+},
+"event_id": 57843807,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/16/2026",
+"name": "DT Midstream Meeting Day #1",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+},
+{
+"date": "6/16/2026",
+"name": "DT Midstream Kampers Reception",
+"time": "5:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 70
+},
+{
+"date": "6/17/2026",
+"name": "DT Midstream Meeting Day #2",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+}
+],
+"subtotal": 6930,
+"admin_fee": 346.5,
+"sales_tax": 415.8,
+"grand_total": 9828.3,
+"room_rental": 750,
+"service_charge": 1386
+},
+{
+"billing": {
+"Met": 0,
+"Food": 5670,
+"Total": 7000,
+"Subtotal": 16456,
+"Admin Fee": 378,
+"Sales Tax": 453.6,
+"F&B Minimum": 7000,
+"Grand Total": 19549.6,
+"Room Rental": 750,
+"Audio/Visual": 8896,
+"Service Charge": 1512,
+"Non-Alcoholic Beverage": 1890
+},
+"event_id": 57752356,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/16/2026",
+"name": "DT Midstream Meeting Day #1",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+},
+{
+"date": "6/16/2026",
+"name": "DT Midstream Kampers Reception",
+"time": "5:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 70
+},
+{
+"date": "6/17/2026",
+"name": "DT Midstream Meeting Day #2",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+}
+],
+"subtotal": 16456,
+"admin_fee": 378,
+"sales_tax": 453.6,
+"grand_total": 19549.6,
+"room_rental": 750,
+"service_charge": 1512
+},
+{
+"billing": {
+"Met": 0,
+"Food": 1850,
+"Total": 1500,
+"Gratuity": 370,
+"Subtotal": 2100,
+"Admin Fee": 92.5,
+"Sales Tax": 111,
+"Rental Fee": 1000,
+"F&B Minimum": 1500,
+"Grand Total": 3673.5,
+"Audio/Visual": 250
+},
+"event_id": 59471004,
+"gratuity": 370,
+"schedule": [
+{
+"date": "6/17/2026",
+"name": "640 Oxford Breakfast Event",
+"time": "8:00 am &ndash; 10:00 am",
+"type": "50",
+"areas": "Rooftop Event",
+"guests": null
+}
+],
+"subtotal": 2100,
+"admin_fee": 92.5,
+"sales_tax": 111,
+"grand_total": 3673.5,
+"room_rental": 1000,
+"service_charge": null
+},
+{
+"billing": {
+"Met": 0,
+"Food": 5670,
+"Total": 7000,
+"Subtotal": 7910,
+"Admin Fee": 378,
+"Sales Tax": 453.6,
+"F&B Minimum": 7000,
+"Grand Total": 11003.6,
+"Room Rental": 750,
+"Valet Parking": 350,
+"Service Charge": 1512,
+"Non-Alcoholic Beverage": 1890
+},
+"event_id": 57843884,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/16/2026",
+"name": "DT Midstream Meeting Day #1",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+},
+{
+"date": "6/16/2026",
+"name": "DT Midstream Kampers Reception",
+"time": "5:00 pm &ndash; 8:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Rooftop Bar",
+"guests": 70
+},
+{
+"date": "6/17/2026",
+"name": "DT Midstream Meeting Day #2",
+"time": "7:30 am &ndash; 5:00 pm",
+"type": "Meeting",
+"areas": "13th Floor - Event Space",
+"guests": 70
+}
+],
+"subtotal": 7910,
+"admin_fee": 378,
+"sales_tax": 453.6,
+"grand_total": 11003.6,
+"room_rental": 750,
+"service_charge": 1512
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58649125,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/18/2026",
+"name": "Carlisle - Photoshoot",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 13002,
+"Total": 15000,
+"Subtotal": 25471,
+"Admin Fee": 887.64,
+"Sales Tax": 1331.46,
+"F&B Minimum": 15000,
+"Grand Total": 32128.3,
+"Room Rental": 3000,
+"Valet Parking": 280,
+"Service Charge": 4438.2,
+"Alcoholic Beverage": 9114,
+"Non-Alcoholic Beverage": 75
+},
+"event_id": 40645212,
+"gratuity": null,
+"schedule": [
+{
+"date": "3/12/2025",
+"name": "TASTING: Donna Davila & Brian Falther",
+"time": "4:00 pm &ndash; 5:00 pm",
+"type": "Internal",
+"areas": "Tastings",
+"guests": 4
+},
+{
+"date": "6/18/2026",
+"name": "Donna Davila & Brian Falther Wedding",
+"time": "5:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 101
+},
+{
+"date": "6/18/2026",
+"name": "Donna Davila & Brian Falther Cocktail Hour",
+"time": "5:45 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Kampers Rooftop Bar",
+"guests": 101
+}
+],
+"subtotal": 25471,
+"admin_fee": 887.64,
+"sales_tax": 1331.46,
+"grand_total": 32128.3,
+"room_rental": 3000,
+"service_charge": 4438.2
+},
+{
+"billing": {
+"Food": 22913,
+"Labor": 350,
+"Subtotal": 50605.64,
+"Admin Fee": 1562.56,
+"Sales Tax": 2343.84,
+"Grand Total": 52168.2,
+"Room Rental": 2000,
+"Valet Parking": 1435,
+"Service Charge": 7412.8,
+"Alcoholic Beverage": 14151
+},
+"event_id": 41946577,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/12/2026",
+"name": "TASTING: Delaney Obrien & Brandon Goocher Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "6/20/2026",
+"name": "TERRACE CLUB: Delaney Obrien & Brandon Goocher Wedding",
+"time": "9:00 am &ndash; 1:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "6/20/2026",
+"name": "Delaney Obrien & Brandon Goocher Wedding",
+"time": "6:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 159
+}
+],
+"subtotal": 50605.64,
+"admin_fee": 1562.56,
+"sales_tax": 2343.84,
+"grand_total": 52168.2,
+"room_rental": 2000,
+"service_charge": 7412.8
+},
+{
+"billing": {
+"Food": 384,
+"Labor": 250,
+"Subtotal": 1384,
+"Admin Fee": 56.7,
+"Sales Tax": 23.04,
+"Grand Total": 1690.54,
+"Room Rental": 750,
+"Service Charge": 226.8
+},
+"event_id": 53718358,
+"gratuity": null,
+"schedule": [
+{
+"date": "2/12/2026",
+"name": "TASTING: Delaney Obrien & Brandon Goocher Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "6/20/2026",
+"name": "TERRACE CLUB: Delaney Obrien & Brandon Goocher Wedding",
+"time": "9:00 am &ndash; 1:00 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": 12
+},
+{
+"date": "6/20/2026",
+"name": "Delaney Obrien & Brandon Goocher Wedding",
+"time": "6:00 pm &ndash; 12:00 am",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Rooftop Bar",
+"guests": 159
+}
+],
+"subtotal": 1384,
+"admin_fee": 56.7,
+"sales_tax": 23.04,
+"grand_total": 1690.54,
+"room_rental": 750,
+"service_charge": 226.8
+},
+{
+"billing": {
+"Met": 0,
+"Food": 4830,
+"Total": 2750,
+"Gratuity": 42,
+"Subtotal": 5188,
+"Admin Fee": 259.4,
+"Sales Tax": 311.28,
+"Rental Fee": 250,
+"F&B Minimum": 2750,
+"Grand Total": 6050.68,
+"Alcoholic Beverage": 358
+},
+"event_id": 53122167,
+"gratuity": 42,
+"schedule": [
+{
+"date": "6/21/2026",
+"name": "Brunch",
+"time": "10:00 am &ndash; 1:00 pm",
+"type": "90",
+"areas": "Brunch",
+"guests": null
+}
+],
+"subtotal": 5188,
+"admin_fee": 259.4,
+"sales_tax": 311.28,
+"grand_total": 6050.68,
+"room_rental": 250,
+"service_charge": null
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Room Rental": 0,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 58582527,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/22/2026",
+"name": "Photo Session - FM Visuals",
+"time": "1:30 pm &ndash; 2:30 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 0,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 0,
+"Food": 599,
+"Subtotal": 599,
+"Admin Fee": 29.95,
+"Sales Tax": 35.94,
+"Grand Total": 664.89,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 60322520,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/23/2026",
+"name": "Tenant Experience Resident Event",
+"time": "12:00 pm &ndash; 4:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": 100
+}
+],
+"subtotal": 599,
+"admin_fee": 29.95,
+"sales_tax": 35.94,
+"grand_total": 664.89,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 58760990,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/24/2026",
+"name": "Angelina - Photoshoot",
+"time": "2:00 pm &ndash; 3:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Photography": 500,
+"Service Charge": 0
+},
+"event_id": 60118110,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/24/2026",
+"name": "Hleis Photoshoot",
+"time": "12:00 pm &ndash; 1:00 pm",
+"type": "Photography Session",
+"areas": "Photography",
+"guests": null
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": null,
+"service_charge": 0
+},
+{
+"billing": {
+"Met": 1950,
+"Food": 3050,
+"Total": 3050,
+"Subtotal": 3050,
+"Admin Fee": 250,
+"Sales Tax": 300,
+"F&B Minimum": 5000,
+"Grand Total": 7550,
+"Room Rental": 1000,
+"Service Charge": 1000
+},
+"event_id": 58064896,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/25/2026",
+"name": "Project for Public Spaces VIP Happy Hour",
+"time": "6:00 pm &ndash; 9:00 pm",
+"type": "Cocktail Hour/Reception",
+"areas": "Kampers Bar - Inside",
+"guests": 50
+}
+],
+"subtotal": 3050,
+"admin_fee": 250,
+"sales_tax": 300,
+"grand_total": 7550,
+"room_rental": 1000,
+"service_charge": 1000
+},
+{
+"billing": {
+"Met": 0,
+"Subtotal": 500,
+"Admin Fee": 25,
+"Sales Tax": 0,
+"Grand Total": 525,
+"Room Rental": 500,
+"Service Charge": 0,
+"F&B Minimum Total": 0
+},
+"event_id": 60731818,
+"gratuity": null,
+"schedule": [
+{
+"date": "6/26/2026",
+"name": "Business Center Reservation",
+"time": "11:00 am &ndash; 5:00 pm",
+"type": "Corporate Events",
+"areas": "Business Center",
+"guests": 8
+}
+],
+"subtotal": 500,
+"admin_fee": 25,
+"sales_tax": 0,
+"grand_total": 525,
+"room_rental": 500,
+"service_charge": 0
+},
+{
+"billing": {
+"Food": 15595,
+"Labor": 350,
+"Subtotal": 32421,
+"Admin Fee": 1411.05,
+"Sales Tax": 1693.26,
+"Grand Total": 41169.51,
+"Room Rental": 3500,
+"Valet Parking": 350,
+"Service Charge": 5644.2,
+"Alcoholic Beverage": 12626
+},
+"event_id": 46415605,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Lauren Guziak and Steve Ording Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "6/25/2026",
+"name": "CEREMONY REHEARSAL: Lauren Guziak & Steve Ording Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "6/26/2026",
+"name": "TERRACE CLUB: Lauren Guziak and Steve Ording Wedding",
+"time": "7:30 am &ndash; 1:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/26/2026",
+"name": "Lauren Guziak & Steve Ording Wedding",
+"time": "4:30 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Bar - Inside",
+"guests": 119
+}
+],
+"subtotal": 32421,
+"admin_fee": 1411.05,
+"sales_tax": 1693.26,
+"grand_total": 41169.51,
+"room_rental": 3500,
+"service_charge": 5644.2
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1500,
+"Admin Fee": 62.5,
+"Sales Tax": 0,
+"Grand Total": 1812.5,
+"Room Rental": 1250,
+"Service Charge": 250
+},
+"event_id": 54486272,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Lauren Guziak and Steve Ording Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 2
+},
+{
+"date": "6/25/2026",
+"name": "CEREMONY REHEARSAL: Lauren Guziak & Steve Ording Wedding",
+"time": "6:00 pm &ndash; 7:00 pm",
+"type": null,
+"areas": "Linden Room",
+"guests": null
+},
+{
+"date": "6/26/2026",
+"name": "TERRACE CLUB: Lauren Guziak and Steve Ording Wedding",
+"time": "7:30 am &ndash; 1:30 pm",
+"type": null,
+"areas": "Terrace Club",
+"guests": null
+},
+{
+"date": "6/26/2026",
+"name": "Lauren Guziak & Steve Ording Wedding",
+"time": "4:30 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space and Kampers Bar - Inside",
+"guests": 119
+}
+],
+"subtotal": 1500,
+"admin_fee": 62.5,
+"sales_tax": 0,
+"grand_total": 1812.5,
+"room_rental": 1250,
+"service_charge": 250
+},
+{
+"billing": {
+"Met": 0,
+"Food": 22397,
+"Total": 35000,
+"Subtotal": 39786.22,
+"Admin Fee": 1409.48,
+"Sales Tax": 2114.22,
+"F&B Minimum": 35000,
+"Grand Total": 48243.1,
+"Room Rental": 1000,
+"Valet Parking": 1435,
+"Service Charge": 7047.4,
+"Alcoholic Beverage": 12840
+},
+"event_id": 45430224,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Nicolette Orlando & Nick Ozog Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "6/27/2026",
+"name": "Terrace Club",
+"time": "7:00 am &ndash; 3:00 pm",
+"type": "Social",
+"areas": "Terrace Club",
+"guests": 30
+},
+{
+"date": "6/27/2026",
+"name": "Nicolette Orlando & Nick Ozog Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 123
+}
+],
+"subtotal": 39786.22,
+"admin_fee": 1409.48,
+"sales_tax": 2114.22,
+"grand_total": 48243.1,
+"room_rental": 1000,
+"service_charge": 7047.4
+},
+{
+"billing": {
+"Labor": 250,
+"Subtotal": 1750,
+"Admin Fee": 75,
+"Sales Tax": 0,
+"Grand Total": 2125,
+"Room Rental": 1500,
+"Service Charge": 300
+},
+"event_id": 50198350,
+"gratuity": null,
+"schedule": [
+{
+"date": "1/22/2026",
+"name": "TASTING: Nicolette Orlando & Nick Ozog Wedding",
+"time": "6:00 pm &ndash; 8:00 pm",
+"type": null,
+"areas": "Tastings",
+"guests": 5
+},
+{
+"date": "6/27/2026",
+"name": "Terrace Club",
+"time": "7:00 am &ndash; 3:00 pm",
+"type": "Social",
+"areas": "Terrace Club",
+"guests": 30
+},
+{
+"date": "6/27/2026",
+"name": "Nicolette Orlando & Nick Ozog Wedding",
+"time": "6:00 pm &ndash; 11:00 pm",
+"type": "Wedding",
+"areas": "13th Floor - Event Space",
+"guests": 123
+}
+],
+"subtotal": 1750,
+"admin_fee": 75,
+"sales_tax": 0,
+"grand_total": 2125,
+"room_rental": 1500,
+"service_charge": 300
+},
+{
+"billing": {
+"Gratuity": 200,
+"Subtotal": 1000,
+"Admin Fee": 50,
+"Sales Tax": 60,
+"Rental Fee": 0,
+"Grand Total": 1310,
+"Alcoholic Beverage": 1000
+},
+"event_id": 59538534,
+"gratuity": 200,
+"schedule": [
+{
+"date": "6/27/2026",
+"name": "Zen Bei Butoku Kai-International - Bar Rotunda",
+"time": "6:30 pm &ndash; 7:30 pm",
+"type": "22",
+"areas": "Dinner",
+"guests": null
+}
+],
+"subtotal": 1000,
+"admin_fee": 50,
+"sales_tax": 60,
+"grand_total": 1310,
+"room_rental": 0,
+"service_charge": null
+}
+]

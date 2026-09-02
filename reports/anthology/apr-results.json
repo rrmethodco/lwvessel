@@ -1,0 +1,903 @@
+[
+ {
+  "eid": 56730231,
+  "name": "Meeting #1",
+  "date": "2026-04-01",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 8,
+  "rooms": "Business Center",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58285501,
+  "name": "Paula Arida Photoshoot",
+  "date": "2026-04-02",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58167114,
+  "name": "Opening Day Group: Kaitlin Wood",
+  "date": "2026-04-03",
+  "kind": "kampers standalone",
+  "n": 7,
+  "actual": 2397.0,
+  "svc": 451.4,
+  "adm": 112.85,
+  "net": 2961.25,
+  "guests": 16,
+  "rooms": "Kamper's Section A",
+  "base": {
+   "Kamper's": 2397.0
+  },
+  "netsplit": {
+   "Kamper's": 2961.25
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 2397.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 2397.0,
+    "svc": 451.4,
+    "adm": 112.85,
+    "net": 2961.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56677582,
+  "name": "COCKTAIL HOUR: Sydney Horlacher & Ryan Zeiter Wedding",
+  "date": "2026-04-10",
+  "kind": "rotunda standalone",
+  "n": 3,
+  "actual": 7981.0,
+  "svc": 1596.2,
+  "adm": 399.05,
+  "net": 9976.25,
+  "guests": 170,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 7981.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 9976.25
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 7981.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 7981.0,
+    "svc": 1596.2,
+    "adm": 399.05,
+    "net": 9976.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 43137166,
+  "name": "Sydney Horlacher & Ryan Zeiter Wedding",
+  "date": "2026-04-10",
+  "kind": "anthology",
+  "n": 24,
+  "actual": 29412.8,
+  "svc": 5235.56,
+  "adm": 1308.89,
+  "net": 35957.25,
+  "guests": 170,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Anthology": 29412.8
+  },
+  "netsplit": {
+   "Anthology": 35957.25
+  },
+  "cat": {
+   "Anthology|FOOD": 14120.0,
+   "Anthology|BEVERAGE": 15292.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 29412.8,
+    "svc": 5235.56,
+    "adm": 1308.89,
+    "net": 35957.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 50849996,
+  "name": "Janine Kjolhede and Tyler McMullin Wedding",
+  "date": "2026-04-11",
+  "kind": "anthology",
+  "n": 34,
+  "actual": 43907.0,
+  "svc": 8481.4,
+  "adm": 2120.35,
+  "net": 54508.75,
+  "guests": 165,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 13852.0,
+   "Anthology": 30055.0
+  },
+  "netsplit": {
+   "Kamper's": 17196.693124103218,
+   "Anthology": 37312.05687589678
+  },
+  "cat": {
+   "Kamper's|FOOD": 10004.0,
+   "Anthology|FOOD": 17988.0,
+   "Anthology|BEVERAGE": 12067.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2848.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 13852.0,
+    "svc": 2675.7544992825747,
+    "adm": 668.9386248206437,
+    "net": 17196.693124103218
+   },
+   "Anthology": {
+    "base": 30055.0,
+    "svc": 5805.645500717425,
+    "adm": 1451.4113751793564,
+    "net": 37312.05687589678
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,848 to Kamper's"
+ },
+ {
+  "eid": 56586623,
+  "name": "Terrace Club Rental : Janine Kjolhede and Tyler McMullin Wedding",
+  "date": "2026-04-11",
+  "kind": "anthology",
+  "n": 3,
+  "actual": 1634.0,
+  "svc": 276.8,
+  "adm": 69.2,
+  "net": 1980.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1634.0
+  },
+  "netsplit": {
+   "Anthology": 1980.0
+  },
+  "cat": {
+   "Anthology|FOOD": 1634.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1634.0,
+    "svc": 276.8,
+    "adm": 69.2,
+    "net": 1980.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56613517,
+  "name": "Christine Alix - Baby Shower",
+  "date": "2026-04-12",
+  "kind": "anthology",
+  "n": 30,
+  "actual": 14274.0,
+  "svc": 2179.8,
+  "adm": 544.95,
+  "net": 16998.75,
+  "guests": 65,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 14274.0
+  },
+  "netsplit": {
+   "Anthology": 16998.75
+  },
+  "cat": {
+   "Anthology|FOOD": 8226.0,
+   "Anthology|BEVERAGE": 4548.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 14274.0,
+    "svc": 2179.8,
+    "adm": 544.95,
+    "net": 16998.75
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 58637514,
+  "name": "Isho - Business Meeting",
+  "date": "2026-04-13",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1850.0,
+  "svc": 0.0,
+  "adm": 75.0,
+  "net": 1925.0,
+  "guests": 5,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1850.0
+  },
+  "netsplit": {
+   "Anthology": 1925.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1850.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1850.0,
+    "svc": 0.0,
+    "adm": 75.0,
+    "net": 1925.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58242537,
+  "name": "Lamdal Retreat Day 1",
+  "date": "2026-04-13",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 1732.0,
+  "svc": 246.4,
+  "adm": 61.6,
+  "net": 2040.0,
+  "guests": 11,
+  "rooms": "Green Room and Linden Room",
+  "base": {
+   "Anthology": 1732.0
+  },
+  "netsplit": {
+   "Anthology": 2040.0
+  },
+  "cat": {
+   "Anthology|FOOD": 1232.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1732.0,
+    "svc": 246.4,
+    "adm": 61.6,
+    "net": 2040.0
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 58242703,
+  "name": "Lamdal Retreat Day 2",
+  "date": "2026-04-14",
+  "kind": "anthology",
+  "n": 3,
+  "actual": 1358.0,
+  "svc": 171.6,
+  "adm": 42.9,
+  "net": 1572.5,
+  "guests": 11,
+  "rooms": "Green Room and Linden Room",
+  "base": {
+   "Anthology": 1358.0
+  },
+  "netsplit": {
+   "Anthology": 1572.5
+  },
+  "cat": {
+   "Anthology|FOOD": 858.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1358.0,
+    "svc": 171.6,
+    "adm": 42.9,
+    "net": 1572.5
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 58242718,
+  "name": "Lamdal Retreat Day 3",
+  "date": "2026-04-15",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 1732.0,
+  "svc": 246.4,
+  "adm": 61.6,
+  "net": 2040.0,
+  "guests": 11,
+  "rooms": "Green Room and Linden Room",
+  "base": {
+   "Anthology": 1732.0
+  },
+  "netsplit": {
+   "Anthology": 2040.0
+  },
+  "cat": {
+   "Anthology|FOOD": 1232.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1732.0,
+    "svc": 246.4,
+    "adm": 61.6,
+    "net": 2040.0
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 51283518,
+  "name": "Plan A Dinner Event",
+  "date": "2026-04-15",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 20478.0,
+  "svc": 3795.6,
+  "adm": 948.9,
+  "net": 25222.5,
+  "guests": 150,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 20478.0
+  },
+  "netsplit": {
+   "Anthology": 25222.5
+  },
+  "cat": {
+   "Anthology|FOOD": 15724.0,
+   "Anthology|BEVERAGE": 3254.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 20478.0,
+    "svc": 3795.6,
+    "adm": 948.9,
+    "net": 25222.5
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 54083290,
+  "name": "Plan A Kamper's",
+  "date": "2026-04-15",
+  "kind": "kampers standalone",
+  "n": 5,
+  "actual": 4080.0,
+  "svc": 616.0,
+  "adm": 154.0,
+  "net": 4850.0,
+  "guests": 65,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 4080.0
+  },
+  "netsplit": {
+   "Kamper's": 4850.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 4080.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 4080.0,
+    "svc": 616.0,
+    "adm": 154.0,
+    "net": 4850.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 58511090,
+  "name": "PS - Khoury",
+  "date": "2026-04-16",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 49724641,
+  "name": "Erin Badge and Ryan Bamford Wedding",
+  "date": "2026-04-17",
+  "kind": "anthology",
+  "n": 28,
+  "actual": 27882.0,
+  "svc": 5000.0,
+  "adm": 1250.0,
+  "net": 34132.0,
+  "guests": 116,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 6411.0,
+   "Anthology": 21471.0
+  },
+  "netsplit": {
+   "Kamper's": 7848.083064342587,
+   "Anthology": 26283.916935657413
+  },
+  "cat": {
+   "Kamper's|FOOD": 3364.0,
+   "Anthology|FOOD": 9993.0,
+   "Anthology|BEVERAGE": 11478.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2047.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6411.0,
+    "svc": 1149.6664514740692,
+    "adm": 287.4166128685173,
+    "net": 7848.083064342587
+   },
+   "Anthology": {
+    "base": 21471.0,
+    "svc": 3850.3335485259304,
+    "adm": 962.5833871314826,
+    "net": 26283.916935657413
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,047 to Kamper's"
+ },
+ {
+  "eid": 44857255,
+  "name": "Alaina Agnello & Jacob Lothamer  Wedding Reception",
+  "date": "2026-04-18",
+  "kind": "anthology",
+  "n": 30,
+  "actual": 31065.3,
+  "svc": 6017.06,
+  "adm": 1203.41,
+  "net": 38285.770000000004,
+  "guests": 166,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 31065.3
+  },
+  "netsplit": {
+   "Anthology": 38285.770000000004
+  },
+  "cat": {
+   "Anthology|FOOD": 18153.0,
+   "Anthology|BEVERAGE": 12912.3,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 31065.3,
+    "svc": 6017.06,
+    "adm": 1203.41,
+    "net": 38285.770000000004
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 58338912,
+  "name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+  "date": "2026-04-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 2000.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 2000.0,
+  "guests": 150,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 2000.0
+  },
+  "netsplit": {
+   "Anthology": 2000.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 2000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 2000.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 2000.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52756570,
+  "name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+  "date": "2026-04-18",
+  "kind": "rotunda standalone",
+  "n": 4,
+  "actual": 10944.7,
+  "svc": 2188.94,
+  "adm": 547.24,
+  "net": 13680.880000000001,
+  "guests": 166,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 10944.7
+  },
+  "netsplit": {
+   "Bar Rotunda": 13680.880000000001
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 10944.7
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 10944.7,
+    "svc": 2188.94,
+    "adm": 547.24,
+    "net": 13680.880000000001
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 58338330,
+  "name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+  "date": "2026-04-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 0.0,
+  "adm": 75.0,
+  "net": 1825.0,
+  "guests": 12,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 1825.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 0.0,
+    "adm": 75.0,
+    "net": 1825.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58736897,
+  "name": "Business Meeting for Stout",
+  "date": "2026-04-22",
+  "kind": "anthology",
+  "n": 16,
+  "actual": 7557.0,
+  "svc": 555.0,
+  "adm": 138.75,
+  "net": 8250.75,
+  "guests": 20,
+  "rooms": "Green Room, Linden Room, and Entertainment Suite",
+  "base": {
+   "Anthology": 7557.0
+  },
+  "netsplit": {
+   "Anthology": 8250.75
+  },
+  "cat": {
+   "Anthology|FOOD": 7557.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 7557.0,
+    "svc": 555.0,
+    "adm": 138.75,
+    "net": 8250.75
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53965807,
+  "name": "Noelle McDonald and Mark Sobodos Wedding",
+  "date": "2026-04-24",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 28589.0,
+  "svc": 5217.8,
+  "adm": 1304.45,
+  "net": 35111.25,
+  "guests": 140,
+  "rooms": "13th Floor - Event Space and Kampers Cocktail Reception",
+  "base": {
+   "Anthology": 25650.4,
+   "Kamper's": 2938.6
+  },
+  "netsplit": {
+   "Anthology": 31502.242365944945,
+   "Kamper's": 3609.0076340550563
+  },
+  "cat": {
+   "Anthology|FOOD": 13821.0,
+   "Anthology|BEVERAGE": 11829.4,
+   "Kamper's|RENTAL": 500.0,
+   "Kamper's|BEVERAGE": 2438.6,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 25650.4,
+    "svc": 4681.473892755956,
+    "adm": 1170.368473188989,
+    "net": 31502.242365944945
+   },
+   "Kamper's": {
+    "base": 2938.6,
+    "svc": 536.3261072440449,
+    "adm": 134.08152681101123,
+    "net": 3609.0076340550563
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,439 to Kamper's"
+ },
+ {
+  "eid": 54253036,
+  "name": "Terrace Club Rental: Noelle McDonald and Mark Sobodos",
+  "date": "2026-04-24",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 750.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 775.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 775.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 775.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 43355873,
+  "name": "Haley Notarantonio & Derek Engebretson Wedding",
+  "date": "2026-04-25",
+  "kind": "anthology",
+  "n": 30,
+  "actual": 38233.0,
+  "svc": 7246.6,
+  "adm": 1449.32,
+  "net": 46928.92,
+  "guests": 149,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8488.2,
+   "Anthology": 29744.8
+  },
+  "netsplit": {
+   "Kamper's": 10418.802049119871,
+   "Anthology": 36510.11795088013
+  },
+  "cat": {
+   "Kamper's|FOOD": 4321.0,
+   "Anthology|FOOD": 15163.0,
+   "Anthology|BEVERAGE": 14581.8,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 3167.2,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8488.2,
+    "svc": 1608.8350409332254,
+    "adm": 321.76700818664506,
+    "net": 10418.802049119871
+   },
+   "Anthology": {
+    "base": 29744.8,
+    "svc": 5637.764959066775,
+    "adm": 1127.552991813355,
+    "net": 36510.11795088013
+   }
+  },
+  "note": "bar pkg 1h/5h = 3,167 to Kamper's"
+ },
+ {
+  "eid": 50642419,
+  "name": "Terrace Club Rental: Haley Notarantonio & Derek Engebreston Wedding",
+  "date": "2026-04-25",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1500.0,
+  "svc": 250.0,
+  "adm": 62.5,
+  "net": 1812.5,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1500.0
+  },
+  "netsplit": {
+   "Anthology": 1812.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1500.0,
+    "svc": 250.0,
+    "adm": 62.5,
+    "net": 1812.5
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 51260194,
+  "name": "Wedding Welcome Event",
+  "date": "2026-04-25",
+  "kind": "rotunda standalone",
+  "n": 10,
+  "actual": 7502.0,
+  "svc": 1500.4,
+  "adm": 375.1,
+  "net": 9377.5,
+  "guests": 85,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 7502.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 9377.5
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 7502.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 7502.0,
+    "svc": 1500.4,
+    "adm": 375.1,
+    "net": 9377.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57098765,
+  "name": "Meeting #2",
+  "date": "2026-04-29",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 8,
+  "rooms": "Business Center",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ }
+]

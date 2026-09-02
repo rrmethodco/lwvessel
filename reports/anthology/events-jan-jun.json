@@ -1,0 +1,1132 @@
+[
+ {
+  "eid": 54269878,
+  "date": "2026-01-09",
+  "name": "Marketplace Homes",
+  "grand": 22844.78,
+  "room1": "13th Floor - Event Space",
+  "actual": 17563,
+  "guests": 95,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52751180,
+  "date": "2026-01-13",
+  "name": "Detroit Pistons Gala",
+  "grand": 95203.35,
+  "room1": "13th Floor - Event Space",
+  "actual": 75802,
+  "guests": 220,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55033391,
+  "date": "2026-01-15",
+  "name": "PS: Vania Narra",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52772781,
+  "date": "2026-01-16",
+  "name": "Auto Hauler Event",
+  "grand": 28246.2,
+  "room1": "13th Floor - Event Space",
+  "actual": 22350,
+  "guests": 75,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55543518,
+  "date": "2026-01-16",
+  "name": "Pre Dinner - Spotify",
+  "grand": 827.92,
+  "room1": "Bar Rotunda",
+  "actual": 632,
+  "guests": 12,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52201294,
+  "date": "2026-01-17",
+  "name": "Morning YOGA Class: Stephanie Nimri and Daniel Sherwood Wedding",
+  "grand": 500,
+  "room1": "Linden Room",
+  "actual": 500,
+  "guests": 27,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 49593953,
+  "date": "2026-01-17",
+  "name": "Stephanie Nimri and Daniele Sherwood Wedding",
+  "grand": 48641.22,
+  "room1": "Bar Rotunda",
+  "actual": 37772,
+  "guests": 133,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56062246,
+  "date": "2026-01-22",
+  "name": "Pop, Fizz, Clink: A Residential Happy Hour to toast the New Year",
+  "grand": 4742.2,
+  "room1": "Bar Rotunda",
+  "actual": 3620,
+  "guests": 60,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55875957,
+  "date": "2026-01-22",
+  "name": "PS: Elaine Donnelly",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 49460021,
+  "date": "2026-01-23",
+  "name": "Boston Consulting Group",
+  "grand": 7882.13,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 6108,
+  "guests": 50,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56036135,
+  "date": "2026-01-26",
+  "name": "PS: Lena Nishanian",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55809150,
+  "date": "2026-01-29",
+  "name": "PS: Maggie Tanton",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53134906,
+  "date": "2026-01-31",
+  "name": "Zausmer Dinner",
+  "grand": 14431.48,
+  "room1": "Conservatory Ballroom",
+  "actual": 11143,
+  "guests": 48,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53134824,
+  "date": "2026-01-31",
+  "name": "Zausmer Meeting",
+  "grand": 4935,
+  "room1": "Linden Room",
+  "actual": 3551,
+  "guests": 31,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56435522,
+  "date": "2026-02-02",
+  "name": "PS: Kim Dante",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55094599,
+  "date": "2026-02-05",
+  "name": "Rachel  Lachover- Hillel Day School Alumni Event",
+  "grand": 8897.5,
+  "room1": "Bar Rotunda",
+  "actual": 7118,
+  "guests": 70,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 54574983,
+  "date": "2026-02-07",
+  "name": "Allie Quigley & Kyle Pennington Wedding",
+  "grand": 4392.36,
+  "room1": "Linden Room",
+  "actual": 3984.06,
+  "guests": 32,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56085758,
+  "date": "2026-02-10",
+  "name": "Lithia Automotive Regional Service Meeting",
+  "grand": 11772.5,
+  "room1": "13th Floor - Event Space",
+  "actual": 10145,
+  "guests": 70,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56085926,
+  "date": "2026-02-11",
+  "name": "Lithia Automotive Meeting Day 2",
+  "grand": 12213.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 9560,
+  "guests": 80,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50649485,
+  "date": "2026-02-14",
+  "name": "Welcome Event Jennifer Dailey & Tom Myler",
+  "grand": 10390.55,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 8405,
+  "guests": 68,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50978727,
+  "date": "2026-02-15",
+  "name": "PS: Jennifer Dailey & Tom Myler",
+  "grand": 787.5,
+  "room1": "Photography",
+  "actual": 750,
+  "guests": 3,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56979224,
+  "date": "2026-02-17",
+  "name": "PS: Vignesh Sastri and Greeshma Chapalamadugu",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 51652764,
+  "date": "2026-02-19",
+  "name": "TechChange Corporate workshop",
+  "grand": 12755,
+  "room1": "13th Floor - Event Space",
+  "actual": 10021,
+  "guests": 60,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55892886,
+  "date": "2026-02-21",
+  "name": "Samantha Champion and Ergun Kocak Wedding",
+  "grand": 26849.44,
+  "room1": "13th Floor - Event Space",
+  "actual": 21324,
+  "guests": 79,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56129431,
+  "date": "2026-02-24",
+  "name": "GM Event: Lin - Hua Wu",
+  "grand": 5724.38,
+  "room1": "Terrace Club",
+  "actual": 4606.4,
+  "guests": 32,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56613897,
+  "date": "2026-02-24",
+  "name": "PS: Rachel Anderson",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55892957,
+  "date": "2026-02-26",
+  "name": "Couples Learning Event for EO Detroit Entrepreneurs Organization",
+  "grand": 5990,
+  "room1": "Linden Room",
+  "actual": 4892,
+  "guests": 40,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56471527,
+  "date": "2026-02-26",
+  "name": "Networking reception",
+  "grand": 8732.3,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 7080,
+  "guests": 65,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 48795781,
+  "date": "2026-02-27",
+  "name": "AE Collab with Dinner with Will",
+  "grand": 8253,
+  "room1": "13th Floor - Event Space",
+  "actual": 6300,
+  "guests": 80,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53919316,
+  "date": "2026-02-28",
+  "name": "100th Anniversary Event",
+  "grand": 12228.9,
+  "room1": "13th Floor - Event Space",
+  "actual": 9690,
+  "guests": 44,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57154319,
+  "date": "2026-02-28",
+  "name": "Book Tower 100 Year Cookies For Residents",
+  "grand": 503.5,
+  "room1": "The Study",
+  "actual": 475,
+  "guests": 100,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55853921,
+  "date": "2026-03-04",
+  "name": "International Women's Day Event",
+  "grand": 9003.64,
+  "room1": "Linden Room",
+  "actual": 7099,
+  "guests": 32,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57334216,
+  "date": "2026-03-05",
+  "name": "PS; Bassam George",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 61610188,
+  "date": "2026-03-05",
+  "name": "Terrace Club : Harvey & Austin Davis Wedding",
+  "grand": 525,
+  "room1": "Terrace Club",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52193217,
+  "date": "2026-03-06",
+  "name": "ACG Detroit | 2026 Inspire & Ignite Luncheon",
+  "grand": 17653,
+  "room1": "13th Floor - Event Space",
+  "actual": 14503,
+  "guests": 107,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57116184,
+  "date": "2026-03-06",
+  "name": "Cocktail Hour: Private Dining Dinner",
+  "grand": 406.1,
+  "room1": "Bar Rotunda",
+  "actual": 310,
+  "guests": 11,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57225464,
+  "date": "2026-03-11",
+  "name": "Detroit Piston's Meeting",
+  "grand": 3533.25,
+  "room1": "Linden Room",
+  "actual": 2890,
+  "guests": 9,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57154374,
+  "date": "2026-03-12",
+  "name": "Bedrock Residential Event -313 Day",
+  "grand": 8846.43,
+  "room1": "Bar Rotunda",
+  "actual": 6753,
+  "guests": 100,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 51437594,
+  "date": "2026-03-13",
+  "name": "Bridal Shower",
+  "grand": 8747.97,
+  "room1": "Linden Room",
+  "actual": 7107.34,
+  "guests": 28,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56150793,
+  "date": "2026-03-22",
+  "name": "Baptism",
+  "grand": 16500.56,
+  "room1": "13th Floor - Event Space",
+  "actual": 13450.12,
+  "guests": 116,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52986361,
+  "date": "2026-03-26",
+  "name": "Detroit Lions Off site business meeting",
+  "grand": 4032.41,
+  "room1": "Linden Room",
+  "actual": 3161,
+  "guests": 20,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52440616,
+  "date": "2026-03-27",
+  "name": "Kim Henry & Conrad Hawk Wedding",
+  "grand": 23818.68,
+  "room1": "13th Floor - Event Space",
+  "actual": 18773.8,
+  "guests": 89,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56269046,
+  "date": "2026-03-27",
+  "name": "Kim Henry & Conrad Hawk Wedding Cocktail Hour",
+  "grand": 6838.93,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 5457.2,
+  "guests": 89,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56730231,
+  "date": "2026-04-01",
+  "name": "Meeting #1",
+  "grand": 525,
+  "room1": "Business Center",
+  "actual": 500,
+  "guests": 8,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58285501,
+  "date": "2026-04-02",
+  "name": "Paula Arida Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58167114,
+  "date": "2026-04-03",
+  "name": "Opening Day Group: Kaitlin Wood",
+  "grand": 3096.67,
+  "room1": "Kamper's Section A",
+  "actual": 2397,
+  "guests": 16,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56677582,
+  "date": "2026-04-10",
+  "name": "COCKTAIL HOUR: Sydney Horlacher & Ryan Zeiter Wedding",
+  "grand": 10455.11,
+  "room1": "Bar Rotunda",
+  "actual": 7981,
+  "guests": 170,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 43137166,
+  "date": "2026-04-10",
+  "name": "Sydney Horlacher & Ryan Zeiter Wedding",
+  "grand": 37527.92,
+  "room1": "Bar Rotunda",
+  "actual": 29412.8,
+  "guests": 170,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50849996,
+  "date": "2026-04-11",
+  "name": "Janine Kjolhede and Tyler McMullin Wedding",
+  "grand": 57053.17,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 43907,
+  "guests": 165,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56586623,
+  "date": "2026-04-11",
+  "name": "Terrace Club Rental : Janine Kjolhede and Tyler McMullin Wedding",
+  "grand": 2003.04,
+  "room1": "Terrace Club",
+  "actual": 1634,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 56613517,
+  "date": "2026-04-12",
+  "name": "Christine Alix - Baby Shower",
+  "grand": 17652.69,
+  "room1": "13th Floor - Event Space",
+  "actual": 14274,
+  "guests": 65,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58637514,
+  "date": "2026-04-13",
+  "name": "Isho - Business Meeting",
+  "grand": 1925,
+  "room1": "Terrace Club",
+  "actual": 1850,
+  "guests": 5,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58242537,
+  "date": "2026-04-13",
+  "name": "Lamdal Retreat Day 1",
+  "grand": 2113.92,
+  "room1": "Linden Room",
+  "actual": 1732,
+  "guests": 11,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58242703,
+  "date": "2026-04-14",
+  "name": "Lamdal Retreat Day 2",
+  "grand": 1623.98,
+  "room1": "Green Room",
+  "actual": 1358,
+  "guests": 11,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58242718,
+  "date": "2026-04-15",
+  "name": "Lamdal Retreat Day 3",
+  "grand": 2113.92,
+  "room1": "Green Room",
+  "actual": 1732,
+  "guests": 11,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 51283518,
+  "date": "2026-04-15",
+  "name": "Plan A Dinner Event",
+  "grand": 26361.18,
+  "room1": "13th Floor - Event Space",
+  "actual": 20478,
+  "guests": 150,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 54083290,
+  "date": "2026-04-15",
+  "name": "Plan A Kamper's",
+  "grand": 5034.8,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 4080,
+  "guests": 65,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58511090,
+  "date": "2026-04-16",
+  "name": "PS - Khoury",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 49724641,
+  "date": "2026-04-17",
+  "name": "Erin Badge and Ryan Bamford Wedding",
+  "grand": 36250,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 27882,
+  "guests": 116,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 44857255,
+  "date": "2026-04-18",
+  "name": "Alaina Agnello & Jacob Lothamer  Wedding Reception",
+  "grand": 40090.89,
+  "room1": "13th Floor - Event Space",
+  "actual": 31065.3,
+  "guests": 166,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58338912,
+  "date": "2026-04-18",
+  "name": "Ceremony: Alaina Agnello & Jacob Lothamer Wedding Ceremony",
+  "grand": 2000,
+  "room1": "Linden Room",
+  "actual": 2000,
+  "guests": 150,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52756570,
+  "date": "2026-04-18",
+  "name": "Cocktail Hour: Alaina Agnello & Jacob Lothamer Wedding",
+  "grand": 14337.56,
+  "room1": "Bar Rotunda",
+  "actual": 10944.7,
+  "guests": 166,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58338330,
+  "date": "2026-04-18",
+  "name": "Terrace Club: Alaina Agnello and Jacob Lothamer Wedding",
+  "grand": 1825,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": 12,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58736897,
+  "date": "2026-04-22",
+  "name": "Business Meeting for Stout",
+  "grand": 8417.25,
+  "room1": "Linden Room",
+  "actual": 7557,
+  "guests": 20,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53965807,
+  "date": "2026-04-24",
+  "name": "Noelle McDonald and Mark Sobodos Wedding",
+  "grand": 36676.59,
+  "room1": "13th Floor - Event Space",
+  "actual": 28589,
+  "guests": 140,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 54253036,
+  "date": "2026-04-24",
+  "name": "Terrace Club Rental: Noelle McDonald and Mark Sobodos",
+  "grand": 775,
+  "room1": "Terrace Club",
+  "actual": 750,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 43355873,
+  "date": "2026-04-25",
+  "name": "Haley Notarantonio & Derek Engebretson Wedding",
+  "grand": 49102.9,
+  "room1": "13th Floor - Event Space",
+  "actual": 38233,
+  "guests": 149,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50642419,
+  "date": "2026-04-25",
+  "name": "Terrace Club Rental: Haley Notarantonio & Derek Engebreston Wedding",
+  "grand": 1812.5,
+  "room1": "Terrace Club",
+  "actual": 1500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 51260194,
+  "date": "2026-04-25",
+  "name": "Wedding Welcome Event",
+  "grand": 9827.62,
+  "room1": "Bar Rotunda",
+  "actual": 7502,
+  "guests": 85,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57098765,
+  "date": "2026-04-29",
+  "name": "Meeting #2",
+  "grand": 525,
+  "room1": "Business Center",
+  "actual": 500,
+  "guests": 8,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52110112,
+  "date": "2026-06-01",
+  "name": "International Academy Prom",
+  "grand": 24468.75,
+  "room1": "13th Floor - Event Space",
+  "actual": 19945,
+  "guests": 155,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59093609,
+  "date": "2026-06-02",
+  "name": "Colab AI - Happy Hour",
+  "grand": 15383.8,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 11980,
+  "guests": 60,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 60172960,
+  "date": "2026-06-02",
+  "name": "Kasmikha Engagement Pictures",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": 5,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59257152,
+  "date": "2026-06-03",
+  "name": "Identity PR Reception",
+  "grand": 19060,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 15340,
+  "guests": 32,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57098781,
+  "date": "2026-06-03",
+  "name": "Meeting #3",
+  "grand": 525,
+  "room1": "Business Center",
+  "actual": 500,
+  "guests": 8,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57325321,
+  "date": "2026-06-03",
+  "name": "PS: Yahaira David",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 45505097,
+  "date": "2026-06-05",
+  "name": "Kaley Willaert & Shane Eberle Wedding",
+  "grand": 35640,
+  "room1": "13th Floor - Event Space",
+  "actual": 28140,
+  "guests": 87,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 42213260,
+  "date": "2026-06-06",
+  "name": "Amy Wilson & Kevin Hodges Wedding",
+  "grand": 49186.9,
+  "room1": "13th Floor - Event Space",
+  "actual": 38583,
+  "guests": 136,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59772144,
+  "date": "2026-06-07",
+  "name": "CEREMONY: Chloe Reed & Jacob Sauter Wedding",
+  "grand": 2000,
+  "room1": "Linden Room",
+  "actual": 2000,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 45269250,
+  "date": "2026-06-07",
+  "name": "Chloe Reed & Jacob Sauter Wedding",
+  "grand": 29860.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 23242,
+  "guests": 132,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52757639,
+  "date": "2026-06-07",
+  "name": "COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedding",
+  "grand": 8906.11,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 7035.2,
+  "guests": 132,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57626992,
+  "date": "2026-06-07",
+  "name": "TERRACE CLUB: Chloe Reed & Jacob Sauter Wedding",
+  "grand": 2125,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59327698,
+  "date": "2026-06-09",
+  "name": "Benacquista - Photo Session",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59122129,
+  "date": "2026-06-10",
+  "name": "Team Wellness Center - Meeting & Dinner",
+  "grand": 4303.48,
+  "room1": "Linden Room",
+  "actual": 3433,
+  "guests": 26,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59974145,
+  "date": "2026-06-11",
+  "name": "Fravel Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53782154,
+  "date": "2026-06-11",
+  "name": "HFHS Dinner - Resident Graduation",
+  "grand": 38684.5,
+  "room1": "13th Floor - Event Space",
+  "actual": 32236,
+  "guests": 108,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59559106,
+  "date": "2026-06-11",
+  "name": "Quosto - Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 52757769,
+  "date": "2026-06-12",
+  "name": "Gabrielle Broche & Brandon Eklund Cocktail Hour",
+  "grand": 8386.3,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 6638.4,
+  "guests": 124,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 43061287,
+  "date": "2026-06-12",
+  "name": "Gabrielle Broche & Brandon Eklund Wedding",
+  "grand": 29422.08,
+  "room1": "13th Floor - Event Space",
+  "actual": 22836.6,
+  "guests": 124,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 45636634,
+  "date": "2026-06-13",
+  "name": "Elizabeth DiMauro & Chris Corbin Reception",
+  "grand": 53051.4,
+  "room1": "13th Floor - Event Space",
+  "actual": 41238,
+  "guests": 149,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 55083142,
+  "date": "2026-06-13",
+  "name": "TERRACE CLUB: Elizabeth DiMauro & Chris Corbin Wedding Reception",
+  "grand": 2500,
+  "room1": "Terrace Club",
+  "actual": 2050,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 60299176,
+  "date": "2026-06-15",
+  "name": "Spurlock - REINDUSTRIALIZE",
+  "grand": 787.5,
+  "room1": "Business Center",
+  "actual": 750,
+  "guests": 8,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57843807,
+  "date": "2026-06-16",
+  "name": "DT Midstream Kampers Reception",
+  "grand": 9828.3,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 7680,
+  "guests": 70,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57752356,
+  "date": "2026-06-16",
+  "name": "DT Midstream Meeting Day #1",
+  "grand": 19549.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 17206,
+  "guests": 70,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59471004,
+  "date": "2026-06-17",
+  "name": "640 Oxford Breakfast Event",
+  "grand": 3673.5,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 3100,
+  "guests": 50,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 57843884,
+  "date": "2026-06-17",
+  "name": "DT Midstream Meeting Day #2",
+  "grand": 11003.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 8660,
+  "guests": 70,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58649125,
+  "date": "2026-06-18",
+  "name": "Carlisle - Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 40645212,
+  "date": "2026-06-18",
+  "name": "Donna Davila & Brian Falther Wedding",
+  "grand": 32128.3,
+  "room1": "13th Floor - Event Space",
+  "actual": 25471,
+  "guests": 101,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50199964,
+  "date": "2026-06-19",
+  "name": "Josh Kirsch & Teng Alele Wedding",
+  "grand": 39244.78,
+  "room1": "13th Floor - Event Space",
+  "actual": 30553,
+  "guests": 104,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 41946577,
+  "date": "2026-06-20",
+  "name": "Delaney Obrien & Brandon Goocher Wedding",
+  "grand": 52168.2,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 40849,
+  "guests": 159,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53718358,
+  "date": "2026-06-20",
+  "name": "TERRACE CLUB: Delaney Obrien & Brandon Goocher Wedding",
+  "grand": 1690.54,
+  "room1": "Terrace Club",
+  "actual": 1384,
+  "guests": 12,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 53122167,
+  "date": "2026-06-21",
+  "name": "Brunch",
+  "grand": 6050.68,
+  "room1": "Conservatory Ballroom",
+  "actual": 5438,
+  "guests": 90,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58582527,
+  "date": "2026-06-22",
+  "name": "Photo Session - FM Visuals",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 60322520,
+  "date": "2026-06-23",
+  "name": "Tenant Experience Resident Event",
+  "grand": 664.89,
+  "room1": "Terrace Club",
+  "actual": 599,
+  "guests": 100,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58760990,
+  "date": "2026-06-24",
+  "name": "Angelina - Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 60118110,
+  "date": "2026-06-24",
+  "name": "Hleis Photoshoot",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 58064896,
+  "date": "2026-06-25",
+  "name": "Project for Public Spaces VIP Happy Hour",
+  "grand": 7550,
+  "room1": "Kampers Bar - Inside",
+  "actual": 4050,
+  "guests": 50,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 60731818,
+  "date": "2026-06-26",
+  "name": "Business Center Reservation",
+  "grand": 525,
+  "room1": "Business Center",
+  "actual": 500,
+  "guests": 8,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 46415605,
+  "date": "2026-06-26",
+  "name": "Lauren Guziak & Steve Ording Wedding",
+  "grand": 41169.51,
+  "room1": "Kampers Bar - Inside",
+  "actual": 32421,
+  "guests": 119,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 54486272,
+  "date": "2026-06-26",
+  "name": "TERRACE CLUB: Lauren Guziak and Steve Ording Wedding",
+  "grand": 1812.5,
+  "room1": "Terrace Club",
+  "actual": 1500,
+  "guests": null,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 45430224,
+  "date": "2026-06-27",
+  "name": "Nicolette Orlando & Nick Ozog Wedding",
+  "grand": 48243.1,
+  "room1": "13th Floor - Event Space",
+  "actual": 37672,
+  "guests": 123,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 50198350,
+  "date": "2026-06-27",
+  "name": "Terrace Club",
+  "grand": 2125,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": 30,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 59538534,
+  "date": "2026-06-27",
+  "name": "Zen Bei Butoku Kai-International - Bar Rotunda",
+  "grand": 1310,
+  "room1": "Bar Rotunda",
+  "actual": 1000,
+  "guests": 22,
+  "status": "CLOSED"
+ }
+]

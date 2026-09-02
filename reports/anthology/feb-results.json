@@ -1,0 +1,558 @@
+[
+ {
+  "eid": 56435522,
+  "name": "PS: Kim Dante",
+  "date": "2026-02-02",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 55094599,
+  "name": "Rachel  Lachover- Hillel Day School Alumni Event",
+  "date": "2026-02-05",
+  "kind": "rotunda standalone",
+  "n": 9,
+  "actual": 7118.0,
+  "svc": 0.0,
+  "adm": 355.9,
+  "net": 7473.9,
+  "guests": 70,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 7118.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 7473.9
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 7118.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 7118.0,
+    "svc": 0.0,
+    "adm": 355.9,
+    "net": 7473.9
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 54574983,
+  "name": "Allie Quigley & Kyle Pennington Wedding",
+  "date": "2026-02-07",
+  "kind": "anthology",
+  "n": 20,
+  "actual": 3984.06,
+  "svc": 586.0,
+  "adm": 146.5,
+  "net": 4716.5599999999995,
+  "guests": 32,
+  "rooms": "Conservatory Ballroom and Linden Room",
+  "base": {
+   "Anthology": 3984.06
+  },
+  "netsplit": {
+   "Anthology": 4716.5599999999995
+  },
+  "cat": {
+   "Anthology|FOOD": 2930.0,
+   "Anthology|BEVERAGE": 1054.06,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3984.06,
+    "svc": 586.0,
+    "adm": 146.5,
+    "net": 4716.5599999999995
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56085758,
+  "name": "Lithia Automotive Regional Service Meeting",
+  "date": "2026-02-10",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 10145.0,
+  "svc": 1050.0,
+  "adm": 262.5,
+  "net": 11457.5,
+  "guests": 70,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 10145.0
+  },
+  "netsplit": {
+   "Anthology": 11457.5
+  },
+  "cat": {
+   "Anthology|FOOD": 3360.0,
+   "Anthology|BEVERAGE": 6785.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 10145.0,
+    "svc": 1050.0,
+    "adm": 262.5,
+    "net": 11457.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56085926,
+  "name": "Lithia Automotive Meeting Day 2",
+  "date": "2026-02-11",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 9560.0,
+  "svc": 1712.0,
+  "adm": 428.0,
+  "net": 11700.0,
+  "guests": 80,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 9560.0
+  },
+  "netsplit": {
+   "Anthology": 11700.0
+  },
+  "cat": {
+   "Anthology|FOOD": 6400.0,
+   "Anthology|BEVERAGE": 3160.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 9560.0,
+    "svc": 1712.0,
+    "adm": 428.0,
+    "net": 11700.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 50649485,
+  "name": "Welcome Event Jennifer Dailey & Tom Myler",
+  "date": "2026-02-14",
+  "kind": "kampers standalone",
+  "n": 11,
+  "actual": 8405.0,
+  "svc": 1281.0,
+  "adm": 320.25,
+  "net": 10006.25,
+  "guests": 68,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8405.0
+  },
+  "netsplit": {
+   "Kamper's": 10006.25
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 8405.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8405.0,
+    "svc": 1281.0,
+    "adm": 320.25,
+    "net": 10006.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 50978727,
+  "name": "PS: Jennifer Dailey & Tom Myler",
+  "date": "2026-02-15",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 750.0,
+  "svc": 0.0,
+  "adm": 37.5,
+  "net": 787.5,
+  "guests": 3,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 787.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 0.0,
+    "adm": 37.5,
+    "net": 787.5
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 56979224,
+  "name": "PS: Vignesh Sastri and Greeshma Chapalamadugu",
+  "date": "2026-02-17",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 51652764,
+  "name": "TechChange Corporate workshop",
+  "date": "2026-02-19",
+  "kind": "anthology",
+  "n": 18,
+  "actual": 10021.0,
+  "svc": 1400.0,
+  "adm": 350.0,
+  "net": 11771.0,
+  "guests": 60,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 10021.0
+  },
+  "netsplit": {
+   "Anthology": 11771.0
+  },
+  "cat": {
+   "Anthology|FOOD": 3880.0,
+   "Anthology|BEVERAGE": 6141.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 10021.0,
+    "svc": 1400.0,
+    "adm": 350.0,
+    "net": 11771.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 55892886,
+  "name": "Samantha Champion and Ergun Kocak Wedding",
+  "date": "2026-02-21",
+  "kind": "anthology",
+  "n": 32,
+  "actual": 21324.0,
+  "svc": 3564.8,
+  "adm": 891.2,
+  "net": 25780.0,
+  "guests": 79,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 4523.8,
+   "Anthology": 16800.2
+  },
+  "netsplit": {
+   "Kamper's": 5469.122303507785,
+   "Anthology": 20310.877696492218
+  },
+  "cat": {
+   "Kamper's|FOOD": 2291.0,
+   "Anthology|FOOD": 9069.0,
+   "Anthology|BEVERAGE": 7731.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1232.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 4523.8,
+    "svc": 756.2578428062278,
+    "adm": 189.06446070155695,
+    "net": 5469.122303507785
+   },
+   "Anthology": {
+    "base": 16800.2,
+    "svc": 2808.5421571937727,
+    "adm": 702.1355392984432,
+    "net": 20310.877696492218
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,233 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 56129431,
+  "name": "GM Event: Lin - Hua Wu",
+  "date": "2026-02-24",
+  "kind": "anthology",
+  "n": 7,
+  "actual": 4606.4,
+  "svc": 721.28,
+  "adm": 180.32,
+  "net": 5507.999999999999,
+  "guests": 32,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 4606.4
+  },
+  "netsplit": {
+   "Anthology": 5507.999999999999
+  },
+  "cat": {
+   "Anthology|FOOD": 2006.4,
+   "Anthology|BEVERAGE": 2600.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 4606.4,
+    "svc": 721.28,
+    "adm": 180.32,
+    "net": 5507.999999999999
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56613897,
+  "name": "PS: Rachel Anderson",
+  "date": "2026-02-24",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 55892957,
+  "name": "Couples Learning Event for EO Detroit Entrepreneurs Organization",
+  "date": "2026-02-26",
+  "kind": "anthology",
+  "n": 15,
+  "actual": 4892.0,
+  "svc": 878.4,
+  "adm": 219.6,
+  "net": 5990.0,
+  "guests": 40,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 4892.0
+  },
+  "netsplit": {
+   "Anthology": 5990.0
+  },
+  "cat": {
+   "Anthology|FOOD": 3680.0,
+   "Anthology|BEVERAGE": 1212.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 4892.0,
+    "svc": 878.4,
+    "adm": 219.6,
+    "net": 5990.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56471527,
+  "name": "Networking reception",
+  "date": "2026-02-26",
+  "kind": "kampers standalone",
+  "n": 6,
+  "actual": 7080.0,
+  "svc": 1066.0,
+  "adm": 266.5,
+  "net": 8412.5,
+  "guests": 65,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 7080.0
+  },
+  "netsplit": {
+   "Kamper's": 8412.5
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 7080.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7080.0,
+    "svc": 1066.0,
+    "adm": 266.5,
+    "net": 8412.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 48795781,
+  "name": "AE Collab with Dinner with Will",
+  "date": "2026-02-27",
+  "kind": "anthology",
+  "n": 10,
+  "actual": 6300.0,
+  "svc": 1260.0,
+  "adm": 315.0,
+  "net": 7875.0,
+  "guests": 80,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 6300.0
+  },
+  "netsplit": {
+   "Anthology": 7875.0
+  },
+  "cat": {
+   "Anthology|FOOD": 6300.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 6300.0,
+    "svc": 1260.0,
+    "adm": 315.0,
+    "net": 7875.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53919316,
+  "name": "100th Anniversary Event",
+  "date": "2026-02-28",
+  "kind": "anthology",
+  "n": 21,
+  "actual": 9690.0,
+  "svc": 1638.0,
+  "adm": 409.5,
+  "net": 11737.5,
+  "guests": 44,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 9690.0
+  },
+  "netsplit": {
+   "Anthology": 11737.5
+  },
+  "cat": {
+   "Anthology|FOOD": 7260.0,
+   "Anthology|BEVERAGE": 2430.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 9690.0,
+    "svc": 1638.0,
+    "adm": 409.5,
+    "net": 11737.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57154319,
+  "name": "Book Tower 100 Year Cookies For Residents",
+  "date": "2026-02-28",
+  "kind": "anthology",
+  "n": 1,
+  "actual": 475.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 475.0,
+  "guests": 100,
+  "rooms": "The Study",
+  "base": {
+   "Anthology": 475.0
+  },
+  "netsplit": {
+   "Anthology": 475.0
+  },
+  "cat": {
+   "Anthology|FOOD": 475.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 475.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 475.0
+   }
+  },
+  "note": ""
+ }
+]
