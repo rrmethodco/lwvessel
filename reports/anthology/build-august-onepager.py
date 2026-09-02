@@ -26,20 +26,17 @@ rows=[
  row('Food',cat(A,'FOOD'),f0(TA['food']),cat(K,'FOOD'),'',0),
  row('Beverage',cat(A,'BEVERAGE'),f0(TA['bev'])+'*',cat(K,'BEVERAGE'),'',0),
  row("Rental &amp; fees",cat(A,'RENTAL'),f0(TA['fees'])+'*',cat(K,'RENTAL'),f0(TK['rental']),0),
- row("Standalone Kamper's / Rotunda events",0,'',cat(K,'UNITEMISED'),'',cat(RO,'UNITEMISED')),
+ row("Standalone rooftop / Rotunda events",0,'',cat(K,'UNITEMISED'),'',cat(RO,'UNITEMISED')),
  row('Base revenue (Event Actual)',an['base'],f0(TA['base']),km['base'],f0(TK['base']),ro['base'],True),
  row('Service charge',an['svc'],f0(TA['svc']),km['svc'],f0(TK['svcgrat'])+'†',ro['svc']),
  row('Admin fee',an['adm'],f0(TA['adm']),km['adm'],f0(TK['adm']),ro['adm']),
- row('Net revenue (grand total less tax &amp; gratuity)',an['net'],f0(TA['net']),km['net'],f0(TK['net']),ro['net'],True),
- row('Sales tax',an['tax'],f0(TA['tax']),km['tax'],f0(TK['tax']),ro['tax']),
- row('Gratuity',an['grat'],'',km['grat'],'†',ro['grat']),
- row('Grand total',an['grand'],'',km['grand'],'',ro['grand'],True),
+ row('Net revenue',an['net'],f0(TA['net']),km['net'],f0(TK['net']),ro['net'],True),
 ]
 CSS=open('corporate-social-2026.html').read().split('<style>')[1].split('</style>')[0]
 H=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Anthology &amp; Kamper's — August 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>{CSS}
-td.tst{{color:var(--text-3)}} th.tst{{color:#4f6a8a}} .cards{{margin-bottom:14px}} table{{font-size:11px}} th,td{{padding:5px 7px}}
+td.tst{{color:var(--text-3)}} th.tst{{color:#4f6a8a}} .cards{{margin-bottom:14px}} table{{font-size:10.4px}} th,td{{padding:5px 5px;white-space:nowrap}} th{{font-size:8px;letter-spacing:.05em}}
 .note{{font-size:10.6px;line-height:1.5;color:var(--text-2);margin:0 0 8px;max-width:none}} .note strong{{color:var(--text)}}
 .cols{{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}}
 </style></head><body>
@@ -52,16 +49,16 @@ td.tst{{color:var(--text-3)}} th.tst{{color:#4f6a8a}} .cards{{margin-bottom:14px
 <div class="card"><div class="label">Kamper's · event net</div><div class="value">${f0(km['net'])}</div><div class="sub">Toast A/R ${f0(TK['net'])} · {km['net']-TK['net']:+,.0f} ({100*(km['net']-TK['net'])/TK['net']:+.1f}%)</div></div>
 <div class="card"><div class="label">Kamper's share · shared weddings</div><div class="value">{100*sh_k/sh_net:.1f}%</div><div class="sub">vs the 20% convention · {len(shared)} weddings</div></div>
 </div>
-<table><thead><tr><th></th><th>Anthology</th><th class="tst">Toast Anthology</th><th>Kamper's</th><th class="tst">Toast Kamper's</th><th>Bar Rotunda</th><th>Book Tower events</th></tr></thead>
+<table><thead><tr><th></th><th>Anthology</th><th class="tst">Toast</th><th>Kamper's</th><th class="tst">Toast</th><th>Bar Rotunda</th><th>Total</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table>
-<p class="note" style="margin-top:-2px">Toast columns are the Anthology Events POS net sales and Kamper's A/R TripleSeat payments for August. * Toast keys bar packages across Liquor / Wine / Beer and rings ceremony, deposit and valet lines as Misc. Guest Fees, so beverage and fees only reconcile as a pair (${f0(cat(A,'BEVERAGE')+cat(A,'RENTAL'))} vs ${f0(TA['bev']+TA['fees'])}). † Kamper's A/R carries service charge and gratuity together in one column. Bar Rotunda has no POS report to compare.</p>
+<p class="note" style="margin-top:-2px">Toast columns sit beside the outlet they check: Anthology Events POS net sales, and Kamper's A/R TripleSeat payments. Total is all Book Tower events (Le Suprême / HIROKI-SAN excluded). * Toast keys bar packages across Liquor / Wine / Beer and rings ceremony, deposit and valet lines as Misc. Guest Fees, so beverage and fees only reconcile as a pair (${f0(cat(A,'BEVERAGE')+cat(A,'RENTAL'))} vs ${f0(TA['bev']+TA['fees'])}). † Kamper's A/R reports service charge and gratuity as one figure. Bar Rotunda has no POS report to compare.</p>
 <div class="cols">
 <div>
-<p class="note"><strong>What was done.</strong> Tripleseat exposes no line items through its API, so every August event's invoice document was pulled and parsed. Each line follows the BEO's room header (KAMPERS, Kamper's Rooftop, Conservatory, Linden Room), a line that names Kamper's or Bar Rotunda goes to that outlet regardless, and standalone rooftop or Rotunda events stay 100% with their outlet. Service charge, admin fee, tax and gratuity are each outlet's share of the event's own charges, in proportion to base. Le Suprême and HIROKI-SAN private dining rows are their own book and are excluded.</p>
+<p class="note"><strong>What was done.</strong> Tripleseat exposes no line items through its API, so every August event's invoice document was pulled and parsed. Each line follows the BEO's room header (KAMPERS, Kamper's Rooftop, Conservatory, Linden Room), a line that names Kamper's or Bar Rotunda goes to that outlet regardless, and standalone rooftop or Rotunda events stay 100% with their outlet. Service charge and admin fee are each outlet's share of the event's own charges, in proportion to base. Sales tax and gratuity are excluded throughout. Le Suprême and HIROKI-SAN private dining rows are their own book and are excluded.</p>
 <p class="note"><strong>Anthology's August is ${f0(an['net'])} net, ${f0(an['base'])} before service charge and admin fee.</strong> That lands within ${f0(abs(an['net']-TA['net']))} of Toast, and service charge and admin fee tie on both sides (${f0(an['svc']+an['adm'])} vs ${f0(TA['svc']+TA['adm'])}). The 80/20 convention would have reported Anthology at roughly ${f0(an['net']+sh_k-.2*sh_net)}.</p>
 </div>
 <div>
-<p class="note"><strong>Kamper's takes more than 20% of a shared wedding.</strong> It carries the canapés, its $1,000/hour reception fee and the cocktail hour of the five-hour bar package. With the bar hour included, six of seven weddings tie to Toast within $800 and Kamper's admin fee, rental fee and tax each land within $30 of its POS. Actual share runs 23–33%, averaging {100*sh_k/sh_net:.1f}%: the convention understates Kamper's by ${f0(sh_k-.2*sh_net)} for the month.</p>
+<p class="note"><strong>Kamper's takes more than 20% of a shared wedding.</strong> It carries the canapés, its $1,000/hour reception fee and the cocktail hour of the five-hour bar package. With the bar hour included, six of seven weddings tie to Toast within $800 and Kamper's admin fee and rental fee land within $30 of its POS. Actual share runs 23–33%, averaging {100*sh_k/sh_net:.1f}%: the convention understates Kamper's by ${f0(sh_k-.2*sh_net)} for the month.</p>
 <p class="note"><strong>Two things to fix at source.</strong> Megan Hannigan (8/22) has no Kamper's header on her BEO at all; Toast Anthology is short by exactly her canapés and seafood tower, so this report moves them to Kamper's. And Kamper's ${f0(TK['net']-km['net'])} shortfall to Toast sits in the three standalone rooftop events whose BEOs were not itemised; fetching them would close it. The six-page version carries the per-event, daily and category detail.</p>
 </div>
 </div>
