@@ -1,0 +1,554 @@
+<title>Mulherin's Event Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f4f6fa; --surface:#ffffff; --surface-2:#f1f4f9; --surface-3:#e9eef6;
+  --ink:#15223b; --ink-soft:#33415a; --muted:#61708a; --faint:#8b98ac;
+  --accent:#2f5488; --accent-2:#3c5a86; --accent-soft:#e7eef8; --on-accent:#fff;
+  --border:#e0e6ef; --border-2:#d2dae6;
+  --prospect:#3c5a86; --tentative:#b98029; --definite:#1c7c4d; --closed:#146c41; --lost:#b3541e; --open:#5a6b86; --neutral:#68758c;
+  --pos:#1c7c4d; --neg:#b3541e;
+  --shadow:0 1px 2px rgba(20,35,60,.05),0 6px 22px rgba(20,35,60,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1520; --surface:#151f2d; --surface-2:#1a2534; --surface-3:#20303f;
+  --ink:#e9eef6; --ink-soft:#c3cddd; --muted:#93a1b8; --faint:#6f7f97;
+  --accent:#84a9dc; --accent-2:#7099cf; --accent-soft:#1a2740; --on-accent:#0e1520;
+  --border:#243040; --border-2:#2d3b4d;
+  --prospect:#7aa0d6; --tentative:#d79a4e; --definite:#5cba86; --closed:#4fae7c; --lost:#dd8b57; --open:#93a1b8; --neutral:#8b98ac;
+  --pos:#5cba86; --neg:#dd8b57;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1520; --surface:#151f2d; --surface-2:#1a2534; --surface-3:#20303f;
+  --ink:#e9eef6; --ink-soft:#c3cddd; --muted:#93a1b8; --faint:#6f7f97;
+  --accent:#84a9dc; --accent-2:#7099cf; --accent-soft:#1a2740; --on-accent:#0e1520;
+  --border:#243040; --border-2:#2d3b4d;
+  --prospect:#7aa0d6; --tentative:#d79a4e; --definite:#5cba86; --closed:#4fae7c; --lost:#dd8b57; --open:#93a1b8; --neutral:#8b98ac;
+  --pos:#5cba86; --neg:#dd8b57;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;margin:0}
+a{color:var(--accent)}
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px) saturate(1.3);border-bottom:1px solid var(--border)}
+.hbar{max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.htitle{display:flex;align-items:baseline;gap:11px;min-width:0}
+.htitle h1{font-size:19px;letter-spacing:.2px}
+.htitle .sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hactions{display:flex;align-items:center;gap:10px}
+.asof{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--faint);white-space:nowrap}
+.toggle{appearance:none;border:1px solid var(--border-2);background:var(--surface);color:var(--muted);border-radius:20px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.toggle:hover{color:var(--ink);border-color:var(--accent)}
+.toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toggle svg{width:14px;height:14px}
+main{max-width:1280px;margin:0 auto;padding:22px 24px 80px}
+.note{font-size:12px;color:var(--muted);background:var(--accent-soft);border-left:3px solid var(--accent);padding:9px 13px;border-radius:0 7px 7px 0;margin:0 0 18px;line-height:1.5}
+
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:11px;margin-bottom:18px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:13px 15px;box-shadow:var(--shadow)}
+.kpi .l{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:'Newsreader',serif;font-size:27px;font-weight:600;margin-top:3px;line-height:1;letter-spacing:-.01em}
+.kpi .v.pos{color:var(--pos)} .kpi .v.neg{color:var(--neg)} .kpi .v.acc{color:var(--accent)}
+.kpi .s{font-size:11px;color:var(--faint);margin-top:4px}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin-bottom:4px}
+.card .cap{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+
+/* bar rows */
+.bars{display:flex;flex-direction:column;gap:7px}
+.brow{display:grid;grid-template-columns:150px 1fr 54px;align-items:center;gap:10px;font-size:12.5px}
+.brow .lab{color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .track{height:20px;background:var(--surface-3);border-radius:5px;overflow:hidden}
+.brow .fill{display:block;height:100%;border-radius:5px;min-width:2px}
+.brow .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+
+/* timing table */
+.ttab{width:100%;border-collapse:collapse;font-size:12.5px}
+.ttab th{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500;padding:5px 7px;border-bottom:1px solid var(--border)}
+.ttab th:first-child{text-align:left}
+.ttab td{padding:6px 7px;border-bottom:1px solid var(--border);color:var(--ink-soft);font-variant-numeric:tabular-nums;text-align:right}
+.ttab td:first-child{text-align:left;color:var(--ink)}
+.ttab tr:last-child td{border-bottom:0}
+
+/* filter bar */
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.filters input,.filters select{font:inherit;font-size:13px;background:var(--surface);color:var(--ink);border:1px solid var(--border-2);border-radius:8px;padding:7px 10px}
+.filters input{min-width:200px;flex:1}
+.filters input:focus,.filters select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.filters .count{font-size:12px;color:var(--muted);margin-left:auto;font-family:'IBM Plex Mono',monospace}
+.filters button.clr{appearance:none;border:1px solid var(--border-2);background:var(--surface);color:var(--muted);border-radius:8px;padding:7px 11px;font:inherit;font-size:12.5px;cursor:pointer}
+.filters button.clr:hover{color:var(--ink);border-color:var(--accent)}
+
+/* table */
+.twrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.tscroll{overflow-x:auto}
+table.data{width:100%;border-collapse:collapse;min-width:900px}
+table.data th{position:sticky;top:0;background:var(--surface-2);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500;padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+table.data th.num{text-align:right}
+table.data th:hover{color:var(--ink)}
+table.data th .ar{opacity:.5;font-size:8px}
+table.data td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:12.8px;color:var(--ink-soft);vertical-align:middle}
+table.data td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data tbody tr{cursor:pointer}
+table.data tbody tr:hover td{background:var(--surface-2)}
+.who{font-weight:600;color:var(--ink)}
+.sub{color:var(--faint);font-size:11px}
+.chip{display:inline-block;border-radius:20px;padding:2px 9px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;border:1px solid}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,18,30,.5);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,94vw);background:var(--bg);border-left:1px solid var(--border);box-shadow:-16px 0 40px rgba(0,0,0,.2);transform:translateX(100%);transition:transform .22s cubic-bezier(.4,0,.2,1);z-index:50;overflow-y:auto}
+.drawer.on{transform:translateX(0)}
+.dhead{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);padding:18px 22px 14px;border-bottom:1px solid var(--border)}
+.dhead .x{position:absolute;top:16px;right:18px;appearance:none;border:1px solid var(--border-2);background:var(--surface);color:var(--muted);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;line-height:1}
+.dhead .x:hover{color:var(--ink);border-color:var(--accent)}
+.dhead h2{font-size:21px;margin-bottom:3px;padding-right:36px}
+.dhead .meta{font-size:12.5px;color:var(--muted)}
+.dbody{padding:18px 22px 40px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:20px}
+.fact .l{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.fact .v{font-size:14px;color:var(--ink);font-weight:500;margin-top:1px}
+.tlhead{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 12px}
+/* vertical timeline */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:10px;width:2px;background:var(--border-2)}
+.tlstep{position:relative;margin-bottom:20px}
+.tlstep::before{content:"";position:absolute;left:-24px;top:3px;width:14px;height:14px;border-radius:50%;border:3px solid var(--bg);background:var(--accent)}
+.tlstep .t{font-weight:600;color:var(--ink);font-size:13.5px}
+.tlstep .when{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:1px}
+.tlstep .by{font-size:12px;color:var(--ink-soft);margin-top:3px}
+.tlstep .gap{display:inline-block;margin-top:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent-2);background:var(--accent-soft);border-radius:5px;padding:1px 7px}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.sech{font-family:'Newsreader',Georgia,serif;font-size:21px;font-weight:600;margin:26px 0 5px}
+.seccap{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.insight{background:var(--accent-soft);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.insight h3{font-size:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.insight ul{margin:0;padding:0;list-style:none}
+.insight li{padding-left:18px;position:relative;margin:6px 0;color:var(--ink-soft);font-size:13.5px}
+.insight li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+.insight b{color:var(--ink)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.atab{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:2px}
+.atab th{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:500;padding:5px 6px;border-bottom:1px solid var(--border)}
+.atab th:first-child{text-align:left}
+.atab td{padding:6px 6px;border-bottom:1px solid var(--border);color:var(--ink-soft);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.atab td:first-child{text-align:left;color:var(--ink);white-space:normal}
+.atab tr:last-child td{border-bottom:0}
+.mbar{display:inline-block;width:40px;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden;margin-left:7px;vertical-align:middle}
+.mbar>span{display:block;height:100%;background:var(--definite);border-radius:3px}
+/* month-over-month two-tone bars */
+.mom{display:flex;flex-direction:column;gap:8px}
+.mrow{display:grid;grid-template-columns:58px 1fr 96px;align-items:center;gap:10px;font-size:12px}
+.mrow .mlab{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft)}
+.mrow .mtrack{position:relative;height:20px;background:var(--surface-3);border-radius:5px;overflow:hidden}
+.mrow .mtot{position:absolute;left:0;top:0;height:100%;background:var(--accent);opacity:.28}
+.mrow .mbk{position:absolute;left:0;top:0;height:100%;background:var(--definite);border-radius:5px;min-width:2px}
+.mrow .mval{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px}
+/* cohort maturation stacked bars */
+.cohorts{display:flex;flex-direction:column;gap:9px}
+.crow{display:grid;grid-template-columns:58px 1fr 108px;align-items:center;gap:11px;font-size:12px}
+.crow .clab{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);white-space:nowrap}
+.crow .cbar{display:flex;height:20px;border-radius:5px;overflow:hidden;background:var(--surface-3)}
+.crow .cseg{height:100%}
+.crow .cval{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px}
+.clegend{display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}
+.clegend span{display:inline-flex;align-items:center;gap:5px}
+.clegend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+footer{max-width:1280px;margin:0 auto;padding:8px 24px 50px;color:var(--faint);font-size:11px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header>
+  <div class="hbar">
+    <div class="htitle"><h1>Mulherin's Event Pipeline</h1><span class="sub">Inquiry → BEO Lifecycle</span></div>
+    <div class="hactions">
+      <span class="asof mono" id="asof"></span>
+      <button class="toggle" id="tg" aria-label="Toggle theme"><svg id="tgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg><span id="tgt">Dark</span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="note" id="note"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="cols">
+    <div class="card"><h2>Pipeline funnel</h2><div class="cap">Where every inquiry stands today — current linked-event status.</div><div class="bars" id="funnel"></div></div>
+    <div class="card"><h2>Stage timing</h2><div class="cap">Calendar days between milestones, from the status-change history.</div>
+      <table class="ttab" id="timing"><thead><tr><th>Transition</th><th>Median</th><th>Avg</th><th>n</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+  <div class="cols">
+    <div class="card"><h2>Who moves the pipeline</h2><div class="cap">Status changes attributed to each team member.</div><div class="bars" id="actors"></div></div>
+    <div class="card"><h2>By lead source</h2><div class="cap">Inquiries and booked events by source.</div><div class="bars" id="sources"></div></div>
+  </div>
+
+  <h2 class="sech">Analytics &amp; correlations</h2>
+  <div class="seccap">What drives a booking — computed across all year-to-date inquiries. "Booked %" = share of that group that reached Definite or Closed.</div>
+  <div class="insight" id="signals"></div>
+  <div class="agrid" id="agrid" style="margin-bottom:22px"></div>
+
+  <h2 class="sech">Team performance &amp; trends</h2>
+  <div class="seccap">Who's converting, whether patience pays, and how each month's inquiry cohort has matured. Recent months are still young — their booked % keeps climbing as events reach Definite/Closed, so weight older cohorts more when judging conversion.</div>
+  <div class="card" style="margin-bottom:16px"><h2>Handler performance</h2><div class="cap" id="hcap">Every team member who worked an inquiry, from the status-change history. "Touched" = distinct inquiries they moved; "In booked" = how many of those reached Definite/Closed. (All linked events are owned by one account in Tripleseat, so this attributes work by who actually made each move.)</div>
+    <div class="tscroll"><table class="atab" id="owners"><thead><tr><th>Handler</th><th>Touched</th><th>Moves</th><th>In booked</th><th>Book %</th><th>Med. resp</th><th>Booked $</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="cols">
+    <div class="card"><h2>Do longer sales cycles mean bigger deals?</h2><div class="cap" id="cvcap">Booked events bucketed by Prospect→Definite length.</div>
+      <table class="atab" id="cycleval"><thead><tr><th>Sales cycle</th><th>Booked</th><th>Avg BEO</th><th>Med. BEO</th></tr></thead><tbody></tbody></table></div>
+    <div class="card"><h2>Month-over-month conversion</h2><div class="cap">Inquiries by submission month (light bar) and how many have booked to date (green).</div><div class="mom" id="mom"></div></div>
+  </div>
+  <div class="card" style="margin-bottom:22px"><h2>Cohort maturation</h2><div class="cap">Each submission month's inquiries, split by where they stand today — read left to right: booked, in pipeline, lost, still open.</div><div class="cohorts" id="cohorts"></div></div>
+
+  <div class="card" style="padding:14px 16px">
+    <div class="filters">
+      <input id="q" placeholder="Search contact, company, email…" autocomplete="off">
+      <select id="fstage"></select>
+      <select id="fsource"></select>
+      <select id="fowner"></select>
+      <button class="clr" id="clr">Clear</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="twrap"><div class="tscroll">
+      <table class="data" id="tbl"><thead><tr id="thr"></tr></thead><tbody id="tb"></tbody></table>
+    </div></div>
+  </div>
+</main>
+<footer id="foot"></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Event detail"></aside>
+
+<script>
+const DATA = /*__DATA__*/[];
+const $ = s => document.querySelector(s);
+const fmtN = n => (n==null?'—':n.toLocaleString('en-US'));
+const money = n => n==null?'—':'$'+Math.round(n).toLocaleString('en-US');
+const pct = (a,b)=> b?(a/b*100).toFixed(1)+'%':'—';
+const fdate = s => { if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}); };
+const fdatetime = s => { if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'UTC'}); };
+const median = a=>{a=a.filter(x=>x!=null).sort((x,y)=>x-y);if(!a.length)return null;const m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2;};
+const avg = a=>{a=a.filter(x=>x!=null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;};
+
+const STAGE_META = {
+  OPEN:{label:'Open — no response',c:'var(--open)'},
+  TURNED_DOWN:{label:'Turned down',c:'var(--lost)'},
+  CONVERTED_NOEV:{label:'Converted — no event',c:'var(--neutral)'},
+  PROSPECT:{label:'Prospect',c:'var(--prospect)'},
+  TENTATIVE:{label:'Tentative',c:'var(--tentative)'},
+  DEFINITE:{label:'Definite — booked',c:'var(--definite)'},
+  CLOSED:{label:'Closed — completed',c:'var(--closed)'},
+  LOST:{label:'Lost',c:'var(--lost)'}
+};
+const STATUS_C = {PROSPECT:'var(--prospect)',TENTATIVE:'var(--tentative)',DEFINITE:'var(--definite)',CLOSED:'var(--closed)',LOST:'var(--lost)'};
+function stageOf(r){
+  if(r.event_status) return r.event_status;
+  if(r.lead_status==='Turned Down') return 'TURNED_DOWN';
+  if(r.lead_status==='Open') return 'OPEN';
+  return 'CONVERTED_NOEV';
+}
+DATA.forEach(r=>{r._stage=stageOf(r);});
+const FUNNEL_ORDER=['OPEN','TURNED_DOWN','CONVERTED_NOEV','PROSPECT','TENTATIVE','DEFINITE','CLOSED','LOST'];
+
+function chip(stage){const m=STAGE_META[stage]||{label:stage,c:'var(--neutral)'};
+  return `<span class="chip" style="color:${m.c};border-color:${m.c}44;background:${m.c}14"><span class="dot" style="background:${m.c}"></span>${m.label}</span>`;}
+
+/* ---- KPIs ---- */
+function renderKpis(){
+  const t=DATA.length, booked=DATA.filter(r=>['DEFINITE','CLOSED'].includes(r._stage)).length;
+  const inPipe=DATA.filter(r=>['PROSPECT','TENTATIVE'].includes(r._stage)).length;
+  const lost=DATA.filter(r=>r._stage==='LOST').length;
+  const disposed=DATA.filter(r=>r.resp_days!=null);
+  const bookedVal=DATA.filter(r=>['DEFINITE','CLOSED'].includes(r._stage)).reduce((a,r)=>a+(r.grand_total||0),0);
+  const tiles=[
+    ['Inquiries',fmtN(t),'','acc'],
+    ['Converted — Booked',fmtN(booked),pct(booked,t)+' · Def+Closed','pos'],
+    ['In Pipeline',fmtN(inPipe),'Prospect + Tentative',''],
+    ['Lost',fmtN(lost),pct(lost,t),'neg'],
+    ['Median response',median(disposed.map(r=>r.resp_days))+'d','to first disposition',''],
+    ['Prospect→Definite',median(DATA.map(r=>r.d_prospect_definite))+'d','median sales cycle',''],
+    ['Booked value',money(bookedVal),'Definite + Closed BEOs','pos'],
+    ['Steps logged',fmtN(DATA.reduce((a,r)=>a+((r.timeline&&r.timeline.length)||0),0)),'status changes tracked','']
+  ];
+  $('#kpis').innerHTML=tiles.map(([l,v,s,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v ${c}">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`).join('');
+}
+
+/* ---- funnel ---- */
+function renderFunnel(){
+  const t=DATA.length,max=Math.max(...FUNNEL_ORDER.map(s=>DATA.filter(r=>r._stage===s).length),1);
+  $('#funnel').innerHTML=FUNNEL_ORDER.map(s=>{const n=DATA.filter(r=>r._stage===s).length;const m=STAGE_META[s];
+    return `<div class="brow"><span class="lab">${m.label}</span><span class="track"><span class="fill" style="width:${Math.max(n/max*100,1.5)}%;background:${m.c}"></span></span><span class="val">${n} · ${pct(n,t)}</span></div>`;}).join('');
+}
+/* ---- timing ---- */
+function renderTiming(){
+  const rows=[
+    ['Inquiry → Prospect (first action)','d_inq_prospect'],
+    ['Prospect → Definite (sales cycle)','d_prospect_definite'],
+    ['Definite → Closed','d_definite_closed'],
+    ['Prospect → Lost','d_prospect_lost'],
+    ['Inquiry → disposition (response)','resp_days']
+  ];
+  $('#timing tbody').innerHTML=rows.map(([lab,k])=>{const vals=DATA.map(r=>r[k]).filter(x=>x!=null);
+    const md=median(vals),av=avg(vals);
+    return `<tr><td>${lab}</td><td>${md==null?'—':md+'d'}</td><td>${av==null?'—':av.toFixed(1)+'d'}</td><td>${vals.length}</td></tr>`;}).join('');
+}
+/* ---- actors ---- */
+function renderActors(){
+  const m=new Map();
+  DATA.forEach(r=>(r.timeline||[]).forEach(s=>{const k=(s.by||'—').trim();m.set(k,(m.get(k)||0)+1);}));
+  const arr=[...m.entries()].sort((a,b)=>b[1]-a[1]);const max=Math.max(...arr.map(x=>x[1]),1),tot=arr.reduce((a,x)=>a+x[1],0);
+  $('#actors').innerHTML=arr.map(([k,n])=>`<div class="brow"><span class="lab">${esc(k)}</span><span class="track"><span class="fill" style="width:${n/max*100}%;background:var(--accent)"></span></span><span class="val">${n}</span></div>`).join('');
+}
+/* ---- sources ---- */
+function renderSources(){
+  const m=new Map();
+  DATA.forEach(r=>{const k=r.lead_source||'(none)';const g=m.get(k)||{n:0,b:0};g.n++;if(['DEFINITE','CLOSED'].includes(r._stage))g.b++;m.set(k,g);});
+  const arr=[...m.entries()].sort((a,b)=>b[1].n-a[1].n);const max=Math.max(...arr.map(x=>x[1].n),1);
+  $('#sources').innerHTML=arr.map(([k,g])=>`<div class="brow"><span class="lab">${esc(k)}</span><span class="track"><span class="fill" style="width:${g.n/max*100}%;background:var(--accent-2)"></span></span><span class="val">${g.n}${g.b?` · ${g.b}✓`:''}</span></div>`).join('');
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ================= Analytics & correlations ================= */
+const BOOKED=r=>['DEFINITE','CLOSED'].includes(r._stage);
+const LOSTr=r=>r._stage==='LOST'||r._stage==='TURNED_DOWN';
+const PERSONAL=/@(gmail|yahoo|hotmail|outlook|aol|icloud|me|comcast|verizon|live|msn|ymail|proton|mac)\./i;
+function domainType(email){ if(!email||!/@/.test(email)) return null; return PERSONAL.test(email)?'Personal (Gmail, etc.)':'Company domain'; }
+function categoryOf(r){ const s=(r.event_desc||'').toLowerCase(); if(!s) return 'Unspecified';
+  if(/rehearsal|wedding|bridal|groom|bachelor|nuptial|elopement|micro.?wedding|welcome (party|dinner|drinks)|pre.?wedding|post.?wedding|wharton wedding|wedding shower/.test(s)) return 'Wedding-related';
+  if(/engage|proposal/.test(s)) return 'Engagement';
+  if(/baby shower|baptism|christening/.test(s)) return 'Baby shower';
+  if(/graduat|grad |grad$|\bmba\b/.test(s)) return 'Graduation';
+  if(/birthday|bday|b-day|\d0th|21st|first birthday/.test(s)) return 'Birthday';
+  if(/business|corporate|company|team dinner|conference|board|client|network|staff|retreat|meeting|colleague|firm|sales dinner|pwc|pharma|insurance|educational|principals|exec|professor|podiatry|closing dinner|promotion|intern|regional manager/.test(s)) return 'Corporate / Business';
+  if(/anniversary|reunion|family|friends|gathering|dinner party|holiday|celebration|retirement/.test(s)) return 'Family / Social';
+  return 'Other';
+}
+function leadTimeDays(r){ if(!r.event_date||!r.created_at) return null; const d=Math.round((new Date(r.event_date+'T12:00:00Z')-new Date(r.created_at))/864e5); return d<0?null:d; }
+function stats(rows){ const g={n:0,booked:0,lost:0,vsum:0,vcount:0}; rows.forEach(r=>{ g.n++; if(BOOKED(r)){g.booked++; if(r.grand_total>0){g.vsum+=r.grand_total;g.vcount++;}} else if(LOSTr(r)) g.lost++; }); return g; }
+function bookRate(rows){ const s=stats(rows); return s.n?s.booked/s.n*100:0; }
+function buckets(keyFn,order){ const m=new Map(); DATA.forEach(r=>{const k=keyFn(r); if(k==null)return; if(!m.has(k))m.set(k,[]); m.get(k).push(r);}); const keys=order?order.filter(k=>m.has(k)):[...m.keys()]; return keys.map(k=>[k,stats(m.get(k))]); }
+function corrCard(title,cap,groups,opts){ opts=opts||{};
+  const body=groups.map(([label,g])=>{ const rate=g.n?g.booked/g.n*100:0; const av=g.vcount?money(g.vsum/g.vcount):'—';
+    return `<tr><td>${esc(label)}</td><td>${g.n}</td><td>${g.booked}</td><td>${rate.toFixed(0)}%<span class="mbar"><span style="width:${Math.max(rate,2)}%"></span></span></td>${opts.value?`<td>${av}</td>`:''}</tr>`;}).join('');
+  return `<div class="card"><h2>${title}</h2><div class="cap">${cap}</div>
+    <table class="atab"><thead><tr><th>${opts.dim||'Group'}</th><th>Inq</th><th>Book</th><th>Book %</th>${opts.value?'<th>Avg BEO</th>':''}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function renderAnalytics(){
+  const respB=buckets(r=>r.resp_days==null?null:(r.resp_days===0?'Same day':r.resp_days===1?'1 day':r.resp_days<=3?'2–3 days':'4+ days'),['Same day','1 day','2–3 days','4+ days']);
+  const sizeB=buckets(r=>r.guests==null?null:(r.guests<=10?'1–10':r.guests<=20?'11–20':r.guests<=40?'21–40':'41+'),['1–10','11–20','21–40','41+']);
+  const ltB=buckets(r=>{const d=leadTimeDays(r);return d==null?null:(d<=14?'≤ 2 weeks':d<=30?'2–4 weeks':d<=90?'1–3 months':'3+ months');},['≤ 2 weeks','2–4 weeks','1–3 months','3+ months']);
+  const typeB=buckets(r=>categoryOf(r),['Wedding-related','Rehearsal / Welcome','Engagement','Baby shower','Birthday','Graduation','Corporate / Business','Family / Social','Other','Unspecified']).filter(x=>x[1].n>0);
+  const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dowB=buckets(r=>{const d=new Date(r.created_at);return isNaN(d)?null:DOW[(d.getUTCDay()+6)%7];},DOW);
+  const partB=buckets(r=>{const d=new Date(r.created_at);if(isNaN(d))return null;const h=d.getUTCHours();return h<6?'Overnight (12–6a)':h<12?'Morning (6a–12p)':h<17?'Afternoon (12–5p)':'Evening (5p–12a)';},['Morning (6a–12p)','Afternoon (12–5p)','Evening (5p–12a)','Overnight (12–6a)']);
+  const domB=buckets(r=>domainType(r.email),['Company domain','Personal (Gmail, etc.)']);
+  const srcB=[...new Map(DATA.map(r=>[r.lead_source||'(none)',0])).keys()].map(k=>[k,stats(DATA.filter(r=>(r.lead_source||'(none)')===k))]).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
+
+  $('#agrid').innerHTML=[
+    corrCard('Does speed win?','Book rate by response time to first disposition.',respB,{dim:'Response time'}),
+    corrCard('Event type performance','Categorized from the guest’s inquiry description.',typeB,{dim:'Event type',value:true}),
+    corrCard('Party size','Book rate by guest count.',sizeB,{dim:'Guests',value:true}),
+    corrCard('Lead time to event','How far ahead the inquiry came in.',ltB,{dim:'Lead time'}),
+    corrCard('Corporate vs. consumer','By guest email domain.',domB,{dim:'Guest email',value:true}),
+    corrCard('When inquiries arrive · day','Submission day of week.',dowB,{dim:'Day'}),
+    corrCard('When inquiries arrive · time','Submission time of day (ET).',partB,{dim:'Daypart'}),
+    corrCard('Lead source','Book rate & value by source.',srcB,{dim:'Source',value:true})
+  ].join('');
+
+  // auto key-signals
+  const rateOf=(bs,label)=>{const f=bs.find(x=>x[0]===label);return f&&f[1].n?f[1].booked/f[1].n*100:null;};
+  const sig=[];
+  const sd=rateOf(respB,'Same day'), slow=rateOf(respB,'4+ days');
+  if(sd!=null&&slow!=null) sig.push(`<b>Speed matters:</b> same-day responses book at <b>${sd.toFixed(0)}%</b> vs <b>${slow.toFixed(0)}%</b> when it takes 4+ days.`);
+  const co=rateOf(domB,'Company domain'), pe=rateOf(domB,'Personal (Gmail, etc.)');
+  if(co!=null&&pe!=null) sig.push(`<b>Corporate leads convert ${co>=pe?'better':'worse'}:</b> company-domain ${co.toFixed(0)}% vs personal-email ${pe.toFixed(0)}%.`);
+  const small=rateOf(sizeB,'1–10'), big=rateOf(sizeB,'41+');
+  if(small!=null&&big!=null) sig.push(`<b>Party size:</b> intimate (1–10) books at <b>${small.toFixed(0)}%</b>, large (41+) at <b>${big.toFixed(0)}%</b>.`);
+  const typeRanked=typeB.filter(x=>x[1].n>=8).sort((a,b)=>b[1].booked/b[1].n-a[1].booked/a[1].n);
+  if(typeRanked.length) sig.push(`<b>Best-converting type:</b> ${esc(typeRanked[0][0])} at ${(typeRanked[0][1].booked/typeRanked[0][1].n*100).toFixed(0)}% (n=${typeRanked[0][1].n}); weakest: ${esc(typeRanked[typeRanked.length-1][0])} at ${(typeRanked[typeRanked.length-1][1].booked/typeRanked[typeRanked.length-1][1].n*100).toFixed(0)}%.`);
+  // team signals — attribute by timeline actor (who moved each inquiry)
+  const hMap=new Map();
+  DATA.forEach(r=>{const handlers=new Set((r.timeline||[]).map(s=>(s.by||'').trim()).filter(Boolean));const isB=BOOKED(r);handlers.forEach(k=>{const g=hMap.get(k)||{n:0,b:0};g.n++;if(isB)g.b++;hMap.set(k,g);});});
+  const handlers=[...hMap.entries()].filter(x=>x[1].n>=8).sort((a,b)=>b[1].b/b[1].n-a[1].b/a[1].n);
+  if(handlers.length) sig.push(`<b>Top handler:</b> ${esc(handlers[0][0])} — ${(handlers[0][1].b/handlers[0][1].n*100).toFixed(0)}% of the ${handlers[0][1].n} inquiries they worked reached booked.`);
+  const bk=DATA.filter(r=>BOOKED(r)&&r.grand_total>0&&r.d_prospect_definite!=null);
+  const rcv=pearson(bk.map(r=>r.d_prospect_definite),bk.map(r=>r.grand_total));
+  if(rcv!=null) sig.push(`<b>Cycle vs. deal size:</b> correlation r = <b>${rcv.toFixed(2)}</b> — ${corrWord(rcv)}.`);
+  $('#signals').innerHTML='<h3>Key signals</h3><ul>'+sig.map(s=>`<li>${s}</li>`).join('')+'</ul>';
+}
+
+/* ================= Team performance & trends ================= */
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function ymKey(s){const d=new Date(s);return isNaN(d)?null:d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');}
+function ymLabel(k){const p=k.split('-');return MON[+p[1]-1]+" '"+p[0].slice(2);}
+function pearson(xs,ys){const n=xs.length;if(n<3)return null;const mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;let sxy=0,sxx=0,syy=0;for(let i=0;i<n;i++){const dx=xs[i]-mx,dy=ys[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxx&&syy?sxy/Math.sqrt(sxx*syy):null;}
+function corrWord(r){if(r==null)return'not enough data';const a=Math.abs(r);const dir=r>0?'longer cycles trend toward larger deals':'longer cycles trend toward smaller deals';if(a<0.15)return'essentially no relationship';return(a<0.35?'a weak signal that ':a<0.6?'a moderate signal that ':'a strong signal that ')+dir;}
+
+function renderOwners(){
+  // attribute work by who actually made each status change (timeline actor),
+  // since all linked events carry a single booking_owner account.
+  const m=new Map(); // handler -> {leads:Set, moves, booked, val, resps:[]}
+  DATA.forEach(r=>{
+    const handlers=new Set((r.timeline||[]).map(s=>(s.by||'').trim()).filter(Boolean));
+    const isB=BOOKED(r);
+    (r.timeline||[]).forEach(s=>{const k=(s.by||'').trim();if(!k)return;const g=m.get(k)||{leads:new Set(),moves:0,booked:0,val:0,resps:[]};g.moves++;m.set(k,g);});
+    handlers.forEach(k=>{const g=m.get(k);g.leads.add(r.lead_id);if(isB){g.booked++;if(r.grand_total>0)g.val+=r.grand_total;}if(r.resp_days!=null)g.resps.push(r.resp_days);});
+  });
+  const arr=[...m.entries()].map(([k,g])=>({k,touched:g.leads.size,moves:g.moves,booked:g.booked,val:g.val,resp:median(g.resps)}))
+    .sort((a,b)=>b.touched-a.touched);
+  $('#owners tbody').innerHTML=arr.map(o=>{const rate=o.touched?o.booked/o.touched*100:0;
+    return `<tr><td>${esc(o.k)}</td><td>${o.touched}</td><td>${o.moves}</td><td>${o.booked}</td><td>${rate.toFixed(0)}%<span class="mbar"><span style="width:${Math.max(rate,2)}%"></span></span></td><td>${o.resp==null?'—':o.resp+'d'}</td><td>${o.val?money(o.val):'—'}</td></tr>`;}).join('')
+    ||'<tr><td colspan="7" style="color:var(--muted)">No status-change history recorded.</td></tr>';
+}
+
+function renderCycleValue(){
+  const booked=DATA.filter(r=>BOOKED(r)&&r.grand_total>0&&r.d_prospect_definite!=null);
+  const B=[['Same / next day',0,1],['2–7 days',2,7],['8–30 days',8,30],['31–90 days',31,90],['90+ days',91,1e9]];
+  const rows=B.map(([lab,lo,hi])=>{const g=booked.filter(r=>r.d_prospect_definite>=lo&&r.d_prospect_definite<=hi);
+    return [lab,g.length,avg(g.map(r=>r.grand_total)),median(g.map(r=>r.grand_total))];}).filter(r=>r[1]>0);
+  $('#cycleval tbody').innerHTML=rows.map(([lab,n,av,md])=>`<tr><td>${lab}</td><td>${n}</td><td>${av==null?'—':money(av)}</td><td>${md==null?'—':money(md)}</td></tr>`).join('')
+    ||'<tr><td colspan="4" style="color:var(--muted)">No booked events with a recorded cycle yet.</td></tr>';
+  const r=pearson(booked.map(x=>x.d_prospect_definite),booked.map(x=>x.grand_total));
+  $('#cvcap').innerHTML=`Booked events bucketed by Prospect→Definite length. Correlation (cycle vs. $): <b>r = ${r==null?'—':r.toFixed(2)}</b> — ${corrWord(r)} (n=${booked.length}).`;
+}
+
+function renderMoM(){
+  const m=new Map();
+  DATA.forEach(r=>{const k=ymKey(r.created_at);if(!k)return;const g=m.get(k)||{n:0,b:0,v:0};g.n++;if(BOOKED(r)){g.b++;g.v+=r.grand_total||0;}m.set(k,g);});
+  const keys=[...m.keys()].sort();const max=Math.max(...keys.map(k=>m.get(k).n),1);
+  $('#mom').innerHTML=keys.map(k=>{const g=m.get(k);const rate=g.n?g.b/g.n*100:0;
+    return `<div class="mrow"><span class="mlab">${ymLabel(k)}</span><span class="mtrack"><span class="mtot" style="width:${g.n/max*100}%"></span><span class="mbk" style="width:${g.b/max*100}%"></span></span><span class="mval">${g.b}/${g.n} · ${rate.toFixed(0)}%</span></div>`;}).join('');
+}
+
+const COHORT_SEG=[['Booked','var(--definite)',r=>BOOKED(r)],['In pipeline','var(--tentative)',r=>['PROSPECT','TENTATIVE'].includes(r._stage)],['Lost','var(--lost)',r=>LOSTr(r)],['Open / other','var(--open)',r=>!BOOKED(r)&&!LOSTr(r)&&!['PROSPECT','TENTATIVE'].includes(r._stage)]];
+function renderCohorts(){
+  const m=new Map();
+  DATA.forEach(r=>{const k=ymKey(r.created_at);if(!k)return;if(!m.has(k))m.set(k,[]);m.get(k).push(r);});
+  const keys=[...m.keys()].sort();
+  $('#cohorts').innerHTML=keys.map(k=>{const rows=m.get(k);const n=rows.length;
+    const segs=COHORT_SEG.map(([lab,c,fn])=>{const cnt=rows.filter(fn).length;return cnt?`<span class="cseg" style="width:${cnt/n*100}%;background:${c}" title="${lab}: ${cnt}"></span>`:'';}).join('');
+    const b=rows.filter(BOOKED).length;
+    return `<div class="crow"><span class="clab">${ymLabel(k)}</span><span class="cbar">${segs}</span><span class="cval">${n} inq · ${(b/n*100).toFixed(0)}% bk</span></div>`;}).join('')
+    +`<div class="clegend">${COHORT_SEG.map(([lab,c])=>`<span><i style="background:${c}"></i>${lab}</span>`).join('')}</div>`;
+}
+
+/* ---- filters + table ---- */
+const COLS=[
+  {k:'created_at',t:'Submitted',num:false,get:r=>fdate(r.created_at),sort:r=>r.created_at||''},
+  {k:'who',t:'Contact / Company',num:false,get:r=>`<span class="who">${esc(r.contact||'—')}</span>${r.company?`<div class="sub">${esc(r.company)}</div>`:''}`,sort:r=>(r.contact||'').toLowerCase()},
+  {k:'event_date',t:'Event date',num:false,get:r=>fdate(r.event_date),sort:r=>r.event_date||'9999'},
+  {k:'guests',t:'Guests',num:true,get:r=>r.guests==null?'—':r.guests,sort:r=>r.guests||0},
+  {k:'lead_source',t:'Source',num:false,get:r=>esc((r.lead_source||'—').replace('Tripleseat ','TS ')),sort:r=>r.lead_source||''},
+  {k:'booking_owner',t:'Owner',num:false,get:r=>esc(r.booking_owner||'—'),sort:r=>r.booking_owner||''},
+  {k:'_stage',t:'Stage',num:false,get:r=>chip(r._stage),sort:r=>FUNNEL_ORDER.indexOf(r._stage)},
+  {k:'resp_days',t:'Resp',num:true,get:r=>r.resp_days==null?'—':r.resp_days+'d',sort:r=>r.resp_days==null?1e9:r.resp_days},
+  {k:'steps',t:'Steps',num:true,get:r=>(r.timeline&&r.timeline.length)||0,sort:r=>(r.timeline&&r.timeline.length)||0},
+  {k:'grand_total',t:'BEO $',num:true,get:r=>r.grand_total?money(r.grand_total):'—',sort:r=>r.grand_total||0}
+];
+let sortK='created_at',sortDir=-1;
+function renderHead(){
+  $('#thr').innerHTML=COLS.map(c=>`<th class="${c.num?'num':''}" data-k="${c.k}">${c.t}<span class="ar">${sortK===c.k?(sortDir>0?' ▲':' ▼'):''}</span></th>`).join('');
+  $('#thr').querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=1;}render();});
+}
+function opts(sel,vals,label){$(sel).innerHTML=`<option value="">${label}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');}
+function initFilters(){
+  opts('#fstage',FUNNEL_ORDER.filter(s=>DATA.some(r=>r._stage===s)).map(s=>s),'All stages');
+  // show stage labels
+  $('#fstage').innerHTML='<option value="">All stages</option>'+FUNNEL_ORDER.filter(s=>DATA.some(r=>r._stage===s)).map(s=>`<option value="${s}">${STAGE_META[s].label}</option>`).join('');
+  opts('#fsource',[...new Set(DATA.map(r=>r.lead_source).filter(Boolean))].sort(),'All sources');
+  opts('#fowner',[...new Set(DATA.map(r=>r.booking_owner).filter(Boolean))].sort(),'All owners');
+  ['#q','#fstage','#fsource','#fowner'].forEach(s=>$(s).addEventListener('input',render));
+  $('#clr').onclick=()=>{$('#q').value='';$('#fstage').value='';$('#fsource').value='';$('#fowner').value='';render();};
+}
+function filtered(){
+  const q=$('#q').value.trim().toLowerCase(),st=$('#fstage').value,sr=$('#fsource').value,ow=$('#fowner').value;
+  return DATA.filter(r=>{
+    if(st&&r._stage!==st)return false;
+    if(sr&&r.lead_source!==sr)return false;
+    if(ow&&r.booking_owner!==ow)return false;
+    if(q){const h=`${r.contact||''} ${r.company||''} ${r.email||''}`.toLowerCase();if(!h.includes(q))return false;}
+    return true;
+  });
+}
+let rowMap=[];
+function render(){
+  const rows=filtered().sort((a,b)=>{const av=COLS.find(c=>c.k===sortK).sort(a),bv=COLS.find(c=>c.k===sortK).sort(b);return (av<bv?-1:av>bv?1:0)*sortDir;});
+  rowMap=rows;
+  $('#count').textContent=`${rows.length} of ${DATA.length}`;
+  renderHead();
+  $('#tb').innerHTML=rows.map((r,i)=>`<tr data-i="${i}">${COLS.map(c=>`<td class="${c.num?'num':''}">${c.get(r)}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${COLS.length}"><div class="empty">No inquiries match.</div></td></tr>`;
+  $('#tb').querySelectorAll('tr[data-i]').forEach(tr=>tr.onclick=()=>openDrawer(rowMap[+tr.dataset.i]));
+}
+
+/* ---- drawer ---- */
+function gapText(days){if(days==null)return'';if(days===0)return'same day';if(days===1)return'+1 day';return'+'+days+' days';}
+function openDrawer(r){
+  const tl=(r.timeline||[]).slice();
+  // synthesize the inquiry submission as step 0
+  const steps=[{status:'INQUIRY',at:r.created_at,by:'Guest (web form)',title:r.lead_source||'',prev:null},...tl];
+  let prev=null;
+  const stepsHtml=steps.map(s=>{
+    const cur=s.at?new Date(s.at):null;
+    let gap='';
+    if(prev&&cur){const d=Math.max(0,Math.round((cur-prev)/864e5));gap=`<span class="gap">${gapText(d)}</span>`;}
+    prev=cur;
+    const col=s.status==='INQUIRY'?'var(--accent)':(STATUS_C[s.status]||'var(--neutral)');
+    const label=s.status==='INQUIRY'?'Inquiry submitted':(s.prev?`${s.prev} → ${s.status}`:s.status);
+    return `<div class="tlstep"><span style="position:absolute;left:-24px;top:3px;width:14px;height:14px;border-radius:50%;border:3px solid var(--bg);background:${col}"></span>
+      <div class="t">${label}</div><div class="when">${fdatetime(s.at)}</div>
+      <div class="by">${esc(s.by||'—')}${s.title&&s.status!=='INQUIRY'?` · ${esc(s.title)}`:''}</div>${gap}</div>`;
+  }).join('');
+  const facts=[
+    ['Stage',STAGE_META[r._stage].label],
+    ['Event date',fdate(r.event_date)],
+    ['Guests',r.guests==null?'—':r.guests],
+    ['Type',esc(r.event_type_ev||'—')],
+    ['Source',esc(r.lead_source||'—')],
+    ['Owner',esc(r.booking_owner||'—')],
+    ['Created by',esc(r.booking_creator||'—')],
+    ['BEO grand total',money(r.grand_total)],
+    ['F&B minimum',money(r.fb_min)],
+    ['Response time',r.resp_days==null?'—':r.resp_days+' days'],
+    ['Email',esc(r.email||'—')],
+    ['Phone',esc(r.phone||'—')]
+  ];
+  $('#drawer').innerHTML=`<div class="dhead"><button class="x" id="dx" aria-label="Close">×</button>
+    <h2>${esc(r.contact||'Inquiry')}</h2>
+    <div class="meta">${r.company?esc(r.company)+' · ':''}${chip(r._stage)}</div></div>
+    <div class="dbody">
+      <div class="facts">${facts.map(([l,v])=>`<div class="fact"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('')}</div>
+      ${r.turned_down_reason?`<div class="note" style="margin-bottom:18px"><b>Turn-down note:</b> ${esc(r.turned_down_reason)}</div>`:''}
+      <div class="tlhead">Process timeline — every recorded step</div>
+      <div class="tl">${stepsHtml}</div>
+    </div>`;
+  $('#dx').onclick=closeDrawer;
+  $('#drawer').classList.add('on');$('#scrim').classList.add('on');
+}
+function closeDrawer(){$('#drawer').classList.remove('on');$('#scrim').classList.remove('on');}
+$('#scrim').onclick=closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+/* ---- theme ---- */
+(function(){const root=document.documentElement,btn=$('#tg'),lbl=$('#tgt');
+  function sysDark(){return matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches;}
+  function cur(){const t=root.getAttribute('data-theme');return t||(sysDark()?'dark':'light');}
+  try{const s=localStorage.getItem('mdash-theme');if(s)root.setAttribute('data-theme',s);}catch(e){}
+  lbl.textContent=cur()==='dark'?'Light':'Dark';
+  btn.onclick=()=>{const t=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',t);lbl.textContent=t==='dark'?'Light':'Dark';try{localStorage.setItem('mdash-theme',t);}catch(e){}};
+})();
+
+/* ---- boot ---- */
+$('#asof').textContent='YTD '+new Date().getFullYear()+' · as of '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
+$('#note').innerHTML='<b>What this tracks.</b> Every inquiry’s full lifecycle from the Tripleseat status-change history — each stage, the exact timestamp, and which team member made the move. Click any row to see its step-by-step process timeline. <b>Note:</b> Tripleseat’s API does not expose the actual guest email/message content, so this tracks the <i>process</i> steps and timing, not the words exchanged.';
+$('#foot').innerHTML='Wm. Mulherin’s Sons · Tripleseat location 17784 · Year-to-date '+new Date().getFullYear()+' (Jan 1 → today) · '+DATA.length+' inquiries. Stage timing in calendar days; conversions are date-stamped in Tripleseat (same-day = 0).';
+renderKpis();renderFunnel();renderTiming();renderActors();renderSources();renderAnalytics();renderOwners();renderCycleValue();renderMoM();renderCohorts();initFilters();render();
+</script>

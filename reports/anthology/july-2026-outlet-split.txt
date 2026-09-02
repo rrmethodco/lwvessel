@@ -1,0 +1,23 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+07-01 Doss Engagement Session                       anthology       500      525      525        0      0   0.0%  no invoice lines
+07-04 Giordana Sobel & Kent West Wedding            anthology    36,828   45,224   36,251    8,973      0  19.8%  bar pkg 1h/5h = 2,718 to Kamper's
+07-04 TERRACE CLUB: Giordana Sobel & Kent West Wedd anthology     3,166    3,895    3,895        0      0   0.0%  
+07-06 Ford Pro Event                                kampers s     8,679   10,555        0   10,555      0 100.0%  
+07-10 Christine Cislo & Joshua Halm Wedding         anthology    30,305   36,763   29,077    7,685      0  20.9%  bar pkg 1h/5h = 2,029 to Kamper's
+07-11 Alexandra Lovell & Jacob Schmidt Wedding Rece anthology    38,084   47,000   37,052    9,948      0  21.2%  bar pkg 1h/5h = 2,474 to Kamper's
+07-13 Consortium Health Plans Cocktail Reception    kampers s    11,742   14,302        0   14,302      0 100.0%  
+07-14 Consortium Health Plans Meeting Day #1        anthology    22,112   25,147   25,147        0      0   0.0%  invoice -1,500 vs actual
+07-15 Consortium Health Plans Meeting Day #2        anthology    10,254   12,192   12,192        0      0   0.0%  invoice -1,500 vs actual
+07-15 Rachel Beetham - Photoshoot                   anthology       500      525      525        0      0   0.0%  no invoice lines
+07-16 Christman Meeting                             anthology     3,720    4,525    4,525        0      0   0.0%  invoice -500 vs actual
+07-17 Paige Beckett & Tom O'Toole Wedding           anthology    43,854   54,462   42,517   11,945      0  21.9%  bar pkg 1h/5h = 3,659 to Kamper's
+07-18 Jordan Joseph and Robert Spicer Wedding Recep anthology    41,669   51,600   40,518   11,082      0  21.5%  bar pkg 1h/5h = 3,338 to Kamper's; BEO header omission corrected
+07-23 Bedrock Residential Event: Spritz it Your Way anthology     4,290    4,504    4,504        0      0   0.0%  
+07-23 Case Western Reserve University Reception     anthology    12,831   14,926   14,926        0      0   0.0%  invoice -500 vs actual
+07-24 Kaitlyn Hassberger & Jacob Murphy Wedding     anthology    30,347   36,872   28,972    7,901      0  21.4%  bar pkg 1h/5h = 2,226 to Kamper's
+07-24 TERRACE CLUB: Kaitlyn Hassberger & Jacob Murp anthology     1,750    2,125    2,125        0      0   0.0%  no invoice lines
+07-25 Shawn Proctor and Andrea Geyer Wedding        anthology    45,511   55,219   38,286   16,932      0  30.7%  bar pkg 1.5h/5h = 3,872 to Kamper's
+07-25 TERRACE CLUB RENTAL: Shawn Proctor and Andrea anthology     2,262    2,765    2,765        0      0   0.0%  
+07-27 Steel Dynamics Reception                      kampers s    12,280   14,975        0   14,975      0 100.0%  
+07-31 Brooke Gotts & Tom Dooley Wedding             anthology    32,365   39,422   31,683    7,739      0  19.6%  bar pkg 1h/5h = 1,994 to Kamper's
+      TOTAL                                                     393,049  477,525  355,487  122,038      0  25.6%
