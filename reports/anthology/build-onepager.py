@@ -22,7 +22,7 @@ def row(label,a,ta,k,tk,r,strong=False,mute_toast=False):
     tot=a+k+r
     return (f'<tr{" class=tot" if strong else ""}><td>{label}</td>{td(f0(a))}{td(ta if ta!="" else "—","tst mute" if ta=="" else "tst")}'
             f'{td(f0(k) if k else "—","" if k else "mute")}{td(tk if tk!="" else "—","tst mute" if tk=="" else "tst")}{td(f0(r) if r else "—","" if r else "mute")}{td(f0(tot))}</tr>')
-t=lambda k,src=None: (f0((src or TA)[k]) if k in (src or TA) else '')
+t=lambda k,src=None: (f0((TA if src is None else src)[k]) if k in (TA if src is None else src) else '')
 rows=[
  row('Food',cat(A,'FOOD'),t('food'),cat(K,'FOOD'),'',0),
  row('Beverage',cat(A,'BEVERAGE'),(t('bev')+'*') if TA else '',cat(K,'BEVERAGE'),'',0),
