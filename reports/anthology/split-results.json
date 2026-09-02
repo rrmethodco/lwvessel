@@ -1,0 +1,688 @@
+[
+ {
+  "eid": null,
+  "name": "Terrace Club Rental: Melissa Harvey & Austin Davis Wedding",
+  "date": "2026-08-01",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Anthology": 0.0
+  },
+  "netsplit": {
+   "Anthology": 0.0
+  },
+  "note": "no invoice fetched"
+ },
+ {
+  "eid": 44164416,
+  "name": "Melissa Harvey & Austin Davis Wedding",
+  "date": "2026-08-01",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 37925.0,
+  "net": 46281.8,
+  "base": {
+   "Kamper's": 10198.8,
+   "Anthology": 27726.2
+  },
+  "netsplit": {
+   "Kamper's": 12446.112639156228,
+   "Anthology": 33835.687360843775
+  },
+  "note": "bar pkg 1h/5h = 2,611 to Kamper's"
+ },
+ {
+  "eid": 61210309,
+  "name": "Boraski Photography Session",
+  "date": "2026-08-03",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60388405,
+  "name": "Mackoul Photoshoot",
+  "date": "2026-08-05",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 57083091,
+  "name": "Adcraft Executive Meeting",
+  "date": "2026-08-05",
+  "kind": "anthology",
+  "n": 19,
+  "actual": 8070.0,
+  "net": 9945.0,
+  "base": {
+   "Anthology": 8070.0
+  },
+  "netsplit": {
+   "Anthology": 9945.0
+  },
+  "note": ""
+ },
+ {
+  "eid": null,
+  "name": "Mouzahem Photography",
+  "date": "2026-08-06",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice fetched"
+ },
+ {
+  "eid": 47007816,
+  "name": "Kamren Huizenga & Elizabeth Rau Wedding",
+  "date": "2026-08-07",
+  "kind": "anthology",
+  "n": 27,
+  "actual": 25751.0,
+  "net": 31850.0,
+  "base": {
+   "Kamper's": 6375.4,
+   "Anthology": 19375.6
+  },
+  "netsplit": {
+   "Kamper's": 7885.382703584326,
+   "Anthology": 23964.617296415672
+  },
+  "note": "bar pkg 1h/5h = 2,011 to Kamper's"
+ },
+ {
+  "eid": 43976979,
+  "name": "Jada Smith & Dominic Yamarino Wedding",
+  "date": "2026-08-08",
+  "kind": "anthology",
+  "n": 41,
+  "actual": 44188.0,
+  "net": 53928.75,
+  "base": {
+   "Kamper's": 10864.6,
+   "Anthology": 33323.4
+  },
+  "netsplit": {
+   "Kamper's": 13259.579461618538,
+   "Anthology": 40669.17053838146
+  },
+  "note": "bar pkg 1h/5h = 2,617 to Kamper's"
+ },
+ {
+  "eid": 61778507,
+  "name": "Zaya photography session",
+  "date": "2026-08-10",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58234682,
+  "name": "Lambda Legal Day 1",
+  "date": "2026-08-11",
+  "kind": "anthology",
+  "n": 10,
+  "actual": 4558.0,
+  "net": 5322.5,
+  "base": {
+   "Anthology": 4558.0
+  },
+  "netsplit": {
+   "Anthology": 5322.5
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 58234947,
+  "name": "Lambda Legal Day 2",
+  "date": "2026-08-12",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 8992.0,
+  "net": 9839.0,
+  "base": {
+   "Anthology": 8992.0
+  },
+  "netsplit": {
+   "Anthology": 9839.0
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": null,
+  "name": "UofM Alumni Reception",
+  "date": "2026-08-12",
+  "kind": "rotunda standalone",
+  "n": 0,
+  "actual": 1960.0,
+  "net": 2710.0,
+  "base": {
+   "Bar Rotunda": 1960.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 2710.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 58234757,
+  "name": "Lambda Legal Day 3",
+  "date": "2026-08-13",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 3744.0,
+  "net": 4369.0,
+  "base": {
+   "Anthology": 3744.0
+  },
+  "netsplit": {
+   "Anthology": 4369.0
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 48025857,
+  "name": "President\u2019s Dinner",
+  "date": "2026-08-14",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 56358.0,
+  "net": 69953.75,
+  "base": {
+   "Anthology": 56358.0
+  },
+  "netsplit": {
+   "Anthology": 69953.75
+  },
+  "note": ""
+ },
+ {
+  "eid": 51062685,
+  "name": "TERRACE CLUB Hannah Broucek & Ben Samoy Wedding",
+  "date": "2026-08-15",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "net": 2125.0,
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 2125.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 46410068,
+  "name": "Hannah Broucek & Ben Samoy Wedding",
+  "date": "2026-08-15",
+  "kind": "anthology",
+  "n": 37,
+  "actual": 40688.0,
+  "net": 49417.5,
+  "base": {
+   "Kamper's": 9916.6,
+   "Anthology": 30771.4
+  },
+  "netsplit": {
+   "Kamper's": 12044.179622984666,
+   "Anthology": 37373.32037701534
+  },
+  "note": "bar pkg 1h/5h = 2,261 to Kamper's"
+ },
+ {
+  "eid": 61221446,
+  "name": "Maroof Photo Session",
+  "date": "2026-08-17",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 62177336,
+  "name": "VIP In-House Meeting",
+  "date": "2026-08-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Anthology": 0.0
+  },
+  "netsplit": {
+   "Anthology": 0.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 57963758,
+  "name": "PS: Emily Dahuron",
+  "date": "2026-08-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60940560,
+  "name": "Tanguay Engagement Photos",
+  "date": "2026-08-19",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 59705775,
+  "name": "Sowerby - Photoshoot",
+  "date": "2026-08-19",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 62164121,
+  "name": "FM Photoshoot",
+  "date": "2026-08-20",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": null,
+  "name": "thyssenkrupp Supply Chain Services Event",
+  "date": "2026-08-20",
+  "kind": "kampers standalone",
+  "n": 0,
+  "actual": 8485.0,
+  "net": 8909.25,
+  "base": {
+   "Kamper's": 8485.0
+  },
+  "netsplit": {
+   "Kamper's": 8909.25
+  },
+  "note": ""
+ },
+ {
+  "eid": 62120962,
+  "name": "CEREMONY: David Bernier & Tyler Jablonski Wedding",
+  "date": "2026-08-21",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Anthology": 0.0
+  },
+  "netsplit": {
+   "Anthology": 0.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": null,
+  "name": "COCKTAIL HOUR: David Bernier & Tyler Jablonski Wedding",
+  "date": "2026-08-21",
+  "kind": "kampers standalone",
+  "n": 0,
+  "actual": 8058.2,
+  "net": 9822.75,
+  "base": {
+   "Kamper's": 8058.2
+  },
+  "netsplit": {
+   "Kamper's": 9822.75
+  },
+  "note": ""
+ },
+ {
+  "eid": 50951375,
+  "name": "David Bernier & Tyler Jablonski Wedding",
+  "date": "2026-08-21",
+  "kind": "anthology",
+  "n": 20,
+  "actual": 21912.8,
+  "net": 26634.75,
+  "base": {
+   "Anthology": 21912.8
+  },
+  "netsplit": {
+   "Anthology": 26634.75
+  },
+  "note": ""
+ },
+ {
+  "eid": null,
+  "name": "FOC: Chris Valerie - Kamper's Wedding Pics",
+  "date": "2026-08-21",
+  "kind": "kampers standalone",
+  "n": 0,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Kamper's": 0.0
+  },
+  "netsplit": {
+   "Kamper's": 0.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 47786830,
+  "name": "Megan Hannigan & Ryan O'Hara Wedding Reception",
+  "date": "2026-08-22",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 46154.0,
+  "net": 57035.0,
+  "base": {
+   "Anthology": 39408.1,
+   "Kamper's": 6745.9
+  },
+  "netsplit": {
+   "Anthology": 48698.725646747844,
+   "Kamper's": 8336.274353252154
+  },
+  "note": "bar pkg 1.5h/5h = 5,746 to Kamper's"
+ },
+ {
+  "eid": null,
+  "name": "Fritz - Baby Shower",
+  "date": "2026-08-23",
+  "kind": "kampers standalone",
+  "n": 0,
+  "actual": 6315.0,
+  "net": 6565.0,
+  "base": {
+   "Kamper's": 6315.0
+  },
+  "netsplit": {
+   "Kamper's": 6565.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 58243135,
+  "name": "Lambda Legal Day 1",
+  "date": "2026-08-25",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 3910.0,
+  "net": 4605.0,
+  "base": {
+   "Anthology": 3910.0
+  },
+  "netsplit": {
+   "Anthology": 4605.0
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": null,
+  "name": "Yousif Photoshoot",
+  "date": "2026-08-25",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice fetched"
+ },
+ {
+  "eid": 61572889,
+  "name": "70th Birthday Dinner",
+  "date": "2026-08-25",
+  "kind": "anthology",
+  "n": 24,
+  "actual": 21570.0,
+  "net": 26350.0,
+  "base": {
+   "Anthology": 21570.0
+  },
+  "netsplit": {
+   "Anthology": 26350.0
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 58243136,
+  "name": "Lambda Legal Day 2",
+  "date": "2026-08-26",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 3780.0,
+  "net": 4475.0,
+  "base": {
+   "Anthology": 3780.0
+  },
+  "netsplit": {
+   "Anthology": 4475.0
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 58243134,
+  "name": "Lambda Legal Day 3",
+  "date": "2026-08-27",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 3040.0,
+  "net": 3550.0,
+  "base": {
+   "Anthology": 3040.0
+  },
+  "netsplit": {
+   "Anthology": 3550.0000000000005
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 55299128,
+  "name": "PS: Nour Khalifa",
+  "date": "2026-08-27",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "net": 525.0,
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 62104742,
+  "name": "Rehearsal: Claire Wahl & Michael Varlese Wedding",
+  "date": "2026-08-27",
+  "kind": "anthology",
+  "n": 1,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Anthology": 0.0
+  },
+  "netsplit": {
+   "Anthology": 0.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 61552944,
+  "name": "Terrace Club",
+  "date": "2026-08-28",
+  "kind": "anthology",
+  "n": 5,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Anthology": 0.0
+  },
+  "netsplit": {
+   "Anthology": 0.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 49297540,
+  "name": "Claire Wahl & Michael Varlese Wedding",
+  "date": "2026-08-28",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 29679.0,
+  "net": 36136.25,
+  "base": {
+   "Kamper's": 6785.4,
+   "Anthology": 22893.6
+  },
+  "netsplit": {
+   "Kamper's": 8261.697184878196,
+   "Anthology": 27874.552815121802
+  },
+  "note": "bar pkg 1h/5h = 2,189 to Kamper's"
+ },
+ {
+  "eid": 61554495,
+  "name": "Terrace Club Rental : Anthony Lim and Gabriela Ciavattone",
+  "date": "2026-08-29",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1000.0,
+  "net": 1187.5,
+  "base": {
+   "Anthology": 1000.0
+  },
+  "netsplit": {
+   "Anthology": 1187.5
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 47357099,
+  "name": "Anthony Lim and Gabriela Ciavattone Wedding",
+  "date": "2026-08-29",
+  "kind": "anthology",
+  "n": 37,
+  "actual": 37227.0,
+  "net": 46033.75,
+  "base": {
+   "Kamper's": 11725.0,
+   "Anthology": 25502.0
+  },
+  "netsplit": {
+   "Kamper's": 14498.7702138233,
+   "Anthology": 31534.9797861767
+  },
+  "note": "bar pkg 1h/5h = 2,225 to Kamper's"
+ },
+ {
+  "eid": null,
+  "name": "Rooftop Yoga",
+  "date": "2026-08-30",
+  "kind": "kampers standalone",
+  "n": 0,
+  "actual": 0.0,
+  "net": 0.0,
+  "base": {
+   "Kamper's": 0.0
+  },
+  "netsplit": {
+   "Kamper's": 0.0
+  },
+  "note": ""
+ },
+ {
+  "eid": 61656875,
+  "name": "Terrace Club Rental: Stewart Birthday Celebration",
+  "date": "2026-08-30",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1000.0,
+  "net": 1187.5,
+  "base": {
+   "Anthology": 1000.0
+  },
+  "netsplit": {
+   "Anthology": 1187.5
+  },
+  "note": "no invoice lines"
+ }
+]
