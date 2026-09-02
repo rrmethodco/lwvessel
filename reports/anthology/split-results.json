@@ -7,11 +7,32 @@
   "n": 0,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 0.0,
+  "rooms": "Terrace Club",
   "base": {
    "Anthology": 0.0
   },
   "netsplit": {
    "Anthology": 0.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": "no invoice fetched"
  },
@@ -23,6 +44,13 @@
   "n": 33,
   "actual": 37925.0,
   "net": 46281.8,
+  "svc": 6964.0,
+  "adm": 1392.8,
+  "tax": 2089.2,
+  "grat": 0.0,
+  "grand": 48371.0,
+  "guests": 122.0,
+  "rooms": "Kampers Rooftop Bar , 13th Floor - Event Space",
   "base": {
    "Kamper's": 10198.8,
    "Anthology": 27726.2
@@ -30,6 +58,34 @@
   "netsplit": {
    "Kamper's": 12446.112639156228,
    "Anthology": 33835.687360843775
+  },
+  "cat": {
+   "Kamper's|FOOD": 6588.0,
+   "Anthology|FOOD": 13958.0,
+   "Anthology|BEVERAGE": 13768.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2610.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 10198.8,
+    "svc": 1872.7605326301912,
+    "adm": 374.5521065260382,
+    "tax": 561.8281597890573,
+    "grat": 0.0,
+    "net": 12446.112639156228,
+    "grand": 13007.940798945285
+   },
+   "Anthology": {
+    "base": 27726.2,
+    "svc": 5091.239467369809,
+    "adm": 1018.2478934739618,
+    "tax": 1527.3718402109425,
+    "grat": 0.0,
+    "net": 33835.687360843775,
+    "grand": 35363.05920105472
+   }
   },
   "note": "bar pkg 1h/5h = 2,611 to Kamper's"
  },
@@ -41,11 +97,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -57,11 +134,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -73,11 +171,34 @@
   "n": 19,
   "actual": 8070.0,
   "net": 9945.0,
+  "svc": 1500.0,
+  "adm": 375.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 9945.0,
+  "guests": 50.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
    "Anthology": 8070.0
   },
   "netsplit": {
    "Anthology": 9945.0
+  },
+  "cat": {
+   "Anthology|FOOD": 4200.0,
+   "Anthology|BEVERAGE": 3870.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 8070.0,
+    "svc": 1500.0,
+    "adm": 375.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 9945.0,
+    "grand": 9945.0
+   }
   },
   "note": ""
  },
@@ -89,11 +210,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice fetched"
  },
@@ -105,6 +247,13 @@
   "n": 27,
   "actual": 25751.0,
   "net": 31850.0,
+  "svc": 4879.2,
+  "adm": 1219.8,
+  "tax": 1463.76,
+  "grat": 0.0,
+  "grand": 33313.76,
+  "guests": 124.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
    "Kamper's": 6375.4,
    "Anthology": 19375.6
@@ -112,6 +261,34 @@
   "netsplit": {
    "Kamper's": 7885.382703584326,
    "Anthology": 23964.617296415672
+  },
+  "cat": {
+   "Kamper's|FOOD": 3364.0,
+   "Anthology|FOOD": 10675.0,
+   "Anthology|BEVERAGE": 8700.6,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2011.4,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6375.4,
+    "svc": 1207.9861628674614,
+    "adm": 301.99654071686535,
+    "tax": 362.3958488602384,
+    "grat": 0.0,
+    "net": 7885.382703584327,
+    "grand": 8247.778552444564
+   },
+   "Anthology": {
+    "base": 19375.6,
+    "svc": 3671.213837132538,
+    "adm": 917.8034592831345,
+    "tax": 1101.3641511397614,
+    "grat": 0.0,
+    "net": 23964.617296415672,
+    "grand": 25065.981447555434
+   }
   },
   "note": "bar pkg 1h/5h = 2,011 to Kamper's"
  },
@@ -123,6 +300,13 @@
   "n": 41,
   "actual": 44188.0,
   "net": 53928.75,
+  "svc": 7692.6,
+  "adm": 2048.15,
+  "tax": 2457.78,
+  "grat": 0.0,
+  "grand": 56386.53,
+  "guests": 151.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
    "Kamper's": 10864.6,
    "Anthology": 33323.4
@@ -130,6 +314,34 @@
   "netsplit": {
    "Kamper's": 13259.579461618538,
    "Anthology": 40669.17053838146
+  },
+  "cat": {
+   "Kamper's|FOOD": 7248.0,
+   "Anthology|FOOD": 18032.0,
+   "Anthology|BEVERAGE": 15291.4,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2616.6,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 10864.6,
+    "svc": 1891.396351045533,
+    "adm": 503.5831105730063,
+    "tax": 604.2997326876076,
+    "grat": 0.0,
+    "net": 13259.57946161854,
+    "grand": 13863.879194306148
+   },
+   "Anthology": {
+    "base": 33323.4,
+    "svc": 5801.203648954468,
+    "adm": 1544.5668894269938,
+    "tax": 1853.4802673123927,
+    "grat": 0.0,
+    "net": 40669.17053838146,
+    "grand": 42522.650805693855
+   }
   },
   "note": "bar pkg 1h/5h = 2,617 to Kamper's"
  },
@@ -141,11 +353,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -157,11 +390,34 @@
   "n": 10,
   "actual": 4558.0,
   "net": 5322.5,
+  "svc": 611.6,
+  "adm": 152.9,
+  "tax": 183.48,
+  "grat": 0.0,
+  "grand": 5505.98,
+  "guests": 22.0,
+  "rooms": "Conservatory Ballroom, Linden Room",
   "base": {
    "Anthology": 4558.0
   },
   "netsplit": {
    "Anthology": 5322.5
+  },
+  "cat": {
+   "Anthology|FOOD": 2464.0,
+   "Anthology|BEVERAGE": 1594.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 4558.0,
+    "svc": 611.6,
+    "adm": 152.9,
+    "tax": 183.48,
+    "grat": 0.0,
+    "net": 5322.5,
+    "grand": 5505.98
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -173,11 +429,34 @@
   "n": 12,
   "actual": 8992.0,
   "net": 9839.0,
+  "svc": 677.6,
+  "adm": 169.4,
+  "tax": 203.28,
+  "grat": 0.0,
+  "grand": 10042.28,
+  "guests": 22.0,
+  "rooms": "Conservatory Ballroom, Linden Room",
   "base": {
    "Anthology": 8992.0
   },
   "netsplit": {
    "Anthology": 9839.0
+  },
+  "cat": {
+   "Anthology|FOOD": 2794.0,
+   "Anthology|BEVERAGE": 5698.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 8992.0,
+    "svc": 677.6,
+    "adm": 169.4,
+    "tax": 203.28,
+    "grat": 0.0,
+    "net": 9839.0,
+    "grand": 10042.28
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -189,11 +468,32 @@
   "n": 0,
   "actual": 1960.0,
   "net": 2710.0,
+  "svc": 600.0,
+  "adm": 150.0,
+  "tax": 180.0,
+  "grat": 0.0,
+  "grand": 3930.0,
+  "guests": 40.0,
+  "rooms": "Bar Rotunda",
   "base": {
    "Bar Rotunda": 1960.0
   },
   "netsplit": {
    "Bar Rotunda": 2710.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 1960.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 1960.0,
+    "svc": 600.0,
+    "adm": 150.0,
+    "tax": 180.0,
+    "grat": 0.0,
+    "net": 2710.0,
+    "grand": 2890.0
+   }
   },
   "note": ""
  },
@@ -205,11 +505,34 @@
   "n": 11,
   "actual": 3744.0,
   "net": 4369.0,
+  "svc": 500.0,
+  "adm": 125.0,
+  "tax": 150.0,
+  "grat": 0.0,
+  "grand": 4775.0,
+  "guests": 22.0,
+  "rooms": "Conservatory Ballroom, Linden Room",
   "base": {
    "Anthology": 3744.0
   },
   "netsplit": {
    "Anthology": 4369.0
+  },
+  "cat": {
+   "Anthology|FOOD": 1650.0,
+   "Anthology|BEVERAGE": 1594.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3744.0,
+    "svc": 500.0,
+    "adm": 125.0,
+    "tax": 150.0,
+    "grat": 0.0,
+    "net": 4369.0,
+    "grand": 4519.0
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -221,11 +544,34 @@
   "n": 25,
   "actual": 56358.0,
   "net": 69953.75,
+  "svc": 10876.6,
+  "adm": 2719.15,
+  "tax": 3262.98,
+  "grat": 0.0,
+  "grand": 73216.73,
+  "guests": 250.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
    "Anthology": 56358.0
   },
   "netsplit": {
    "Anthology": 69953.75
+  },
+  "cat": {
+   "Anthology|FOOD": 44100.0,
+   "Anthology|BEVERAGE": 12258.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 56358.0,
+    "svc": 10876.6,
+    "adm": 2719.15,
+    "tax": 3262.98,
+    "grat": 0.0,
+    "net": 69953.75,
+    "grand": 73216.73
+   }
   },
   "note": ""
  },
@@ -237,11 +583,32 @@
   "n": 0,
   "actual": 1750.0,
   "net": 2125.0,
+  "svc": 300.0,
+  "adm": 75.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 2125.0,
+  "guests": 0.0,
+  "rooms": "Terrace Club",
   "base": {
    "Anthology": 1750.0
   },
   "netsplit": {
    "Anthology": 2125.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 300.0,
+    "adm": 75.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 2125.0,
+    "grand": 2125.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -253,6 +620,13 @@
   "n": 37,
   "actual": 40688.0,
   "net": 49417.5,
+  "svc": 6983.6,
+  "adm": 1745.9,
+  "tax": 2095.08,
+  "grat": 0.0,
+  "grand": 51512.58,
+  "guests": 128.0,
+  "rooms": "Kampers Rooftop Bar , 13th Floor - Event Space",
   "base": {
    "Kamper's": 9916.6,
    "Anthology": 30771.4
@@ -260,6 +634,34 @@
   "netsplit": {
    "Kamper's": 12044.179622984666,
    "Anthology": 37373.32037701534
+  },
+  "cat": {
+   "Kamper's|FOOD": 6656.0,
+   "Anthology|FOOD": 16002.0,
+   "Anthology|BEVERAGE": 14769.4,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2260.6,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 9916.6,
+    "svc": 1702.0636983877312,
+    "adm": 425.5159245969328,
+    "tax": 510.6191095163193,
+    "grat": 0.0,
+    "net": 12044.179622984666,
+    "grand": 12554.798732500985
+   },
+   "Anthology": {
+    "base": 30771.4,
+    "svc": 5281.53630161227,
+    "adm": 1320.3840754030675,
+    "tax": 1584.4608904836807,
+    "grat": 0.0,
+    "net": 37373.32037701534,
+    "grand": 38957.78126749902
+   }
   },
   "note": "bar pkg 1h/5h = 2,261 to Kamper's"
  },
@@ -271,11 +673,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -287,11 +710,32 @@
   "n": 0,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 16.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 0.0
   },
   "netsplit": {
    "Anthology": 0.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -303,11 +747,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -319,11 +784,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -335,11 +821,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -351,11 +858,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -367,11 +895,32 @@
   "n": 0,
   "actual": 8485.0,
   "net": 8909.25,
+  "svc": 0.0,
+  "adm": 424.25,
+  "tax": 509.1,
+  "grat": 1697.0,
+  "grand": 11115.35,
+  "guests": 58.0,
+  "rooms": "Kampers Rooftop Bar",
   "base": {
    "Kamper's": 8485.0
   },
   "netsplit": {
    "Kamper's": 8909.25
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 8485.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8485.0,
+    "svc": 0.0,
+    "adm": 424.25,
+    "tax": 509.1,
+    "grat": 1697.0,
+    "net": 8909.25,
+    "grand": 11115.35
+   }
   },
   "note": ""
  },
@@ -383,11 +932,32 @@
   "n": 0,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 0.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 0.0
   },
   "netsplit": {
    "Anthology": 0.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -399,11 +969,32 @@
   "n": 0,
   "actual": 8058.2,
   "net": 9822.75,
+  "svc": 1411.64,
+  "adm": 352.91,
+  "tax": 423.49,
+  "grat": 0.0,
+  "grand": 10246.24,
+  "guests": 100.0,
+  "rooms": "Kampers Rooftop Bar",
   "base": {
    "Kamper's": 8058.2
   },
   "netsplit": {
    "Kamper's": 9822.75
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 8058.2
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8058.2,
+    "svc": 1411.64,
+    "adm": 352.91,
+    "tax": 423.49,
+    "grat": 0.0,
+    "net": 9822.75,
+    "grand": 10246.24
+   }
   },
   "note": ""
  },
@@ -415,11 +1006,34 @@
   "n": 20,
   "actual": 21912.8,
   "net": 26634.75,
+  "svc": 3777.56,
+  "adm": 944.39,
+  "tax": 1133.27,
+  "grat": 0.0,
+  "grand": 27768.02,
+  "guests": 100.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
    "Anthology": 21912.8
   },
   "netsplit": {
    "Anthology": 26634.75
+  },
+  "cat": {
+   "Anthology|FOOD": 10230.0,
+   "Anthology|BEVERAGE": 11682.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 21912.8,
+    "svc": 3777.56,
+    "adm": 944.39,
+    "tax": 1133.27,
+    "grat": 0.0,
+    "net": 26634.75,
+    "grand": 27768.02
+   }
   },
   "note": ""
  },
@@ -431,11 +1045,32 @@
   "n": 0,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 2.0,
+  "rooms": "Kampers Rooftop Bar",
   "base": {
    "Kamper's": 0.0
   },
   "netsplit": {
    "Kamper's": 0.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": ""
  },
@@ -447,15 +1082,50 @@
   "n": 25,
   "actual": 46154.0,
   "net": 57035.0,
+  "svc": 8704.8,
+  "adm": 2176.2,
+  "tax": 2611.44,
+  "grat": 0.0,
+  "grand": 59646.44,
+  "guests": 179.0,
+  "rooms": "13th Floor - Event Space",
   "base": {
-   "Anthology": 39408.1,
-   "Kamper's": 6745.9
+   "Kamper's": 15436.9,
+   "Anthology": 30717.1
   },
   "netsplit": {
-   "Anthology": 48698.725646747844,
-   "Kamper's": 8336.274353252154
+   "Kamper's": 19076.21422845257,
+   "Anthology": 37958.785771547424
   },
-  "note": "bar pkg 1.5h/5h = 5,746 to Kamper's"
+  "cat": {
+   "Kamper's|FOOD": 8691.0,
+   "Anthology|FOOD": 15680.0,
+   "Anthology|BEVERAGE": 15037.1,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 5745.9,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 15436.9,
+    "svc": 2911.451382762057,
+    "adm": 727.8628456905143,
+    "tax": 873.4354148286172,
+    "grat": 0.0,
+    "net": 19076.21422845257,
+    "grand": 19949.649643281187
+   },
+   "Anthology": {
+    "base": 30717.1,
+    "svc": 5793.348617237942,
+    "adm": 1448.3371543094854,
+    "tax": 1738.0045851713826,
+    "grat": 0.0,
+    "net": 37958.785771547424,
+    "grand": 39696.790356718804
+   }
+  },
+  "note": "bar pkg 1.5h/5h = 5,746 to Kamper's; BEO header omission corrected (see notes)"
  },
  {
   "eid": null,
@@ -465,11 +1135,32 @@
   "n": 0,
   "actual": 6315.0,
   "net": 6565.0,
+  "svc": 0.0,
+  "adm": 250.0,
+  "tax": 300.0,
+  "grat": 1000.0,
+  "grand": 7865.0,
+  "guests": 40.0,
+  "rooms": "Kampers Bar - Inside",
   "base": {
    "Kamper's": 6315.0
   },
   "netsplit": {
    "Kamper's": 6565.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 6315.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6315.0,
+    "svc": 0.0,
+    "adm": 250.0,
+    "tax": 300.0,
+    "grat": 1000.0,
+    "net": 6565.0,
+    "grand": 7865.0
+   }
   },
   "note": ""
  },
@@ -481,11 +1172,34 @@
   "n": 12,
   "actual": 3910.0,
   "net": 4605.0,
+  "svc": 556.0,
+  "adm": 139.0,
+  "tax": 166.8,
+  "grat": 0.0,
+  "grand": 4771.8,
+  "guests": 15.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 3910.0
   },
   "netsplit": {
    "Anthology": 4605.0
+  },
+  "cat": {
+   "Anthology|FOOD": 2240.0,
+   "Anthology|BEVERAGE": 1170.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3910.0,
+    "svc": 556.0,
+    "adm": 139.0,
+    "tax": 166.8,
+    "grat": 0.0,
+    "net": 4605.0,
+    "grand": 4771.8
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -497,11 +1211,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice fetched"
  },
@@ -513,11 +1248,34 @@
   "n": 24,
   "actual": 21570.0,
   "net": 26350.0,
+  "svc": 3824.0,
+  "adm": 956.0,
+  "tax": 1147.2,
+  "grat": 0.0,
+  "grand": 26997.2,
+  "guests": 80.0,
+  "rooms": "Conservatory Ballroom",
   "base": {
    "Anthology": 21570.0
   },
   "netsplit": {
    "Anthology": 26350.0
+  },
+  "cat": {
+   "Anthology|FOOD": 16470.0,
+   "Anthology|BEVERAGE": 3600.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 21570.0,
+    "svc": 3824.0,
+    "adm": 956.0,
+    "tax": 1147.2,
+    "grat": 0.0,
+    "net": 26350.0,
+    "grand": 27497.2
+   }
   },
   "note": "invoice -1,500 vs actual"
  },
@@ -529,11 +1287,34 @@
   "n": 11,
   "actual": 3780.0,
   "net": 4475.0,
+  "svc": 556.0,
+  "adm": 139.0,
+  "tax": 166.8,
+  "grat": 0.0,
+  "grand": 4641.8,
+  "guests": 15.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 3780.0
   },
   "netsplit": {
    "Anthology": 4475.0
+  },
+  "cat": {
+   "Anthology|FOOD": 2240.0,
+   "Anthology|BEVERAGE": 1040.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3780.0,
+    "svc": 556.0,
+    "adm": 139.0,
+    "tax": 166.8,
+    "grat": 0.0,
+    "net": 4475.0,
+    "grand": 4641.8
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -545,11 +1326,34 @@
   "n": 11,
   "actual": 3040.0,
   "net": 3550.0,
+  "svc": 408.0,
+  "adm": 102.0,
+  "tax": 122.4,
+  "grat": 0.0,
+  "grand": 3672.4,
+  "guests": 15.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 3040.0
   },
   "netsplit": {
    "Anthology": 3550.0000000000005
+  },
+  "cat": {
+   "Anthology|FOOD": 1500.0,
+   "Anthology|BEVERAGE": 1040.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3040.0,
+    "svc": 408.0,
+    "adm": 102.0,
+    "tax": 122.4,
+    "grat": 0.0,
+    "net": 3550.0,
+    "grand": 3672.4
+   }
   },
   "note": "invoice -500 vs actual"
  },
@@ -561,11 +1365,32 @@
   "n": 0,
   "actual": 500.0,
   "net": 525.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 525.0,
+  "guests": 0.0,
+  "rooms": "Photography",
   "base": {
    "Anthology": 500.0
   },
   "netsplit": {
    "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 525.0,
+    "grand": 525.0
+   }
   },
   "note": "no invoice lines"
  },
@@ -577,11 +1402,32 @@
   "n": 1,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 0.0,
+  "rooms": "Linden Room",
   "base": {
    "Anthology": 0.0
   },
   "netsplit": {
    "Anthology": 0.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": ""
  },
@@ -593,11 +1439,32 @@
   "n": 5,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 12.0,
+  "rooms": "Terrace Club",
   "base": {
    "Anthology": 0.0
   },
   "netsplit": {
    "Anthology": 0.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": ""
  },
@@ -609,6 +1476,13 @@
   "n": 25,
   "actual": 29679.0,
   "net": 36136.25,
+  "svc": 5165.8,
+  "adm": 1291.45,
+  "tax": 1549.74,
+  "grat": 0.0,
+  "grand": 37685.99,
+  "guests": 124.0,
+  "rooms": "Kampers Rooftop Bar , 13th Floor - Event Space",
   "base": {
    "Kamper's": 6785.4,
    "Anthology": 22893.6
@@ -616,6 +1490,34 @@
   "netsplit": {
    "Kamper's": 8261.697184878196,
    "Anthology": 27874.552815121802
+  },
+  "cat": {
+   "Kamper's|FOOD": 3596.0,
+   "Anthology|FOOD": 11261.0,
+   "Anthology|BEVERAGE": 11632.6,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2189.4,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6785.4,
+    "svc": 1181.0377479025574,
+    "adm": 295.25943697563935,
+    "tax": 354.3113243707672,
+    "grat": 0.0,
+    "net": 8261.697184878196,
+    "grand": 8616.008509248963
+   },
+   "Anthology": {
+    "base": 22893.6,
+    "svc": 3984.762252097443,
+    "adm": 996.1905630243607,
+    "tax": 1195.4286756292327,
+    "grat": 0.0,
+    "net": 27874.552815121802,
+    "grand": 29069.981490751034
+   }
   },
   "note": "bar pkg 1h/5h = 2,189 to Kamper's"
  },
@@ -627,11 +1529,32 @@
   "n": 0,
   "actual": 1000.0,
   "net": 1187.5,
+  "svc": 150.0,
+  "adm": 37.5,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 1187.5,
+  "guests": 0.0,
+  "rooms": "Terrace Club",
   "base": {
    "Anthology": 1000.0
   },
   "netsplit": {
    "Anthology": 1187.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 1000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1000.0,
+    "svc": 150.0,
+    "adm": 37.5,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 1187.5,
+    "grand": 1187.5
+   }
   },
   "note": "no invoice lines"
  },
@@ -643,6 +1566,13 @@
   "n": 37,
   "actual": 37227.0,
   "net": 46033.75,
+  "svc": 7045.4,
+  "adm": 1761.35,
+  "tax": 2113.62,
+  "grat": 0.0,
+  "grand": 48147.37,
+  "guests": 127.0,
+  "rooms": "13th Floor - Event Space , Kampers Rooftop Bar",
   "base": {
    "Kamper's": 11725.0,
    "Anthology": 25502.0
@@ -650,6 +1580,34 @@
   "netsplit": {
    "Kamper's": 14498.7702138233,
    "Anthology": 31534.9797861767
+  },
+  "cat": {
+   "Kamper's|FOOD": 8500.0,
+   "Anthology|FOOD": 13577.0,
+   "Anthology|BEVERAGE": 11925.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2225.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 11725.0,
+    "svc": 2219.0161710586403,
+    "adm": 554.7540427646601,
+    "tax": 665.7048513175921,
+    "grat": 0.0,
+    "net": 14498.7702138233,
+    "grand": 15164.475065140892
+   },
+   "Anthology": {
+    "base": 25502.0,
+    "svc": 4826.38382894136,
+    "adm": 1206.59595723534,
+    "tax": 1447.9151486824078,
+    "grat": 0.0,
+    "net": 31534.9797861767,
+    "grand": 32982.894934859105
+   }
   },
   "note": "bar pkg 1h/5h = 2,225 to Kamper's"
  },
@@ -661,11 +1619,32 @@
   "n": 0,
   "actual": 0.0,
   "net": 0.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 0.0,
+  "guests": 40.0,
+  "rooms": "Kampers Rooftop Bar",
   "base": {
    "Kamper's": 0.0
   },
   "netsplit": {
    "Kamper's": 0.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 0.0,
+    "grand": 0.0
+   }
   },
   "note": ""
  },
@@ -677,11 +1656,32 @@
   "n": 0,
   "actual": 1000.0,
   "net": 1187.5,
+  "svc": 150.0,
+  "adm": 37.5,
+  "tax": 0.0,
+  "grat": 0.0,
+  "grand": 1187.5,
+  "guests": 40.0,
+  "rooms": "Terrace Club",
   "base": {
    "Anthology": 1000.0
   },
   "netsplit": {
    "Anthology": 1187.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 1000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1000.0,
+    "svc": 150.0,
+    "adm": 37.5,
+    "tax": 0.0,
+    "grat": 0.0,
+    "net": 1187.5,
+    "grand": 1187.5
+   }
   },
   "note": "no invoice lines"
  }

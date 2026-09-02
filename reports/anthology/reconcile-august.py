@@ -18,6 +18,14 @@ import csv, json, re, collections, datetime, sys, openpyxl
 UP='/root/.claude/uploads/1016ed00-55b4-510b-b3c1-eb6d9e2a693d'
 PRORATE='--no-prorate' not in sys.argv   # default on: Toast ties per day only when the cocktail-hour share of the bar package sits with Kamper's
 lines=json.load(open('lines.json'))
+# Coordinator omissions confirmed against Toast: line items served at Kamper's with no Kamper's
+# header on the BEO. Megan Hannigan 8/22 -- canapes (5:00-6:30 PM, the Kamper's cocktail
+# reception window) and seafood tower; Toast Anthology Events is short by exactly their net.
+OVERRIDES={47786830:{1:"Kamper's",7:"Kamper's"}}
+if '--no-overrides' not in sys.argv:
+    for l in lines:
+        o=OVERRIDES.get(int(l['event_id']),{}).get(int(l['line_no']))
+        if o: l['outlet']=o; l['override']=True
 def m(s):
     s=(s or '').strip().replace('$','').replace(',','')
     try: return float(s)
@@ -108,8 +116,32 @@ for key,e in exp.items():
         elif pro: note.append(f'(bar pkg {kam_h:g}h/{pkg[0]:g}h would move {pro:,.0f})')
     g=(e['net']/e['actual']) if e['actual'] else 1.0
     net={o:v*g for o,v in base.items()}
+    # category by outlet for the Toast comparison: FOOD / BEVERAGE from the invoice section,
+    # RENTAL for the Kamper's cocktail-reception fee ($1,000/hr, rung at Kamper's as Room Rental Fee)
+    # and for anything the invoice does not itemise (room rental, photography, Terrace Club).
+    cat=collections.defaultdict(float)
+    for l in ls:
+        if l.get('total') is None: continue
+        desc=l.get('description') or ''
+        if re.search(r'hour.*cocktail reception at kamper',desc,re.I): sec='RENTAL'
+        else: sec=l['section'] if l['section'] in ('FOOD','BEVERAGE') else 'RENTAL'
+        cat[f"{l['outlet']}|{sec}"]+=float(l['total'])
+    if e['kind']=='kampers standalone': cat[f"{K}|UNITEMISED"]=e['actual']
+    elif e['kind']=='rotunda standalone': cat[f"{R}|UNITEMISED"]=e['actual']
+    else:
+        if PRORATE and pro: cat[f"{A}|BEVERAGE"]-=pro; cat[f"{K}|BEVERAGE"]+=pro
+        itemised=sum(v for k2,v in cat.items() if k2.startswith(A))
+        cat[f"{A}|RENTAL"]+=base[A]-itemised
+    # service charge, admin fee, tax and gratuity follow each outlet's share of the base
+    alloc={}
+    for o,v in base.items():
+        sh=(v/e['actual']) if e['actual'] else 0
+        alloc[o]={'base':v,'svc':e['svc']*sh,'adm':e['adm']*sh,'tax':e['tax']*sh,'grat':e['grat']*sh}
+        alloc[o]['net']=v+alloc[o]['svc']+alloc[o]['adm']; alloc[o]['grand']=alloc[o]['net']+alloc[o]['tax']+alloc[o]['grat']
+    if any(l.get('override') for l in ls): note.append('BEO header omission corrected (see notes)')
     rows.append({'eid':eid,'name':e['name'],'date':e['date'],'kind':e['kind'],'n':len(ls),'actual':e['actual'],'net':e['net'],
-                 'base':dict(base),'netsplit':net,'note':'; '.join(note)})
+                 'svc':e['svc'],'adm':e['adm'],'tax':e['tax'],'grat':e['grat'],'grand':e['grand'],'guests':e['guests'],'rooms':e['rooms'],
+                 'base':dict(base),'netsplit':net,'cat':dict(cat),'alloc':alloc,'note':'; '.join(note)})
 json.dump(rows,open('split-results.json','w'),indent=1,default=str)
 
 # ---- per-event table
