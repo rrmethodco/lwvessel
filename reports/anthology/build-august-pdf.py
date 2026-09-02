@@ -113,7 +113,7 @@ FOOT=lambda n: f'<div class="foot"><span>Anthology Events at Book Tower · Augus
 H=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Anthology &amp; Kamper's — August 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>{CSS}
-table.sm{{font-size:10.2px}} table.sm th,table.sm td{{padding:4px 6px}} table.xs{{font-size:9.4px}} table.xs th,table.xs td{{padding:2.5px 5px}} td .n{{font-family:var(--ui);font-size:9px;color:var(--text-3)}}
+table.sm{{font-size:10.2px}} table.sm th,table.sm td{{padding:4px 6px}} table.t2 th:nth-child(2),table.t2 td:nth-child(2){{text-align:left}} table.xs{{font-size:9.4px}} table.xs th,table.xs td{{padding:2.5px 5px}} td .n{{font-family:var(--ui);font-size:9px;color:var(--text-3)}}
 .note{{font-size:11px;line-height:1.5;color:var(--text-2);margin:0 0 9px;max-width:72ch}} .note strong{{color:var(--text)}}
 </style></head><body>
 
@@ -147,7 +147,7 @@ table.sm{{font-size:10.2px}} table.sm th,table.sm td{{padding:4px 6px}} table.xs
 <div class="page">
 <p class="eyebrow">Event detail</p>
 <h2>Every August event, <em>net by outlet</em></h2>
-{table(['Date','Event','Guests','Base','Svc + admin','Net','Anthology',"Kamper's",'Rotunda',"Outlet %"],ev_rows,'xs')}
+{table(['Date','Event','Guests','Base','Svc + admin','Net','Anthology',"Kamper's",'Rotunda',"Outlet %"],ev_rows,'xs t2')}
 <p class="note">Zero-revenue rows (FOC shoots, rehearsal, rooftop yoga) omitted. Kamper's figures on shared weddings include the cocktail-hour share of the bar package; the parser output without that layer is in reports/anthology/august-2026-outlet-split.txt.</p>
 {FOOT(3)}
 </div>
@@ -155,7 +155,7 @@ table.sm{{font-size:10.2px}} table.sm th,table.sm td{{padding:4px 6px}} table.xs
 <div class="page">
 <p class="eyebrow">Shared weddings</p>
 <h2>Kamper's actual share <em>vs the 80/20 convention</em></h2>
-{table(['Date','Wedding','Net',"Kamper's net","Kamper's %",'20% would give','Δ'],sw_rows)}
+{table(['Date','Wedding','Net',"Kamper's net","Kamper's %",'20% would give','Δ'],sw_rows,'t2')}
 <p class="note">Kamper's carries the canapés, its $1,000/hour fee and the cocktail-hour share of the bar package. That runs 23–33% on every August wedding, not 20%: the convention understates Kamper's by ${f0(sh_k-.2*sh_net)} for the month and overstates Anthology by the same.</p>
 {FOOT(4)}
 </div>
@@ -163,7 +163,7 @@ table.sm{{font-size:10.2px}} table.sm th,table.sm td{{padding:4px 6px}} table.xs
 <div class="page">
 <p class="eyebrow">Daily tie-out</p>
 <h2>Anthology by day <em>vs Toast</em></h2>
-{table(['Day','Events','Tripleseat net','Toast net','Δ'],day_rows,'sm')}
+{table(['Day','Events','Tripleseat net','Toast net','Δ'],day_rows,'sm t2')}
 <p class="note">{tie} of {len([d for d in byday if byday[d]])} event days tie within $600. Remaining differences are photography sessions and Terrace Club rentals that were not rung on their event date (8/03, 8/17, 8/30) or rang a day early (8/10, 8/18).</p>
 {FOOT(5)}
 </div>
