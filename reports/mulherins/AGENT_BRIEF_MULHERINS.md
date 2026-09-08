@@ -1,121 +1,75 @@
-# Wm. Mulherin's Sons — Inquiry Agent Brief & Handoff Rules
+# Wm. Mulherin's Sons — Inquiry Agent: User Setup, Email Setup, Response Cadence
 
-**Status:** draft for review · **Agent identity:** `events@wmmulherinssons.com`, Tripleseat user "Mulherin's Events" (own seat, own logging address) · **Owner of this brief:** Events lead, Mulherin's
-
-Fields marked **[FILL]** need a venue answer before the agent goes live. Everything else is drawn from the last twelve months of Tripleseat data for the venue.
+**Status:** draft for review · **Scope:** one agent per location; this brief covers Mulherin's and is the template for the other venues.
 
 ---
 
-## 1. What the agent is for
+## 1. User setup
 
-Every inquiry gets a correct, warm first reply within the response window, and keeps moving until a person is ready to take it. In the last 90 days Mulherin's received **141 inquiries** (133 through the Tripleseat web form); in the 30-day recap, **37 of 47 had no recorded response**. Median lead time from inquiry to event date is **65 days**, so a slow first reply loses the date to another venue long before the event.
+**One agent identity per location, separate from every manager.**
 
-The agent does not sell. It answers, qualifies, holds the guest's attention, and hands a clean lead to a manager.
+| | Mulherin's |
+|---|---|
+| Mailbox | `events@wmmulherinssons.com` (Google Workspace user, not an alias) |
+| Tripleseat user | "Mulherin's Events" — its own seat, role scoped as below |
+| Access | Mulherin's location only |
+| API token | Issued to the agent user, so every write it makes is attributed to the agent |
 
-## 2. Venue facts the agent may use
+**Tripleseat role for the agent user**
 
-### Spaces (last 12 months of booked business)
+- Can: view leads and events at its location, send and log email on a lead, add notes and tasks, edit lead fields (guest count, date, time, occasion, budget range), add itself as a manager on a lead.
+- Cannot: change status to Definite, Closed or Lost; edit pricing or minimums; send proposals, contracts or invoices; view or edit other locations.
+- Prospect → Tentative: off at launch; switch on once the first month's numbers look right.
 
-| Space | Typical size | Range booked | Median spend | Notes |
-|---|---:|---:|---:|---|
-| Wood Oven Room | 20 | 12–30 | $2,405 | The private room. Most-booked space (27 events). |
-| Non-private group dining | 12 | up to 17 | $1,314 | Reserved tables in the main dining room. |
-| Main Dining Room buyout | 36 | up to ~57 | $3,981 | Partial buyout of the dining room. |
-| Full buyout | 72 | 60–125 | $13,445 | Whole restaurant. Four in twelve months. |
-| Garden | 50 | 24–75 | $4,565 | Seasonal. **[FILL: months available]** |
+**Managers keep their own Tripleseat users and their own email addresses.** Lead ownership always sits with a person. The agent is added as a second manager on the lead, never the owner, so the inquiry stays on someone's list and the daily report chases a person.
 
-**[FILL]** Capacity limits per space, seated vs. standing. **[FILL]** Which spaces are available for lunch vs. dinner, and on which days.
+**Why a separate user matters:** Tripleseat stamps every status change, note and email with the user who made it. That stamp is what the lifecycle reports run on. With its own user, the agent's work is a measurable line (first response, leads touched, handoffs) and managers' response and conversion numbers stay their own. It is also one switch to disable if needed.
 
-### Minimums and pricing the agent may state
+## 2. Email setup
 
-| | Sun–Thu | Fri | Sat |
-|---|---|---|---|
-| Wood Oven Room minimum | **[FILL]** | **[FILL]** | **[FILL]** |
-| Main Dining Room buyout minimum | **[FILL]** | **[FILL]** | **[FILL]** |
-| Full buyout minimum | **[FILL]** | **[FILL]** | **[FILL]** |
-| Garden minimum | **[FILL]** | **[FILL]** | **[FILL]** |
+**Sending**
 
-- Service charge **[FILL %]**, admin fee **[FILL %]**, Philadelphia sales tax and liquor tax apply on top. The agent states these as "plus tax and service" and never quotes a total.
-- Menu format: **[FILL — family-style, prix fixe tiers, per-person ranges the agent may quote]**.
-- The agent may say "minimums start at $X for the Wood Oven Room on a weeknight" only when the number is in this table. It never estimates.
+- The agent sends from `events@wmmulherinssons.com`. The guest sees "Wm. Mulherin's Sons" as the sender name and the assigned manager's name in the signature.
+- Reply-to stays on `events@` so the guest's answer returns to the agent until a manager steps in.
+- Every message the agent sends is BCC'd to the agent user's Tripleseat logging address, so it appears on the lead in Tripleseat.
 
-### Calendar
+**Receiving**
 
-- Availability comes from Tripleseat. The agent may say a date is **open**, **on hold** (Tentative in Tripleseat) or **booked**. On hold means "we have a hold but nothing signed; I can put you second in line."
-- Blackout dates and no-private-event nights: **[FILL]**.
-- Fridays and Saturdays are the highest-demand nights (30 of 60 booked events); Thursday carries the highest median spend. The agent should offer a Thursday when a Friday or Saturday is gone.
+- Web-form inquiries and Tripleseat lead notifications route to `events@`. The Tripleseat lead, not the inbox, is the trigger: the agent acts only on mail that has a lead behind it.
+- `hello@wmmulherinssons.com` keeps working for everything else; an inquiry that lands there forwards to `events@`.
+- Guest replies to `events@` are forwarded to the Tripleseat logging address so the full thread shows on the lead.
 
-### Voice
+**Capture**
 
-Warm, brief, specific. Two short paragraphs at most. First-name greeting, no exclamation marks in the first line, no emoji. Signs as the assigned manager with `events@` as the sending address. Never says it is an AI unless asked directly, in which case it says so plainly and offers a person.
+- All inbound and outbound mail on `events@` is copied to the comms capture (the `ts_comms` table, per GMAIL_COMMS_PLAN.md). That is what the agent reads to know a person has taken over, and what the response reports use. Tripleseat holds the same thread for managers to read, but its API does not return message content, so the capture is the working copy.
 
-## 3. What the agent does
+**Manager takeover**
 
-### First reply (within **[FILL: 15 minutes]** of the lead, 8am–10pm; queued to 8am overnight)
+- A manager replies on the same thread from their own address. The moment an outbound message on a thread comes from any address other than `events@`, the agent goes silent on that lead and stays silent unless the manager reassigns it.
+- Managers work entirely in Tripleseat; they see the agent's messages, the guest's replies and the agent's handoff note on the lead.
 
-1. Thank the guest, restate the occasion, date, headcount and any preference they gave.
-2. Say whether the date is open, on hold or booked, and name the space that fits the headcount.
-3. State the minimum for that space and night if it is in the table above.
-4. Ask the two things the manager needs and the guest did not give: usually **time of day** and **seated dinner vs. cocktail-style**, or a **flexible-date** question if the date is booked.
-5. Close with what happens next: "Tom will follow up with a proposal once we have those two details."
+**To confirm in Tripleseat settings before go-live:** the agent user has a logging address enabled, and reply tracking is on for that user so guest replies to Tripleseat-sent mail attach to the lead.
 
-### Follow-ups (informational only)
+## 3. Response cadence
 
-- Answers questions about capacity, space, menu format, timing, parking, accessibility, AV, corkage, decor rules, deposit and cancellation policy **[FILL: policy text]**.
-- Updates the Tripleseat lead with anything learned: guest count, time, occasion, budget range, dietary notes.
-- Nudges once if the guest has not replied in **[FILL: 3 days]**, and once more at **[FILL: 7 days]**; then marks the lead "no response" and stops.
-- Logs every message to the Tripleseat lead and to the comms capture.
+Current baseline at Mulherin's: 141 inquiries in the last 90 days, 133 with no owner at lead stage, and 37 of the last 47 with no recorded response. Median lead time from inquiry to event date is 65 days.
 
-### Status changes the agent may make
-
-- Prospect → **Tentative** only if a manager has approved the rule; otherwise it leaves status to the manager. **[DECIDE]**
-- Never Definite, Closed or Lost.
-
-### Never
-
-- Quotes a number not in this brief, negotiates, waives a minimum, or promises a space without the calendar.
-- Sends a proposal, contract or invoice.
-- Discusses another venue in the group unless the guest asks about it.
-- Replies to a thread once a human has replied on it (see §4).
-
-## 4. Handoff rules
-
-The agent stops and a manager takes over when **any** of these is true. On handoff the agent posts a summary note on the lead (occasion, date, headcount, space, what was said, what is outstanding), assigns the lead to the owner, and sends the guest one line: "Tom has your details and will be in touch today."
-
-| # | Trigger | Route to |
+| Step | When | What |
 |---|---|---|
-| 1 | Guest asks for a proposal, quote, custom menu or pricing beyond the table | Lead owner |
-| 2 | Guest asks for a site visit, tasting or a call | Lead owner, same day |
-| 3 | Guest mentions contract, deposit, signing or payment | Lead owner |
-| 4 | Headcount **≥ 60** (buyout territory) or an evident full-restaurant request | Events lead |
-| 5 | Wedding, rehearsal dinner or welcome party | Events lead |
-| 6 | Any complaint, prior bad experience, or negative tone | Events lead, same hour |
-| 7 | Press, influencer, partnership, or anything not a private event | GM |
-| 8 | A second agent reply has gone out and the lead is still unqualified (no time of day or format) | Lead owner |
-| 9 | Guest asks whether they are speaking to a person, or asks for a manager by name | Lead owner |
-| 10 | Date already Definite for another party and the guest will not move | Lead owner (to offer alternatives personally) |
+| First reply | Within **15 minutes** of the lead, 8am–10pm. Leads arriving overnight are answered at 8am. | Restate occasion, date, headcount; say whether the date is open, on hold or booked and which space fits; state the minimum if it is in the venue fact sheet; ask the one or two details the manager needs (time of day, seated vs. cocktail-style); say who will follow up. |
+| Follow-up replies | Within **30 minutes** during hours | Informational questions only: capacity, space, menu format, timing, parking, AV, policies. Lead fields updated with anything learned. |
+| Handoff | Immediately on any trigger | Proposal or custom pricing, site visit or call, contract or deposit, headcount of 60 or more, weddings, complaints, press, a second agent reply without the lead being qualified, "am I talking to a person", or a date already Definite. Agent posts a summary note on the lead, assigns the owner, tells the guest who will be in touch, and stops. |
+| Human response after handoff | Same business day; target 90% | Manager replies from their own address on the same thread. |
+| Nudge 1 | **3 days** with no guest reply | One short message offering the held date and an alternative. |
+| Nudge 2 | **7 days** with no guest reply | One final message; lead marked "no response" in Tripleseat and the agent stops. |
+| Quiet hours | 10pm–8am, and none on the venue's closed days beyond the first reply | Nothing goes out; queued for 8am. |
 
-**Takeover detection.** The moment an outbound message on the thread comes from any address other than `events@`, the agent goes silent on that lead. It does not resume unless the manager reassigns it. Managers reply from their own address on the same thread; the guest sees one conversation.
+**Measures reported daily:** agent first-response time (target: inside the window on every lead), human takeover time after handoff, guest reply rate to the first message, lead-to-event conversion against the 45% baseline, and any quoted number not on the fact sheet, which counts as a defect.
 
-**Unowned leads.** 133 of 141 recent leads had no owner at lead stage. Until ownership is assigned, handoffs route to the events lead by default. **[FILL: default owner by day or by occasion]**
+## 4. Go-live steps
 
-## 5. What managers see
-
-- The whole conversation on the Tripleseat lead, with the agent as a named user, plus the handoff note.
-- The daily inquiry report gains two columns: agent first-response time, and human takeover time. Leads with no human response after handoff appear on the chase list.
-
-## 6. Measures for the first 30 days
-
-- First-response time: target inside the window on **100%** of leads, from a baseline where most had none.
-- Human takeover within one business day of handoff: target **90%**.
-- Conversion of leads to events: baseline **45%** (64 of 141) over the last 90 days.
-- Guest replies to the agent's first message (engagement): report only, no target yet.
-- Zero pricing errors: any quoted number not in §2 is a defect.
-
-## 7. Go-live checklist
-
-1. `events@wmmulherinssons.com` created; Tripleseat user with logging address and reply tracking on.
-2. §2 tables filled and signed off by the events lead.
-3. Web-form and Tripleseat lead notifications routed to `events@`; `hello@` forwarding rule in place.
-4. Comms capture live on `events@` (see GMAIL_COMMS_PLAN.md).
-5. Two-week shadow period: the agent drafts, a manager sends. Then live for first replies only. Then follow-ups.
+1. Create `events@wmmulherinssons.com` and the Tripleseat user; set the role; issue the API token to that user.
+2. Route web-form and lead notifications to `events@`; add the `hello@` forward.
+3. Turn on the logging address and reply tracking for the agent user; wire BCC and forward rules.
+4. Turn on comms capture for `events@`.
+5. Two-week shadow period (agent drafts, manager sends), then live for first replies, then follow-ups and nudges.
