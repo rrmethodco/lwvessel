@@ -655,6 +655,9 @@ table.alloc th.cs-hi{background:#dce6f4;}
   </div>
   <div class="bstrip" id="mp-kpis"></div>
   <div class="scroll"><table class="alloc" id="mp-pnl" style="max-width:1100px;"></table></div>
+  <div id="mp-recon-head" style="font-family:Georgia,serif;font-size:14px;color:var(--ink);margin:22px 0 8px;">Month reconciliation <em>&mdash; projected vs actual</em></div>
+  <div class="scroll"><table class="alloc" id="mp-recon" style="max-width:1100px;"></table></div>
+  <div class="scroll"><table class="alloc evlist" id="mp-reconev" style="max-width:1100px;margin-top:12px;"></table></div>
   <div style="font-family:Georgia,serif;font-size:14px;color:var(--ink);margin:22px 0 8px;">Events in this month</div>
   <div class="scroll"><table class="alloc evlist" id="mp-events" style="max-width:1100px;"></table></div>
 </section>
@@ -914,7 +917,7 @@ function dispDate(B){
 function evDateTs(ev){if(ev&&ev.evDate&&/^\d{4}-\d{2}-\d{2}/.test(ev.evDate)){const t=Date.parse(ev.evDate+'T12:00:00');if(!isNaN(t))return t;}return null;}
 function evShortDate(ev){const t=evDateTs(ev);if(t===null)return 'Date TBD';return new Date(t).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
 function evMonthGrp(ev){const t=evDateTs(ev);if(t===null)return {key:'~undated',label:'Undated',ord:Infinity};const d=new Date(t);return {key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('en-US',{month:'long',year:'numeric'}),ord:d.getFullYear()*12+d.getMonth()};}
-const ACTF=['guests','food','bev','cash','unmet','rental','svc','sef','disc','cogsF','cogsBv','labor','opex','fee'];
+const ACTF=['guests','food','bev','cash','unmet','rental','other','barFee','svc','sef','disc','cogsF','cogsBv','cogsO','labor','opex','fee'];
 function sanEv(o){
   const b=blankEvent();
   if(!o||typeof o!=='object')return b;
@@ -1150,6 +1153,7 @@ function provChips(elId,sel,withAll){
 }
 const CATSEC={};
 const MUC='<span style="color:var(--muted);font-size:8.5px;display:block;">';
+const MU='<span style="color:var(--muted);font-size:8.5px;">';
 let HIST={basis:'',events:[]};
 /* Little Havana food: no blanket %. Target COGS keys off what the item IS (its raw-ingredient cost), read from the item name & menu category. Low-ingredient items (sides, salads, starches, desserts, sandwiches, veg apps, dips) carry the biggest markup (~30% COGS); protein appetizers sit mid (~40%); premium centerpieces — entrées, seafood, prime rib, pernil — stay guest-friendly (~48%). Everything lands at/under 50% so the BEO PMIX blends toward the 50% goal (pass/fail enforced on the Menu tab). */
 function recTarget(name,cat,prov){
@@ -1391,6 +1395,36 @@ function beoCalcFor(B){
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
+/* ---------------- reconciliation shapes (event page + month rollup) ----------------
+   RECK is the line set both sides of a reconciliation share. evProjected() is the
+   estimate; evActuals() is what was entered post-event, or null when the event has
+   not been reconciled at all — the month rollup uses that null to exclude an event
+   from BOTH columns rather than booking it as $0 actual. FOH management labor is a
+   fixed per-event allocation, so it carries the same figure on both sides. */
+const RECK=['guests','food','bev','cash','unmet','rental','other','barFee','svc','sef','disc','rev','cogsF','cogsBv','cogsO','cogs','gp','labor','fohMgmt','laborTot','opex','fee','ebitda'];
+function evProjected(ev){
+  const C=beoCalcFor(ev);
+  return {guests:+ev.guests||0,food:C.food,bev:C.bev,cash:C.cash,unmet:0,unmetExp:C.unmet,rental:+ev.rental||0,
+    other:C.other,barFee:C.barFee,svc:C.svc,sef:C.sef,disc:C.disc,rev:C.rev,
+    cogsF:C.cogsF,cogsBv:C.cogsBv,cogsO:C.cogsO,cogs:C.cogs,gp:C.gp,
+    labor:C.labor,fohMgmt:C.fohMgmt,laborTot:C.laborTot,opex:C.opex,fee:C.fee,ebitda:C.ebitda};
+}
+function evActuals(ev){
+  const AC=ev.act||{};
+  if(!ACTF.some(k=>AC[k]!=null))return null;                 /* nothing entered — not reconciled */
+  const n0=k=>(AC[k]==null?0:(+AC[k]||0));
+  const fohMgmt=beoCalcFor(ev).fohMgmt;
+  const rev=n0('food')+n0('bev')+n0('cash')+n0('unmet')+n0('rental')+n0('other')+n0('barFee')+n0('svc')+n0('sef')-n0('disc');
+  const cogs=n0('cogsF')+n0('cogsBv')+n0('cogsO');
+  const gp=rev-cogs, laborTot=n0('labor')+fohMgmt;
+  return {filled:ACTF.filter(k=>AC[k]!=null).length,
+    guests:n0('guests'),food:n0('food'),bev:n0('bev'),cash:n0('cash'),unmet:n0('unmet'),rental:n0('rental'),
+    other:n0('other'),barFee:n0('barFee'),svc:n0('svc'),sef:n0('sef'),disc:n0('disc'),rev,
+    cogsF:n0('cogsF'),cogsBv:n0('cogsBv'),cogsO:n0('cogsO'),cogs,gp,
+    labor:n0('labor'),fohMgmt,laborTot,opex:n0('opex'),fee:n0('fee'),
+    ebitda:gp-laborTot-n0('opex')-n0('fee')};
+}
+
 /* ---------------- events list view ---------------- */
 /* Tripleseat status chip — colour by stage */
 function statusChip(s){
@@ -1589,6 +1623,95 @@ function buildMonthly(){
   ph+=pr(selRow?'Estimated Event Net Income / EBITDA':'Estimated Net Income / EBITDA',P.ebitda,1);
   ph+=`<tr><td class="li" colspan="4" style="color:var(--muted);font-size:8.5px;">Taxes collected (${bf2(P.sTax+P.lTax)})${P.grat>0.005?` and gratuity (${bf2(P.grat)})`:''} are pass-through and excluded from revenue. ${selRow?'Single Definite/Closed event; carries a fixed FOH management labor allocation.':'Rolls up only Definite &amp; Closed events for '+beoEsc(grp.label)+'; each event carries its own fixed FOH management labor allocation.'} ${selRow?'':'<b>Click any event below to drill into its P&amp;L.</b>'}</td></tr>`;
   pnl.innerHTML=ph;
+  /* ---- month reconciliation — projected vs actual, rolled up ----
+     Only events that have actuals entered are rolled up, and they are excluded from
+     BOTH columns until they do, so the variance is always like-for-like. Events still
+     awaiting reconciliation are listed underneath rather than booked as $0 actual. */
+  const rtbl=document.getElementById('mp-recon'), rvtbl=document.getElementById('mp-reconev'), rhead=document.getElementById('mp-recon-head');
+  if(rtbl){
+    const zero=()=>{const o={};RECK.forEach(k=>o[k]=0);return o;};
+    const RP=zero(), RA=zero(), done=[], open=[]; let RPX=0;
+    (selRow?[selRow]:rows).forEach(({ev})=>{
+      const Pj=evProjected(ev), Ac=evActuals(ev);
+      if(!Ac){open.push({ev,P:Pj});return;}
+      done.push({ev,P:Pj,A:Ac}); RPX+=Pj.unmetExp||0;
+      RECK.forEach(k=>{RP[k]+=Pj[k]||0;RA[k]+=Ac[k]||0;});
+    });
+    const nAll=(selRow?1:rows.length);
+    if(rhead)rhead.innerHTML=selRow?`Event reconciliation <em>&mdash; ${beoEsc(selName)}</em>`:`Month reconciliation <em>&mdash; ${beoEsc(grp.label)}</em>`;
+    const vT=(d,money)=>(Math.abs(d)<0.005?'—':(d>0?'+':'−')+(money?bf2(Math.abs(d)):String(Math.round(Math.abs(d)))));
+    const vCol=(d,goodPos)=>Math.abs(d)<0.005?'var(--muted)':((goodPos?d>0:d<0)?'var(--pos)':'var(--neg)');
+    const ln=(lbl,k,goodPos,opt)=>{
+      opt=opt||{};
+      const pv=RP[k], ac=RA[k], d=ac-pv, money=opt.money!==false;
+      if(opt.only&&Math.abs(pv)<0.005&&Math.abs(ac)<0.005)return '';
+      return `<tr${opt.bold?' class="total"':''}><td class="li"${opt.ind?' style="padding-left:22px;"':''}>${lbl}</td>`
+        +`<td style="${opt.bold?'font-weight:800;':'color:var(--muted);'}">${money?bf2(pv):pv.toLocaleString()}</td>`
+        +`<td style="${opt.bold?'font-weight:800;':''}">${money?bf2(ac):ac.toLocaleString()}</td>`
+        +`<td style="font-weight:700;color:${vCol(d,goodPos)};">${vT(d,money)}</td>`
+        +`<td style="color:var(--muted);">${Math.abs(pv)<0.005?'—':fpc(d/Math.abs(pv)*100)}</td></tr>`;
+    };
+    if(!done.length){
+      rtbl.innerHTML=`<tr><td class="li" style="color:var(--muted);padding:14px;">No actuals entered yet for ${beoEsc(selRow?selName:grp.label)}. Open an event, scroll to <b>Post-event</b> and enter what Toast, Tripleseat and payroll actually reported &mdash; the month total builds itself from there.</td></tr>`;
+      rvtbl.innerHTML='';
+    }else{
+      let rh2=`<tr><th class="li" style="min-width:300px;">${selRow?'Event':'Month'} reconciliation</th><th style="min-width:100px;">Projected</th><th style="min-width:100px;">Actual</th><th style="min-width:95px;">Variance</th><th style="min-width:60px;">Var %</th></tr>`;
+      rh2+=`<tr><td class="li" colspan="5" style="color:var(--muted);font-size:9.5px;">${done.length} of ${nAll} event${nAll!==1?'s':''} reconciled${open.length?` &middot; ${open.length} still awaiting actuals, excluded from both columns below`:''}. Ex-tax, matching the estimated P&amp;L above.</td></tr>`;
+      rh2+=`<tr class="section"><td class="li" colspan="5">ATTENDANCE</td></tr>`;
+      rh2+=ln('Guest count','guests',true,{money:false});
+      rh2+=`<tr class="section"><td class="li" colspan="5">REVENUE — EX-TAX</td></tr>`;
+      rh2+=ln('Food revenue','food',true,{ind:1});
+      rh2+=ln('Beverage — billed (packages &amp; fees)','bev',true,{ind:1});
+      rh2+=ln('Cash bar sales','cash',true,{ind:1,only:1});
+      if(RA.unmet>0.005||RPX>0.005)rh2+=ln('Unmet-minimum charge '+(RPX>0.005?MU+'projected exposure '+bf2(RPX)+'</span>':''),'unmet',true,{ind:1});
+      rh2+=ln('Room / space rental','rental',true,{ind:1,only:1});
+      rh2+=ln('Other fees','other',true,{ind:1,only:1});
+      rh2+=ln('Bartender / staffing fees','barFee',true,{ind:1,only:1});
+      rh2+=ln('Service charge','svc',true,{ind:1});
+      rh2+=ln('Special event fee','sef',true,{ind:1});
+      rh2+=ln('Less: discounts &amp; comps','disc',false,{ind:1,only:1});
+      rh2+=ln('Total event revenue','rev',true,{bold:1});
+      rh2+=`<tr class="section"><td class="li" colspan="5">COSTS</td></tr>`;
+      rh2+=ln('Food cost','cogsF',false,{ind:1});
+      rh2+=ln('Beverage &amp; bar cost','cogsBv',false,{ind:1});
+      rh2+=ln('Other fees — cost of sales','cogsO',false,{ind:1,only:1});
+      rh2+=ln('Total COGS','cogs',false,{bold:1});
+      rh2+=ln('Gross profit','gp',true,{bold:1});
+      rh2+=ln('Event labor','labor',false,{ind:1});
+      rh2+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}fixed allocation</span></td><td style="color:var(--muted);">${bf2(RP.fohMgmt)}</td><td style="color:var(--muted);">${bf2(RA.fohMgmt)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+      rh2+=ln('Total labor','laborTot',false,{bold:1});
+      rh2+=ln('Direct operating &amp; other expenses','opex',false,{ind:1});
+      rh2+=ln('Management fee','fee',false,{ind:1});
+      rh2+=ln('EBITDA','ebitda',true,{bold:1});
+      const pm=RP.rev?RP.ebitda/RP.rev*100:null, am=RA.rev?RA.ebitda/RA.rev*100:null;
+      const dM=(pm==null||am==null)?null:am-pm;
+      rh2+=`<tr><td class="li" style="color:var(--muted);">EBITDA margin</td><td style="color:var(--muted);">${pm==null?'—':fpc(pm)}</td><td style="color:var(--muted);">${am==null?'—':fpc(am)}</td><td colspan="2" style="color:${dM==null?'var(--muted)':vCol(dM,true)};">${dM==null?'—':(Math.abs(dM)<0.05?'—':(dM>0?'+':'−')+Math.abs(dM).toFixed(1)+' pts')}</td></tr>`;
+      rh2+=`<tr><td class="li" colspan="5" style="color:var(--muted);font-size:8.5px;">Blank actual lines on a reconciled event count as $0. The projected column carries no unmet-minimum charge &mdash; the estimate assumes every minimum is met &mdash; so an unmet charge billed post-event reads as upside. Taxes and gratuity are pass-through and excluded from both columns.</td></tr>`;
+      rtbl.innerHTML=rh2;
+      /* by-event variance — which events moved the month */
+      let bh=`<tr><th class="li" style="min-width:200px;">By event</th><th class="li" style="min-width:100px;">Date</th><th>Guests</th><th>Proj. revenue</th><th>Act. revenue</th><th>Var</th><th>Proj. EBITDA</th><th>Act. EBITDA</th><th>Var</th></tr>`;
+      const byEv=done.slice().sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0)));
+      byEv.forEach(({ev,P,A})=>{
+        const dR=A.rev-P.rev, dE=A.ebitda-P.ebitda;
+        bh+=`<tr class="evrow" data-mpsel="${ev._id}" title="Click to reconcile this event on its own"><td class="li"><span class="evname">${beoEsc(ev.tab||ev.name)}</span>${ev.company?`<span class="evsub">${beoEsc(ev.company)}</span>`:''}</td>`
+          +`<td class="li" style="white-space:nowrap;">${beoEsc(evShortDate(ev))}</td>`
+          +`<td style="color:var(--muted);">${A.guests?A.guests.toLocaleString():'—'}</td>`
+          +`<td style="color:var(--muted);">${bf2(P.rev)}</td><td style="font-weight:700;">${bf2(A.rev)}</td><td style="font-weight:700;color:${vCol(dR,true)};">${vT(dR,true)}</td>`
+          +`<td style="color:var(--muted);">${bf2(P.ebitda)}</td><td style="font-weight:700;">${bf2(A.ebitda)}</td><td style="font-weight:700;color:${vCol(dE,true)};">${vT(dE,true)}</td></tr>`;
+      });
+      bh+=`<tr class="total"><td class="li">Reconciled — ${done.length} event${done.length!==1?'s':''}</td><td class="li"></td><td style="font-weight:800;">${RA.guests.toLocaleString()}</td><td>${bf2(RP.rev)}</td><td style="font-weight:800;">${bf2(RA.rev)}</td><td style="font-weight:800;color:${vCol(RA.rev-RP.rev,true)};">${vT(RA.rev-RP.rev,true)}</td><td>${bf2(RP.ebitda)}</td><td style="font-weight:800;">${bf2(RA.ebitda)}</td><td style="font-weight:800;color:${vCol(RA.ebitda-RP.ebitda,true)};">${vT(RA.ebitda-RP.ebitda,true)}</td></tr>`;
+      if(open.length){
+        let oR=0,oE=0;open.forEach(({P})=>{oR+=P.rev;oE+=P.ebitda;});
+        bh+=`<tr class="section"><td class="li" colspan="9">AWAITING ACTUALS — NOT IN THE TOTALS ABOVE</td></tr>`;
+        open.slice().sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0))).forEach(({ev,P})=>{
+          bh+=`<tr class="evrow" data-mpsel="${ev._id}" title="Click to open this event"><td class="li"><span class="evname" style="color:var(--muted);">${beoEsc(ev.tab||ev.name)}</span></td><td class="li" style="white-space:nowrap;color:var(--muted);">${beoEsc(evShortDate(ev))}</td><td style="color:var(--muted);">${(+ev.guests||0).toLocaleString()}</td><td style="color:var(--muted);">${bf2(P.rev)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">${bf2(P.ebitda)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+        });
+        bh+=`<tr class="total"><td class="li" style="color:var(--muted);">Still projected — ${open.length} event${open.length!==1?'s':''}</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${bf2(oR)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td style="font-weight:800;">${bf2(oE)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+        bh+=`<tr class="total"><td class="li">Month to date — actual + still projected</td><td class="li"></td><td class="li"></td><td style="font-weight:800;">${bf2(RP.rev+oR)}</td><td style="font-weight:800;">${bf2(RA.rev+oR)}</td><td class="li"></td><td style="font-weight:800;">${bf2(RP.ebitda+oE)}</td><td style="font-weight:800;">${bf2(RA.ebitda+oE)}</td><td class="li"></td></tr>`;
+      }
+      rvtbl.innerHTML=bh;
+    }
+  }
   let eh=`<tr><th class="li" style="min-width:220px;">Event</th><th class="li" style="min-width:110px;">Date</th><th class="li">Status</th><th>Guests</th><th>Est. revenue</th><th>Est. EBITDA</th><th>Margin</th></tr>`;
   rows.sort((a,b)=>((evDateTs(a.ev)||0)-(evDateTs(b.ev)||0)));
   rows.forEach(({ev,C})=>{
@@ -1811,7 +1934,6 @@ function buildBEO(){
   const STEP=(bi,v,w)=>`<span class="step"><button data-stp="${bi}:-1" tabindex="-1">−</button>${IN(bi,v,w)}<button data-stp="${bi}:1" tabindex="-1">＋</button></span>`;
   /* money input: static $ glyph + comma-grouped value (parser strips commas; focus selects-all so overtype is clean) */
   const MON=(bi,v)=>`<span style="display:inline-flex;align-items:center;gap:3px;"><span style="color:var(--muted);font-weight:700;">$</span><input class="drvin" data-bi="${bi}" value="${attEsc((+v||0).toLocaleString('en-US'))}" inputmode="decimal" style="width:96px;"></span>`;
-  const MU='<span style="color:var(--muted);font-size:8.5px;">';
   const FT=50;                       /* blended food-COGS goal for the whole BEO */
   const tm=100-FT;                   /* per-item margin coloring keys off the blend goal, not a blanket per-item rule */
   const mgCol=p=>p>=tm-0.01?'var(--pos)':(p>=tm-10?'#b98029':'var(--neg)');
@@ -2064,8 +2186,8 @@ function buildBEO(){
   const n0=v=>v==null?0:v;
   const anyAct=ACTF.some(k=>AC[k]!=null);
   const AIN=k=>`<input class="drvin" data-bi="a:${k}" value="${AC[k]==null?'':AC[k]}" inputmode="decimal" placeholder="—" style="width:84px;">`;
-  const aRev=n0(av('food'))+n0(av('bev'))+n0(av('cash'))+n0(av('unmet'))+n0(av('rental'))+n0(av('svc'))+n0(av('sef'))-n0(av('disc'));
-  const aCogs=n0(av('cogsF'))+n0(av('cogsBv'));
+  const aRev=n0(av('food'))+n0(av('bev'))+n0(av('cash'))+n0(av('unmet'))+n0(av('rental'))+n0(av('other'))+n0(av('barFee'))+n0(av('svc'))+n0(av('sef'))-n0(av('disc'));
+  const aCogs=n0(av('cogsF'))+n0(av('cogsBv'))+n0(av('cogsO'));
   const aGp=aRev-aCogs;
   const aEb=aGp-n0(av('labor'))-C.fohMgmt-n0(av('opex'))-n0(av('fee'));   /* FOH mgmt labor is a fixed allocation */
   const vTxt=(d,money)=>(d>=0?'+':'−')+(money?bf2(Math.abs(d)):String(Math.round(Math.abs(d)*100)/100));
@@ -2089,8 +2211,10 @@ function buildBEO(){
   rh+=rr('Food revenue',C.food,'food',true);
   rh+=rr('Beverage — billed (packages &amp; fees)',C.bev,'bev',true);
   rh+=rr('Cash bar sales',C.cash,'cash',true);
-  if(C.unmet>0.005||av('unmet')!=null)rh+=rr('Unmet-minimum charge',C.unmet,'unmet',true);
+  if(C.unmet>0.005||av('unmet')!=null)rh+=rr('Unmet-minimum charge '+(C.unmet>0.005?MU+'projected exposure '+bf2(C.unmet)+'; the estimate assumes the minimum is met</span>':''),0,'unmet',true);
   if(B.rental>0.005||av('rental')!=null)rh+=rr('Room / space rental',B.rental,'rental',true);
+  if(C.other>0.005||av('other')!=null)rh+=rr('Other fees '+MU+'A/V, equipment, outside catering</span>',C.other,'other',true);
+  if(C.barFee>0.005||av('barFee')!=null)rh+=rr('Bartender / staffing fees',C.barFee,'barFee',true);
   rh+=rr('Service Charge',C.svc,'svc',true);
   rh+=rr('Special Event Fee',C.sef,'sef',true);
   if(C.disc>0.005||av('disc')!=null)rh+=rr('Less: discounts &amp; comps',C.disc,'disc',false);
@@ -2098,6 +2222,7 @@ function buildBEO(){
   rh+=`<tr class="section"><td class="li" colspan="5">COSTS</td></tr>`;
   rh+=rr('Food cost',C.cogsF,'cogsF',false);
   rh+=rr('Beverage &amp; bar cost',C.cogsBv,'cogsBv',false);
+  if(C.cogsO>0.005||av('cogsO')!=null)rh+=rr('Other fees &mdash; cost of sales',C.cogsO,'cogsO',false);
   rh+=rc('Total COGS',C.cogs,aCogs,false);
   rh+=rc('Gross profit',C.gp,aGp,true);
   rh+=rr('Event labor',C.labor,'labor',false);
