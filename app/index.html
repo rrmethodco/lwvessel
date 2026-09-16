@@ -2227,6 +2227,7 @@ function buildBEO(){
   rh+=rc('Gross profit',C.gp,aGp,true);
   rh+=rr('Event labor',C.labor,'labor',false);
   rh+=`<tr><td class="li">FOH management labor ${MU}fixed allocation</span></td><td style="color:var(--muted);">${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
+  rh+=rc('Total labor',C.laborTot,n0(av('labor'))+C.fohMgmt,false);
   rh+=rr('Direct operating &amp; other expenses',C.opex,'opex',false);
   rh+=rr('Management fee',C.fee,'fee',false);
   rh+=rc('EBITDA',C.ebitda,aEb,true);
