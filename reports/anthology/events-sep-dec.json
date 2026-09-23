@@ -1,0 +1,802 @@
+[
+ {
+  "eid": 44722419,
+  "date": "2026-09-04",
+  "name": "Megan Schoenberger & Sean Wright Wedding",
+  "grand": 49311.5,
+  "room1": "Kampers Cocktail Reception",
+  "actual": 38855,
+  "guests": 140,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48746988,
+  "date": "2026-09-05",
+  "name": "Cameron Dunn and Jedidiah Howell Wedding",
+  "grand": 49850,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 31698,
+  "guests": 119,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61523947,
+  "date": "2026-09-05",
+  "name": "TERRACE CLUB RENTAL: Cameron Dunn and Jedidiah Howell Wedding",
+  "grand": 875,
+  "room1": "Terrace Club",
+  "actual": 750,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48011683,
+  "date": "2026-09-06",
+  "name": "Sheccid Eloisa & John Stibich Wedding",
+  "grand": 34639.22,
+  "room1": "13th Floor - Event Space",
+  "actual": 27087,
+  "guests": 104,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 57956612,
+  "date": "2026-09-09",
+  "name": "Lions Family Kick-Off Luncheon",
+  "grand": 13290,
+  "room1": "13th Floor - Event Space",
+  "actual": 10500,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61912603,
+  "date": "2026-09-10",
+  "name": "Mroz photography session",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48980149,
+  "date": "2026-09-11",
+  "name": "Erika Rios & Armando Barraza Wedding",
+  "grand": 45740.9,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 35390,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61464519,
+  "date": "2026-09-12",
+  "name": "Kathuria Terrace Club Rental",
+  "grand": 1037.5,
+  "room1": "Terrace Club",
+  "actual": 1000,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48844965,
+  "date": "2026-09-12",
+  "name": "Megan Macciomei and Evan Yabs Wedding",
+  "grand": 47850,
+  "room1": "13th Floor - Event Space",
+  "actual": 33164,
+  "guests": 170,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61330563,
+  "date": "2026-09-12",
+  "name": "Terrace Club: Megan Macciomei and Evan Yabs Wedding",
+  "grand": 2125,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60240708,
+  "date": "2026-09-16",
+  "name": "Sacramento Chamber Cocktail Reception",
+  "grand": 655,
+  "room1": "Bar Rotunda",
+  "actual": null,
+  "guests": 75,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 59331182,
+  "date": "2026-09-16",
+  "name": "Sacramento Metro Chamber 26th Annual Study Mission Meeting",
+  "grand": 10479,
+  "room1": "13th Floor - Event Space",
+  "actual": 9234,
+  "guests": 75,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 53396001,
+  "date": "2026-09-17",
+  "name": "Downtown Alliance- Cocktails",
+  "grand": 8050,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 1500,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 55847924,
+  "date": "2026-09-17",
+  "name": "Downtown Alliance- Meeting",
+  "grand": 19147,
+  "room1": "Green Room",
+  "actual": 15847,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60260598,
+  "date": "2026-09-17",
+  "name": "Sacramento Metro Chamber Coffee To Go",
+  "grand": 687.75,
+  "room1": "Bar Rotunda",
+  "actual": 525,
+  "guests": 75,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 42840069,
+  "date": "2026-09-18",
+  "name": "Lindsey Eckhout & Michal Przytakoski Wedding",
+  "grand": 39617.7,
+  "room1": "13th Floor - Event Space",
+  "actual": 30629,
+  "guests": 126,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 59837525,
+  "date": "2026-09-18",
+  "name": "Sacramento Metro ChamberTO Go Breakfast",
+  "grand": 3438.75,
+  "room1": "Bar Rotunda",
+  "actual": 2625,
+  "guests": 60,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48893044,
+  "date": "2026-09-19",
+  "name": "Melissa Rowley and Ben Whitelaw Wedding",
+  "grand": 49617.24,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 38704,
+  "guests": 107,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 51315863,
+  "date": "2026-09-20",
+  "name": "Emma Garber & Thomas Bruzek Wedding",
+  "grand": 41617.54,
+  "room1": "13th Floor - Event Space",
+  "actual": 32834,
+  "guests": 125,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61814564,
+  "date": "2026-09-20",
+  "name": "TERRACE CLUB: Emma Garber & Thomas Bruzek Wedding",
+  "grand": 2125,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60463744,
+  "date": "2026-09-22",
+  "name": "Catalyst | Detroit",
+  "grand": 750,
+  "room1": "Terrace Club",
+  "actual": 750,
+  "guests": 15,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 57131217,
+  "date": "2026-09-22",
+  "name": "Catalyst | Detroit",
+  "grand": 29081,
+  "room1": "13th Floor - Event Space",
+  "actual": 23691,
+  "guests": 80,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 62769096,
+  "date": "2026-09-24",
+  "name": "Bedrock September Fall Fest",
+  "grand": 2279.4,
+  "room1": "Bar Rotunda",
+  "actual": 1740,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 57469015,
+  "date": "2026-09-24",
+  "name": "CAMComp Annual Meeting",
+  "grand": 19681,
+  "room1": "13th Floor - Event Space",
+  "actual": 15775,
+  "guests": 60,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 59024812,
+  "date": "2026-09-24",
+  "name": "MCUL - Business Networking Event",
+  "grand": 10867,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 8590,
+  "guests": 75,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 44989191,
+  "date": "2026-09-25",
+  "name": "Savannah Viecelli & Noah Mendez Wedding",
+  "grand": 50831.7,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 42314,
+  "guests": 164,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 54493878,
+  "date": "2026-09-25",
+  "name": "TERRACE CLUB: Savannah Viecelli and Noah Mendez Wedding",
+  "grand": 2125,
+  "room1": "Terrace Club",
+  "actual": 1750,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 44531135,
+  "date": "2026-09-26",
+  "name": "Isabelle Ansara & Joesph Swider Wedding",
+  "grand": 49795.8,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 38766,
+  "guests": 166,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 53462155,
+  "date": "2026-09-27",
+  "name": "Allie Cobello & Jason Dutcher Wedding Celebration",
+  "grand": 10539,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 8400,
+  "guests": 50,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56345456,
+  "date": "2026-09-29",
+  "name": "Crains Award Cocktail Hour",
+  "grand": 3096,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 2050,
+  "guests": 70,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 54621345,
+  "date": "2026-09-29",
+  "name": "Crains Award Dinner",
+  "grand": 21150,
+  "room1": "13th Floor - Event Space",
+  "actual": 13260,
+  "guests": 70,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60742011,
+  "date": "2026-09-30",
+  "name": "Regrid Leadership Retreat Day #1",
+  "grand": 500,
+  "room1": "Linden Room",
+  "actual": 500,
+  "guests": 14,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60524633,
+  "date": "2026-10-01",
+  "name": "Michael Prisbe Rehearsal Dinner",
+  "grand": 10855,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 9175,
+  "guests": 50,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60742012,
+  "date": "2026-10-01",
+  "name": "Regrid Leadership Retreat Day #2",
+  "grand": 500,
+  "room1": "Linden Room",
+  "actual": 500,
+  "guests": 14,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 49461936,
+  "date": "2026-10-02",
+  "name": "Peyton Lyons- Glashauser & Faris Sawalha Wedding",
+  "grand": 35073.1,
+  "room1": "13th Floor - Event Space",
+  "actual": 27010,
+  "guests": 90,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 42280206,
+  "date": "2026-10-03",
+  "name": "Alison Czarnik & Lawrence Byers Wedding Ceremony & Reception",
+  "grand": 54953,
+  "room1": "13th Floor - Event Space",
+  "actual": 42810,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61372108,
+  "date": "2026-10-03",
+  "name": "Surprise Birthday Celebration",
+  "grand": 1048,
+  "room1": "Bar Rotunda",
+  "actual": 800,
+  "guests": 40,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 57717473,
+  "date": "2026-10-05",
+  "name": "Stifel Public Finance Happy Hour",
+  "grand": 1500,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 1500,
+  "guests": 75,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61198035,
+  "date": "2026-10-07",
+  "name": "COCKTAIL HOUR: Signal Advisors USA",
+  "grand": 6895,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 5500,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60818887,
+  "date": "2026-10-07",
+  "name": "Signal Advisors Corporate Dinner",
+  "grand": 26348.5,
+  "room1": "13th Floor - Event Space",
+  "actual": 20350,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60524301,
+  "date": "2026-10-08",
+  "name": "Reimagining the Civic Commons/Liv 6 Alliance Meeting",
+  "grand": 12593.75,
+  "room1": "13th Floor - Event Space",
+  "actual": 10375,
+  "guests": 125,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 44836014,
+  "date": "2026-10-09",
+  "name": "Fallon Powers & Brendan Connallon  Wedding",
+  "grand": 41987.8,
+  "room1": "13th Floor - Event Space",
+  "actual": 32880,
+  "guests": 130,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 40206622,
+  "date": "2026-10-10",
+  "name": "Brittany Rose & James Gessler Wedding",
+  "grand": 60244.75,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 46225,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 50489534,
+  "date": "2026-10-11",
+  "name": "Kaitlin Parrott & Peter Gongol Wedding",
+  "grand": 30133.61,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 23831,
+  "guests": 70,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 54623069,
+  "date": "2026-10-13",
+  "name": "LaFontaine Automotive Group - She Is You - Women\u2019s Event",
+  "grand": 22918.75,
+  "room1": "13th Floor - Event Space",
+  "actual": 18835,
+  "guests": 110,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56482238,
+  "date": "2026-10-13",
+  "name": "LOAD IN: Optimize PRO by SkinMedica",
+  "grand": 5500,
+  "room1": "13th Floor - Event Space",
+  "actual": 5500,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56482240,
+  "date": "2026-10-14",
+  "name": "Optimize PRO by SkinMedica: Allergen Meeting",
+  "grand": 19344.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 15160,
+  "guests": 90,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 48101042,
+  "date": "2026-10-16",
+  "name": "Taylor McClendon & Denzel Palm\u00a0Reception Dinner",
+  "grand": 23265.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 17760,
+  "guests": 80,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 49724521,
+  "date": "2026-10-17",
+  "name": "Emily Kenyon  & Gino Arondoski Wedding",
+  "grand": 52784.5,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 41175,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61331449,
+  "date": "2026-10-22",
+  "name": "Abate Engagement Session",
+  "grand": 525,
+  "room1": "Photography",
+  "actual": 500,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 50549884,
+  "date": "2026-10-23",
+  "name": "Kaitlyn Basel & Charlie Fritz Terrace Club",
+  "grand": 1500,
+  "room1": "Terrace Club",
+  "actual": 1500,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 50241719,
+  "date": "2026-10-23",
+  "name": "Kaitlyn Basel & Charlie Fritz Wedding",
+  "grand": 49142.5,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 37750,
+  "guests": 175,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 49512109,
+  "date": "2026-10-24",
+  "name": "Miranda Bargert and Varun George Wedding",
+  "grand": 51871.75,
+  "room1": "13th Floor - Event Space",
+  "actual": 40425,
+  "guests": 175,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56024824,
+  "date": "2026-10-27",
+  "name": "MiHC Annual Fundraiser",
+  "grand": 13675,
+  "room1": "13th Floor - Event Space",
+  "actual": 11635,
+  "guests": 170,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 52932249,
+  "date": "2026-10-31",
+  "name": "Olivia Wujek & Jacob Lightman Wedding",
+  "grand": 66362,
+  "room1": "13th Floor - Event Space",
+  "actual": 51700,
+  "guests": 175,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 58882215,
+  "date": "2026-11-01",
+  "name": "Olivia Wujek & Jacob Lightman Breakfast",
+  "grand": 5619.95,
+  "room1": "13th Floor - Event Space",
+  "actual": 4645,
+  "guests": 85,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 58038753,
+  "date": "2026-11-05",
+  "name": "Straylight Capital Meeting",
+  "grand": 13880,
+  "room1": "13th Floor - Event Space",
+  "actual": 11235,
+  "guests": 80,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 50810705,
+  "date": "2026-11-06",
+  "name": "Erika Brikho & Peter Alle Wedding",
+  "grand": 57788.5,
+  "room1": "13th Floor - Event Space",
+  "actual": 44350,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 50489748,
+  "date": "2026-11-07",
+  "name": "Sarah McCormick & Daniel Russo Wedding Reception",
+  "grand": 47331.1,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 36385,
+  "guests": 155,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 51998365,
+  "date": "2026-11-13",
+  "name": "Tia VanSuilichem and Robert Mora Wedding Reception",
+  "grand": 37007.5,
+  "room1": "Bar Rotunda",
+  "actual": 28250,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 49978184,
+  "date": "2026-11-14",
+  "name": "Rachel Zimmer & Noah Izrailov Wedding",
+  "grand": 48600,
+  "room1": "Bar Rotunda",
+  "actual": 33100,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56976973,
+  "date": "2026-11-19",
+  "name": "NBS Commercial Interiors Reception",
+  "grand": 32480,
+  "room1": "13th Floor - Event Space",
+  "actual": 25350,
+  "guests": 200,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 53433707,
+  "date": "2026-11-20",
+  "name": "Rachel Joseph & Brett Szajner Wedding",
+  "grand": 40086,
+  "room1": "Bar Rotunda",
+  "actual": 30600,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61462328,
+  "date": "2026-11-20",
+  "name": "TERRACE CLUB: Rachel Joseph and Brett Szajner Wedding",
+  "grand": 1000,
+  "room1": "Terrace Club",
+  "actual": 1000,
+  "guests": null,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 51221893,
+  "date": "2026-11-21",
+  "name": "Valerie Yuryk & Daniel Nazarian Wedding",
+  "grand": 50737,
+  "room1": "13th Floor - Event Space",
+  "actual": 39050,
+  "guests": 150,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 55480849,
+  "date": "2026-11-26",
+  "name": "Terrace Club Rental",
+  "grand": 750,
+  "room1": "Terrace Club",
+  "actual": 750,
+  "guests": 15,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 53587897,
+  "date": "2026-11-27",
+  "name": "Adrienne Nutter & Joe Doerr",
+  "grand": 31389.35,
+  "room1": "Kampers Rooftop Bar",
+  "actual": 24760,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 62227556,
+  "date": "2026-11-28",
+  "name": "Khoshi Proposal",
+  "grand": 981.2,
+  "room1": "Linden Room",
+  "actual": 820,
+  "guests": 40,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 52664685,
+  "date": "2026-12-04",
+  "name": "Erin Raftery and Greyson Giltner Wedding Reception",
+  "grand": 33640.8,
+  "room1": "Bar Rotunda",
+  "actual": 25680,
+  "guests": 120,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 51233505,
+  "date": "2026-12-05",
+  "name": "Kate Van Pelt & Daniel Michelin Wedding",
+  "grand": 46712.5,
+  "room1": "13th Floor - Event Space",
+  "actual": 36250,
+  "guests": 125,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56972300,
+  "date": "2026-12-06",
+  "name": "Cocktail Hour:Emily Barta & Tyler Hart Wedding",
+  "grand": 10353.4,
+  "room1": "Bar Rotunda",
+  "actual": 8140,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 56451736,
+  "date": "2026-12-06",
+  "name": "Emily Barta & Tyler Hart Wedding",
+  "grand": 31768.44,
+  "room1": "13th Floor - Event Space",
+  "actual": 24724,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 53400671,
+  "date": "2026-12-10",
+  "name": "Megan Kowalski and Mitch Alters Wedding",
+  "grand": 24927.2,
+  "room1": "Bar Rotunda",
+  "actual": 19620,
+  "guests": 70,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 55294246,
+  "date": "2026-12-12",
+  "name": "Claire Mulier and Alden Tischler Wedding",
+  "grand": 44343,
+  "room1": "13th Floor - Event Space",
+  "actual": 34800,
+  "guests": 125,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61284473,
+  "date": "2026-12-18",
+  "name": "Ceremony: Lauren Delfin and Trevor McDougall Wedding",
+  "grand": 2500,
+  "room1": "Linden Room",
+  "actual": 2500,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 61284486,
+  "date": "2026-12-18",
+  "name": "Cocktail Hour: Lauren Delfin and Trevor McDougall Wedding",
+  "grand": 6209.4,
+  "room1": "Bar Rotunda",
+  "actual": 4740,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 60816437,
+  "date": "2026-12-18",
+  "name": "Corporate Retreat - Welcome Dinner",
+  "grand": 25424.78,
+  "room1": "13th Floor - Event Space",
+  "actual": 19988,
+  "guests": 98,
+  "status": "CLOSED"
+ },
+ {
+  "eid": 61109390,
+  "date": "2026-12-18",
+  "name": "Lauren Delfin and Trevor McDougall Wedding",
+  "grand": 23003.6,
+  "room1": "13th Floor - Event Space",
+  "actual": 17560,
+  "guests": 100,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 52898611,
+  "date": "2026-12-31",
+  "name": "Alix Blair and Evan Cocktail Hour",
+  "grand": 8583.12,
+  "room1": "Bar Rotunda",
+  "actual": 6552,
+  "guests": 140,
+  "status": "DEFINITE"
+ },
+ {
+  "eid": 52441423,
+  "date": "2026-12-31",
+  "name": "Alix Blair and Evan Wendell Wedding",
+  "grand": 34948.88,
+  "room1": "13th Floor - Event Space",
+  "actual": 26998,
+  "guests": 140,
+  "status": "DEFINITE"
+ }
+]

@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Anthology &amp; Kamper's — January to August 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0C1526;--surface:#101E36;--surface-2:#0E1A2E;--border:#1E3050;--border-soft:#172741;
+--divider:#15243D;--text:#E2EAF6;--text-2:#8A9AB0;--text-3:#6B849E;--accent:#4187D4;
+--accent-soft:rgba(65,135,212,.14);--slate:#6D84AD;--up:#5A8F6B;--up-soft:rgba(90,143,107,.16);
+--down:#B4533C;--down-soft:rgba(180,83,60,.14);--serif:'Cormorant Garamond',Georgia,serif;
+--ui:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+@page{size:Letter;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:8.5in;min-height:11in;padding:.6in .65in .5in;background:var(--bg);position:relative;page-break-after:always;overflow:hidden}
+.page:last-child{page-break-after:auto}
+.page::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(720px 400px at 78% -12%,rgba(65,135,212,.07),transparent 70%)}
+.page>*{position:relative}
+.eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+h1{font-family:var(--serif);font-weight:300;font-size:43px;line-height:1.05;margin:0 0 13px;letter-spacing:-.015em}
+h1 em,h2 em{font-style:italic;color:var(--slate)}
+h2{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 9px;letter-spacing:-.01em}
+h3{font-family:var(--ui);font-size:12px;font-weight:600;margin:0 0 6px}
+p{font-size:12.2px;line-height:1.56;color:var(--text-2);margin:0 0 11px;max-width:66ch}
+p strong{color:var(--text);font-weight:600} p em{font-style:italic;color:var(--slate)}
+.lede{font-size:14px;color:var(--text);max-width:60ch;line-height:1.55}
+.hint{font-size:11.4px;line-height:1.5;color:var(--text-2);margin:0 0 14px;max-width:70ch}
+.meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:0 0 16px}
+.cards.three{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--border);border-radius:11px;padding:14px 15px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.card .label{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.card .value{font-family:var(--serif);font-weight:300;font-size:30px;line-height:1;letter-spacing:-.015em}
+.card .value small{font-family:var(--ui);font-size:11px;color:var(--text-3);margin-left:2px}
+.card .sub{font-size:10px;color:var(--text-3);margin-top:6px;line-height:1.35}
+.card.bad .value{color:#d98a72}.card.good .value{color:#7fb18d}
+.panel{border:1px solid var(--border);border-radius:11px;padding:16px 18px;margin-bottom:13px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.panel.flag{border-color:#5d3a2d;background:linear-gradient(180deg,rgba(180,83,60,.10),var(--surface-2))}
+.panel.ok{border-color:#3c6b4f;background:linear-gradient(180deg,rgba(90,143,107,.10),var(--surface-2))}
+table{width:100%;border-collapse:collapse;font-size:11.4px;margin-bottom:10px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--divider)}
+th:first-child,td:first-child{text-align:left}
+th{font-family:var(--ui);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+td{font-family:var(--mono);color:var(--text);font-variant-numeric:tabular-nums}
+td:first-child{font-family:var(--ui)}
+tr.tot td{border-top:1px solid var(--border);border-bottom:none;font-weight:500}
+td.neg{color:#d98a72}td.pos{color:#7fb18d}td.mute{color:var(--text-3)}
+.chip{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:5px;display:inline-block}
+.chip.s3{background:var(--down-soft);color:#e6a08c;border:1px solid var(--down)}
+.chip.s2{background:rgba(197,164,110,.14);color:#d8c19e;border:1px solid #8a7a55}
+.chip.s1{background:var(--accent-soft);color:#8fb4dd;border:1px solid var(--accent)}
+.chip.ok{background:var(--up-soft);color:#8fc4a1;border:1px solid var(--up)}
+.foot{position:absolute;left:.65in;right:.65in;bottom:.32in;display:flex;justify-content:space-between;font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border-soft);padding-top:8px}
+.rec{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--divider)}
+.rec:last-child{border-bottom:none}
+.rec .num{font-family:var(--serif);font-size:25px;font-weight:300;color:var(--slate);width:24px;flex:none;line-height:1}
+.rec p{margin:0;font-size:11.4px;line-height:1.5}
+.rec .why{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;color:var(--accent);margin-top:5px;text-transform:uppercase}
+svg{width:100%;height:auto;display:block}
+
+td.tst{color:var(--text-3)} th.tst{color:#4f6a8a} .cards{margin-bottom:10px;gap:9px} .card{padding:11px 13px} .card .value{font-size:26px} table{font-size:9.6px;margin-bottom:4px} th,td{padding:3px 4px;white-space:nowrap} th{font-size:7.4px;letter-spacing:.04em} h1{font-size:36px;margin-bottom:10px} td .n{font-family:var(--ui);font-size:8.5px;color:var(--text-3)}
+.note{font-size:9.9px;line-height:1.45;color:var(--text-2);margin:0 0 6px;max-width:none} .note strong{color:var(--text)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px} h2{font-size:19px;margin:6px 0 4px} table.w{font-size:9.1px} table.w th,table.w td{padding:3px 2.5px} table.w th{font-size:7px;letter-spacing:.02em}
+</style></head><body>
+<div class="page">
+<p class="eyebrow">Anthology Events at Book Tower · Revenue by outlet · January – August 2026</p>
+<h1>Eight months, <em>by outlet</em></h1>
+<div class="cards">
+<div class="card"><div class="label">Anthology · net Jan–Aug</div><div class="value">$2,286,192</div><div class="sub">Base $1,885,602 + svc $322,112 + admin $78,478</div></div>
+<div class="card"><div class="label">Kamper's · event net Jan–Aug</div><div class="value">$579,439</div><div class="sub">$380,086 from shared weddings · $199,353 standalone</div></div>
+<div class="card"><div class="label">Bar Rotunda · event net Jan–Aug</div><div class="value">$76,239</div><div class="sub">Cocktail hours and residential events</div></div>
+<div class="card"><div class="label">Kamper's share · shared weddings</div><div class="value">22.8%</div><div class="sub">37 weddings · 80/20 would give $332,839, +47,247</div></div>
+</div>
+<h2>Net revenue by month <em>(grand total less tax and gratuity)</em></h2>
+<table class="w"><thead><tr><th>Month</th><th>Anth. base</th><th>Svc + admin</th><th>Anthology net</th><th class="tst">Toast</th><th>Kamper's net</th><th class="tst">Toast A/R</th><th>Bar Rotunda</th><th>Book Tower events</th><th>Kamper's % shared</th></tr></thead><tbody><tr><td class="">Jan</td><td class="">155,384</td><td class="">33,448</td><td class="">188,832</td><td class="tst mute">—</td><td class="">16,673</td><td class="tst mute">—</td><td class="">13,982</td><td class="">219,488</td><td class="">10.0%</td></tr><tr><td class="">Feb</td><td class="">78,724</td><td class="">15,180</td><td class="">93,904</td><td class="tst mute">—</td><td class="">23,888</td><td class="tst mute">—</td><td class="">7,474</td><td class="">125,266</td><td class="">21.2%</td></tr><tr><td class="">Mar</td><td class="">67,984</td><td class="">13,179</td><td class="">81,163</td><td class="tst mute">—</td><td class="">6,571</td><td class="tst mute">—</td><td class="">7,416</td><td class="">95,151</td><td class="mute">—</td></tr><tr><td class="">Apr</td><td class="">226,014</td><td class="">48,379</td><td class="">274,393</td><td class="tst mute">—</td><td class="">46,884</td><td class="tst mute">—</td><td class="">33,035</td><td class="">354,312</td><td class="">22.9%</td></tr><tr><td class="">May</td><td class="">368,527</td><td class="">80,367</td><td class="">448,894</td><td class="tst">434,578</td><td class="">107,612</td><td class="tst">122,369</td><td class="">10,572</td><td class="">567,078</td><td class="">21.9%</td></tr><tr><td class="">Jun</td><td class="">360,209</td><td class="">74,780</td><td class="">434,989</td><td class="tst mute">—</td><td class="">143,003</td><td class="tst mute">—</td><td class="">1,050</td><td class="">579,042</td><td class="">23.6%</td></tr><tr><td class="">Jul</td><td class="">293,266</td><td class="">62,222</td><td class="">355,487</td><td class="tst">333,586</td><td class="">122,038</td><td class="tst">123,104</td><td class="mute">—</td><td class="">477,525</td><td class="">22.4%</td></tr><tr><td class="">Aug</td><td class="">335,494</td><td class="">73,036</td><td class="">408,530</td><td class="tst">406,900</td><td class="">112,769</td><td class="tst">115,908</td><td class="">2,710</td><td class="">524,009</td><td class="">27.3%</td></tr><tr class="tot"><td class="">Jan–Aug</td><td class="">1,885,602</td><td class="">400,590</td><td class="">2,286,192</td><td class="tst">1,175,064<span class="n">*</span></td><td class="">579,439</td><td class="tst">361,381<span class="n">*</span></td><td class="">76,239</td><td class="">2,941,870</td><td class="">22.8%</td></tr></tbody></table>
+<h2>Shared weddings <em>vs the 80/20 convention</em></h2>
+<table><thead><tr><th>Month</th><th>Weddings</th><th>Wedding net</th><th>Kamper's share</th><th>Share %</th><th class="tst">20% would give</th><th>Δ</th><th>Standalone Kamper's</th><th>Bar Rotunda (all)</th></tr></thead><tbody><tr><td class="">Jan</td><td class="">1</td><td class="">91,448</td><td class="">9,135</td><td class="">10.0%</td><td class="tst">18,290</td><td class="neg">-9,155</td><td class="">7,539</td><td class="">13,982</td></tr><tr><td class="">Feb</td><td class="">1</td><td class="">25,780</td><td class="">5,469</td><td class="">21.2%</td><td class="tst">5,156</td><td class="pos">+313</td><td class="">18,419</td><td class="">7,474</td></tr><tr><td class="">Mar</td><td class="">—</td><td class="">—</td><td class="">—</td><td class="">—</td><td class="tst">—</td><td class="">—</td><td class="">6,571</td><td class="">7,416</td></tr><tr><td class="">Apr</td><td class="">4</td><td class="">170,681</td><td class="">39,073</td><td class="">22.9%</td><td class="tst">34,136</td><td class="pos">+4,936</td><td class="">7,811</td><td class="">33,035</td></tr><tr><td class="">May</td><td class="">8</td><td class="">353,397</td><td class="">77,382</td><td class="">21.9%</td><td class="tst">70,679</td><td class="pos">+6,702</td><td class="">30,230</td><td class="">10,572</td></tr><tr><td class="">Jun</td><td class="">8</td><td class="">335,644</td><td class="">79,350</td><td class="">23.6%</td><td class="tst">67,129</td><td class="pos">+12,221</td><td class="">63,653</td><td class="">1,050</td></tr><tr><td class="">Jul</td><td class="">8</td><td class="">366,563</td><td class="">82,206</td><td class="">22.4%</td><td class="tst">73,313</td><td class="pos">+8,893</td><td class="">39,832</td><td class="">—</td></tr><tr><td class="">Aug</td><td class="">7</td><td class="">320,683</td><td class="">87,472</td><td class="">27.3%</td><td class="tst">64,137</td><td class="pos">+23,335</td><td class="">25,297</td><td class="">2,710</td></tr><tr class="tot"><td class="">Jan–Aug</td><td class="">37</td><td class="">1,664,195</td><td class="">380,086</td><td class="">22.8%</td><td class="tst">332,839</td><td class="pos">+47,247</td><td class="">199,353</td><td class="">76,239</td></tr></tbody></table>
+<p class="note" style="margin-top:-2px"><span class="n">*</span> Toast totals cover May, July and August only, the months whose Sales Summaries were provided.</p><div class="cols"><div><p class="note"><strong>What this is.</strong> Every 2026 Anthology-book event from January through August, split to the outlet that served it from the Tripleseat invoice line items: Anthology keeps the ballroom, Kamper's keeps the cocktail hours it hosted (canapés, its $1,000/hour fee and the cocktail hour of the bar package) plus its standalone rooftop events, Bar Rotunda likewise. Net is grand total less sales tax and gratuity; service charge and admin fee are shown so revenue can be read without them. Toast tie-outs exist only for the months whose POS reports were provided (May, July, August); the other five months rest on the BEOs alone.</p><p class="note"><strong>Anthology: $2,286,192 net, $1,885,602 before service charge and admin fee.</strong> The year opens slowly, under $95,000 a month in February and March on corporate meetings and one wedding, then steps up in April and runs $355,000–$449,000 a month from May. July dips against June and August because three weddings (Lovell, Beckett, Joseph) were still Definite when this ran and their final billing had not posted. Where Toast exists the Anthology figure ties within 3.3% and the combined Book Tower figure within $500 in May and $1,600 in August.</p></div><div><p class="note"><strong>Kamper's: $579,438 in event revenue, $380,087 of it from 37 shared weddings.</strong> On the BEOs Kamper's share of a shared wedding averages 22.8% and rises through the year, 21–23% in spring to 27.3% in August; the 80/20 convention would have given it $332,839, $47,248 less. Where Toast can be checked the true share is a little higher again, because coordinators leave canapé blocks without a Kamper's header (eight BEOs so far). Standalone rooftop events add $199,352, with June the biggest month at $63,653 (Colab AI, Identity PR, DT Midstream).</p><p class="note"><strong>Bar Rotunda: $76,239.</strong> It hosts the cocktail hour when the rooftop is unavailable or the wedding chooses it (Nimri in January, Horlacher and Agnello in April, Jacques in May), plus Bedrock residential events and small receptions; April alone is $33,035. No Rotunda POS report has been provided, so its figure is Tripleseat only. Two BEO habits would make every month cleaner: a room header on every Kamper's or Rotunda block, and a room area that names the rooftop when it is used rather than "Corporate Events".</p></div></div>
+<div class="foot"><span>Anthology Events at Book Tower · January – August 2026 outlet split</span><span>Sources: Tripleseat invoice documents · Toast Sales Summaries where provided (May, July, August)</span></div>
+</div></body></html>

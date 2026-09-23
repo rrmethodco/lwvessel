@@ -1,0 +1,487 @@
+[
+ {
+  "eid": 58882215,
+  "name": "Olivia Wujek & Jacob Lightman Breakfast",
+  "date": "2026-11-01",
+  "kind": "anthology",
+  "n": 1,
+  "actual": 4645.0,
+  "svc": 629.0,
+  "adm": 157.25,
+  "net": 5431.25,
+  "guests": 85,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 4645.0
+  },
+  "netsplit": {
+   "Anthology": 5431.25
+  },
+  "cat": {
+   "Anthology|FOOD": 3145.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 4645.0,
+    "svc": 629.0,
+    "adm": 157.25,
+    "net": 5431.25
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 58038753,
+  "name": "Straylight Capital Meeting",
+  "date": "2026-11-05",
+  "kind": "anthology",
+  "n": 29,
+  "actual": 11235.0,
+  "svc": 1500.0,
+  "adm": 375.0,
+  "net": 13110.0,
+  "guests": 80,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 11235.0
+  },
+  "netsplit": {
+   "Anthology": 13110.0
+  },
+  "cat": {
+   "Anthology|FOOD": 7180.0,
+   "Anthology|BEVERAGE": 2555.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 11235.0,
+    "svc": 1500.0,
+    "adm": 375.0,
+    "net": 13110.0
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 50810705,
+  "name": "Erika Brikho & Peter Alle Wedding",
+  "date": "2026-11-06",
+  "kind": "anthology",
+  "n": 16,
+  "actual": 44350.0,
+  "svc": 8670.0,
+  "adm": 2167.5,
+  "net": 55187.5,
+  "guests": 150,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 13810.0,
+   "Anthology": 30540.0
+  },
+  "netsplit": {
+   "Kamper's": 17184.653325817362,
+   "Anthology": 38002.84667418264
+  },
+  "cat": {
+   "Kamper's|FOOD": 9600.0,
+   "Anthology|FOOD": 17700.0,
+   "Anthology|BEVERAGE": 12840.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 3210.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 13810.0,
+    "svc": 2699.7226606538893,
+    "adm": 674.9306651634723,
+    "net": 17184.653325817362
+   },
+   "Anthology": {
+    "base": 30540.0,
+    "svc": 5970.27733934611,
+    "adm": 1492.5693348365276,
+    "net": 38002.84667418264
+   }
+  },
+  "note": "bar pkg 1h/5h = 3,210 to Kamper's"
+ },
+ {
+  "eid": 50489748,
+  "name": "Sarah McCormick & Daniel Russo Wedding Reception",
+  "date": "2026-11-07",
+  "kind": "anthology",
+  "n": 19,
+  "actual": 36385.0,
+  "svc": 7062.0,
+  "adm": 1765.5,
+  "net": 45212.5,
+  "guests": 155,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8722.0,
+   "Anthology": 27663.0
+  },
+  "netsplit": {
+   "Kamper's": 10838.076817369794,
+   "Anthology": 34374.423182630206
+  },
+  "cat": {
+   "Kamper's|FOOD": 4785.0,
+   "Anthology|FOOD": 15840.0,
+   "Anthology|BEVERAGE": 11823.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2937.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8722.0,
+    "svc": 1692.8614538958363,
+    "adm": 423.2153634739591,
+    "net": 10838.076817369794
+   },
+   "Anthology": {
+    "base": 27663.0,
+    "svc": 5369.138546104164,
+    "adm": 1342.284636526041,
+    "net": 34374.423182630206
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,937 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 51998365,
+  "name": "Tia VanSuilichem and Robert Mora Wedding Reception",
+  "date": "2026-11-13",
+  "kind": "anthology",
+  "n": 19,
+  "actual": 28250.0,
+  "svc": 5650.0,
+  "adm": 1412.5,
+  "net": 35312.5,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 5850.0,
+   "Anthology": 22400.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 7312.5,
+   "Anthology": 28000.0
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 3625.0,
+   "Anthology|FOOD": 13500.0,
+   "Anthology|BEVERAGE": 8900.0,
+   "Bar Rotunda|BEVERAGE": 2225.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 5850.0,
+    "svc": 1170.0,
+    "adm": 292.5,
+    "net": 7312.5
+   },
+   "Anthology": {
+    "base": 22400.0,
+    "svc": 4480.0,
+    "adm": 1120.0,
+    "net": 28000.0
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,225 to Bar Rotunda"
+ },
+ {
+  "eid": 49978184,
+  "name": "Rachel Zimmer & Noah Izrailov Wedding",
+  "date": "2026-11-14",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 33100.0,
+  "svc": 7000.0,
+  "adm": 1750.0,
+  "net": 41850.0,
+  "guests": 150,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Anthology": 33100.0
+  },
+  "netsplit": {
+   "Anthology": 41850.0
+  },
+  "cat": {
+   "Anthology|FOOD": 17250.0,
+   "Anthology|BEVERAGE": 15850.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 33100.0,
+    "svc": 7000.0,
+    "adm": 1750.0,
+    "net": 41850.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56976973,
+  "name": "NBS Commercial Interiors Reception",
+  "date": "2026-11-19",
+  "kind": "anthology",
+  "n": 22,
+  "actual": 25350.0,
+  "svc": 4600.0,
+  "adm": 1150.0,
+  "net": 31100.0,
+  "guests": 200,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 25350.0
+  },
+  "netsplit": {
+   "Anthology": 31100.0
+  },
+  "cat": {
+   "Anthology|FOOD": 23000.0,
+   "Anthology|BEVERAGE": 2350.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 25350.0,
+    "svc": 4600.0,
+    "adm": 1150.0,
+    "net": 31100.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53433707,
+  "name": "Rachel Joseph & Brett Szajner Wedding",
+  "date": "2026-11-20",
+  "kind": "anthology",
+  "n": 13,
+  "actual": 30600.0,
+  "svc": 6120.0,
+  "adm": 1530.0,
+  "net": 38250.0,
+  "guests": 150,
+  "rooms": "13th Floor - Event Space and Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 7020.0,
+   "Anthology": 23580.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 8775.0,
+   "Anthology": 29475.0
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 4350.0,
+   "Anthology|FOOD": 12900.0,
+   "Anthology|BEVERAGE": 10680.0,
+   "Bar Rotunda|BEVERAGE": 2670.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 7020.0,
+    "svc": 1404.0,
+    "adm": 351.0,
+    "net": 8775.0
+   },
+   "Anthology": {
+    "base": 23580.0,
+    "svc": 4716.0,
+    "adm": 1179.0,
+    "net": 29475.0
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,670 to Bar Rotunda"
+ },
+ {
+  "eid": 61462328,
+  "name": "TERRACE CLUB: Rachel Joseph and Brett Szajner Wedding",
+  "date": "2026-11-20",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1000.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 1000.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1000.0
+  },
+  "netsplit": {
+   "Anthology": 1000.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1000.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 1000.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 51221893,
+  "name": "Valerie Yuryk & Daniel Nazarian Wedding",
+  "date": "2026-11-21",
+  "kind": "anthology",
+  "n": 18,
+  "actual": 39050.0,
+  "svc": 7540.0,
+  "adm": 1885.0,
+  "net": 48475.0,
+  "guests": 150,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Bar Rotunda": 9570.0,
+   "Anthology": 29480.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 11879.788732394365,
+   "Anthology": 36595.211267605635
+  },
+  "cat": {
+   "Bar Rotunda|FOOD": 6900.0,
+   "Anthology|FOOD": 17100.0,
+   "Anthology|BEVERAGE": 12380.0,
+   "Bar Rotunda|BEVERAGE": 2670.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 9570.0,
+    "svc": 1847.830985915493,
+    "adm": 461.9577464788733,
+    "net": 11879.788732394365
+   },
+   "Anthology": {
+    "base": 29480.0,
+    "svc": 5692.169014084507,
+    "adm": 1423.0422535211267,
+    "net": 36595.211267605635
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,670 to Bar Rotunda"
+ },
+ {
+  "eid": 55480849,
+  "name": "Terrace Club Rental",
+  "date": "2026-11-26",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 750.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 750.0,
+  "guests": 15,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 750.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 750.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 53587897,
+  "name": "Adrienne Nutter & Joe Doerr",
+  "date": "2026-11-27",
+  "kind": "anthology",
+  "n": 17,
+  "actual": 24760.0,
+  "svc": 4277.0,
+  "adm": 1069.25,
+  "net": 30106.25,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 4993.75,
+   "Anthology": 19766.25
+  },
+  "netsplit": {
+   "Kamper's": 6072.014779382068,
+   "Anthology": 24034.235220617935
+  },
+  "cat": {
+   "Kamper's|FOOD": 2900.0,
+   "Anthology|FOOD": 12010.0,
+   "Anthology|BEVERAGE": 7756.25,
+   "Kamper's|RENTAL": 500.0,
+   "Kamper's|BEVERAGE": 1593.75,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 4993.75,
+    "svc": 862.6118235056542,
+    "adm": 215.65295587641356,
+    "net": 6072.014779382068
+   },
+   "Anthology": {
+    "base": 19766.25,
+    "svc": 3414.3881764943458,
+    "adm": 853.5970441235864,
+    "net": 24034.235220617935
+   }
+  },
+  "note": "bar pkg 1h/4h = 1,594 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 62227556,
+  "name": "Khoshi Proposal",
+  "date": "2026-11-28",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 820.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 820.0,
+  "guests": 40,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 820.0
+  },
+  "netsplit": {
+   "Anthology": 820.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 820.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 820.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 820.0
+   }
+  },
+  "note": "no invoice lines"
+ }
+]

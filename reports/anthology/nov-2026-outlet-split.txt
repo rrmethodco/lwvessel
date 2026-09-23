@@ -1,0 +1,15 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+11-01 Olivia Wujek & Jacob Lightman Breakfast       anthology     4,645    5,431    5,431        0      0   0.0%  invoice -1,500 vs actual
+11-05 Straylight Capital Meeting                    anthology    11,235   13,110   13,110        0      0   0.0%  invoice -1,500 vs actual
+11-06 Erika Brikho & Peter Alle Wedding             anthology    44,350   55,188   38,003   17,185      0  31.1%  bar pkg 1h/5h = 3,210 to Kamper's
+11-07 Sarah McCormick & Daniel Russo Wedding Recept anthology    36,385   45,212   34,374   10,838      0  24.0%  bar pkg 1h/5h = 2,937 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+11-13 Tia VanSuilichem and Robert Mora Wedding Rece anthology    28,250   35,312   28,000        0  7,312  20.7%  bar pkg 1h/5h = 2,225 to Bar Rotunda
+11-14 Rachel Zimmer & Noah Izrailov Wedding         anthology    33,100   41,850   41,850        0      0   0.0%  
+11-19 NBS Commercial Interiors Reception            anthology    25,350   31,100   31,100        0      0   0.0%  
+11-20 Rachel Joseph & Brett Szajner Wedding         anthology    30,600   38,250   29,475        0  8,775  22.9%  bar pkg 1h/5h = 2,670 to Bar Rotunda
+11-20 TERRACE CLUB: Rachel Joseph and Brett Szajner anthology     1,000    1,000    1,000        0      0   0.0%  no invoice lines
+11-21 Valerie Yuryk & Daniel Nazarian Wedding       anthology    39,050   48,475   36,595        0 11,880  24.5%  bar pkg 1h/5h = 2,670 to Bar Rotunda
+11-26 Terrace Club Rental                           anthology       750      750      750        0      0   0.0%  no invoice lines
+11-27 Adrienne Nutter & Joe Doerr                   anthology    24,760   30,106   24,034    6,072      0  20.2%  bar pkg 1h/4h = 1,594 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+11-28 Khoshi Proposal                               anthology       820      820      820        0      0   0.0%  no invoice lines
+      TOTAL                                                     280,295  346,605  284,543   34,095 27,967  17.9%

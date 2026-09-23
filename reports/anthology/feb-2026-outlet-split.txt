@@ -1,0 +1,19 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+02-02 PS: Kim Dante                                 anthology       500      525      525        0      0   0.0%  no invoice lines
+02-05 Rachel  Lachover- Hillel Day School Alumni Ev rotunda s     7,118    7,474        0        0  7,474 100.0%  
+02-07 Allie Quigley & Kyle Pennington Wedding       anthology     3,984    4,717    4,717        0      0   0.0%  
+02-10 Lithia Automotive Regional Service Meeting    anthology    10,145   11,458   11,458        0      0   0.0%  
+02-11 Lithia Automotive Meeting Day 2               anthology     9,560   11,700   11,700        0      0   0.0%  
+02-14 Welcome Event Jennifer Dailey & Tom Myler     kampers s     8,405   10,006        0   10,006      0 100.0%  
+02-15 PS: Jennifer Dailey & Tom Myler               anthology       750      788      788        0      0   0.0%  no invoice lines
+02-17 PS: Vignesh Sastri and Greeshma Chapalamadugu anthology       500      525      525        0      0   0.0%  no invoice lines
+02-19 TechChange Corporate workshop                 anthology    10,021   11,771   11,771        0      0   0.0%  
+02-21 Samantha Champion and Ergun Kocak Wedding     anthology    21,324   25,780   20,311    5,469      0  21.2%  bar pkg 1h/5h = 1,233 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+02-24 GM Event: Lin - Hua Wu                        anthology     4,606    5,508    5,508        0      0   0.0%  
+02-24 PS: Rachel Anderson                           anthology       500      525      525        0      0   0.0%  no invoice lines
+02-26 Couples Learning Event for EO Detroit Entrepr anthology     4,892    5,990    5,990        0      0   0.0%  
+02-26 Networking reception                          kampers s     7,080    8,412        0    8,412      0 100.0%  
+02-27 AE Collab with Dinner with Will               anthology     6,300    7,875    7,875        0      0   0.0%  
+02-28 100th Anniversary Event                       anthology     9,690   11,738   11,738        0      0   0.0%  
+02-28 Book Tower 100 Year Cookies For Residents     anthology       475      475      475        0      0   0.0%  
+      TOTAL                                                     105,850  125,266   93,904   23,888  7,474  25.0%

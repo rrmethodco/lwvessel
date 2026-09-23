@@ -1,0 +1,86 @@
+AUGUST 2026 -- outlet split (bar package prorated)
+date  event                                       kind       TS actual    TS net  Anth net  Kamp net Rot net  Kamp%  note
+08/01 Melissa Harvey & Austin Davis Wedding       anthology     37,925    46,282    33,836    12,446       0  26.9%  bar pkg 1h/5h = 2,611 to Kamper's
+08/03 Boraski Photography Session                 anthology        500       525       525         0       0   0.0%  no invoice lines
+08/05 Adcraft Executive Meeting                   anthology      8,070     9,945     9,945         0       0   0.0%  
+08/05 Mackoul Photoshoot                          anthology        500       525       525         0       0   0.0%  no invoice lines
+08/06 Mouzahem Photography                        anthology        500       525       525         0       0   0.0%  no invoice fetched
+08/07 Kamren Huizenga & Elizabeth Rau Wedding     anthology     25,751    31,850    23,965     7,885       0  24.8%  bar pkg 1h/5h = 2,011 to Kamper's
+08/08 Jada Smith & Dominic Yamarino Wedding       anthology     44,188    53,929    40,669    13,260       0  24.6%  bar pkg 1h/5h = 2,617 to Kamper's
+08/10 Zaya photography session                    anthology        500       525       525         0       0   0.0%  no invoice lines
+08/11 Lambda Legal Day 1                          anthology      4,558     5,322     5,322         0       0   0.0%  invoice -500 vs actual
+08/12 Lambda Legal Day 2                          anthology      8,992     9,839     9,839         0       0   0.0%  invoice -500 vs actual
+08/12 UofM Alumni Reception                       rotunda s      1,960     2,710         0         0   2,710 100.0%  
+08/13 Lambda Legal Day 3                          anthology      3,744     4,369     4,369         0       0   0.0%  invoice -500 vs actual
+08/14 President’s Dinner                          anthology     56,358    69,954    69,954         0       0   0.0%  
+08/15 Hannah Broucek & Ben Samoy Wedding          anthology     40,688    49,418    37,373    12,044       0  24.4%  bar pkg 1h/5h = 2,261 to Kamper's
+08/15 TERRACE CLUB Hannah Broucek & Ben Samoy Wed anthology      1,750     2,125     2,125         0       0   0.0%  no invoice lines
+08/17 Maroof Photo Session                        anthology        500       525       525         0       0   0.0%  no invoice lines
+08/18 PS: Emily Dahuron                           anthology        500       525       525         0       0   0.0%  no invoice lines
+08/19 Sowerby - Photoshoot                        anthology        500       525       525         0       0   0.0%  no invoice lines
+08/19 Tanguay Engagement Photos                   anthology        500       525       525         0       0   0.0%  no invoice lines
+08/20 FM Photoshoot                               anthology        500       525       525         0       0   0.0%  no invoice lines
+08/20 thyssenkrupp Supply Chain Services Event    kampers s      8,485     8,909         0     8,909       0 100.0%  
+08/21 COCKTAIL HOUR: David Bernier & Tyler Jablon kampers s      8,058     9,823         0     9,823       0 100.0%  
+08/21 David Bernier & Tyler Jablonski Wedding     anthology     21,913    26,635    26,635         0       0   0.0%  
+08/22 Megan Hannigan & Ryan O'Hara Wedding Recept anthology     46,154    57,035    37,959    19,076       0  33.4%  bar pkg 1.5h/5h = 5,746 to Kamper's; BEO header omission corrected (see notes)
+08/23 Fritz - Baby Shower                         kampers s      6,315     6,565         0     6,565       0 100.0%  
+08/25 70th Birthday Dinner                        anthology     21,570    26,350    26,350         0       0   0.0%  invoice -1,500 vs actual
+08/25 Lambda Legal Day 1                          anthology      3,910     4,605     4,605         0       0   0.0%  invoice -500 vs actual
+08/25 Yousif Photoshoot                           anthology        500       525       525         0       0   0.0%  no invoice fetched
+08/26 Lambda Legal Day 2                          anthology      3,780     4,475     4,475         0       0   0.0%  invoice -500 vs actual
+08/27 Lambda Legal Day 3                          anthology      3,040     3,550     3,550         0       0   0.0%  invoice -500 vs actual
+08/27 PS: Nour Khalifa                            anthology        500       525       525         0       0   0.0%  no invoice lines
+08/27 Rehearsal: Claire Wahl & Michael Varlese We anthology          0         0         0         0       0   0.0%  
+08/28 Claire Wahl & Michael Varlese Wedding       anthology     29,679    36,136    27,875     8,262       0  22.9%  bar pkg 1h/5h = 2,189 to Kamper's
+08/28 Terrace Club                                anthology          0         0         0         0       0   0.0%  
+08/29 Anthony Lim and Gabriela Ciavattone Wedding anthology     37,227    46,034    31,535    14,499       0  31.5%  bar pkg 1h/5h = 2,225 to Kamper's
+08/29 Terrace Club Rental : Anthony Lim and Gabri anthology      1,000     1,188     1,188         0       0   0.0%  no invoice lines
+08/30 Terrace Club Rental: Stewart Birthday Celeb anthology      1,000     1,188     1,188         0       0   0.0%  no invoice lines
+      TOTAL                                                    431,615   524,009   408,530   112,769   2,710  22.0%
+
+SHARED WEDDINGS -- actual Kamper's share vs 80/20 convention (net basis)
+date  wedding                                            net  Kamp net  Kamp% 80/20 Kamp    delta
+08/01 Melissa Harvey & Austin Davis Wedding           46,282    12,446  26.9%      9,256   +3,190
+08/07 Kamren Huizenga & Elizabeth Rau Wedding         31,850     7,885  24.8%      6,370   +1,515
+08/08 Jada Smith & Dominic Yamarino Wedding           53,929    13,260  24.6%     10,786   +2,474
+08/15 Hannah Broucek & Ben Samoy Wedding              49,418    12,044  24.4%      9,884   +2,161
+08/22 Megan Hannigan & Ryan O'Hara Wedding Recept     57,035    19,076  33.4%     11,407   +7,669
+08/28 Claire Wahl & Michael Varlese Wedding           36,136     8,262  22.9%      7,227   +1,034
+08/29 Anthony Lim and Gabriela Ciavattone Wedding     46,034    14,499  31.5%      9,207   +5,292
+      TOTAL                                          320,683    87,472  27.3%     64,137  +23,335
+
+TIE-OUT (net = actual + service charge + admin fee; tax and gratuity excluded)
+  Anthology expected (TS)        408,530.11   Toast Anthology Events net     406,900.03   delta  +1,630.08
+  Kamper's expected (TS)         112,768.94   Kamper's A/R net, reading A     98,788.25   delta +13,980.69   (amount 103,923.37 less tax 5,135.12)
+                                              Kamper's A/R net, reading B    115,908.08   delta  -3,139.14   (reading A plus 'Grat' 17,119.83)
+  Bar Rotunda expected (TS)        2,710.00   (no Rotunda POS report provided)
+  Combined                       524,009.05   Toast combined (A / B)         505,688.28 / 522,808.11
+
+ANTHOLOGY BY DAY -- expected net (TS, after outlet split) vs Toast Anthology Events net
+day   TS Anth net   Toast net     delta  events
+1          33,836      34,613      -777  Melissa Harvey & Austi
+3             525           0      +525  Boraski Photography Se
+5          10,470      10,612      -142  Mackoul Photoshoot, Adcraft Executive Meet
+6             525         525        +0  Mouzahem Photography
+7          23,965      24,261      -296  Kamren Huizenga & Eliz
+8          40,669      41,410      -741  Jada Smith & Dominic Y
+10            525       1,225      -700  Zaya photography sessi
+11          5,322       5,322        +0  Lambda Legal Day 1
+12          9,839       9,839        -0  Lambda Legal Day 2
+13          4,369       4,625      -256  Lambda Legal Day 3
+14         69,954      69,694      +260  President’s Dinner
+15         39,498      36,315    +3,184  TERRACE CLUB Hannah Br, Hannah Broucek & Ben S
+17            525           0      +525  Maroof Photo Session
+18            525       1,575    -1,050  PS: Emily Dahuron
+19          1,050       1,050        +0  Tanguay Engagement Pho, Sowerby - Photoshoot
+20            525         525        +0  FM Photoshoot
+21         26,635      26,635        +0  David Bernier & Tyler 
+22         37,959      37,989       -30  Megan Hannigan & Ryan 
+25         31,480      30,980      +500  Lambda Legal Day 1, Yousif Photoshoot, 70th Birthday Dinner
+26          4,475       4,475        +0  Lambda Legal Day 2
+27          4,075       4,600      -525  Lambda Legal Day 3, PS: Nour Khalifa
+28         27,875      28,002      -128  Claire Wahl & Michael 
+29         32,722      32,628       +95  Terrace Club Rental : , Anthony Lim and Gabrie
+30          1,188           0    +1,188  Terrace Club Rental: S
+          408,530     406,900    +1,630   days within $600: 18/24

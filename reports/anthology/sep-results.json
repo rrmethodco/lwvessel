@@ -1,0 +1,1147 @@
+[
+ {
+  "eid": 44722419,
+  "name": "Megan Schoenberger & Sean Wright Wedding",
+  "date": "2026-09-04",
+  "kind": "anthology",
+  "n": 30,
+  "actual": 38855.0,
+  "svc": 6971.0,
+  "adm": 1394.2,
+  "net": 47220.2,
+  "guests": 140,
+  "rooms": "13th Floor - Event Space and Kampers Cocktail Reception",
+  "base": {
+   "Kamper's": 8118.0,
+   "Anthology": 30737.0
+  },
+  "netsplit": {
+   "Kamper's": 9865.746586024965,
+   "Anthology": 37354.45341397504
+  },
+  "cat": {
+   "Kamper's|FOOD": 4060.0,
+   "Anthology|FOOD": 15480.0,
+   "Anthology|BEVERAGE": 15257.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 3058.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8118.0,
+    "svc": 1456.455488354137,
+    "adm": 291.2910976708274,
+    "net": 9865.746586024965
+   },
+   "Anthology": {
+    "base": 30737.0,
+    "svc": 5514.544511645863,
+    "adm": 1102.9089023291726,
+    "net": 37354.45341397504
+   }
+  },
+  "note": "bar pkg 1h/5h = 3,058 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 48746988,
+  "name": "Cameron Dunn and Jedidiah Howell Wedding",
+  "date": "2026-09-05",
+  "kind": "anthology",
+  "n": 38,
+  "actual": 31698.0,
+  "svc": 6896.4,
+  "adm": 1724.1,
+  "net": 40318.5,
+  "guests": 119,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 12191.6,
+   "Anthology": 19506.4
+  },
+  "netsplit": {
+   "Kamper's": 15507.193658905926,
+   "Anthology": 24811.306341094078
+  },
+  "cat": {
+   "Kamper's|FOOD": 8968.0,
+   "Anthology|FOOD": 12858.0,
+   "Anthology|BEVERAGE": 13432.4,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2223.6,
+   "Anthology|RENTAL": -6784.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 12191.6,
+    "svc": 2652.4749271247397,
+    "adm": 663.1187317811849,
+    "net": 15507.193658905926
+   },
+   "Anthology": {
+    "base": 19506.4,
+    "svc": 4243.92507287526,
+    "adm": 1060.981268218815,
+    "net": 24811.306341094078
+   }
+  },
+  "note": "invoice +6,784 vs actual; bar pkg 1h/5h = 2,224 to Kamper's"
+ },
+ {
+  "eid": 61523947,
+  "name": "TERRACE CLUB RENTAL: Cameron Dunn and Jedidiah Howell Wedding",
+  "date": "2026-09-05",
+  "kind": "anthology",
+  "n": 3,
+  "actual": 750.0,
+  "svc": 100.0,
+  "adm": 25.0,
+  "net": 875.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 875.0
+  },
+  "cat": {
+   "Anthology|FOOD": 750.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 100.0,
+    "adm": 25.0,
+    "net": 875.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 48011683,
+  "name": "Sheccid Eloisa & John Stibich Wedding",
+  "date": "2026-09-06",
+  "kind": "anthology",
+  "n": 28,
+  "actual": 27087.0,
+  "svc": 4872.4,
+  "adm": 1218.1,
+  "net": 33177.5,
+  "guests": 104,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 5867.2,
+   "Anthology": 21219.8
+  },
+  "netsplit": {
+   "Kamper's": 7186.437331561266,
+   "Anthology": 25991.062668438735
+  },
+  "cat": {
+   "Kamper's|FOOD": 3016.0,
+   "Anthology|FOOD": 12090.0,
+   "Anthology|BEVERAGE": 9129.8,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1851.2,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 5867.2,
+    "svc": 1055.3898652490122,
+    "adm": 263.84746631225306,
+    "net": 7186.437331561266
+   },
+   "Anthology": {
+    "base": 21219.8,
+    "svc": 3817.010134750987,
+    "adm": 954.2525336877468,
+    "net": 25991.062668438735
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,851 to Kamper's"
+ },
+ {
+  "eid": 57956612,
+  "name": "Lions Family Kick-Off Luncheon",
+  "date": "2026-09-09",
+  "kind": "anthology",
+  "n": 19,
+  "actual": 10500.0,
+  "svc": 1800.0,
+  "adm": 450.0,
+  "net": 12750.0,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 10500.0
+  },
+  "netsplit": {
+   "Anthology": 12750.0
+  },
+  "cat": {
+   "Anthology|FOOD": 9000.0,
+   "Anthology|BEVERAGE": 1500.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 10500.0,
+    "svc": 1800.0,
+    "adm": 450.0,
+    "net": 12750.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 61912603,
+  "name": "Mroz photography session",
+  "date": "2026-09-10",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 48980149,
+  "name": "Erika Rios & Armando Barraza Wedding",
+  "date": "2026-09-11",
+  "kind": "anthology",
+  "n": 38,
+  "actual": 35390.0,
+  "svc": 5952.8,
+  "adm": 1488.2,
+  "net": 42831.0,
+  "guests": 100,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 6571.8,
+   "Anthology": 28818.2
+  },
+  "netsplit": {
+   "Kamper's": 7953.567838372422,
+   "Anthology": 34877.432161627585
+  },
+  "cat": {
+   "Kamper's|FOOD": 3596.0,
+   "Anthology|FOOD": 15298.0,
+   "Anthology|BEVERAGE": 9894.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1975.8,
+   "Anthology|RENTAL": 3626.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6571.8,
+    "svc": 1105.4142706979374,
+    "adm": 276.35356767448434,
+    "net": 7953.567838372422
+   },
+   "Anthology": {
+    "base": 28818.2,
+    "svc": 4847.385729302063,
+    "adm": 1211.8464323255157,
+    "net": 34877.432161627585
+   }
+  },
+  "note": "invoice -3,626 vs actual; bar pkg 1h/5h = 1,976 to Kamper's"
+ },
+ {
+  "eid": 61464519,
+  "name": "Kathuria Terrace Club Rental",
+  "date": "2026-09-12",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1000.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 1000.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1000.0
+  },
+  "netsplit": {
+   "Anthology": 1000.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1000.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 1000.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 48844965,
+  "name": "Megan Macciomei and Evan Yabs Wedding",
+  "date": "2026-09-12",
+  "kind": "anthology",
+  "n": 32,
+  "actual": 33164.0,
+  "svc": 7000.0,
+  "adm": 1750.0,
+  "net": 41914.0,
+  "guests": 170,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 8066.8,
+   "Anthology": 25097.2
+  },
+  "netsplit": {
+   "Kamper's": 10195.147002774092,
+   "Anthology": 31718.852997225906
+  },
+  "cat": {
+   "Kamper's|FOOD": 4379.0,
+   "Anthology|FOOD": 15309.0,
+   "Anthology|BEVERAGE": 11751.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2687.8,
+   "Anthology|RENTAL": -1963.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8066.8,
+    "svc": 1702.677602219274,
+    "adm": 425.6694005548185,
+    "net": 10195.147002774092
+   },
+   "Anthology": {
+    "base": 25097.2,
+    "svc": 5297.322397780726,
+    "adm": 1324.3305994451814,
+    "net": 31718.852997225906
+   }
+  },
+  "note": "invoice +1,963 vs actual; bar pkg 1h/5h = 2,688 to Kamper's"
+ },
+ {
+  "eid": 61330563,
+  "name": "Terrace Club: Megan Macciomei and Evan Yabs Wedding",
+  "date": "2026-09-12",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 1750.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 1750.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 1750.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60240708,
+  "name": "Sacramento Chamber Cocktail Reception",
+  "date": "2026-09-16",
+  "kind": "rotunda standalone",
+  "n": 2,
+  "actual": 0.0,
+  "svc": 100.0,
+  "adm": 25.0,
+  "net": 125.0,
+  "guests": 75,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 0.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 0.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 0.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 0.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 0.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 59331182,
+  "name": "Sacramento Metro Chamber 26th Annual Study Mission Meeting",
+  "date": "2026-09-16",
+  "kind": "anthology",
+  "n": 9,
+  "actual": 9234.0,
+  "svc": 800.0,
+  "adm": 200.0,
+  "net": 10234.0,
+  "guests": 75,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 9234.0
+  },
+  "netsplit": {
+   "Anthology": 10234.0
+  },
+  "cat": {
+   "Anthology|FOOD": 3810.0,
+   "Anthology|BEVERAGE": 3739.0,
+   "Anthology|RENTAL": 1685.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 9234.0,
+    "svc": 800.0,
+    "adm": 200.0,
+    "net": 10234.0
+   }
+  },
+  "note": "invoice -1,685 vs actual"
+ },
+ {
+  "eid": 53396001,
+  "name": "Downtown Alliance- Cocktails",
+  "date": "2026-09-17",
+  "kind": "kampers standalone",
+  "n": 11,
+  "actual": 1500.0,
+  "svc": 1207.0,
+  "adm": 301.75,
+  "net": 3008.75,
+  "guests": 100,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 1500.0
+  },
+  "netsplit": {
+   "Kamper's": 3008.75
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 1500.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 1500.0,
+    "svc": 1207.0,
+    "adm": 301.75,
+    "net": 3008.75
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 55847924,
+  "name": "Downtown Alliance- Meeting",
+  "date": "2026-09-17",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 15847.0,
+  "svc": 2000.0,
+  "adm": 500.0,
+  "net": 18347.0,
+  "guests": 100,
+  "rooms": "Conservatory Ballroom, Green Room, and Linden Room",
+  "base": {
+   "Anthology": 15847.0
+  },
+  "netsplit": {
+   "Anthology": 18347.0
+  },
+  "cat": {
+   "Anthology|FOOD": 6035.0,
+   "Anthology|BEVERAGE": 8342.0,
+   "Anthology|RENTAL": 1470.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 15847.0,
+    "svc": 2000.0,
+    "adm": 500.0,
+    "net": 18347.0
+   }
+  },
+  "note": "invoice -1,470 vs actual"
+ },
+ {
+  "eid": 60260598,
+  "name": "Sacramento Metro Chamber Coffee To Go",
+  "date": "2026-09-17",
+  "kind": "rotunda standalone",
+  "n": 2,
+  "actual": 525.0,
+  "svc": 105.0,
+  "adm": 26.25,
+  "net": 656.25,
+  "guests": 75,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 525.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 656.25
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 525.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 525.0,
+    "svc": 105.0,
+    "adm": 26.25,
+    "net": 656.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 42840069,
+  "name": "Lindsey Eckhout & Michal Przytakoski Wedding",
+  "date": "2026-09-18",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 30629.0,
+  "svc": 5925.8,
+  "adm": 1225.16,
+  "net": 37779.96000000001,
+  "guests": 126,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 6803.2,
+   "Anthology": 23825.8
+  },
+  "netsplit": {
+   "Kamper's": 8391.544740997095,
+   "Anthology": 29388.415259002904
+  },
+  "cat": {
+   "Kamper's|FOOD": 3596.0,
+   "Anthology|FOOD": 14225.0,
+   "Anthology|BEVERAGE": 9600.8,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2207.2,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6803.2,
+    "svc": 1316.2167409970941,
+    "adm": 272.128,
+    "net": 8391.544740997095
+   },
+   "Anthology": {
+    "base": 23825.8,
+    "svc": 4609.583259002906,
+    "adm": 953.0319999999999,
+    "net": 29388.415259002904
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,207 to Kamper's"
+ },
+ {
+  "eid": 59837525,
+  "name": "Sacramento Metro ChamberTO Go Breakfast",
+  "date": "2026-09-18",
+  "kind": "rotunda standalone",
+  "n": 5,
+  "actual": 2625.0,
+  "svc": 525.0,
+  "adm": 131.25,
+  "net": 3281.25,
+  "guests": 60,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 2625.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 3281.25
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 2625.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 2625.0,
+    "svc": 525.0,
+    "adm": 131.25,
+    "net": 3281.25
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 48893044,
+  "name": "Melissa Rowley and Ben Whitelaw Wedding",
+  "date": "2026-09-19",
+  "kind": "anthology",
+  "n": 40,
+  "actual": 38704.0,
+  "svc": 7040.8,
+  "adm": 1760.2,
+  "net": 47505.0,
+  "guests": 107,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 12770.0,
+   "Anthology": 25934.0
+  },
+  "netsplit": {
+   "Kamper's": 15673.802449359238,
+   "Anthology": 31831.19755064076
+  },
+  "cat": {
+   "Kamper's|FOOD": 9523.0,
+   "Anthology|FOOD": 13721.0,
+   "Anthology|BEVERAGE": 12213.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2247.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 12770.0,
+    "svc": 2323.0419594873915,
+    "adm": 580.7604898718479,
+    "net": 15673.802449359238
+   },
+   "Anthology": {
+    "base": 25934.0,
+    "svc": 4717.758040512609,
+    "adm": 1179.4395101281523,
+    "net": 31831.19755064076
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,247 to Kamper's"
+ },
+ {
+  "eid": 51315863,
+  "name": "Emma Garber & Thomas Bruzek Wedding",
+  "date": "2026-09-20",
+  "kind": "anthology",
+  "n": 31,
+  "actual": 32834.0,
+  "svc": 5470.4,
+  "adm": 1367.6,
+  "net": 39672.0,
+  "guests": 125,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 6604.8,
+   "Anthology": 26229.2
+  },
+  "netsplit": {
+   "Kamper's": 7980.313869769142,
+   "Anthology": 31691.68613023086
+  },
+  "cat": {
+   "Kamper's|FOOD": 3451.0,
+   "Anthology|FOOD": 13032.0,
+   "Anthology|BEVERAGE": 12215.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2153.8,
+   "Anthology|RENTAL": 982.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6604.8,
+    "svc": 1100.4110958153135,
+    "adm": 275.1027739538284,
+    "net": 7980.313869769142
+   },
+   "Anthology": {
+    "base": 26229.2,
+    "svc": 4369.988904184686,
+    "adm": 1092.4972260461716,
+    "net": 31691.68613023086
+   }
+  },
+  "note": "invoice -982 vs actual; bar pkg 1h/5h = 2,154 to Kamper's"
+ },
+ {
+  "eid": 61814564,
+  "name": "TERRACE CLUB: Emma Garber & Thomas Bruzek Wedding",
+  "date": "2026-09-20",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 1750.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 1750.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 1750.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60463744,
+  "name": "Catalyst | Detroit",
+  "date": "2026-09-22",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 750.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 750.0,
+  "guests": 15,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 750.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 750.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 57131217,
+  "name": "Catalyst | Detroit",
+  "date": "2026-09-22",
+  "kind": "anthology",
+  "n": 25,
+  "actual": 23691.0,
+  "svc": 3000.0,
+  "adm": 750.0,
+  "net": 27441.0,
+  "guests": 80,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 23691.0
+  },
+  "netsplit": {
+   "Anthology": 27441.0
+  },
+  "cat": {
+   "Anthology|FOOD": 10540.0,
+   "Anthology|BEVERAGE": 13007.0,
+   "Anthology|RENTAL": 144.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 23691.0,
+    "svc": 3000.0,
+    "adm": 750.0,
+    "net": 27441.0
+   }
+  },
+  "note": "invoice -144 vs actual"
+ },
+ {
+  "eid": 62769096,
+  "name": "Bedrock September Fall Fest",
+  "date": "2026-09-24",
+  "kind": "rotunda standalone",
+  "n": 0,
+  "actual": 1740.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 1740.0,
+  "guests": null,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 1740.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 1740.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 1740.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 1740.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 1740.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57469015,
+  "name": "CAMComp Annual Meeting",
+  "date": "2026-09-24",
+  "kind": "anthology",
+  "n": 23,
+  "actual": 15775.0,
+  "svc": 2520.0,
+  "adm": 630.0,
+  "net": 18925.0,
+  "guests": 60,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 6400.0,
+   "Anthology": 9375.0
+  },
+  "netsplit": {
+   "Kamper's": 7677.97147385103,
+   "Anthology": 11247.02852614897
+  },
+  "cat": {
+   "Kamper's|FOOD": 1740.0,
+   "Anthology|FOOD": 7375.0,
+   "Kamper's|BEVERAGE": 3660.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Anthology|BEVERAGE": 500.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6400.0,
+    "svc": 1022.3771790808241,
+    "adm": 255.59429477020603,
+    "net": 7677.97147385103
+   },
+   "Anthology": {
+    "base": 9375.0,
+    "svc": 1497.6228209191759,
+    "adm": 374.40570522979397,
+    "net": 11247.02852614897
+   }
+  },
+  "note": "invoice -1,500 vs actual; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 59024812,
+  "name": "MCUL - Business Networking Event",
+  "date": "2026-09-24",
+  "kind": "kampers standalone",
+  "n": 11,
+  "actual": 8590.0,
+  "svc": 1518.0,
+  "adm": 303.6,
+  "net": 10411.6,
+  "guests": 75,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8590.0
+  },
+  "netsplit": {
+   "Kamper's": 10411.6
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 8590.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8590.0,
+    "svc": 1518.0,
+    "adm": 303.6,
+    "net": 10411.6
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 44989191,
+  "name": "Savannah Viecelli & Noah Mendez Wedding",
+  "date": "2026-09-25",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 42314.0,
+  "svc": 0.0,
+  "adm": 1503.56,
+  "net": 43817.56,
+  "guests": 164,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 6256.0,
+   "Anthology": 36058.0
+  },
+  "netsplit": {
+   "Kamper's": 6478.296907879188,
+   "Anthology": 37339.26309212081
+  },
+  "cat": {
+   "Kamper's|FOOD": 4756.0,
+   "Anthology|FOOD": 18813.0,
+   "Anthology|BEVERAGE": 17245.0,
+   "Kamper's|RENTAL": 1500.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6256.0,
+    "svc": 0.0,
+    "adm": 222.2969078791889,
+    "net": 6478.296907879188
+   },
+   "Anthology": {
+    "base": 36058.0,
+    "svc": 0.0,
+    "adm": 1281.263092120811,
+    "net": 37339.26309212081
+   }
+  },
+  "note": "shared wedding (ballroom header on BEO)"
+ },
+ {
+  "eid": 54493878,
+  "name": "TERRACE CLUB: Savannah Viecelli and Noah Mendez Wedding",
+  "date": "2026-09-25",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 300.0,
+  "adm": 75.0,
+  "net": 2125.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 2125.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 300.0,
+    "adm": 75.0,
+    "net": 2125.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 44531135,
+  "name": "Isabelle Ansara & Joesph Swider Wedding",
+  "date": "2026-09-26",
+  "kind": "anthology",
+  "n": 29,
+  "actual": 38766.0,
+  "svc": 7353.2,
+  "adm": 1470.64,
+  "net": 47589.84,
+  "guests": 166,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8412.8,
+   "Anthology": 30353.2
+  },
+  "netsplit": {
+   "Kamper's": 10327.704843213125,
+   "Anthology": 37262.13515678688
+  },
+  "cat": {
+   "Kamper's|FOOD": 4814.0,
+   "Anthology|FOOD": 18458.0,
+   "Anthology|BEVERAGE": 11895.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2598.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8412.8,
+    "svc": 1595.7540360109372,
+    "adm": 319.1508072021875,
+    "net": 10327.704843213125
+   },
+   "Anthology": {
+    "base": 30353.2,
+    "svc": 5757.445963989063,
+    "adm": 1151.4891927978126,
+    "net": 37262.13515678688
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,599 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 53462155,
+  "name": "Allie Cobello & Jason Dutcher Wedding Celebration",
+  "date": "2026-09-27",
+  "kind": "kampers standalone",
+  "n": 15,
+  "actual": 8400.0,
+  "svc": 0.0,
+  "adm": 345.0,
+  "net": 8745.0,
+  "guests": 50,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8400.0
+  },
+  "netsplit": {
+   "Kamper's": 8745.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 8400.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8400.0,
+    "svc": 0.0,
+    "adm": 345.0,
+    "net": 8745.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 56345456,
+  "name": "Crains Award Cocktail Hour",
+  "date": "2026-09-29",
+  "kind": "kampers standalone",
+  "n": 3,
+  "actual": 2050.0,
+  "svc": 320.0,
+  "adm": 80.0,
+  "net": 2450.0,
+  "guests": 70,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 2050.0
+  },
+  "netsplit": {
+   "Kamper's": 2450.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 2050.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 2050.0,
+    "svc": 320.0,
+    "adm": 80.0,
+    "net": 2450.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 54621345,
+  "name": "Crains Award Dinner",
+  "date": "2026-09-29",
+  "kind": "anthology",
+  "n": 11,
+  "actual": 13260.0,
+  "svc": 3000.0,
+  "adm": 750.0,
+  "net": 17010.0,
+  "guests": 70,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 13260.0
+  },
+  "netsplit": {
+   "Anthology": 17010.0
+  },
+  "cat": {
+   "Anthology|FOOD": 7630.0,
+   "Anthology|BEVERAGE": 5630.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 13260.0,
+    "svc": 3000.0,
+    "adm": 750.0,
+    "net": 17010.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 60742011,
+  "name": "Regrid Leadership Retreat Day #1",
+  "date": "2026-09-30",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 14,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ }
+]

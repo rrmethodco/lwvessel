@@ -1,0 +1,330 @@
+[
+ {
+  "eid": 42281012,
+  "date": "2026-05-01",
+  "name": "Kylie Brandon & Jarrett Janicki Wedding",
+  "guests": 104,
+  "actual": 34244,
+  "room1": "Kampers Cocktail Reception"
+ },
+ {
+  "eid": 43061703,
+  "date": "2026-05-02",
+  "name": "Theresa Lowery & Owen Kelly Wedding",
+  "guests": 123,
+  "actual": 38953.75,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 55205186,
+  "date": "2026-05-03",
+  "name": "Boston's Communion Dinner (cancellation)",
+  "guests": 30,
+  "actual": 2865,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59446346,
+  "date": "2026-05-04",
+  "name": "Rachel's Network Day 1",
+  "guests": 35,
+  "actual": 9454,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59429377,
+  "date": "2026-05-04",
+  "name": "Brunch",
+  "guests": null,
+  "actual": 1140,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59702577,
+  "date": "2026-05-05",
+  "name": "Rachel's Network Day 2",
+  "guests": 40,
+  "actual": 15502,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59445715,
+  "date": "2026-05-05",
+  "name": "Murad - Photo Session",
+  "guests": 2,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59702666,
+  "date": "2026-05-06",
+  "name": "Rachel's Network Day 3",
+  "guests": 40,
+  "actual": 13126,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 57717853,
+  "date": "2026-05-06",
+  "name": "PS: Shivon Jarbo",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59022147,
+  "date": "2026-05-07",
+  "name": "Migaldi - Photoshoot",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 56590220,
+  "date": "2026-05-07",
+  "name": "PS: Candace Mullins",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 57154382,
+  "date": "2026-05-07",
+  "name": "Yappy Hour - Bedrock",
+  "guests": 100,
+  "actual": 4145.7,
+  "room1": "Bar Rotunda"
+ },
+ {
+  "eid": 59169906,
+  "date": "2026-05-08",
+  "name": "Ceremony: Olivia Lake & Tommy Simon Wedding",
+  "guests": 86,
+  "actual": 3500,
+  "room1": "Conservatory Ballroom"
+ },
+ {
+  "eid": 52756713,
+  "date": "2026-05-08",
+  "name": "Cocktail Reception: Olivia Lake & Tommy Simon",
+  "guests": 86,
+  "actual": 5334.4,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 45356801,
+  "date": "2026-05-08",
+  "name": "Olivia Lake & Tommy Simon Wedding",
+  "guests": 86,
+  "actual": 20453.8,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 43978875,
+  "date": "2026-05-09",
+  "name": "Jason Lee & Bianca Lazarte Wedding",
+  "guests": 125,
+  "actual": 39175,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 58739220,
+  "date": "2026-05-12",
+  "name": "Roth Capital Partners",
+  "guests": 50,
+  "actual": 5300,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 56757351,
+  "date": "2026-05-13",
+  "name": "Ardoq Business Meeting",
+  "guests": 20,
+  "actual": 2525,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 58513303,
+  "date": "2026-05-13",
+  "name": "Bashi - Photoshoot",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 58765869,
+  "date": "2026-05-13",
+  "name": "Buzz Solutions - Business Happy Hour",
+  "guests": 20,
+  "actual": 325,
+  "room1": "Bar Rotunda"
+ },
+ {
+  "eid": 59237989,
+  "date": "2026-05-13",
+  "name": "Novick - Photo Session",
+  "guests": 3,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 42548502,
+  "date": "2026-05-14",
+  "name": "Lia Jacques & Christian Kazoleas",
+  "guests": 68,
+  "actual": 16807,
+  "room1": "Bar Rotunda"
+ },
+ {
+  "eid": 44077221,
+  "date": "2026-05-15",
+  "name": "Leah Blatnikoff & Cameron Judge Wedding",
+  "guests": 122,
+  "actual": 30379,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 58040440,
+  "date": "2026-05-15",
+  "name": "Rob Marzonie Welcome Reception",
+  "guests": 50,
+  "actual": 2805,
+  "room1": "Bar Rotunda"
+ },
+ {
+  "eid": 47205158,
+  "date": "2026-05-16",
+  "name": "Kayla Buchholz & Jack Flynn Wedding",
+  "guests": 160,
+  "actual": 37783,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 54605848,
+  "date": "2026-05-16",
+  "name": "Residential Rental: Ryan Spencer",
+  "guests": 50,
+  "actual": 843,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 54716636,
+  "date": "2026-05-16",
+  "name": "TERRACE CLUB: Kayla Buchholz & Jack Flynn Wedding",
+  "guests": null,
+  "actual": 1000,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 58472625,
+  "date": "2026-05-18",
+  "name": "Jameel - PS",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 57562444,
+  "date": "2026-05-20",
+  "name": "Henry Ford Health Interviews Day #2",
+  "guests": 13,
+  "actual": 2430,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59785398,
+  "date": "2026-05-20",
+  "name": "The City Institute Event",
+  "guests": 13,
+  "actual": 518,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 58407419,
+  "date": "2026-05-21",
+  "name": "PS - Nicole Koppel",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 46455813,
+  "date": "2026-05-22",
+  "name": "Emily Buck & Patrick Hopps Wedding",
+  "guests": 138,
+  "actual": 37901,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 52757266,
+  "date": "2026-05-23",
+  "name": "COCKTAIL HOUR: Julia Malewicz & Josh Nelson",
+  "guests": 125,
+  "actual": 8195.6,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 38858185,
+  "date": "2026-05-23",
+  "name": "Julia Malewicz & Josh Nelson Wedding",
+  "guests": 125,
+  "actual": 29084.4,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 59990930,
+  "date": "2026-05-23",
+  "name": "Sana Photoshoot",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 56936680,
+  "date": "2026-05-28",
+  "name": "PS: Destiny Khmoro",
+  "guests": null,
+  "actual": 500,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 47157838,
+  "date": "2026-05-29",
+  "name": "Sarah Miller & Dominic Seipenko Wedding",
+  "guests": 127,
+  "actual": 33647,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 57629468,
+  "date": "2026-05-29",
+  "name": "TERRACE CLUB: Sarah Miller & Dominic Seipenko",
+  "guests": null,
+  "actual": 1200,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 48845286,
+  "date": "2026-05-30",
+  "name": "Alania Pierson and Brendan Teodorescu Wedding",
+  "guests": 98,
+  "actual": 36855,
+  "room1": "13th Floor - Event Space"
+ },
+ {
+  "eid": 52334069,
+  "date": "2026-05-31",
+  "name": "COCKTAIL HOUR: Nataliia Yarosh & Maksym Nykin",
+  "guests": 82,
+  "actual": 6462.6,
+  "room1": "Kampers Rooftop Bar"
+ },
+ {
+  "eid": 49461196,
+  "date": "2026-05-31",
+  "name": "Nataliia Yarosh & Maksym Nykin Wedding",
+  "guests": 82,
+  "actual": 19909.4,
+  "room1": "13th Floor - Event Space"
+ }
+]

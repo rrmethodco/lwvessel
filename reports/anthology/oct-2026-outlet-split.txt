@@ -1,0 +1,25 @@
+date  event                                         kind         actual      net     Anth     Kamp    Rot     K%  note
+10-01 Michael Prisbe Rehearsal Dinner               kampers s     9,175    9,575        0    9,575      0 100.0%  
+10-01 Regrid Leadership Retreat Day #2              anthology       500      525      525        0      0   0.0%  no invoice lines
+10-02 Peyton Lyons- Glashauser & Faris Sawalha Wedd anthology    27,010   33,512   24,969    8,544      0  25.5%  bar pkg 1h/5h = 1,926 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+10-03 Alison Czarnik & Lawrence Byers Wedding Cerem anthology    42,810   52,384   41,560   10,824      0  20.7%  bar pkg 1h/5h = 2,996 to Kamper's
+10-03 Surprise Birthday Celebration                 rotunda s       800    1,000        0        0  1,000 100.0%  
+10-05 Stifel Public Finance Happy Hour              kampers s     1,500    1,500        0    1,500      0 100.0%  
+10-07 COCKTAIL HOUR: Signal Advisors USA            kampers s     5,500    5,500        0    5,500      0 100.0%  
+10-07 Signal Advisors Corporate Dinner              anthology    20,350   25,188   25,188        0      0   0.0%  
+10-08 Reimagining the Civic Commons/Liv 6 Alliance  anthology    10,375   12,594   12,594        0      0   0.0%  invoice -1,500 vs actual
+10-09 Fallon Powers & Brendan Connallon  Wedding    anthology    32,880   39,095   31,785    7,310      0  18.7%  invoice -4,520 vs actual; bar pkg 1h/5h = 1,958 to Kamper's
+10-10 Brittany Rose & James Gessler Wedding         anthology    46,225   57,531   40,343   17,188      0  29.9%  bar pkg 1h/5h = 3,210 to Kamper's
+10-11 Kaitlin Parrott & Peter Gongol Wedding        anthology    23,831   28,914   22,224    6,690      0  23.1%  bar pkg 1h/5h = 1,434 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+10-13 LOAD IN: Optimize PRO by SkinMedica           anthology     5,500    5,500    5,500        0      0   0.0%  no invoice lines
+10-13 LaFontaine Automotive Group - She Is You - Wo anthology    18,835   22,919   22,919        0      0   0.0%  invoice -1,500 vs actual
+10-14 Optimize PRO by SkinMedica: Allergen Meeting  anthology    15,160   18,525   18,525        0      0   0.0%  invoice -1,500 vs actual
+10-16 Taylor McClendon & Denzel Palm Reception Dinn anthology    17,760   22,200   22,200        0      0   0.0%  
+10-17 Emily Kenyon  & Gino Arondoski Wedding        anthology    41,175   50,538   39,258   11,280      0  22.3%  shared wedding (ballroom header on BEO); bar pkg 1h/5h = 3,115 to Kamper's
+10-22 Abate Engagement Session                      anthology       500      525      525        0      0   0.0%  no invoice lines
+10-23 Kaitlyn Basel & Charlie Fritz Terrace Club    anthology     1,500    1,500    1,500        0      0   0.0%  no invoice lines
+10-23 Kaitlyn Basel & Charlie Fritz Wedding         anthology    37,750   46,938   35,511   11,427      0  24.3%  bar pkg 1h/5h = 3,115 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+10-24 Miranda Bargert and Varun George Wedding      anthology    40,425   49,656   38,368   11,289      0  22.7%  bar pkg 1h/5h = 3,115 to Kamper's; canapes to Kamper's (cocktail-hour rule)
+10-27 MiHC Annual Fundraiser                        anthology    11,635   13,675   13,675        0      0   0.0%  
+10-31 Olivia Wujek & Jacob Lightman Wedding         anthology    51,700   63,864   44,600   19,264      0  30.2%  invoice +1,575 vs actual; bar pkg 1h/5h = 3,745 to Kamper's
+      TOTAL                                                     462,896  563,157  441,767  120,390  1,000  21.6%

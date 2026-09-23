@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Anthology — Corporate &amp; Social, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0C1526;--surface:#101E36;--surface-2:#0E1A2E;--border:#1E3050;--border-soft:#172741;
+--divider:#15243D;--text:#E2EAF6;--text-2:#8A9AB0;--text-3:#6B849E;--accent:#4187D4;
+--accent-soft:rgba(65,135,212,.14);--slate:#6D84AD;--up:#5A8F6B;--up-soft:rgba(90,143,107,.16);
+--down:#B4533C;--down-soft:rgba(180,83,60,.14);--serif:'Cormorant Garamond',Georgia,serif;
+--ui:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+@page{size:Letter;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:8.5in;min-height:11in;padding:.6in .65in .5in;background:var(--bg);position:relative;page-break-after:always;overflow:hidden}
+.page:last-child{page-break-after:auto}
+.page::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(720px 400px at 78% -12%,rgba(65,135,212,.07),transparent 70%)}
+.page>*{position:relative}
+.eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+h1{font-family:var(--serif);font-weight:300;font-size:43px;line-height:1.05;margin:0 0 13px;letter-spacing:-.015em}
+h1 em,h2 em{font-style:italic;color:var(--slate)}
+h2{font-family:var(--serif);font-weight:300;font-size:26px;margin:0 0 9px;letter-spacing:-.01em}
+h3{font-family:var(--ui);font-size:12px;font-weight:600;margin:0 0 6px}
+p{font-size:12.2px;line-height:1.56;color:var(--text-2);margin:0 0 11px;max-width:66ch}
+p strong{color:var(--text);font-weight:600} p em{font-style:italic;color:var(--slate)}
+.lede{font-size:14px;color:var(--text);max-width:60ch;line-height:1.55}
+.hint{font-size:11.4px;line-height:1.5;color:var(--text-2);margin:0 0 14px;max-width:70ch}
+.meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:0 0 16px}
+.cards.three{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--border);border-radius:11px;padding:14px 15px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.card .label{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.card .value{font-family:var(--serif);font-weight:300;font-size:30px;line-height:1;letter-spacing:-.015em}
+.card .value small{font-family:var(--ui);font-size:11px;color:var(--text-3);margin-left:2px}
+.card .sub{font-size:10px;color:var(--text-3);margin-top:6px;line-height:1.35}
+.card.bad .value{color:#d98a72}.card.good .value{color:#7fb18d}
+.panel{border:1px solid var(--border);border-radius:11px;padding:16px 18px;margin-bottom:13px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.panel.flag{border-color:#5d3a2d;background:linear-gradient(180deg,rgba(180,83,60,.10),var(--surface-2))}
+.panel.ok{border-color:#3c6b4f;background:linear-gradient(180deg,rgba(90,143,107,.10),var(--surface-2))}
+table{width:100%;border-collapse:collapse;font-size:11.4px;margin-bottom:10px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--divider)}
+th:first-child,td:first-child{text-align:left}
+th{font-family:var(--ui);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+td{font-family:var(--mono);color:var(--text);font-variant-numeric:tabular-nums}
+td:first-child{font-family:var(--ui)}
+tr.tot td{border-top:1px solid var(--border);border-bottom:none;font-weight:500}
+td.neg{color:#d98a72}td.pos{color:#7fb18d}td.mute{color:var(--text-3)}
+.chip{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:5px;display:inline-block}
+.chip.s3{background:var(--down-soft);color:#e6a08c;border:1px solid var(--down)}
+.chip.s2{background:rgba(197,164,110,.14);color:#d8c19e;border:1px solid #8a7a55}
+.chip.s1{background:var(--accent-soft);color:#8fb4dd;border:1px solid var(--accent)}
+.chip.ok{background:var(--up-soft);color:#8fc4a1;border:1px solid var(--up)}
+.foot{position:absolute;left:.65in;right:.65in;bottom:.32in;display:flex;justify-content:space-between;font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border-soft);padding-top:8px}
+.rec{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--divider)}
+.rec:last-child{border-bottom:none}
+.rec .num{font-family:var(--serif);font-size:25px;font-weight:300;color:var(--slate);width:24px;flex:none;line-height:1}
+.rec p{margin:0;font-size:11.4px;line-height:1.5}
+.rec .why{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;color:var(--accent);margin-top:5px;text-transform:uppercase}
+svg{width:100%;height:auto;display:block}
+</style></head><body>
+
+<!-- COVER -->
+<div class="page">
+  <p class="meta">Method Co. &nbsp;·&nbsp; Anthology at Book Tower &nbsp;·&nbsp; Detroit</p>
+  <div style="height:1.1in"></div>
+  <p class="eyebrow">Corporate &amp; social · 2026 · revised</p>
+  <h1>The Book We<br><em>Didn't</em> Write</h1>
+  <p class="lede">Every corporate and social inquiry for a 2026 event date, what happened
+  to it, and whether the room — or the reply — is what lost it.</p>
+
+  <div style="height:.5in"></div>
+  <div class="cards">
+    <div class="card bad"><div class="label">Corporate not converted</div><div class="value">78<small>%</small></div><div class="sub">83 of 107 inquiries</div></div>
+    <div class="card bad"><div class="label">Social not converted</div><div class="value">97<small>%</small></div><div class="sub">1,353 of 1,393 inquiries</div></div>
+    <div class="card"><div class="label">Lost to room capacity</div><div class="value">15</div><div class="sub">of 947 diagnosed losses</div></div>
+    <div class="card bad"><div class="label">Lost to no reply</div><div class="value">649</div><div class="sub">69% of lost value</div></div>
+  </div>
+
+  <div class="panel ok">
+    <p class="eyebrow">The question you asked</p>
+    <p style="margin:0;color:var(--text)"><strong>Is there a common thread of size or space
+    limitation? No — not size.</strong> "Guest Count Exceeds Room Capacity" is recorded on
+    <strong>15 of 947</strong> diagnosed losses, about 3.7% of lost value. The 13th Floor
+    has hosted 250 guests. Room size is not what is costing this business.</p>
+  </div>
+
+  <div class="panel flag">
+    <p class="eyebrow">But there is a space thread</p>
+    <p style="margin:0;color:var(--text)"><strong>It is availability, not size — and it is
+    seasonal.</strong> 125 inquiries worth roughly <strong>$1.5M</strong> were turned away
+    as <em>Date Unavailable</em>, and <strong>84% of them fall between May and October</strong>,
+    precisely when the wedding book occupies the 13th Floor. September alone lost 28 dates
+    against 5 wins.</p>
+  </div>
+
+  <div class="foot"><span>Source · Tripleseat leads + 2026 events export, location 22266</span><span>Revised 31 Aug 2026</span></div>
+</div>
+
+<!-- FUNNEL -->
+<div class="page">
+  <p class="eyebrow">Section one</p>
+  <h2>Two Very Different <em>Funnels</em></h2>
+  <p class="hint">Inquiries carrying a 2026 event date. Converted means the event reached
+  Definite or Closed. "Reservation requests" are guests asking for an ordinary restaurant
+  table who landed in the events inbox — never events, and excluded from every later figure.</p>
+
+  <table>
+    <thead><tr><th>Segment</th><th>Inquiries</th><th>Converted</th><th>Win rate</th><th>Reservation requests</th><th>Real losses</th><th>Lost covers</th></tr></thead>
+    <tbody>
+      <tr><td>Corporate</td><td>107</td><td class="pos">24</td><td class="pos">22.4%</td><td class="mute">12</td><td class="neg">68</td><td>3,350</td></tr>
+      <tr><td>Social</td><td>1,393</td><td class="pos">40</td><td class="neg">2.9%</td><td class="mute">417</td><td class="neg">879</td><td>53,693</td></tr>
+      <tr class="tot"><td>Total</td><td>1,500</td><td>64</td><td>4.3%</td><td>429</td><td>947</td><td>57,043</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Corporate converts one inquiry in four and a half. Social converts one in
+  thirty-four.</strong> These are not the same business and should not be managed the same
+  way. Social's volume is a low-intent web stream — 1,393 inquiries against 71 booked
+  events all year, with 417 of them not events at all.</p>
+
+  <div class="panel">
+    <p class="eyebrow">A caution on sizing the loss</p>
+    <p style="margin:0">Valuing all 53,693 lost social covers at the booked rate would imply
+    $10.7M of lost social business. <strong>That figure is not defensible</strong> and is not
+    used here. A 2.9% win rate on an unqualified web stream reflects inquiry quality, not
+    sales failure. Only the diagnosed, addressable buckets are valued in this report — dates
+    we actively turned away, and parties we told were too large.</p>
+  </div>
+
+  <h3 style="margin-top:16px">Win rate by party size</h3>
+  <table>
+    <thead><tr><th>Party size</th><th>Corp inquiries</th><th>Corp won</th><th>Corp win %</th><th>Social inquiries</th><th>Social won</th><th>Social win %</th></tr></thead>
+    <tbody>
+      <tr><td>1 – 20</td><td>47</td><td>9</td><td>19.1%</td><td>644</td><td>18</td><td>2.8%</td></tr>
+      <tr><td>21 – 50</td><td>26</td><td>5</td><td>19.2%</td><td>333</td><td>14</td><td>4.2%</td></tr>
+      <tr><td>51 – 100</td><td>24</td><td>8</td><td class="pos">33.3%</td><td>197</td><td>5</td><td>2.5%</td></tr>
+      <tr><td>101 – 150</td><td>8</td><td>1</td><td class="neg">12.5%</td><td>112</td><td>1</td><td class="neg">0.9%</td></tr>
+      <tr><td>151 – 180</td><td>0</td><td>—</td><td class="mute">—</td><td>42</td><td>0</td><td class="neg">0.0%</td></tr>
+      <tr><td>181+</td><td>2</td><td>1</td><td>50.0%</td><td>37</td><td>0</td><td class="neg">0.0%</td></tr>
+    </tbody>
+  </table>
+  <p class="hint" style="margin-bottom:0"><strong>Corporate's sweet spot is 51–100 guests</strong> at a
+  33% win rate — the size the 13th Floor sells most naturally. <strong>Social converts nothing
+  above 150.</strong> 79 inquiries, zero booked. That looked like a capacity wall; the next
+  page shows it is not.</p>
+
+  <div class="foot"><span>Anthology · Corporate &amp; Social 2026</span><span>2</span></div>
+</div>
+
+<!-- WHY -->
+<div class="page">
+  <p class="eyebrow">Section two</p>
+  <h2>Why It <em>Walked</em></h2>
+  <p class="hint">Diagnosed losses, reservation requests removed. Anthology records a real
+  loss taxonomy, which makes this readable.</p>
+
+  <table>
+    <thead><tr><th>Loss reason</th><th>Corporate</th><th>Corp covers</th><th>Social</th><th>Social covers</th><th>Share of losses</th></tr></thead>
+    <tbody>
+      <tr><td><strong>No Response</strong></td><td class="neg">35</td><td>1,853</td><td class="neg">614</td><td>37,702</td><td class="neg">68.5%</td></tr>
+      <tr><td>Date Unavailable</td><td>9</td><td>490</td><td>116</td><td>7,005</td><td>13.2%</td></tr>
+      <tr><td>Other — undiagnosed</td><td>14</td><td>436</td><td>96</td><td>4,166</td><td>11.6%</td></tr>
+      <tr><td>Changed Venue</td><td>3</td><td>31</td><td>18</td><td>1,546</td><td>2.2%</td></tr>
+      <tr><td><strong>Guest Count Exceeds Capacity</strong></td><td>1</td><td>100</td><td>14</td><td>1,990</td><td class="mute">1.6%</td></tr>
+      <tr><td>Budget</td><td>6</td><td>440</td><td>12</td><td>786</td><td>1.9%</td></tr>
+      <tr><td>Ceremony only / proposal / other</td><td>0</td><td>0</td><td>9</td><td>498</td><td>1.0%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="panel ok">
+    <p class="eyebrow">Finding one — the direct answer</p>
+    <h3>Size is not the constraint</h3>
+    <p style="margin:0">Capacity is cited on <strong>15 of 947 losses (1.6% by count,
+    3.7% by value)</strong> — one corporate event and fourteen social. Even among parties of
+    150 or more, where you would expect a wall, capacity explains only <strong>6 of 102</strong>
+    losses; <strong>75 of them are simply No Response</strong>. And the room is bigger than the
+    lost business: the 13th Floor has hosted <strong>250 guests</strong> in a single event, against
+    a largest lost social party of 400 and a median lost party of 22.</p>
+  </div>
+
+  <div class="panel flag">
+    <p class="eyebrow">Finding two — the real space thread</p>
+    <h3>Availability, and it collides with wedding season</h3>
+    <p style="margin:0"><strong>125 qualified inquiries were turned away for want of a date</strong>
+    — 7,495 covers, roughly <strong>$1.5M</strong> at booked per-cover rates. They are not spread
+    across the year. <strong>84% land between May and October</strong>, the exact months the wedding
+    book fills the 13th Floor. This is the one place where space genuinely costs money, and it is
+    a calendar problem rather than a room-size problem.</p>
+  </div>
+
+  <h3 style="margin-top:14px">Date-unavailable losses against the wedding book, by month</h3>
+  <svg viewBox="0 0 690 200" role="img" aria-label="Date unavailable losses versus weddings booked by month">
+    <g font-family="DM Mono, monospace" font-size="9" fill="#6B849E">
+      <line x1="30" y1="150" x2="686" y2="150" stroke="#15243D"/>
+      <line x1="30" y1="110" x2="686" y2="110" stroke="#15243D"/>
+      <line x1="30" y1="70"  x2="686" y2="70"  stroke="#15243D"/>
+      <line x1="30" y1="30"  x2="686" y2="30"  stroke="#15243D"/>
+      <text x="26" y="153" text-anchor="end">0</text><text x="26" y="113" text-anchor="end">10</text>
+      <text x="26" y="73" text-anchor="end">20</text><text x="26" y="33" text-anchor="end">30</text>
+    </g>
+    <g>
+      <rect x="40"  y="146" width="22" height="4"   fill="#B4533C"/><rect x="64"  y="146" width="22" height="4"  fill="#4187D4" opacity=".55"/>
+      <rect x="94"  y="146" width="22" height="4"   fill="#B4533C"/><rect x="118" y="146" width="22" height="4"  fill="#4187D4" opacity=".55"/>
+      <rect x="148" y="142" width="22" height="8"   fill="#B4533C"/><rect x="172" y="146" width="22" height="4"  fill="#4187D4" opacity=".55"/>
+      <rect x="202" y="134" width="22" height="16"  fill="#B4533C"/><rect x="226" y="130" width="22" height="20" fill="#4187D4" opacity=".55"/>
+      <rect x="256" y="86"  width="22" height="64"  fill="#B4533C"/><rect x="280" y="102" width="22" height="48" fill="#4187D4" opacity=".55"/>
+      <rect x="310" y="34"  width="22" height="116" fill="#B4533C"/><rect x="334" y="110" width="22" height="40" fill="#4187D4" opacity=".55"/>
+      <rect x="364" y="86"  width="22" height="64"  fill="#B4533C"/><rect x="388" y="118" width="22" height="32" fill="#4187D4" opacity=".55"/>
+      <rect x="418" y="90"  width="22" height="60"  fill="#B4533C"/><rect x="442" y="118" width="22" height="32" fill="#4187D4" opacity=".55"/>
+      <rect x="472" y="38"  width="22" height="112" fill="#B4533C"/><rect x="496" y="102" width="22" height="48" fill="#4187D4" opacity=".55"/>
+      <rect x="526" y="106" width="22" height="44"  fill="#B4533C"/><rect x="550" y="110" width="22" height="40" fill="#4187D4" opacity=".55"/>
+      <rect x="580" y="146" width="22" height="4"   fill="#B4533C"/><rect x="604" y="122" width="22" height="28" fill="#4187D4" opacity=".55"/>
+      <rect x="634" y="142" width="22" height="8"   fill="#B4533C"/><rect x="658" y="126" width="22" height="24" fill="#4187D4" opacity=".55"/>
+    </g>
+    <g font-family="DM Mono, monospace" font-size="8.5" fill="#6B849E" text-anchor="middle">
+      <text x="63" y="166">JAN</text><text x="117" y="166">FEB</text><text x="171" y="166">MAR</text>
+      <text x="225" y="166">APR</text><text x="279" y="166">MAY</text><text x="333" y="166">JUN</text>
+      <text x="387" y="166">JUL</text><text x="441" y="166">AUG</text><text x="495" y="166">SEP</text>
+      <text x="549" y="166">OCT</text><text x="603" y="166">NOV</text><text x="657" y="166">DEC</text>
+    </g>
+    <g font-family="DM Mono, monospace" font-size="9" fill="#d98a72" text-anchor="middle">
+      <text x="321" y="28">29</text><text x="483" y="32">28</text>
+    </g>
+    <g font-family="DM Mono, monospace" font-size="8.5">
+      <rect x="40" y="182" width="10" height="8" fill="#B4533C"/><text x="55" y="189" fill="#8A9AB0">Corporate + social lost to "Date Unavailable"</text>
+      <rect x="330" y="182" width="10" height="8" fill="#4187D4" opacity=".55"/><text x="345" y="189" fill="#8A9AB0">Weddings booked</text>
+    </g>
+  </svg>
+
+  <div class="foot"><span>Anthology · Corporate &amp; Social 2026</span><span>3</span></div>
+</div>
+
+<!-- ACTIONS -->
+<div class="page">
+  <p class="eyebrow">Section three</p>
+  <h2>What to <em>Do</em></h2>
+  <p class="hint">Ordered by recoverable value. Nothing here requires a bigger room.</p>
+
+  <div class="panel">
+    <div class="rec"><div class="num">1</div><div>
+      <h3>Answer the corporate inquiries. 35 of 68 corporate losses are silence.</h3>
+      <p>1,853 covers — roughly $430,000 — lost with no competitive reason, no price
+      objection and no calendar conflict. Corporate converts at 22% when worked and is the
+      segment where a reply reliably becomes a booking.</p>
+      <p class="why">Recovers up to $430,000 · 1,853 covers</p></div></div>
+
+    <div class="rec"><div class="num">2</div><div>
+      <h3>Sell the shoulder date before refusing the peak one.</h3>
+      <p>125 inquiries were turned away for a date, 84% of them May–October against a full
+      wedding book. None of them appear to have been offered an alternative date, a different
+      room, or a daytime slot. A structured second-offer at the point of refusal is the
+      difference between a lost inquiry and a Tuesday booking.</p>
+      <p class="why">Addresses ~$1.5M of refused demand</p></div></div>
+
+    <div class="rec"><div class="num">3</div><div>
+      <h3>Route restaurant reservations out of the events inbox.</h3>
+      <p>429 of 1,500 inquiries — 29% — were guests wanting an ordinary table. They consume
+      coordinator time and drag the reported win rate from 5.9% to 4.3%. Social is the worst
+      affected: 417 of its 1,320 losses were never events.</p>
+      <p class="why">Removes 29% of inquiry volume · corrects the win rate</p></div></div>
+
+    <div class="rec"><div class="num">4</div><div>
+      <h3>Qualify social before working it, and stop reporting it alongside corporate.</h3>
+      <p>Social runs 13× corporate's inquiry volume for 60% fewer booked covers, and
+      reporting them as one pipeline hides corporate's real performance. Social needs a
+      qualification gate — date, budget, headcount — not more follow-up capacity.</p>
+      <p class="why">Protects corporate attention from social volume</p></div></div>
+
+    <div class="rec"><div class="num">5</div><div>
+      <h3>Retire "Other" as a loss reason.</h3>
+      <p>110 losses carrying 4,602 covers are recorded as Other — 12% of the diagnosed book
+      with no cause attached. Anthology's taxonomy is the best in the portfolio; this gap is
+      what stops it being fully actionable.</p>
+      <p class="why">Diagnoses 4,602 undiagnosed covers</p></div></div>
+  </div>
+
+  <div class="panel">
+    <p class="eyebrow">What changed since the first version</p>
+    <p style="margin:0 0 8px">The original analysis drew from the Tripleseat API for location
+    22266, which returns <strong>two books under one label</strong> — Anthology's own events and the
+    restaurants' private dining (Le Suprême, HIROKI-SAN) — and which ignores its
+    <span style="font-family:var(--mono);font-size:10.5px">location_id</span> filter entirely,
+    returning every venue on the account. Both faults inflated the earlier figures.</p>
+    <p style="margin:0">This revision is scoped to Anthology's own book using the Tripleseat
+    events export, with per-cover values taken from booked 2026 business net of tax and gratuity
+    ($232 corporate, $200 social). Corrected: corporate is <strong>50 booked bookings</strong>,
+    not 237; social <strong>71</strong>, not 204.</p>
+  </div>
+
+  <div class="foot"><span>Anthology · Corporate &amp; Social 2026</span><span>4</span></div>
+</div>
+
+</body></html>

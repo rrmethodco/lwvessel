@@ -1,0 +1,1458 @@
+[
+ {
+  "eid": 52110112,
+  "name": "International Academy Prom",
+  "date": "2026-06-01",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 19945.0,
+  "svc": 3619.0,
+  "adm": 904.75,
+  "net": 24468.75,
+  "guests": 155,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 19945.0
+  },
+  "netsplit": {
+   "Anthology": 24468.75
+  },
+  "cat": {
+   "Anthology|FOOD": 13020.0,
+   "Anthology|BEVERAGE": 5425.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 19945.0,
+    "svc": 3619.0,
+    "adm": 904.75,
+    "net": 24468.75
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 59093609,
+  "name": "Colab AI - Happy Hour",
+  "date": "2026-06-02",
+  "kind": "kampers standalone",
+  "n": 19,
+  "actual": 11980.0,
+  "svc": 2196.0,
+  "adm": 549.0,
+  "net": 14725.0,
+  "guests": 60,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 11980.0
+  },
+  "netsplit": {
+   "Kamper's": 14725.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 11980.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 11980.0,
+    "svc": 2196.0,
+    "adm": 549.0,
+    "net": 14725.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 60172960,
+  "name": "Kasmikha Engagement Pictures",
+  "date": "2026-06-02",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 5,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 59257152,
+  "name": "Identity PR Reception",
+  "date": "2026-06-03",
+  "kind": "kampers standalone",
+  "n": 24,
+  "actual": 15340.0,
+  "svc": 0.0,
+  "adm": 600.0,
+  "net": 15940.0,
+  "guests": 32,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 15340.0
+  },
+  "netsplit": {
+   "Kamper's": 15940.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 15340.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 15340.0,
+    "svc": 0.0,
+    "adm": 600.0,
+    "net": 15940.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57098781,
+  "name": "Meeting #3",
+  "date": "2026-06-03",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 8,
+  "rooms": "Business Center",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 57325321,
+  "name": "PS: Yahaira David",
+  "date": "2026-06-03",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 45505097,
+  "name": "Kaley Willaert & Shane Eberle Wedding",
+  "date": "2026-06-05",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 28140.0,
+  "svc": 5000.0,
+  "adm": 1000.0,
+  "net": 34140.0,
+  "guests": 87,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 8126.0,
+   "Anthology": 20014.0
+  },
+  "netsplit": {
+   "Kamper's": 9858.622601279318,
+   "Anthology": 24281.37739872068
+  },
+  "cat": {
+   "Kamper's|FOOD": 5307.0,
+   "Anthology|FOOD": 10038.0,
+   "Anthology|BEVERAGE": 9976.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1819.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8126.0,
+    "svc": 1443.8521677327649,
+    "adm": 288.77043354655297,
+    "net": 9858.622601279318
+   },
+   "Anthology": {
+    "base": 20014.0,
+    "svc": 3556.147832267235,
+    "adm": 711.2295664534471,
+    "net": 24281.37739872068
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,819 to Kamper's"
+ },
+ {
+  "eid": 42213260,
+  "name": "Amy Wilson & Kevin Hodges Wedding",
+  "date": "2026-06-06",
+  "kind": "anthology",
+  "n": 35,
+  "actual": 38583.0,
+  "svc": 7002.6,
+  "adm": 1440.52,
+  "net": 47026.119999999995,
+  "guests": 136,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 8248.6,
+   "Anthology": 30334.4
+  },
+  "netsplit": {
+   "Kamper's": 10053.641589093642,
+   "Anthology": 36972.47841090636
+  },
+  "cat": {
+   "Kamper's|FOOD": 4488.0,
+   "Anthology|FOOD": 16547.0,
+   "Anthology|BEVERAGE": 13787.4,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2760.6,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8248.6,
+    "svc": 1497.0750423761763,
+    "adm": 307.96654671746626,
+    "net": 10053.641589093642
+   },
+   "Anthology": {
+    "base": 30334.4,
+    "svc": 5505.524957623825,
+    "adm": 1132.5534532825338,
+    "net": 36972.47841090636
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,761 to Kamper's"
+ },
+ {
+  "eid": 59772144,
+  "name": "CEREMONY: Chloe Reed & Jacob Sauter Wedding",
+  "date": "2026-06-07",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 2000.0,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 2000.0,
+  "guests": null,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 2000.0
+  },
+  "netsplit": {
+   "Anthology": 2000.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 2000.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 2000.0,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 2000.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52757639,
+  "name": "COCKTAIL HOUR: Chloe Reed & Jacob Sauter Wedding",
+  "date": "2026-06-07",
+  "kind": "kampers standalone",
+  "n": 3,
+  "actual": 7035.2,
+  "svc": 0.0,
+  "adm": 0.0,
+  "net": 7035.2,
+  "guests": 132,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 7035.2
+  },
+  "netsplit": {
+   "Kamper's": 7035.2
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 7035.2
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7035.2,
+    "svc": 0.0,
+    "adm": 0.0,
+    "net": 7035.2
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 45269250,
+  "name": "Chloe Reed & Jacob Sauter Wedding",
+  "date": "2026-06-07",
+  "kind": "anthology",
+  "n": 24,
+  "actual": 23242.0,
+  "svc": 4412.4,
+  "adm": 882.48,
+  "net": 28536.88,
+  "guests": 132,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 23242.0
+  },
+  "netsplit": {
+   "Anthology": 28536.88
+  },
+  "cat": {
+   "Anthology|FOOD": 12987.0,
+   "Anthology|BEVERAGE": 10255.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 23242.0,
+    "svc": 4412.4,
+    "adm": 882.48,
+    "net": 28536.88
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57626992,
+  "name": "TERRACE CLUB: Chloe Reed & Jacob Sauter Wedding",
+  "date": "2026-06-07",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 300.0,
+  "adm": 75.0,
+  "net": 2125.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 2125.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 300.0,
+    "adm": 75.0,
+    "net": 2125.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 59327698,
+  "name": "Benacquista - Photo Session",
+  "date": "2026-06-09",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 59122129,
+  "name": "Team Wellness Center - Meeting & Dinner",
+  "date": "2026-06-10",
+  "kind": "anthology",
+  "n": 9,
+  "actual": 3433.0,
+  "svc": 561.6,
+  "adm": 140.4,
+  "net": 4135.0,
+  "guests": 26,
+  "rooms": "Linden Room",
+  "base": {
+   "Anthology": 3433.0
+  },
+  "netsplit": {
+   "Anthology": 4135.0
+  },
+  "cat": {
+   "Anthology|FOOD": 2158.0,
+   "Anthology|BEVERAGE": 775.0,
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 3433.0,
+    "svc": 561.6,
+    "adm": 140.4,
+    "net": 4135.0
+   }
+  },
+  "note": "invoice -500 vs actual"
+ },
+ {
+  "eid": 59974145,
+  "name": "Fravel Photoshoot",
+  "date": "2026-06-11",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 53782154,
+  "name": "HFHS Dinner - Resident Graduation",
+  "date": "2026-06-11",
+  "kind": "anthology",
+  "n": 21,
+  "actual": 32236.0,
+  "svc": 5158.8,
+  "adm": 1289.7,
+  "net": 38684.5,
+  "guests": 108,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 32236.0
+  },
+  "netsplit": {
+   "Anthology": 38684.5
+  },
+  "cat": {
+   "Anthology|FOOD": 17694.0,
+   "Anthology|BEVERAGE": 13042.0,
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 32236.0,
+    "svc": 5158.8,
+    "adm": 1289.7,
+    "net": 38684.5
+   }
+  },
+  "note": "invoice -1,500 vs actual"
+ },
+ {
+  "eid": 59559106,
+  "name": "Quosto - Photoshoot",
+  "date": "2026-06-11",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 52757769,
+  "name": "Gabrielle Broche & Brandon Eklund Cocktail Hour",
+  "date": "2026-06-12",
+  "kind": "kampers standalone",
+  "n": 3,
+  "actual": 6638.4,
+  "svc": 1127.68,
+  "adm": 281.92,
+  "net": 8048.0,
+  "guests": 124,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 6638.4
+  },
+  "netsplit": {
+   "Kamper's": 8048.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 6638.4
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 6638.4,
+    "svc": 1127.68,
+    "adm": 281.92,
+    "net": 8048.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 43061287,
+  "name": "Gabrielle Broche & Brandon Eklund Wedding",
+  "date": "2026-06-12",
+  "kind": "anthology",
+  "n": 29,
+  "actual": 22836.6,
+  "svc": 4390.32,
+  "adm": 878.06,
+  "net": 28104.98,
+  "guests": 124,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 22836.6
+  },
+  "netsplit": {
+   "Anthology": 28104.98
+  },
+  "cat": {
+   "Anthology|FOOD": 13400.0,
+   "Anthology|BEVERAGE": 9436.6,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 22836.6,
+    "svc": 4390.32,
+    "adm": 878.06,
+    "net": 28104.98
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 45636634,
+  "name": "Elizabeth DiMauro & Chris Corbin Reception",
+  "date": "2026-06-13",
+  "kind": "anthology",
+  "n": 29,
+  "actual": 41238.0,
+  "svc": 7875.6,
+  "adm": 1575.12,
+  "net": 50688.72,
+  "guests": 149,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8408.8,
+   "Anthology": 32829.2
+  },
+  "netsplit": {
+   "Kamper's": 10335.88701527717,
+   "Anthology": 40352.83298472283
+  },
+  "cat": {
+   "Kamper's|FOOD": 4263.0,
+   "Anthology|FOOD": 19386.0,
+   "Anthology|BEVERAGE": 13443.2,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 3145.8,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8408.8,
+    "svc": 1605.9058460643096,
+    "adm": 321.1811692128619,
+    "net": 10335.88701527717
+   },
+   "Anthology": {
+    "base": 32829.2,
+    "svc": 6269.69415393569,
+    "adm": 1253.938830787138,
+    "net": 40352.83298472283
+   }
+  },
+  "note": "bar pkg 1h/5h = 3,146 to Kamper's"
+ },
+ {
+  "eid": 55083142,
+  "name": "TERRACE CLUB: Elizabeth DiMauro & Chris Corbin Wedding Reception",
+  "date": "2026-06-13",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 2050.0,
+  "svc": 360.0,
+  "adm": 90.0,
+  "net": 2500.0,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 2050.0
+  },
+  "netsplit": {
+   "Anthology": 2500.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 2050.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 2050.0,
+    "svc": 360.0,
+    "adm": 90.0,
+    "net": 2500.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60299176,
+  "name": "Spurlock - REINDUSTRIALIZE",
+  "date": "2026-06-15",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 750.0,
+  "svc": 0.0,
+  "adm": 37.5,
+  "net": 787.5,
+  "guests": 8,
+  "rooms": "Business Center",
+  "base": {
+   "Anthology": 750.0
+  },
+  "netsplit": {
+   "Anthology": 787.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 750.0,
+    "svc": 0.0,
+    "adm": 37.5,
+    "net": 787.5
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 57843807,
+  "name": "DT Midstream Kampers Reception",
+  "date": "2026-06-16",
+  "kind": "kampers standalone",
+  "n": 11,
+  "actual": 7680.0,
+  "svc": 1386.0,
+  "adm": 346.5,
+  "net": 9412.5,
+  "guests": 70,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 7680.0
+  },
+  "netsplit": {
+   "Kamper's": 9412.5
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 7680.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7680.0,
+    "svc": 1386.0,
+    "adm": 346.5,
+    "net": 9412.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57752356,
+  "name": "DT Midstream Meeting Day #1",
+  "date": "2026-06-16",
+  "kind": "anthology",
+  "n": 14,
+  "actual": 17206.0,
+  "svc": 1512.0,
+  "adm": 378.0,
+  "net": 19096.0,
+  "guests": 70,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 17206.0
+  },
+  "netsplit": {
+   "Anthology": 19096.0
+  },
+  "cat": {
+   "Anthology|FOOD": 5670.0,
+   "Anthology|BEVERAGE": 10786.0,
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 17206.0,
+    "svc": 1512.0,
+    "adm": 378.0,
+    "net": 19096.0
+   }
+  },
+  "note": "invoice -750 vs actual"
+ },
+ {
+  "eid": 59471004,
+  "name": "640 Oxford Breakfast Event",
+  "date": "2026-06-17",
+  "kind": "kampers standalone",
+  "n": 4,
+  "actual": 3100.0,
+  "svc": 0.0,
+  "adm": 92.5,
+  "net": 3192.5,
+  "guests": 50,
+  "rooms": "Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 3100.0
+  },
+  "netsplit": {
+   "Kamper's": 3192.5
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 3100.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 3100.0,
+    "svc": 0.0,
+    "adm": 92.5,
+    "net": 3192.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 57843884,
+  "name": "DT Midstream Meeting Day #2",
+  "date": "2026-06-17",
+  "kind": "anthology",
+  "n": 12,
+  "actual": 8660.0,
+  "svc": 1512.0,
+  "adm": 378.0,
+  "net": 10550.0,
+  "guests": 70,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Anthology": 8660.0
+  },
+  "netsplit": {
+   "Anthology": 10550.0
+  },
+  "cat": {
+   "Anthology|FOOD": 5670.0,
+   "Anthology|BEVERAGE": 2240.0,
+   "Anthology|RENTAL": 750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 8660.0,
+    "svc": 1512.0,
+    "adm": 378.0,
+    "net": 10550.0
+   }
+  },
+  "note": "invoice -750 vs actual"
+ },
+ {
+  "eid": 58649125,
+  "name": "Carlisle - Photoshoot",
+  "date": "2026-06-18",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 40645212,
+  "name": "Donna Davila & Brian Falther Wedding",
+  "date": "2026-06-18",
+  "kind": "anthology",
+  "n": 32,
+  "actual": 25471.0,
+  "svc": 4438.2,
+  "adm": 887.64,
+  "net": 30796.84,
+  "guests": 101,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 5572.4,
+   "Anthology": 19898.6
+  },
+  "netsplit": {
+   "Kamper's": 6737.556877075889,
+   "Anthology": 24059.28312292411
+  },
+  "cat": {
+   "Kamper's|FOOD": 2828.0,
+   "Anthology|FOOD": 10174.0,
+   "Anthology|BEVERAGE": 9724.6,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1744.4,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 5572.4,
+    "svc": 970.9640642299084,
+    "adm": 194.1928128459817,
+    "net": 6737.556877075889
+   },
+   "Anthology": {
+    "base": 19898.6,
+    "svc": 3467.235935770091,
+    "adm": 693.4471871540183,
+    "net": 24059.28312292411
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,744 to Kamper's"
+ },
+ {
+  "eid": 50199964,
+  "name": "Josh Kirsch & Teng Alele Wedding",
+  "date": "2026-06-19",
+  "kind": "anthology",
+  "n": 36,
+  "actual": 30553.0,
+  "svc": 5607.6,
+  "adm": 1401.9,
+  "net": 37562.5,
+  "guests": 104,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 7640.4,
+   "Anthology": 22912.6
+  },
+  "netsplit": {
+   "Kamper's": 9393.268255163159,
+   "Anthology": 28169.23174483684
+  },
+  "cat": {
+   "Kamper's|FOOD": 4784.0,
+   "Anthology|FOOD": 13235.0,
+   "Anthology|BEVERAGE": 9677.6,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 1856.4,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7640.4,
+    "svc": 1402.2946041305274,
+    "adm": 350.57365103263186,
+    "net": 9393.268255163159
+   },
+   "Anthology": {
+    "base": 22912.6,
+    "svc": 4205.305395869473,
+    "adm": 1051.3263489673682,
+    "net": 28169.23174483684
+   }
+  },
+  "note": "bar pkg 1h/5h = 1,856 to Kamper's"
+ },
+ {
+  "eid": 41946577,
+  "name": "Delaney Obrien & Brandon Goocher Wedding",
+  "date": "2026-06-20",
+  "kind": "anthology",
+  "n": 31,
+  "actual": 40849.0,
+  "svc": 7412.8,
+  "adm": 1562.56,
+  "net": 49824.36,
+  "guests": 159,
+  "rooms": "13th Floor - Event Space and Kampers Rooftop Bar",
+  "base": {
+   "Kamper's": 8441.2,
+   "Anthology": 32407.8
+  },
+  "netsplit": {
+   "Kamper's": 10295.904125731353,
+   "Anthology": 39528.45587426864
+  },
+  "cat": {
+   "Kamper's|FOOD": 4611.0,
+   "Anthology|FOOD": 18152.0,
+   "Anthology|BEVERAGE": 14255.8,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2830.2,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 8441.2,
+    "svc": 1531.8105060099392,
+    "adm": 322.893619721413,
+    "net": 10295.904125731353
+   },
+   "Anthology": {
+    "base": 32407.8,
+    "svc": 5880.9894939900605,
+    "adm": 1239.666380278587,
+    "net": 39528.45587426864
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,830 to Kamper's; canapes to Kamper's (cocktail-hour rule)"
+ },
+ {
+  "eid": 53718358,
+  "name": "TERRACE CLUB: Delaney Obrien & Brandon Goocher Wedding",
+  "date": "2026-06-20",
+  "kind": "anthology",
+  "n": 3,
+  "actual": 1384.0,
+  "svc": 226.8,
+  "adm": 56.7,
+  "net": 1667.5,
+  "guests": 12,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1384.0
+  },
+  "netsplit": {
+   "Anthology": 1667.5
+  },
+  "cat": {
+   "Anthology|FOOD": 1384.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1384.0,
+    "svc": 226.8,
+    "adm": 56.7,
+    "net": 1667.5
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 53122167,
+  "name": "Brunch",
+  "date": "2026-06-21",
+  "kind": "anthology",
+  "n": 4,
+  "actual": 5438.0,
+  "svc": 0.0,
+  "adm": 259.4,
+  "net": 5697.4,
+  "guests": 90,
+  "rooms": "Conservatory Ballroom",
+  "base": {
+   "Anthology": 5438.0
+  },
+  "netsplit": {
+   "Anthology": 5697.4
+  },
+  "cat": {
+   "Anthology|FOOD": 4830.0,
+   "Anthology|BEVERAGE": 358.0,
+   "Anthology|RENTAL": 250.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 5438.0,
+    "svc": 0.0,
+    "adm": 259.4,
+    "net": 5697.4
+   }
+  },
+  "note": "invoice -250 vs actual"
+ },
+ {
+  "eid": 58582527,
+  "name": "Photo Session - FM Visuals",
+  "date": "2026-06-22",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60322520,
+  "name": "Tenant Experience Resident Event",
+  "date": "2026-06-23",
+  "kind": "anthology",
+  "n": 4,
+  "actual": 599.0,
+  "svc": 0.0,
+  "adm": 29.95,
+  "net": 628.95,
+  "guests": 100,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 599.0
+  },
+  "netsplit": {
+   "Anthology": 628.95
+  },
+  "cat": {
+   "Anthology|FOOD": 599.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 599.0,
+    "svc": 0.0,
+    "adm": 29.95,
+    "net": 628.95
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 58760990,
+  "name": "Angelina - Photoshoot",
+  "date": "2026-06-24",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 60118110,
+  "name": "Hleis Photoshoot",
+  "date": "2026-06-24",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": null,
+  "rooms": "Photography",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 58064896,
+  "name": "Project for Public Spaces VIP Happy Hour",
+  "date": "2026-06-25",
+  "kind": "kampers standalone",
+  "n": 11,
+  "actual": 4050.0,
+  "svc": 1000.0,
+  "adm": 250.0,
+  "net": 5300.0,
+  "guests": 50,
+  "rooms": "Kampers Bar - Inside",
+  "base": {
+   "Kamper's": 4050.0
+  },
+  "netsplit": {
+   "Kamper's": 5300.0
+  },
+  "cat": {
+   "Kamper's|UNITEMISED": 4050.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 4050.0,
+    "svc": 1000.0,
+    "adm": 250.0,
+    "net": 5300.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 60731818,
+  "name": "Business Center Reservation",
+  "date": "2026-06-26",
+  "kind": "anthology",
+  "n": 2,
+  "actual": 500.0,
+  "svc": 0.0,
+  "adm": 25.0,
+  "net": 525.0,
+  "guests": 8,
+  "rooms": "Business Center",
+  "base": {
+   "Anthology": 500.0
+  },
+  "netsplit": {
+   "Anthology": 525.0
+  },
+  "cat": {
+   "Anthology|FOOD": 500.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 500.0,
+    "svc": 0.0,
+    "adm": 25.0,
+    "net": 525.0
+   }
+  },
+  "note": ""
+ },
+ {
+  "eid": 46415605,
+  "name": "Lauren Guziak & Steve Ording Wedding",
+  "date": "2026-06-26",
+  "kind": "anthology",
+  "n": 33,
+  "actual": 32421.0,
+  "svc": 5644.2,
+  "adm": 1411.05,
+  "net": 39476.25,
+  "guests": 119,
+  "rooms": "13th Floor - Event Space and Kampers Bar - Inside",
+  "base": {
+   "Kamper's": 7489.2,
+   "Anthology": 24931.8
+  },
+  "netsplit": {
+   "Kamper's": 9118.951651707226,
+   "Anthology": 30357.29834829277
+  },
+  "cat": {
+   "Kamper's|FOOD": 3964.0,
+   "Anthology|FOOD": 11606.0,
+   "Anthology|BEVERAGE": 13325.8,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2525.2,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 7489.2,
+    "svc": 1303.8013213657814,
+    "adm": 325.95033034144535,
+    "net": 9118.951651707226
+   },
+   "Anthology": {
+    "base": 24931.8,
+    "svc": 4340.398678634218,
+    "adm": 1085.0996696585546,
+    "net": 30357.29834829277
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,525 to Kamper's"
+ },
+ {
+  "eid": 54486272,
+  "name": "TERRACE CLUB: Lauren Guziak and Steve Ording Wedding",
+  "date": "2026-06-26",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1500.0,
+  "svc": 250.0,
+  "adm": 62.5,
+  "net": 1812.5,
+  "guests": null,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1500.0
+  },
+  "netsplit": {
+   "Anthology": 1812.5
+  },
+  "cat": {
+   "Anthology|RENTAL": 1500.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1500.0,
+    "svc": 250.0,
+    "adm": 62.5,
+    "net": 1812.5
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 45430224,
+  "name": "Nicolette Orlando & Nick Ozog Wedding",
+  "date": "2026-06-27",
+  "kind": "anthology",
+  "n": 35,
+  "actual": 37672.0,
+  "svc": 7047.4,
+  "adm": 1409.48,
+  "net": 46128.880000000005,
+  "guests": 123,
+  "rooms": "13th Floor - Event Space",
+  "base": {
+   "Kamper's": 11071.0,
+   "Anthology": 26601.0
+  },
+  "netsplit": {
+   "Kamper's": 13556.29726268847,
+   "Anthology": 32572.58273731153
+  },
+  "cat": {
+   "Kamper's|FOOD": 7503.0,
+   "Anthology|FOOD": 14669.0,
+   "Anthology|BEVERAGE": 11932.0,
+   "Kamper's|RENTAL": 1000.0,
+   "Kamper's|BEVERAGE": 2568.0,
+   "Anthology|RENTAL": 0.0
+  },
+  "alloc": {
+   "Kamper's": {
+    "base": 11071.0,
+    "svc": 2071.081052240391,
+    "adm": 414.2162104480782,
+    "net": 13556.29726268847
+   },
+   "Anthology": {
+    "base": 26601.0,
+    "svc": 4976.318947759609,
+    "adm": 995.263789551922,
+    "net": 32572.58273731153
+   }
+  },
+  "note": "bar pkg 1h/5h = 2,568 to Kamper's"
+ },
+ {
+  "eid": 50198350,
+  "name": "Terrace Club",
+  "date": "2026-06-27",
+  "kind": "anthology",
+  "n": 0,
+  "actual": 1750.0,
+  "svc": 300.0,
+  "adm": 75.0,
+  "net": 2125.0,
+  "guests": 30,
+  "rooms": "Terrace Club",
+  "base": {
+   "Anthology": 1750.0
+  },
+  "netsplit": {
+   "Anthology": 2125.0
+  },
+  "cat": {
+   "Anthology|RENTAL": 1750.0
+  },
+  "alloc": {
+   "Anthology": {
+    "base": 1750.0,
+    "svc": 300.0,
+    "adm": 75.0,
+    "net": 2125.0
+   }
+  },
+  "note": "no invoice lines"
+ },
+ {
+  "eid": 59538534,
+  "name": "Zen Bei Butoku Kai-International - Bar Rotunda",
+  "date": "2026-06-27",
+  "kind": "rotunda standalone",
+  "n": 1,
+  "actual": 1000.0,
+  "svc": 0.0,
+  "adm": 50.0,
+  "net": 1050.0,
+  "guests": 22,
+  "rooms": "Bar Rotunda",
+  "base": {
+   "Bar Rotunda": 1000.0
+  },
+  "netsplit": {
+   "Bar Rotunda": 1050.0
+  },
+  "cat": {
+   "Bar Rotunda|UNITEMISED": 1000.0
+  },
+  "alloc": {
+   "Bar Rotunda": {
+    "base": 1000.0,
+    "svc": 0.0,
+    "adm": 50.0,
+    "net": 1050.0
+   }
+  },
+  "note": ""
+ }
+]
