@@ -2005,6 +2005,9 @@ function buildBEO(){
   }
   ih+=`<tr class="total"><td class="li">Beverage total (billed)</td><td class="li"></td><td></td><td></td><td>${bf2(C.bev)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsBv-C.cash*B.cashCogs/100)}</td><td class="opt"></td><td class="opt"></td><td></td><td></td></tr>`;
   const cfc=benchFor(B), cOv=+B.cashPpg>0, hasPkg=C.bev>0.005;
+  const cashDupeLines=(B.bev||[]).filter(i=>/cash\s*bar/i.test(i.n||'')&&(i.q*i.p)>0.005);
+  const cashDupeAmt=cashDupeLines.reduce((a,i)=>a+i.q*i.p,0);
+  const cashDupe=cashDupeLines.length>0&&C.cash>0.005;
   const cashIn=`$<input class="drvin txt" data-bi="g:cashPpg" value="${cOv?B.cashPpg:''}" placeholder="${cfc.v.toFixed(2)}" inputmode="decimal" style="width:66px;text-align:right;font-weight:700;">/guest × ${B.guests} guests`;
   /* toggle: is the bar billed to the client (hosted → in grand) or guest-paid (house revenue only)? */
   const inGrand=B.cashInGrand!==0;
@@ -2018,6 +2021,7 @@ function buildBEO(){
     :`Cash bar — ${MU}off for this event</span>`)
     +((B.cashOn&&C.cash>0.005)?'<br>'+cashBillSel:'');
   ih+=`<tr><td class="li" style="padding-left:22px;">${cashLbl}</td><td class="li"></td><td></td><td></td><td style="font-weight:700;">${bf2(C.cash)}</td><td class="opt"></td><td class="opt" style="color:var(--muted);">${bf2(C.cash*B.cashCogs/100)}</td><td class="opt" style="color:var(--muted);">${fpc(B.cashCogs)}</td><td class="opt">${bf2(C.cash*(1-B.cashCogs/100))}</td><td style="color:var(--muted);">${fpc(100-B.cashCogs)}</td><td></td></tr>`;
+  if(cashDupe)ih+=`<tr><td class="li" colspan="11"><span class="chip-low">FAIL — CASH BAR COUNTED TWICE</span> <span style="color:var(--muted);font-size:8.5px;">${cashDupeLines.length===1?'A beverage line':'Beverage lines'} named &ldquo;${beoEsc(cashDupeLines[0].n)}&rdquo; ${cashDupeLines.length===1?'bills':'bill'} ${bf2(cashDupeAmt)}, and the cash-bar estimate below adds another ${bf2(C.cash)} &mdash; the same bar twice. A cash bar belongs in the estimate below only: it carries its own COGS % and its own &ldquo;on client bill?&rdquo; setting, and Tripleseat does not apply service charge or SEF to it. Delete the beverage ${cashDupeLines.length===1?'line':'lines'} above, or set the cash-bar $/guest to 0 if the bar really is billed as a package.</span></td></tr>`;
   const fbTot=C.food+C.bev+C.cash, fbCogs=C.cogsF+C.cogsBv;
   ih+=`<tr class="total"><td class="li">Total — food + beverage ${MU}incl. cash bar forecast</span></td><td class="li"></td><td></td><td></td><td style="font-weight:800;">${bf2(fbTot)}</td><td class="opt"></td><td class="opt">${bf2(fbCogs)}</td><td class="opt">${fbTot?fpc(fbCogs/fbTot*100):'—'}</td><td class="opt">${bf2(fbTot-fbCogs)}</td><td>${fbTot?fpc((fbTot-fbCogs)/fbTot*100):'—'}</td><td></td></tr>`;
   ih+=`<tr class="section"><td class="li" colspan="11" data-bs="other" style="cursor:pointer;"><span class="caret">${BEOSEC.other?'▾':'▸'}</span>OTHER FEES ${MU}A/V, equipment, outside catering &middot; not sales-taxed &middot; service charge &amp; SEF apply</span>${BEOSEC.other?'':` <span style="color:var(--muted);font-weight:600;">· ${(B.other||[]).length} lines</span>`}</td></tr>`;
@@ -2028,7 +2032,8 @@ function buildBEO(){
   ih+=`<tr class="total"><td class="li">Other fees total</td><td class="li"></td><td></td><td></td><td>${bf2(C.other)}</td><td class="opt"></td><td class="opt">${bf2(C.cogsO)}</td><td class="opt">${C.other?fpc(C.cogsO/C.other*100):'—'}</td><td class="opt">${bf2(C.other-C.cogsO)}</td><td>${C.other?fpc((C.other-C.cogsO)/C.other*100):'—'}</td><td></td></tr>`;
   document.getElementById('vsbeo-items').innerHTML=ih;
   const tbm=document.getElementById('tab-menu');
-  if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(foodOK?'ok':'bad')+'">'+(foodOK?'✓ PASS':'✕ FAIL')+'</span>';
+  const menuOK=foodOK&&!cashDupe;
+  if(tbm)tbm.innerHTML='Menu &amp; Beverage <span class="tabbadge '+(menuOK?'ok':'bad')+'">'+(menuOK?'✓ PASS':'✕ FAIL')+'</span>';
   /* ---- client bill: header + itemized invoice + billing summary ---- */
   document.getElementById('bill-head').innerHTML=[
     '<b>'+beoEsc(B.name||B.tab||'Event')+'</b>',
