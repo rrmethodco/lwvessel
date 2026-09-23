@@ -780,7 +780,7 @@ const BEO_DEFS=[{
   mgmtPct:4, disc:15, discLbl:'Military discount'
 }];
 /* House-fixed rates — not editable per event; changing the model is a code/deploy change */
-const FIXED_RATES={salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25};   /* svc & sef are per-event (default 20/5) — some BEOs waive them or use gratuity instead */
+const FIXED_RATES={salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25,commPct:3};   /* svc & sef are per-event (default 20/5) — some BEOs waive them or use gratuity instead */
 /* FOH management labor — fixed overhead of $1,680/mo, allocated across 100 events/yr = $201.60/event */
 const FOH_MGMT={monthly:1680,eventsYr:100,perEvent:1680*12/100};
 function applyFixedRates(B){if(B){Object.keys(FIXED_RATES).forEach(k=>{B[k]=FIXED_RATES[k];});if(B.taxExempt){B.salesTax=0;B.liqTax=0;}}}
@@ -792,7 +792,7 @@ function applyFixedRates(B){if(B){Object.keys(FIXED_RATES).forEach(k=>{B[k]=FIXE
    TARGET without knowing which venue is loaded. */
 const DEFAULT_VCFG={
   branding:{name:'Vessel',tagline:'Method Co · BEO Pricing',city:'Baltimore, MD'},
-  fixedRates:{salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25},
+  fixedRates:{salesTax:6,liqTax:9,burden:16.5,mgmtPct:4,cashCogs:25,commPct:3},
   fohMgmt:{monthly:1680,eventsYr:100},
   targetCogs:25,
   compShop:true
@@ -896,7 +896,7 @@ function blankEvent(){
     burden:R.burden,mgmtPct:R.mgmtPct,disc:0,discLbl:'',taxExempt:0,overageFee:0,tsTotal:null,status:'',beoStatus:'',closePct:null,beoUploaded:0,approved:0,approver:'',beoPdf:'',
     statusHist:[],bookedDate:'',act:{},contract:null};
 }
-const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','tsActual','tsActRev','beoUploaded','approved','closePct'];
+const EV_NUM=['guests','fbMin','rental','deposit','svc','sef','gratuity','salesTax','liqTax','commPct','cashOn','cashDrinks','cashPrice','cashCogs','cashPpg','cashInGrand','feeFlat','burden','mgmtPct','disc','taxExempt','overageFee','tsTotal','tsActual','tsActRev','beoUploaded','approved','closePct'];
 const EV_STR=['tab','name','date','discLbl','evType','room','inqDate','evDate','startTime','endTime','salesperson','leadSource','company','market','status','approver','beoStatus','beoPdf'];
 const APPROVERS=['Chris Allen','Brad Daniels','Ross Richardson','Daniel Cruz'];
 const BEO_STATUS=['Not Started','In Process','Sent to Client','Menu Selected','Menu Finalized','Removed'];
@@ -1383,7 +1383,8 @@ function beoCalcFor(B){
   const gp=rev-cogs;
   const wages=B.labor.reduce((a,l)=>a+l.n*l.h*l.rate,0);
   const ptb=B.labor.reduce((a,l)=>a+(/contract/i.test(l.r||'')?0:l.n*l.h*l.rate),0)*B.burden/100;   /* PT&B on Server + Bartender only — never contract labor */
-  const labor=wages+ptb;                 /* variable event-staffing labor */
+  const comm=(fbB+B.rental)*(B.commPct||0)/100;   /* sales commission — paid on F&B + rental */
+  const labor=wages+ptb+comm;            /* variable event-staffing labor, incl. sales commission */
   const fohMgmt=FOH_MGMT.perEvent;        /* fixed FOH management labor allocation per event */
   const laborTot=labor+fohMgmt;           /* total labor cost */
   const opex=BEO_OPEX.reduce((a,o)=>a+rev*o.v/100,0);
@@ -1391,7 +1392,7 @@ function beoCalcFor(B){
      — used e.g. for July's flat $4k/month allocated $500 across the 8 events (4% resumes in August) */
   const fee=(+B.feeFlat>0)?+B.feeFlat:rev*B.mgmtPct/100;
   const ebitda=gp-laborTot-opex-fee;
-  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,cashG,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,labor,fohMgmt,laborTot,opex,fee,ebitda};
+  return {food,bev,other,barFee,bevPkg,bevRev,fb,unmet,fbB,svc,sef,grat,sTax,lTax,disc,grand,due,cash,cashG,rev,cogsF,cogsBv,cogsO,cogs,gp,wages,ptb,comm,labor,fohMgmt,laborTot,opex,fee,ebitda};
 }
 function beoCalc(){return beoCalcFor(BEOD);}
 
@@ -1401,12 +1402,12 @@ function beoCalc(){return beoCalcFor(BEOD);}
    not been reconciled at all — the month rollup uses that null to exclude an event
    from BOTH columns rather than booking it as $0 actual. FOH management labor is a
    fixed per-event allocation, so it carries the same figure on both sides. */
-const RECK=['guests','food','bev','cash','unmet','rental','other','barFee','svc','sef','disc','rev','cogsF','cogsBv','cogsO','cogs','gp','labor','fohMgmt','laborTot','opex','fee','ebitda'];
+const RECK=['guests','food','bev','cash','unmet','rental','other','barFee','svc','sef','disc','rev','cogsF','cogsBv','cogsO','cogs','gp','comm','labor','fohMgmt','laborTot','opex','fee','ebitda'];
 function evProjected(ev){
   const C=beoCalcFor(ev);
   return {guests:+ev.guests||0,food:C.food,bev:C.bev,cash:C.cash,unmet:0,unmetExp:C.unmet,rental:+ev.rental||0,
     other:C.other,barFee:C.barFee,svc:C.svc,sef:C.sef,disc:C.disc,rev:C.rev,
-    cogsF:C.cogsF,cogsBv:C.cogsBv,cogsO:C.cogsO,cogs:C.cogs,gp:C.gp,
+    cogsF:C.cogsF,cogsBv:C.cogsBv,cogsO:C.cogsO,cogs:C.cogs,gp:C.gp,comm:C.comm,
     labor:C.labor,fohMgmt:C.fohMgmt,laborTot:C.laborTot,opex:C.opex,fee:C.fee,ebitda:C.ebitda};
 }
 function evActuals(ev){
@@ -1419,7 +1420,7 @@ function evActuals(ev){
   const gp=rev-cogs, laborTot=n0('labor')+fohMgmt;
   return {filled:ACTF.filter(k=>AC[k]!=null).length,
     guests:n0('guests'),food:n0('food'),bev:n0('bev'),cash:n0('cash'),unmet:n0('unmet'),rental:n0('rental'),
-    other:n0('other'),barFee:n0('barFee'),svc:n0('svc'),sef:n0('sef'),disc:n0('disc'),rev,
+    other:n0('other'),barFee:n0('barFee'),svc:n0('svc'),sef:n0('sef'),disc:n0('disc'),rev,comm:0,
     cogsF:n0('cogsF'),cogsBv:n0('cogsBv'),cogsO:n0('cogsO'),cogs,gp,
     labor:n0('labor'),fohMgmt,laborTot,opex:n0('opex'),fee:n0('fee'),
     ebitda:gp-laborTot-n0('opex')-n0('fee')};
@@ -1566,13 +1567,13 @@ function buildMonthly(){
   if(!MSEL||!groups.some(g=>g.key===MSEL))MSEL=groups[0].key;
   sel.innerHTML=groups.map(g=>`<option value="${g.key}"${g.key===MSEL?' selected':''}>${beoEsc(g.label)} · ${g.evs.length} event${g.evs.length!==1?'s':''}</option>`).join('');
   const grp=groups.find(g=>g.key===MSEL);
-  const A={food:0,bev:0,other:0,barFee:0,bevPkg:0,cash:0,rental:0,svc:0,sef:0,grat:0,disc:0,sTax:0,lTax:0,grand:0,rev:0,cogsF:0,cogsBv:0,cogsO:0,cogs:0,gp:0,labor:0,fohMgmt:0,laborTot:0,opex:0,fee:0,ebitda:0,bevRev:0,guests:0};
+  const A={food:0,bev:0,other:0,barFee:0,bevPkg:0,cash:0,rental:0,svc:0,sef:0,grat:0,disc:0,sTax:0,lTax:0,grand:0,rev:0,cogsF:0,cogsBv:0,cogsO:0,cogs:0,gp:0,comm:0,labor:0,fohMgmt:0,laborTot:0,opex:0,fee:0,ebitda:0,bevRev:0,guests:0};
   const rows=grp.evs.map(ev=>{
     const C=beoCalcFor(ev);
     A.food+=C.food;A.bev+=C.bev;A.other+=C.other;A.barFee+=C.barFee;A.bevPkg+=C.bevPkg;A.cash+=C.cash;
     A.rental+=(+ev.rental||0);A.svc+=C.svc;A.sef+=C.sef;A.grat+=C.grat;A.disc+=C.disc;A.sTax+=C.sTax;A.lTax+=C.lTax;
     A.grand+=C.grand;A.rev+=C.rev;A.cogsF+=C.cogsF;A.cogsBv+=C.cogsBv;A.cogsO+=C.cogsO;A.cogs+=C.cogs;
-    A.gp+=C.gp;A.labor+=C.labor;A.fohMgmt+=C.fohMgmt;A.laborTot+=C.laborTot;A.opex+=C.opex;A.fee+=C.fee;
+    A.gp+=C.gp;A.comm+=C.comm;A.labor+=C.labor;A.fohMgmt+=C.fohMgmt;A.laborTot+=C.laborTot;A.opex+=C.opex;A.fee+=C.fee;
     A.ebitda+=C.ebitda;A.bevRev+=C.bevRev;A.guests+=(+ev.guests||0);
     return {ev,C};
   });
@@ -1613,7 +1614,7 @@ function buildMonthly(){
   ph+=prc('Beverage &amp; Bar Cost',P.cogsBv,P.bevRev,'of bev revenue');
   ph+=pr('Total COGS',P.cogs,1);
   ph+=pr('Gross Profit',P.gp,1);
-  ph+=pr('Event Labor',P.labor,0,1);
+  ph+=pr('Event Labor '+(P.comm>0.005?MU+'incl. sales commission '+bf2(P.comm)+'</span>':''),P.labor,0,1);
   ph+=pr('FOH Management Labor',P.fohMgmt,0,1);
   ph+=pr('Total Labor',P.laborTot,1);
   ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(P.cogs+P.laborTot)}</td><td style="color:var(--muted);">${P.rev?fpc((P.cogs+P.laborTot)/P.rev*100):'—'}</td><td style="color:var(--muted);">${G?bf2((P.cogs+P.laborTot)/G):'—'}</td></tr>`;
@@ -1677,7 +1678,7 @@ function buildMonthly(){
       rh2+=ln('Other fees — cost of sales','cogsO',false,{ind:1,only:1});
       rh2+=ln('Total COGS','cogs',false,{bold:1});
       rh2+=ln('Gross profit','gp',true,{bold:1});
-      rh2+=ln('Event labor','labor',false,{ind:1});
+      rh2+=ln('Event labor '+(RP.comm>0.005?MU+'wages, payroll burden &amp; sales commission</span>':''),'labor',false,{ind:1});
       rh2+=`<tr><td class="li" style="padding-left:22px;">FOH management labor ${MU}fixed allocation</span></td><td style="color:var(--muted);">${bf2(RP.fohMgmt)}</td><td style="color:var(--muted);">${bf2(RA.fohMgmt)}</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td></tr>`;
       rh2+=ln('Total labor','laborTot',false,{bold:1});
       rh2+=ln('Direct operating &amp; other expenses','opex',false,{ind:1});
@@ -2127,17 +2128,18 @@ function buildBEO(){
   /* ---- labor recovery: guest-paid fees vs our labor cost ---- */
   const feeLines=(B.barFee||[]).filter(i=>i.q*i.p>0);   /* Bar / staffing fees now live in their own Other Fees → bar bucket */
   const feeSum=C.barFee;
-  const comm=(C.fbB+B.rental)*3/100;
-  const labRec=C.svc+C.sef+feeSum-comm;
-  const labNet=labRec-C.labor;
+  const comm=C.comm;
+  const labRec=C.svc+C.sef+feeSum;
+  const labNet=labRec-C.labor;          /* C.labor already carries the commission */
   const labOK=labNet>0.005;
   ch+=`<tr class="section"><td class="li" colspan="6">LABOR RECOVERY</td></tr>`;
   ch+=`<tr><td class="li">Service Charge</td><td colspan="3"></td><td>${bf2(C.svc)}</td><td></td></tr>`;
   ch+=`<tr><td class="li">Special Event Fee</td><td colspan="3"></td><td>${bf2(C.sef)}</td><td></td></tr>`;
   feeLines.forEach(i=>{ch+=`<tr><td class="li">${beoEsc(i.n)}</td><td colspan="3"></td><td>${bf2(i.q*i.p)}</td><td></td></tr>`;});
-  ch+=`<tr><td class="li">Less: Commissions 3%</td><td colspan="3"></td><td>−${bf2(comm)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Total fees collected</td><td colspan="3"></td><td>${bf2(labRec)}</td><td></td></tr>`;
-  ch+=`<tr><td class="li">Less: total event labor</td><td colspan="3"></td><td>−${bf2(C.labor)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Less: wages &amp; payroll burden ${MU}${bf2(C.wages)} wages + ${bf2(C.ptb)} burden</span></td><td colspan="3"></td><td>−${bf2(C.wages+C.ptb)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li">Less: sales commission ${fpc(B.commPct||0)} ${MU}of F&amp;B + rental</span></td><td colspan="3"></td><td>−${bf2(comm)}</td><td></td></tr>`;
+  ch+=`<tr><td class="li" style="color:var(--muted);">&nbsp;&nbsp;= total event labor</td><td colspan="3"></td><td style="color:var(--muted);">${bf2(C.labor)}</td><td></td></tr>`;
   ch+=`<tr class="total"><td class="li">Net labor ${labNet>=0?'surplus':'shortfall'}</td><td colspan="3">${labOK?'<span class="chip-ok">PASS — FEES COVER LABOR</span>':'<span class="chip-low">FAIL — FEES BELOW LABOR COST</span>'}</td><td style="font-weight:800;color:${labOK?'var(--pos)':'var(--neg)'};">${labNet>=0?'+':'−'}${bf2(Math.abs(labNet))}</td><td></td></tr>`;
   document.getElementById('vsbeo-cost').innerHTML=ch;
   const tb=document.getElementById('tab-costs');
@@ -2162,7 +2164,7 @@ function buildBEO(){
   ph+=prc('Beverage &amp; Bar Cost',C.cogsBv,C.bevRev,'of bev revenue');
   ph+=pr('Total COGS',C.cogs,1);
   ph+=pr('Gross Profit',C.gp,1);
-  ph+=pr('Event Labor',C.labor,0,1);
+  ph+=pr('Event Labor '+(C.comm>0.005?MU+'incl. '+fpc(B.commPct||0)+' sales commission '+bf2(C.comm)+'</span>':''),C.labor,0,1);
   ph+=`<tr><td class="li" style="padding-left:22px;">FOH Management Labor</td><td>${bf2(C.fohMgmt)}</td><td style="color:var(--muted);">${C.rev?fpc(C.fohMgmt/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2(C.fohMgmt/B.guests):'—'}</td></tr>`;
   ph+=pr('Total Labor',C.laborTot,1);
   ph+=`<tr><td class="li" style="padding-left:22px;color:var(--muted);">Prime Cost — COGS + Labor</td><td style="color:var(--muted);">${bf2(C.cogs+C.laborTot)}</td><td style="color:var(--muted);">${C.rev?fpc((C.cogs+C.laborTot)/C.rev*100):'—'}</td><td style="color:var(--muted);">${B.guests?bf2((C.cogs+C.laborTot)/B.guests):'—'}</td></tr>`;
@@ -2433,6 +2435,7 @@ function buildVenues(){
         ${fld('Payroll burden %',num(v.id,'fixedRates.burden',r.burden))}
         ${fld('Mgmt fee %',num(v.id,'fixedRates.mgmtPct',r.mgmtPct))}
         ${fld('Cash-bar COGS %',num(v.id,'fixedRates.cashCogs',r.cashCogs))}
+        ${fld('Sales commission %',num(v.id,'fixedRates.commPct',r.commPct))}
         ${fld('Target COGS %',num(v.id,'targetCogs',c.targetCogs))}
         ${fld('FOH mgmt $/mo',num(v.id,'fohMgmt.monthly',fm.monthly,90))}
         ${fld('Events / yr',num(v.id,'fohMgmt.eventsYr',fm.eventsYr))}
@@ -2452,7 +2455,7 @@ async function saveVenue(id){
   const name=(g('name')||'').trim()||id;
   const config={
     branding:{name:name,tagline:(g('branding.tagline')||'').trim(),city:(g('branding.city')||'').trim()},
-    fixedRates:{salesTax:n('fixedRates.salesTax'),liqTax:n('fixedRates.liqTax'),burden:n('fixedRates.burden'),mgmtPct:n('fixedRates.mgmtPct'),cashCogs:n('fixedRates.cashCogs')},
+    fixedRates:{salesTax:n('fixedRates.salesTax'),liqTax:n('fixedRates.liqTax'),burden:n('fixedRates.burden'),mgmtPct:n('fixedRates.mgmtPct'),cashCogs:n('fixedRates.cashCogs'),commPct:n('fixedRates.commPct')},
     fohMgmt:{monthly:n('fohMgmt.monthly'),eventsYr:n('fohMgmt.eventsYr')},
     targetCogs:n('targetCogs'),
     compShop:!!g('compShop')
